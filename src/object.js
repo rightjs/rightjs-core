@@ -3,16 +3,27 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Object.extend = function(orig, dest, dont_overwrite) { 
-  var dest = dest || {};
+
+/**
+ * extends the first object with the keys and values of the second one
+ *
+ * NOTE: the third optional argument tells if the existing values
+ *       of the first object should _NOT_ get updated by the values of the second object
+ *
+ * @param Object destintation object
+ * @param Object source object
+ * @return Objecte extended destination object
+ */
+Object.extend = function(dest, src, dont_overwrite) { 
+  var src = src || {};
   
-  for (var key in dest) {
-    if (!(dont_overwrite && defined(orig[key]))) {
-      orig[key] = dest[key];
+  for (var key in src) {
+    if (!(dont_overwrite && defined(dest[key]))) {
+      dest[key] = src[key];
     }
   }
   
-  return orig;
+  return dest;
 };
 
 Object.extend(Object, {
@@ -20,13 +31,5 @@ Object.extend(Object, {
   },
   
   values: function(object) {
-  },
-  
-  is_a: function(object, klass) {
-    return object instanceof klass;
-  },
-  
-  to_s: function(object) {
-    return object +'';
   }
 });

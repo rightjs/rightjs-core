@@ -6,7 +6,22 @@
 var UtilTest = TestCase.create({
   name: "UtilTest",
   
-  testFoo: function() {
-    this.assert(true);
+  testDefined: function() {
+    var smth = null;
+    this.assert(defined(smth));
+    
+    var smth = false;
+    this.assert(defined(smth));
+    
+    var smth = 0;
+    this.assert(defined(smth));
+  },
+  
+  testDefinedReturnsFalse: function() {
+    var smth = {};
+    this.assertFalse(defined(smth['smth']));
+    
+    var smth = [];
+    this.assertFalse(defined(smth[0]));
   }
 });
