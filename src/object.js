@@ -73,7 +73,7 @@ Object.extend(Object, {
     var copy = {};
     
     for (var key in object) {
-      if (!filter.include(key)) {
+      if (!filter.includes(key)) {
         copy[key] = object[key];
       }
     }

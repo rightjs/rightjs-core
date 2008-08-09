@@ -78,5 +78,97 @@ var ClassTest = TestCase.create({
     var obj = new klass('some value');
     this.assertInstanceOf(klass, obj);
     this.assertEqual('some value', obj._initialized);
+  },
+  
+  testClassInlineExtending: function() {
+    var klass = new Class({
+      extend: {
+        smth: 'something'
+      }
+    });
+    this.assertEqual('something', klass.smth);
+    this.assertNotEqual('something', klass.prototype['extend']);
+  },
+  
+  testClassInlineExtendingWithSeveralModules: function() {
+    var mixin1 = { smth1: 'something 1' };
+    var mixin2 = { smth2: 'something 2' };
+    var mixin3 = { smth3: 'something 3', smth2: 'something 4' };
+    var klass = new Class({
+      extend: [mixin1, mixin2, mixin3]
+    });
+    
+    this.assertEqual('something 1', klass.smth1);
+    this.assertEqual('something 4', klass.smth2);
+    this.assertEqual('something 3', klass.smth3);
+  },
+  
+  testClassInlineIncludes: function() {
+    var klass = new Class({
+      include: {
+        smth: 'something'
+      }
+    });
+    
+    this.assertEqual('something', klass.prototype.smth);
+    this.assertNotEqual('something', klass['smth']);
+  },
+  
+  testClassInlineIncludingOfSeveralModules: function() {
+    var mixin1 = { smth1: 'something 1' };
+    var mixin2 = { smth2: 'something 2' };
+    var mixin3 = { smth3: 'something 3', smth2: 'something 4' };
+    var klass = new Class({
+      include: [mixin1, mixin2, mixin3]
+    });
+    
+    this.assertEqual('something 1', klass.prototype.smth1);
+    this.assertEqual('something 4', klass.prototype.smth2);
+    this.assertEqual('something 3', klass.prototype.smth3);
+  },
+  
+  testClassIncludesByClassPropertiesOverWritting: function() {
+    var klass = new Class({
+      include: {
+        smth: function() { return 'something'; }
+      },
+      
+      smth: function() {
+        return 'klass own something';
+      }
+    });
+    
+    var obj = new klass();
+    this.assertEqual('klass own something', obj.smth());
+  },
+  
+  testInheritance: function() {
+    var s_klass = new Class();
+    
+    var klass = new Class(s_klass);
+    this.assertSame(s_klass, klass.parent);
+    
+    var obj = new klass();
+    this.assertInstanceOf(klass, obj);
+    this.assertInstanceOf(s_klass, obj);
+  },
+  
+  testInheritanceMethodsOverloading: function() {
+    var s_klass = new Class({
+      smth: function() { return 's_klass something'; }
+    });
+    
+    var klass = new Class(s_klass);
+    this.assertEqual('s_klass something', new klass().smth());
+      
+    var klass = new Class(s_klass, {
+      smth: function() { return 'klass something'; }
+    });
+    this.assertEqual('klass something', new klass().smth());
+    
+    var klass = new Class(s_klass, {
+      smth: function() { return 'overloaded '+this.super(); }
+    });
+    this.assertEqual('overloaded s_klass something', new klass().smth());
   }
 });

@@ -4,12 +4,12 @@
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Class = function() {
-  var args = $A(arguments), props = args.pop() || {}, parent = args.pop();
+  var args = $A(arguments), properties = args.pop() || {}, parent = args.pop();
   
   // if only the parent class has been specified
-  if (arguments.length == 1 && typeof(props) == 'function') {
-    parent = props;
-    props = {};
+  if (arguments.length == 1 && typeof(properties) == 'function') {
+    parent = properties;
+    properties = {};
   }
   
   // basic class object definition
@@ -38,7 +38,7 @@ var Class = function() {
       for (var i=0; i < arguments.length; i++) {
         if (arguments[i] instanceof Object) {
           for (var key in arguments[i]) {
-            if (!filter.include(key)) {
+            if (!filter.includes(key)) {
               this[key] = arguments[i][key];
             }
           }
@@ -61,7 +61,20 @@ var Class = function() {
         if (arguments[i] instanceof Object) {
           for (var key in arguments[i]) {
             if (key != 'klass') {
-              this.prototype[key] = arguments[i][key];
+              if (this.parent && typeof(arguments[i][key])=='function') {
+                // handling the parent class method call
+                (function(name, func) {
+                  this.prototype[name] = function() {
+                    // sets the pointer to the superclass method each time you call the method
+                    this.super = typeof(this.constructor.parent.prototype[name]) == 'function' ?
+                      this.constructor.parent.prototype[name] : undefined;
+                    
+                    return func.apply(this, arguments);
+                  };
+                }).apply(this, [key, arguments[i][key]]);
+              } else {
+                this.prototype[key] = arguments[i][key];
+              }
             }
           }
         }
@@ -70,10 +83,37 @@ var Class = function() {
     }
   });
   
+  // handling the parent class assign
+  if (parent && defined(parent.prototype)) {  
+    klass.parent = parent;
+    var s_klass = function() {};
+    s_klass.prototype = parent.prototype;
+    klass.prototype = new s_klass;
+  }
   klass.prototype.constructor = klass;
-  klass.parent = parent;
   
-  klass.include(props);
+  // handling the inline extendings
+  if (properties['extend']) {
+    var extends = properties['extend'];
+    if (!(extends instanceof Array)) {
+      extends = [extends];
+    }
+    klass.extend.apply(klass, extends);
+    properties = Object.without(properties, 'extend');
+  }
+  
+  // handling the inline includes
+  if (properties['include']) {
+    var includes = properties['include'];
+    if (!(includes instanceof Array)) {
+      includes = [includes];
+    }
+    klass.include.apply(klass, includes);
+    properties = Object.without(properties, 'include');
+  }
+  
+  // including the default definitions 
+  klass.include(properties);
   
   return klass;
 };

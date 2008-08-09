@@ -24,12 +24,12 @@ var ArrayTest = TestCase.create({
     }));
   },
   
-  testInclude: function() {
-    this.assert([true].include(true));
-    this.assert([1,2,3,4,5].include(2,4));
+  testIncludes: function() {
+    this.assert([true].includes(true));
+    this.assert([1,2,3,4,5].includes(2,4));
     
-    this.assertFalse([true].include(false));
-    this.assertFalse([1,2,3,4,5].include(6));
-    this.assertFalse([1,2,3,4,5].include(2, 6));
+    this.assertFalse([true].includes(false));
+    this.assertFalse([1,2,3,4,5].includes(6));
+    this.assertFalse([1,2,3,4,5].includes(2, 6));
   }
 });

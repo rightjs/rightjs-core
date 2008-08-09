@@ -62,7 +62,7 @@ Object.extend(Array.prototype, {
    * ....
    * @return boolean check result
    */
-  include: function() {
+  includes: function() {
     for (var i=0; i < arguments.length; i++) {
       if (this.indexOf(arguments[i]) == -1) {
         return false;
