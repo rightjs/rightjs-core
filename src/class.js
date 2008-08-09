@@ -60,7 +60,7 @@ var Class = function() {
       for (var i=0; i < arguments.length; i++) {
         if (arguments[i] instanceof Object) {
           for (var key in arguments[i]) {
-            if (key != 'klass') {
+            if (key != 'klass' && key != 'constructor') {
               if (this.parent && typeof(arguments[i][key])=='function') {
                 // handling the parent class method call
                 (function(name, func) {

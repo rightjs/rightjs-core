@@ -78,6 +78,6 @@ Object.extend(Object, {
       }
     }
     
-    return copy
+    return copy;
   }
 });
