@@ -27,9 +27,31 @@ Object.extend = function(dest, src, dont_overwrite) {
 };
 
 Object.extend(Object, {
+  /**
+   * extracts the list of the attribute names of the given object
+   *
+   * @param Object object
+   * @return Array keys list
+   */
   keys: function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    return keys;
   },
   
+  /**
+   * extracts the list of the attribute values of the given object
+   *
+   * @param Object object
+   * @return Array values list
+   */
   values: function(object) {
+    var values = [];
+    for (var key in object) {
+      values.push(object[key]);
+    }
+    return values;
   }
 });

@@ -20,5 +20,13 @@ var ObjectTest = TestCase.create({
     
     this.assertSame(obj1, Object.extend(obj1, obj2, true));
     this.assertEqual({ a:1, b:2, c:4 }, obj1);
+  },
+  
+  testKeys: function() {
+    this.assertEqual(['a', 'b'], Object.keys({a:1, b:2}));
+  },
+  
+  testValues: function() {
+    this.assertEqual([1,2], Object.values({a:1, b:2}));
   }
 });
