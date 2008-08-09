@@ -1,0 +1,126 @@
+Here are some notes about the Class unit.
+
+This unit is for creating new classes. Or better say G-Objects.
+Partly it is inspired by the MooTools classes, partly by the 
+Prototype framework classes, partly by by Ruby and partly by the moon.
+
+So here is the simpliest example.
+
+var MyClass = new Class({
+  attr: 2,
+  mthd: function() {
+    // the method body
+  }
+});
+
+We use the name 'initialize' as the constructor name, which is pretty 
+standard for the moment. Constructor is an optional method it may exist
+or may don't
+
+var MyClass = new Class({
+  initialize: function() {}
+});
+
+The inheritance gets defined similar to the Prototype framework, but works
+a little bit differnt.
+
+var SuperClass = new Class({
+  method: function() {
+    return 'SuperClass';
+  };
+});
+
+var Inheritance = new Class(SuperClass, {
+  someOwnMethod: function() {},
+  
+  // method overloading
+  method: function() {
+    var super_message = this.super(); // <- you can call the parent method like that
+    return 'Ihertance of '+super_message;
+  }
+});
+
+The super() method is a dynamic one, inside each method it will point to the superclass
+method with the same name if it exists. If there is no such a method in the superclass
+the pointer will equal undefined and can't be called.
+
+Some more features.
+
+You can extend the class-level by calling the extend() method of your class.
+
+var MyClass = new Class();
+var Mixin = { ..... };
+MyClass.extend(Mixin);
+// or you can pass several modules
+MyClass.extend(Mixin1, Mixin2, ...);
+
+NOTE: this will extend the _class_level_
+NOTE: the mixins will replace intersectioning methods of each other. The last win.
+NOTE: the method _will_not_ replace your class prototype with prototypes of the given mixins.
+
+or you can put similar definitions inline with the rest of the class definitions,
+like this.
+
+var MyClass = new Class({
+  extend: Mixin
+  // or several mixings
+  extend: [Mixin1, Mixin2, Mixin3]
+});
+
+Or, if you feel particularly evil, you may do it even like that
+
+var MyClass = new Class({
+  extend: {
+    CONST_ONE: 1,
+    CONST_TWO: 2,
+    
+    classMethod: function() {
+    }
+  }
+});
+
+NOTE: your class prototype _will_not_ have the property 'extend'. This is just a shortcut
+to make your live easier, and the property will be filtered out.
+
+Another method 'iclude()' will extend the class prototype with the mixins which you will
+pass into it.
+
+var MyClass = new Class();
+var Mixin = {....};
+MyClass.include(Mixin);
+// or
+MyClass.include(Mixin1, Mixin2, Mixin3);
+
+NOTE: the method will extend the class _prototype_level_
+NOTE: the methods of the mixins will replace intersectioning attributes. The last win.
+NOTE: the method will not replace the prototype.constructor pointer
+
+and you can use the inline include definitions, similar to the extend: one
+
+var MyClass = new Class({
+  include: Mixin,
+  // or
+  include: [Mixin1, Mixin2, Mixin3]
+});
+
+NOTE: your class prototype _will_not_ have the property 'include'. This is a virtual
+definition and will be filtered out.
+NOTE: your class definition have a higher priority over the mixins methods. Fro example
+
+var Module = {
+  method: function() { return 'Module'; }
+};
+var MyClass = new Class({
+  include: Module,
+  
+  method: function() {
+    return 'MyClass';
+  }
+});
+
+new MyClass.method(); // will return 'MyClass'
+
+So, the general idea here is taken from the Ruby language. You have classes, each class
+might be inherited from any other. But you can take advantages of the multiple inheritance
+by using the extend() and include() methods, which have just the same meaning like the
+ruby ones.
