@@ -53,5 +53,31 @@ Object.extend(Object, {
       values.push(object[key]);
     }
     return values;
+  },
+  
+  /**
+   * returns a copy of the object which contains
+   * all the same keys/values except the key-names
+   * passed the the method arguments
+   *
+   * @param Object object
+   * @param String key-name to exclude
+   * .....
+   * @return Object filtered copy
+   */
+  without: function() {
+    var args = $A(arguments), object = args.shift(), filter = args[0] ? (
+      args[0] instanceof Array ? args[0] : args
+    ) : [];
+    
+    var copy = {};
+    
+    for (var key in object) {
+      if (!filter.include(key)) {
+        copy[key] = object[key];
+      }
+    }
+    
+    return copy
   }
 });

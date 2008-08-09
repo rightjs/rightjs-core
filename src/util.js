@@ -24,3 +24,17 @@
 function defined(n) {
   return n !== undefined;
 };
+
+/**
+ * converts any iterables into an array
+ *
+ * @param Object iterable
+ * @return Array list
+ */
+function $A(it) {
+  var a = [];
+  for (var i=0; i < it.length; i++) {
+    a.push(it[i]);
+  }
+  return a;
+}

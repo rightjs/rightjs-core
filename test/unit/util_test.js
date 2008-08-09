@@ -23,5 +23,10 @@ var UtilTest = TestCase.create({
     
     var smth = [];
     this.assertFalse(defined(smth[0]));
+  },
+  
+  test$A: function() {
+    var args = $A(arguments);
+    this.assertInstanceOf(Array, args);
   }
 });
