@@ -82,7 +82,58 @@ Object.extend(Array.prototype, {
   },
   
   /**
+   * cleans the array
+   * @return Array this
+   */
+  clean: function() {
+    this.length = 0;
+    return this;
+  },
+  
+  /**
+   * creates a copy of the given array
+   *
+   * @return Array copy of the array
+   */
+  clone: function() {
+    return [].merge(this);
+  },
+  
+  /**
+   * creates a list of the array items which are matched in the given callback function
+   *
+   * @param Function callback
+   * @param Object optional scope
+   * @return Array filtered copy
+   */
+  select: function(callback, scope) {
+    var collection = [];
+    for (var i=0; i < this.length; i++) {
+      if (callback.apply(scope, [this[i], i, this])) {
+        collection.push(this[i]);
+      }
+    }
+    return collection;
+  },
+  
+  /**
+   * creates a list of the array items converted in the given callback function
+   *
+   * @param Function callback
+   * @param Object optional scope
+   * @return Array collected
+   */
+  collect: function(callback, scope) {
+    var collection = [];
+    for (var i=0; i < this.length; i++) {
+      collection.push(callback.apply(scope, [this[i], i, this]));
+    }
+    return collection;
+  },
+  
+  /**
    * merges all the arrays passed as the arguments
+   * NOTE: this method _will_change_ the array by itself
    *
    * @return Array this
    */
@@ -96,6 +147,7 @@ Object.extend(Array.prototype, {
         this.push(arguments[i]);
       }
     }
+    return this;
   },
   
   /**

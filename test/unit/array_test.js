@@ -39,6 +39,32 @@ var ArrayTest = TestCase.create({
     this.assertEqual(4, [1,2,3,4].size());
   },
   
+  testClean: function() {
+    this.assertEqual([], [1,2,3,4].clean());
+  },
+  
+  testClone: function() {
+    var a = [1,2,3,4];
+    var b = a.clone();
+    
+    this.assertEqual(a,b);
+    this.assertNotSame(a,b);
+  },
+  
+  testSelect: function() {
+    this.assertEqual([2,4], [1,2,3,4].select(function(i) { return i%2==0; }));
+  },
+  
+  testCollect: function() {
+    var a = [1,2,3,4];
+    this.assertEqual([2,4,6,8], a.collect(function(item) { return item * 2; }));
+    this.assertEqual([1,2,3,4], a);
+  },
+  
+  testMerge: function() {
+    this.assertEqual([1,2,3,4], [1,2].merge([3],[4]));
+  },
+  
   testCompact: function() {
     this.assertEqual([1,2,3,4], [1,null, null,2,undefined,3,4].compact());
   },
