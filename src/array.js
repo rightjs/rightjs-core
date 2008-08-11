@@ -8,11 +8,12 @@ Object.extend(Array.prototype, {
    * returns the index of the value in the array
    *
    * @param mixed value
+   * @param Integer optional offset
    * @return Integer index or -1 if not found
    */
-  indexOf: Array.prototype.indexOf ? Array.prototype.indexOf : function(value) {
-    for (var i=0; i < this.length; i++) {
-      if (this[i] == value) {
+  indexOf: Array.prototype.indexOf ? Array.prototype.indexOf : function(value, from) {
+    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0; i < this.length; i++) {
+      if (this[i] === value) {
         return i;
       }
     }
@@ -27,7 +28,7 @@ Object.extend(Array.prototype, {
    */
   lastIndexOf: Array.prototype.lastIndexOf ? Array.prototype.lastIndexOf : function(value) {
     for (var i=this.length-1; i >=0; i--) {
-      if (this[i] == value) {
+      if (this[i] === value) {
         return i;
       }
     }
@@ -37,18 +38,18 @@ Object.extend(Array.prototype, {
   /**
    * calls the given callback function in the given scope for each element of the array
    *
-   * NOTE: we slightly overload the method to make it return the array by itself
+   * NOTE: it return the array by itself
    *
    * @param Function callback
    * @param Object scope
    * @return Array this
    */
-  forEach: function(callback, scope) {
-    this._forEach(callback, scope);
+  each: function(callback, scope) {
+    this.forEach(callback, scope);
     return this;
   },
   // recatching the original JS 1.6 method 
-  _forEach: Array.prototype.forEach ? Array.prototype.forEach : function(callback, scope) {
+  forEach: Array.prototype.forEach ? Array.prototype.forEach : function(callback, scope) {
     for (var i=0; i < this.length; i++) {
       callback.apply(scope, [this[i], i, this]);
     }
@@ -70,6 +71,15 @@ Object.extend(Array.prototype, {
    */
   last: function() {
     return this[this.length-1];
+  },
+  
+  /**
+   * returns a random item of the array
+   *
+   * @return mixed a random item
+   */
+  random: function() {
+    return this.length ? this[Math.random(this.length-1)] : null;
   },
   
   /**

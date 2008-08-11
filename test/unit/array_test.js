@@ -18,8 +18,8 @@ var ArrayTest = TestCase.create({
     this.assertEqual(-1, [1,2,1,2].lastIndexOf(3));
   },
   
-  testForEach: function() {
-    this.assertEqual([2,4,6,8], [1,2,3,4].forEach(function(value, i, list) {
+  testEach: function() {
+    this.assertEqual([2,4,6,8], [1,2,3,4].each(function(value, i, list) {
       list[i] = value * 2;
     }));
   },
@@ -32,6 +32,15 @@ var ArrayTest = TestCase.create({
   testLast: function() {
     this.assertEqual(4, [1,2,3,4].last());
     this.assert([].last() === undefined);
+  },
+  
+  testRandom: function() {
+    var rands = [null,null];
+    for (var i=0; i < 100; i++) {
+      var rand = [2,3,4,5].random();
+      rands[rand] = rand;
+    }
+    this.assertEqual([null,null,2,3,4,5], rands);
   },
   
   testSize: function() {
