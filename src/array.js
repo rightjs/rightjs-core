@@ -106,7 +106,7 @@ Object.extend(Array.prototype, {
    * @return Array copy of the array
    */
   clone: function() {
-    return [].merge(this);
+    return [].concat(this);
   },
   
   /**
@@ -142,12 +142,12 @@ Object.extend(Array.prototype, {
   },
   
   /**
-   * merges all the arrays passed as the arguments
+   * concats all the arrays passed as the arguments
    * NOTE: this method _will_change_ the array by itself
    *
    * @return Array this
    */
-  merge: function() {
+  concat: function() {
     for (var i=0; i < arguments.length; i++) {
       if (defined(arguments[i]['length'])) {
         for (var j=0; j < arguments[i].length; j++) {
