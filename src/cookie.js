@@ -48,20 +48,37 @@ var Cookie = new Class({
    * @return Cookie this
    */
   set: function(value) {
+    var value = encodeURIComponent(value);
+    if (this.options.domain) value += '; domain=' + this.options.domain;
+    if (this.options.path) value += '; path=' + this.options.path;
+    if (this.options.duration){
+      var date = new Date();
+      date.setTime(date.getTime() + this.options.duration * 24 * 60 * 60 * 1000);
+      value += '; expires=' + date.toGMTString();
+    }
+    if (this.options.secure) value += '; secure';
+    this.options.document.cookie = this.key + '=' + value;
     return this;
   },
   
   /**
    * searches for a cookie with the name
    *
-   * @return mixed saved value or undefined if nothing found
+   * @return mixed saved value or null if nothing found
    */
   get: function() {
+    var value = this.options.document.cookie.match('(?:^|;)\\s*' + this.key.escapeRegExp() + '=([^;]*)');
+    return (value) ? decodeURIComponent(value[1]) : null;
   },
   
+  /** 
+   * removes the cookie
+   *
+   * @return Cookie this
+   */
   delete: function() {
     this.options.duration = -1;
-    this.write(null);
+    this.write('');
     return this;
   }
 });
