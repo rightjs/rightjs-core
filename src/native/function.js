@@ -13,7 +13,7 @@ Object.extend(Function.prototype, {
    * @return Function binded function
    */
   bind: function() {
-    if (arguments.length < 2 && !defined(arguments[0])) { return this; }
+    if (arguments.length < 2 && !defined(arguments[0])) return this;
     
     var _method = this, args = $A(arguments), scope = args.shift();
     return function() {

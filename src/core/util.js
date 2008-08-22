@@ -33,8 +33,7 @@ function defined(n) {
  */
 function $A(it) {
   var a = [];
-  for (var i=0; i < it.length; i++) {
+  for (var i=0; i < it.length; i++)
     a.push(it[i]);
-  }
   return a;
 }

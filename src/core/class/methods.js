@@ -22,15 +22,12 @@ Class.Methods = {
    */
   extend: function() {
     var filter = ['prototype', 'name', 'parent', 'extend', 'include'];
-    for (var i=0; i < arguments.length; i++) {
-      if (arguments[i] instanceof Object) {
-        for (var key in arguments[i]) {
-          if (!filter.includes(key)) {
+    for (var i=0; i < arguments.length; i++)
+      if (arguments[i] instanceof Object)
+        for (var key in arguments[i])
+          if (!filter.includes(key))
             this[key] = arguments[i][key];
-          }
-        }
-      }
-    }
+    
     return this;
   },
   

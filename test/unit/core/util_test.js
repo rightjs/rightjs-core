@@ -26,7 +26,8 @@ var UtilTest = TestCase.create({
   },
   
   test$A: function() {
-    var args = $A(arguments);
-    this.assertInstanceOf(Array, args);
+    var args;
+    (function() { args = $A(arguments); })(1,2,3,4);
+    this.assertEqual([1,2,3,4], args);
   }
 });

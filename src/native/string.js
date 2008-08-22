@@ -57,10 +57,10 @@ Object.extend(String.prototype, {
       return '';
     });
     
-    if (option === true) { eval(scripts);
-    } else if (typeof(option) == 'function') {
+    if (option === true)
+      eval(scripts);
+    else if (typeof(option) == 'function')
       option(scripts, text);
-    }
     
     return text;
   },

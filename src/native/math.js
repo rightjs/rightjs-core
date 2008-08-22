@@ -18,12 +18,12 @@ Object.extend(Math, {
    */
   random: function(min, max) {
     var rand = this._random();
-    if (arguments.length == 0) {
+    if (arguments.length == 0)
       return rand;
-    }
-    if (arguments.length == 1) {
+    
+    if (arguments.length == 1)
       var max = min, min = 0;
-    }
+    
     return Math.floor(rand * (max-min+1)+min);
   },
   _random: Math.random

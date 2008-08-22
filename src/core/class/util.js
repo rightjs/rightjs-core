@@ -30,9 +30,9 @@ Class.Util = {
   catchExtends: function(klass, properties) {
     if (properties['extend']) {
       var extends = properties['extend'];
-      if (!(extends instanceof Array)) {
+      if (!(extends instanceof Array))
         extends = [extends];
-      }
+      
       klass.extend.apply(klass, extends);
       properties = Object.without(properties, 'extend');
     }
@@ -48,9 +48,9 @@ Class.Util = {
   catchIncludes: function(klass, properties) {
     if (properties['include']) {
       var includes = properties['include'];
-      if (!(includes instanceof Array)) {
+      if (!(includes instanceof Array))
         includes = [includes];
-      }
+
       klass.include.apply(klass, includes);
       properties = Object.without(properties, 'include');
     }

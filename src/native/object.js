@@ -17,11 +17,9 @@
 Object.extend = function(dest, src, dont_overwrite) { 
   var src = src || {};
   
-  for (var key in src) {
-    if (!(dont_overwrite && defined(dest[key]))) {
+  for (var key in src)
+    if (!(dont_overwrite && defined(dest[key])))
       dest[key] = src[key];
-    }
-  }
   
   return dest;
 };
@@ -35,9 +33,8 @@ Object.extend(Object, {
    */
   keys: function(object) {
     var keys = [];
-    for (var key in object) {
+    for (var key in object)
       keys.push(key);
-    }
     return keys;
   },
   
@@ -49,9 +46,8 @@ Object.extend(Object, {
    */
   values: function(object) {
     var values = [];
-    for (var key in object) {
+    for (var key in object)
       values.push(object[key]);
-    }
     return values;
   },
   
@@ -72,11 +68,9 @@ Object.extend(Object, {
     
     var copy = {};
     
-    for (var key in object) {
-      if (!filter.includes(key)) {
+    for (var key in object)
+      if (!filter.includes(key))
         copy[key] = object[key];
-      }
-    }
     
     return copy;
   }
