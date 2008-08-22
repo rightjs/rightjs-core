@@ -12,11 +12,9 @@ Object.extend(Array.prototype, {
    * @return Integer index or -1 if not found
    */
   indexOf: Array.prototype.indexOf ? Array.prototype.indexOf : function(value, from) {
-    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0; i < this.length; i++) {
-      if (this[i] === value) {
+    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0; i < this.length; i++)
+      if (this[i] === value)
         return i;
-      }
-    }
     return -1;
   },
   
@@ -27,11 +25,9 @@ Object.extend(Array.prototype, {
    * @return Integer index or -1 if not found
    */
   lastIndexOf: Array.prototype.lastIndexOf ? Array.prototype.lastIndexOf : function(value) {
-    for (var i=this.length-1; i >=0; i--) {
-      if (this[i] === value) {
+    for (var i=this.length-1; i >=0; i--)
+      if (this[i] === value)
         return i;
-      }
-    }
     return -1;
   },
   
@@ -50,9 +46,8 @@ Object.extend(Array.prototype, {
   },
   // recatching the original JS 1.6 method 
   forEach: Array.prototype.forEach ? Array.prototype.forEach : function(callback, scope) {
-    for (var i=0; i < this.length; i++) {
+    for (var i=0; i < this.length; i++)
       callback.apply(scope, [this[i], i, this]);
-    }
   },
   
   /**
@@ -117,12 +112,9 @@ Object.extend(Array.prototype, {
    * @return Array filtered copy
    */
   select: function(callback, scope) {
-    var collection = [];
-    for (var i=0; i < this.length; i++) {
-      if (callback.apply(scope, [this[i], i, this])) {
+    for (var collection = [], i=0; i < this.length; i++)
+      if (callback.apply(scope, [this[i], i, this]))
         collection.push(this[i]);
-      }
-    }
     return collection;
   },
   
@@ -134,10 +126,8 @@ Object.extend(Array.prototype, {
    * @return Array collected
    */
   collect: function(callback, scope) {
-    var collection = [];
-    for (var i=0; i < this.length; i++) {
+    for (var collection = [], i=0; i < this.length; i++)
       collection.push(callback.apply(scope, [this[i], i, this]));
-    }
     return collection;
   },
   
@@ -166,12 +156,9 @@ Object.extend(Array.prototype, {
    * @return Array filtered version
    */
   compact: function() {
-    var copy = [];
-    for (var i=0; i < this.length; i++) {
-      if (this[i] != null && this[i] !== undefined) {
+    for (var copy = [], i=0; i < this.length; i++)
+      if (this[i] != null && this[i] !== undefined)
         copy.push(this[i]);
-      }
-    }
     return copy;
   },
   
@@ -181,12 +168,9 @@ Object.extend(Array.prototype, {
    * @return Array filtered copy
    */
   uniq: function() {
-    var copy = [];
-    for (var i=0; i < this.length; i++) {
-      if (!copy.includes(this[i])) {
+    for (var copy = [], i=0; i < this.length; i++)
+      if (!copy.includes(this[i]))
         copy.push(this[i]);
-      }
-    }
     return copy;
   },
   
@@ -199,11 +183,9 @@ Object.extend(Array.prototype, {
    * @return boolean check result
    */
   includes: function() {
-    for (var i=0; i < arguments.length; i++) {
-      if (this.indexOf(arguments[i]) == -1) {
+    for (var i=0; i < arguments.length; i++)
+      if (this.indexOf(arguments[i]) == -1)
         return false;
-      }
-    }
     return true;
   },
   
@@ -215,12 +197,9 @@ Object.extend(Array.prototype, {
    * @return Array filtered copy
    */
   without: function() {
-    var filter = $A(arguments), copy = [];
-    for (var i=0; i < this.length; i++) {
-      if (!filter.includes(this[i])) {
+    for (var filter = $A(arguments), copy = [], i=0; i < this.length; i++)
+      if (!filter.includes(this[i]))
         copy.push(this[i]);
-      }
-    }
     return copy;
   }
 });
