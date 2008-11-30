@@ -22,11 +22,15 @@ Class.Methods = {
    */
   extend: function() {
     var filter = ['prototype', 'name', 'parent', 'extend', 'include'];
-    for (var i=0; i < arguments.length; i++)
-      if (arguments[i] instanceof Object)
-        for (var key in arguments[i])
-          if (!filter.includes(key))
+    for (var i=0; i < arguments.length; i++) {
+      if (arguments[i] instanceof Object) {
+        for (var key in arguments[i]) {
+          if (!filter.includes(key)) {
             this[key] = arguments[i][key];
+          }
+        }
+      }
+    }
     
     return this;
   },
@@ -50,7 +54,7 @@ Class.Methods = {
               (function(name, func) {
                 this.prototype[name] = function() {
                   // sets the pointer to the superclass method each time you call the method
-                  this.super = typeof(this.constructor.parent.prototype[name]) == 'function' ?
+                  this['super'] = this['$super'] = typeof(this.constructor.parent.prototype[name]) == 'function' ?
                     this.constructor.parent.prototype[name] : undefined;
                   
                   return func.apply(this, arguments);

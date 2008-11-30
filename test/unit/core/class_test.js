@@ -4,7 +4,7 @@
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var ClassTest = TestCase.create({
-  name: 'ObjectTest',
+  name: 'ClassTest',
   
   testNew: function() {
     var klass = new Class();
@@ -167,7 +167,7 @@ var ClassTest = TestCase.create({
     this.assertEqual('klass something', new klass().smth());
     
     var klass = new Class(s_klass, {
-      smth: function() { return 'overloaded '+this.super(); }
+      smth: function() { return 'overloaded '+this.$super(); }
     });
     this.assertEqual('overloaded s_klass something', new klass().smth());
   }

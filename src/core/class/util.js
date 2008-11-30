@@ -29,11 +29,11 @@ Class.Util = {
    */
   catchExtends: function(klass, properties) {
     if (properties['extend']) {
-      var extends = properties['extend'];
-      if (!(extends instanceof Array))
-        extends = [extends];
+      var exts = properties['extend'];
+      if (!(exts instanceof Array))
+        exts = [exts];
       
-      klass.extend.apply(klass, extends);
+      klass.extend.apply(klass, exts);
       properties = Object.without(properties, 'extend');
     }
   },
