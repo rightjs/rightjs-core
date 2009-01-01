@@ -57,7 +57,7 @@ Object.extend(Object, {
    * passed the the method arguments
    *
    * @param Object object
-   * @param String key-name to exclude
+   * @param String key-name to exclude or an array of keys to exclude
    * .....
    * @return Object filtered copy
    */
@@ -71,6 +71,32 @@ Object.extend(Object, {
     for (var key in object)
       if (!filter.includes(key))
         copy[key] = object[key];
+    
+    return copy;
+  },
+  
+  /**
+   * returns a copy of the object which contains all the
+   * key/value pairs from the specified key-names list
+   *
+   * NOTE: if some key does not exists in the original object, it will be just skipped
+   *
+   * @param Object object
+   * @param String key name to exclude or an array of keys to exclude
+   * .....
+   * @return Object filtered copy
+   */
+  only: function() {
+    var args = $A(arguments), object = args.shift(), filter = args[0] ? (
+      args[0] instanceof Array ? args[0] : args
+    ) : [];
+    
+    var copy = {};
+    
+    for (var i=0; i < filter.length; i++) {
+      if (defined(object[filter[i]]))
+        copy[filter[i]] = object[filter[i]];
+    }
     
     return copy;
   }

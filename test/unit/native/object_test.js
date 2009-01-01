@@ -34,5 +34,10 @@ var ObjectTest = TestCase.create({
     this.assertEqual({b:2, c:3}, Object.without({a:1, b:2, c:3}, 'a'));
     this.assertEqual({c:3}, Object.without({a:1, b:2, c:3}, 'a', 'b'));
     this.assertEqual({c:3}, Object.without({a:1, b:2, c:3}, ['a', 'b']));
+  },
+  
+  testOnly: function() {
+    this.assertEqual({b:2,d:4}, Object.only({a:1, b:2, c:3, d:4}, 'b', 'd'));
+    this.assertEqual({a:1,c:3}, Object.only({a:1, b:2, c:3, d:4}, ['a', 'c']));
   }
 });
