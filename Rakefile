@@ -20,6 +20,10 @@ JS_SOURCES = %w{
   src/core/class/util.js
   src/core/class/methods.js
   src/util/cookie.js
+  src/dom/element.js
+  src/dom/element/commons.js
+  src/dom/element/styles.js
+  src/dom/util.js
 }
 
 task :default => :build

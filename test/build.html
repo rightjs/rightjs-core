@@ -17,6 +17,10 @@
     <script type="text/javascript" src="unit/native/function_test.js"></script>
     <script type="text/javascript" src="unit/core/class_test.js"></script>
     <script type="text/javascript" src="unit/util/cookie_test.js"></script>
+    <script type="text/javascript" src="unit/dom/element_test.js"></script>
+    <script type="text/javascript" src="unit/dom/element/commons_test.js"></script>
+    <script type="text/javascript" src="unit/dom/element/styles_test.js"></script>
+    <script type="text/javascript" src="unit/dom/util_test.js"></script>
     
     <script type="text/javascript">
       new TestSuite(
@@ -27,7 +31,11 @@
         StringTest,
         FunctionTest,
         ClassTest,
-        CookieTest
+        CookieTest,
+        ElementTest,
+        ElementCommonsTest,
+        ElementStylesTest,
+        DomUtilTest
       ).runOnLoad();
     </script>
   </head>
