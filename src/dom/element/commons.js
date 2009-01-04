@@ -13,9 +13,11 @@ Element.Commons = {
    */
   set: function(name, value) {
     if (typeof(name)=='object') {
-      Object.extend(this, name);
+      for (var key in name)
+        this.set(key, name[key]);
     } else {
-      this.setAttribute(name, value);
+      // FIXME that's crap
+      eval('this.'+name+' = value;');
     }
     return this;
   },

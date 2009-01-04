@@ -11,9 +11,7 @@ Element.Styles = {
    * @return Element self
    */
   setStyles: function(hash) {
-    for (key in hash)
-      this.style[key] = hash[key];
-    
+    Object.extend(this.style, hash);
     return this;
   },
   

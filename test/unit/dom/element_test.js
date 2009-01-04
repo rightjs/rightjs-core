@@ -7,8 +7,8 @@ var ElementTest = TestCase.create({
   name: 'ElementTest',
   
   testInstance: function() {
-    this.assertInstanceOf(HTMLDivElement, new Element('div'));
-    this.assertInstanceOf(HTMLTableElement, new Element('table'));
+    this.assertEqual('DIV',   new Element('div').tagName);
+    this.assertEqual('TABLE', new Element('table').tagName);
   },
   
   testInstanceWithClass: function() {

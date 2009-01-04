@@ -40,7 +40,7 @@ var FunctionTest = TestCase.create({
   testBindAsEventListener: function() {
     var obj = {
       'event': null,
-      'attr': null,
+      'attr': null
     };
     
     var func = (function(event, def, users) {
