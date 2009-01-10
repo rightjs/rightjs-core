@@ -15,7 +15,7 @@ window.Element = new Class(window.Element, {
     var element = Element.prepare(document.createElement(tag_name)), options = options || {};
     
     if (options['class']) element.className = options['class'];
-    if (options['style']) element.setStyles(options['style']);
+    if (options['style']) element.setStyle(options['style']);
     
     return element.set(Object.without(options, 'class', 'style'));
   },

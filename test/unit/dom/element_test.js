@@ -24,7 +24,7 @@ var ElementTest = TestCase.create({
   testInstanceWithStyle: function() {
     var style = {
       fontSize:   '12px',
-      fontWeight: 'bold',
+      borderSize: '12px',
       display:    'none'
     }
     this.assertStyle(new Element('div', {

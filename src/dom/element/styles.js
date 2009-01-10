@@ -7,11 +7,21 @@ Element.Styles = {
   /**
    * assigns styles out of the hash to the element
    *
-   * @param Object styles list
+   * NOTE: the style keys might be camelized or dasherized, both cases should work
+   *
+   * @param Object styles list or String style name
+   * @param String style value in case of the first param a string style name
    * @return Element self
    */
-  setStyles: function(hash) {
-    Object.extend(this.style, hash);
+  setStyle: function(hash, value) {
+    if (value) {
+      eval('var hash = {"'+hash+'": value};');
+    }
+    var style = {};
+    for (var key in hash) {
+      style[key.camelize()] = hash[key];
+    }
+    Object.extend(this.style, style);
     return this;
   },
   

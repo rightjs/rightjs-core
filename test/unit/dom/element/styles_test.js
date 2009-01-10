@@ -6,16 +6,34 @@
 var ElementStylesTest = TestCase.create({
   name: 'ElementStylesTest',
   
-  testSetStyles: function() {
+  testSetStyleAsHash: function() {
     var style = {
       fontSize: '14px',
-      fontWeight: 'bold',
+      borderSize: '2px',
       display: 'block'
     }
     
     var el = new Element('div');
-    this.assertSame(el, el.setStyles(style));
+    this.assertSame(el, el.setStyle(style));
     this.assertStyle(el, style);
+  },
+  
+  testSetStyleAsHashWithDashedKeys: function() {
+    var el = new Element('div').setStyle({
+      'font-size': '14px',
+      'border-size': '2px'
+    });
+    
+    this.assertStyle(el, {
+      fontSize: '14px',
+      borderSize: '2px'
+    })
+  },
+  
+  testSetStyleWithKeyValue: function() {
+    var el = new Element('div').setStyle('font-size', '14px');
+    
+    this.assertStyle(el, {fontSize: '14px'});
   },
   
   testHasName: function() {
