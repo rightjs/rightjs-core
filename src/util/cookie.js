@@ -14,8 +14,8 @@ var Cookie = new Class({
       return new Cookie(name).get();
     },
     // deletes the cookie
-    delete: function(name) {
-      return new Cookie(name).delete();
+    remove: function(name) {
+      return new Cookie(name).remove();
     }
   },
   
@@ -76,7 +76,7 @@ var Cookie = new Class({
    *
    * @return Cookie this
    */
-  delete: function() {
+  remove: function() {
     this.options.duration = -1;
     this.write('');
     return this;

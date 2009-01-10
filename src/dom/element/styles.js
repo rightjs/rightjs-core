@@ -15,13 +15,11 @@ Element.Styles = {
    */
   setStyle: function(hash, value) {
     if (value) {
-      eval('var hash = {"'+hash+'": value};');
+      var style = {}; style[hash] = value; hash = style;
     }
-    var style = {};
-    for (var key in hash) {
-      style[key.camelize()] = hash[key];
-    }
-    Object.extend(this.style, style);
+    Object.extend(this.style, Object.eachKey(hash, function(key) {
+      return key.camelize();
+    }));
     return this;
   },
   

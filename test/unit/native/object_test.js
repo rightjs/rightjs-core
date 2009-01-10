@@ -39,5 +39,22 @@ var ObjectTest = TestCase.create({
   testOnly: function() {
     this.assertEqual({b:2,d:4}, Object.only({a:1, b:2, c:3, d:4}, 'b', 'd'));
     this.assertEqual({a:1,c:3}, Object.only({a:1, b:2, c:3, d:4}, ['a', 'c']));
+  },
+  
+  testWalk: function() {
+    var o = {'1': '1', '2': '2'};
+    this.assertSame(o, Object.walk(o, function(key, value) {
+      return [key+'k', value+'v'];
+    }));
+    
+    this.assertEqual({'1k': '1v', '2k': '2v'}, o);
+  },
+  
+  testEachKey: function() {
+    var o = {'1': '1', '2': '2'};
+    this.assertSame(o, Object.eachKey(o, function(key){
+      return key + 'x';
+    }));
+    this.assertEqual({'1x':'1', '2x':'2'}, o);
   }
 });

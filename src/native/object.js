@@ -99,5 +99,51 @@ Object.extend(Object, {
     }
     
     return copy;
+  },
+  
+  /**
+   * walks through the object key-value pairs and replaces the given object properties
+   * with ones which the callback function returns
+   *
+   * NOTE: the callback function has to return an array like [key, value]
+   *       if the callbac function returns nothing or the array doesn't have
+   *       the key the entry won't be changed
+   *
+   * WARNING: it is meant that the incomming object will be changed
+   *
+   * @param Object object to walk through
+   * @param Function callback function
+   * @return Object the incomming object with changes
+   */
+  walk: function(object, callback) {
+    var keys = Object.keys(object);
+    for (var i=0; i < keys.length; i++) {
+      var values = callback(keys[i], object[keys[i]]);
+      
+      if (values && values[0] && defined(values[1])) {
+        delete(object[keys[i]]);
+        object[values[0]] = values[1];
+      }
+    }
+    return object;
+  },
+  
+  /**
+   * walks through the object keys and change/rename/remove them, keeping the values the same
+   *
+   * NOTE: if the callback function returns null, that means the key/value won't be changed
+   *       so if you just need to iterate through the keys don't return anything in the
+   *       callback function
+   *
+   * WARNING: will change the incoming object
+   *
+   * @param Object object to process
+   * @param Function callback process
+   * @return Object the incoming object after procesing
+   */
+  eachKey: function(object, callback) {
+    return Object.walk(object, function(key, value) {
+      return [callback(key), value];
+    });
   }
 });
