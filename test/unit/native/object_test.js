@@ -56,5 +56,17 @@ var ObjectTest = TestCase.create({
       return key + 'x';
     }));
     this.assertEqual({'1x':'1', '2x':'2'}, o);
+  },
+  
+  testMerge: function() {
+    var o1 = {1:1};
+    var o2 = {2:2};
+    var o3 = {3:3};
+    var o4 = Object.merge(o1,o2,o3,null,false,1);
+    
+    this.assertEqual({1:1,2:2,3:3}, o4);
+    this.assertEqual({1:1}, o1);
+    this.assertEqual({2:2}, o2);
+    this.assertEqual({3:3}, o3);
   }
 });

@@ -24,6 +24,35 @@ Element.Styles = {
   },
   
   /**
+   * returns style of the element
+   *
+   * NOTE: will include the CSS level definitions
+   *
+   * @param String style key
+   * @return String style value or null if not set
+   */
+  getStyle: function(key) {
+    return this.getOwnStyle(key) || this.getViewStyle(key);
+  },
+  
+  // returns the element own style value
+  getOwnStyle: function(key) {
+    return this._cleanStyle(this.style[key.camelize()]);
+  },
+  
+  // returns the view level computed style
+  getViewStyle: function(key) {
+    return this._cleanStyle((document.defaultView ?
+      document.defaultView.getComputedStyle(this, null) : this.currentStyle
+    )[key.camelize()]);
+  },
+  
+  // cleans up the style value
+  _cleanStyle: function(value) {
+    return (value && value != '') ? value : null;
+  },
+  
+  /**
    * checks if the element has the given class name
    * 
    * @param String class name

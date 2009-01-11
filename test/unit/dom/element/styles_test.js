@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
+document.write('<st'+'yle>div.test---1234{font-size: 14px; display:none;}</st'+'yle>');
 var ElementStylesTest = TestCase.create({
   name: 'ElementStylesTest',
   
@@ -34,6 +35,35 @@ var ElementStylesTest = TestCase.create({
     var el = new Element('div').setStyle('font-size', '14px');
     
     this.assertStyle(el, {fontSize: '14px'});
+  },
+  
+  testGetStyleWithElementLevelStyles: function() {
+    var el = new Element('div', {
+      style: {
+        'font-size': '12px',
+        'border-size': '2px'
+      }
+    });
+    
+    this.assertEqual('12px', el.getStyle('font-size'));
+    this.assertEqual('2px', el.getStyle('borderSize'));
+    
+    this.assertEqual('12px', el.getOwnStyle('font-size'));
+    this.assertEqual('2px', el.getOwnStyle('borderSize'));
+  },
+  
+  testGetStyleWithCSSLevelStyles: function() {
+    var el = new Element('div', {'class': 'test---1234'});
+    document.body.appendChild(el);
+    
+    this.assertEqual('14px', el.getStyle('font-size'));
+    this.assertEqual('none', el.getStyle('display'));
+    
+    this.assertEqual('14px', el.getViewStyle('fontSize'));
+    this.assertEqual('none', el.getViewStyle('display'));
+    
+    this.assertNull(el.getOwnStyle('font-size'));
+    this.assertNull(el.getOwnStyle('display'));
   },
   
   testHasName: function() {

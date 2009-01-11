@@ -145,5 +145,28 @@ Object.extend(Object, {
     return Object.walk(object, function(key, value) {
       return [callback(key), value];
     });
+  },
+  
+  /**
+   * merges the given objects and returns the result
+   *
+   * NOTE this method _DO_NOT_ change the objects, it creates a new object
+   *      which conatins all the given ones. 
+   *      if there is some keys introspections, the last object wins.
+   *      all non-object arguments will be omitted
+   *
+   * @param Object object
+   * @param Object mixing
+   * ......
+   * @return Object merged object
+   */
+  merge: function() {
+    var args = $A(arguments), object = {};
+    for (var i=0; i < args.length; i++) {
+      if (typeof(args[i])=='object') {
+        Object.extend(object, args[i]);
+      }
+    }
+    return object;
   }
 });
