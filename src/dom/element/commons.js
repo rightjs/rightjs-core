@@ -32,21 +32,59 @@ Element.Commons = {
     return this.getAttribute(name);
   },
   
-  
-  
+  /**
+   * checks if the elemnt is hidden
+   *
+   * NOTE: will check css level computed styles too
+   *
+   * @return boolean check result
+   */
   hidden: function() {
-    
+    return this.getStyle('display') == 'none';
   },
   
+  /**
+   * checks if the element is visible
+   *
+   * @return boolean check result
+   */
+  visible: function() {
+    return !this.hidden();
+  },
+  
+  /**
+   * hides the element
+   *
+   * @param String optional effect name
+   * @param Object the optional effect options
+   * @return Element self
+   */
   hide: function(effect, options) {
-    
+    this.__prevDisplay = this.getStyle('display');
+    this.style.display = 'none';
+    return this;
   },
   
+  /**
+   * shows the element
+   *
+   * @param String optional effect name
+   * @param Object the optional effect options
+   * @return Element self
+   */
   show: function(effect, options) {
-    
+    this.style.display = this.__prevDisplay || '';
+    return this;
   },
   
+  /**
+   * toggles the visibility state of the element
+   *
+   * @param String optional effect name
+   * @param Object the optional effect options
+   * @return Element self
+   */
   toggle: function(effect, options) {
-    
+    return this[this.hidden() ? 'show' : 'hide'](effect, options);
   }
 }
