@@ -12,12 +12,11 @@ Element.Commons = {
    * @return Element self
    */
   set: function(name, value) {
-    if (typeof(name)=='object') {
+    if (isObject(name)) {
       for (var key in name)
         this.set(key, name[key]);
     } else {
-      // FIXME that's crap
-      eval('this.'+name+' = value;');
+      this[name] = value;
     }
     return this;
   },
@@ -29,7 +28,18 @@ Element.Commons = {
    * @return mixed value
    */
   get: function(name) {
-    return this.getAttribute(name);
+    var value = this.getAttribute(name);
+    return value == '' ? null : value;
+  },
+  
+  /**
+   * checks if the element has that attribute
+   *
+   * @param String attr name
+   * @return Boolean check result
+   */
+  has: function(name) {
+    return this.get(name) != null;
   },
   
   /**
@@ -86,5 +96,17 @@ Element.Commons = {
    */
   toggle: function(effect, options) {
     return this[this.hidden() ? 'show' : 'hide'](effect, options);
+  },
+  
+  /**
+   * removes the elemnt out of this parent node
+   *
+   * @return Element self
+   */
+  remove: function() {
+    if (this.parentNode) {
+      this.parentNode.removeChild(this);
+    }
+    return this;
   }
 }

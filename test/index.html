@@ -8,6 +8,7 @@
     <script type="text/javascript" src="../lib/testcase.js"></script>
     
     <script type="text/javascript" src="../src/core/util.js"></script>
+    <script type="text/javascript" src="../src/core/browser.js"></script>
     <script type="text/javascript" src="../src/native/object.js"></script>
     <script type="text/javascript" src="../src/native/math.js"></script>
     <script type="text/javascript" src="../src/native/array.js"></script>
@@ -20,9 +21,11 @@
     <script type="text/javascript" src="../src/dom/element.js"></script>
     <script type="text/javascript" src="../src/dom/element/commons.js"></script>
     <script type="text/javascript" src="../src/dom/element/styles.js"></script>
+    <script type="text/javascript" src="../src/dom/element/events.js"></script>
     <script type="text/javascript" src="../src/dom/util.js"></script>
     
     <script type="text/javascript" src="unit/core/util_test.js"></script>
+    <script type="text/javascript" src="unit/core/browser_test.js"></script>
     <script type="text/javascript" src="unit/native/object_test.js"></script>
     <script type="text/javascript" src="unit/native/math_test.js"></script>
     <script type="text/javascript" src="unit/native/array_test.js"></script>
@@ -33,11 +36,13 @@
     <script type="text/javascript" src="unit/dom/element_test.js"></script>
     <script type="text/javascript" src="unit/dom/element/commons_test.js"></script>
     <script type="text/javascript" src="unit/dom/element/styles_test.js"></script>
+    <script type="text/javascript" src="unit/dom/element/events_test.js"></script>
     <script type="text/javascript" src="unit/dom/util_test.js"></script>
     
     <script type="text/javascript">
       new TestSuite(
         UtilTest,
+        BrowserTest,
         ObjectTest,
         MathTest,
         ArrayTest,
@@ -48,6 +53,7 @@
         ElementTest,
         ElementCommonsTest,
         ElementStylesTest,
+        ElementEventsTest,
         DomUtilTest
       ).runOnLoad();
     </script>

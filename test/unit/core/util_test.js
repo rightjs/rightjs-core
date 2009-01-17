@@ -25,6 +25,24 @@ var UtilTest = TestCase.create({
     this.assertFalse(defined(smth[0]));
   },
   
+  testIsObject: function() {
+    this.assert(isObject({}));
+    this.assertFalse(isObject(1));
+    this.assertFalse(isObject('a'));
+    this.assertFalse(isObject(null));
+    this.assertFalse(isObject(false));
+    this.assertFalse(isObject(function() {}));
+  },
+  
+  testIsFunction: function() {
+    this.assert(isFunction(function() {}));
+    this.assertFalse(isFunction(1));
+    this.assertFalse(isFunction({}));
+    this.assertFalse(isFunction('a'));
+    this.assertFalse(isFunction(null));
+    this.assertFalse(isFunction(false));
+  },
+  
   test$A: function() {
     var args;
     (function() { args = $A(arguments); })(1,2,3,4);

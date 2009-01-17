@@ -1,3 +1,8 @@
+/**
+ * The Element unit common methods module test-case
+ *
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ */
 var ElementCommonsTest = TestCase.create({
   name: 'ElementCommonsTest',
   
@@ -23,6 +28,13 @@ var ElementCommonsTest = TestCase.create({
   testGet: function() {
     this.el.id = 'something';
     this.assertEqual(this.el.id, this.el.get('id'));
+    this.assertNull(this.el.get('title'));
+  },
+  
+  testHas: function() {
+    this.el.id = 'something';
+    this.assert(this.el.has('id'));
+    this.assertFalse(this.el.has('title'));
   },
   
   testHidden: function() {
@@ -63,5 +75,13 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(this.el);
     this.assertSame(this.el, this.el.toggle());
     this.assertVisible(this.el);
+  },
+  
+  testRemove: function() {
+    document.body.appendChild(this.el);
+    this.assertSame(document.body, this.el.parentNode);
+    this.assertCalled(document.body, 'removeChild', function() {
+      this.assertSame(this.el, this.el.remove());
+    }, this);
   }
 })

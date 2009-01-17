@@ -11,6 +11,7 @@ BUILD_FILE = 'right.js'
 
 JS_SOURCES = %w{
   src/core/util.js
+  src/core/browser.js
   src/native/object.js
   src/native/math.js
   src/native/array.js
@@ -23,6 +24,7 @@ JS_SOURCES = %w{
   src/dom/element.js
   src/dom/element/commons.js
   src/dom/element/styles.js
+  src/dom/element/events.js
   src/dom/util.js
 }
 

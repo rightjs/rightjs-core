@@ -42,5 +42,15 @@ var ElementTest = TestCase.create({
     this.assertEqual('el-id', el.id);
     this.assertEqual('el-name', el.name);
     this.assertEqual('el-title', el.title);
+  },
+  
+  testInstanceWithEvents: function() {
+    var el = new Element('div', {
+      observe: {
+        click: function() {}
+      }
+    });
+    
+    this.assert(el.observes('click'));
   }
 });

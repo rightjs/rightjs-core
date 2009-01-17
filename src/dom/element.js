@@ -14,10 +14,11 @@ window.Element = new Class(window.Element, {
   initialize: function(tag_name, options) {
     var element = Element.prepare(document.createElement(tag_name)), options = options || {};
     
-    if (options['class']) element.className = options['class'];
-    if (options['style']) element.setStyle(options['style']);
+    if (options['class'])   element.className = options['class'];
+    if (options['style'])   element.setStyle(options['style']);
+    if (options['observe']) element.observe(options['observe']);
     
-    return element.set(Object.without(options, 'class', 'style'));
+    return element.set(Object.without(options, 'class', 'style', 'observe'));
   },
   
   extend: {
@@ -31,6 +32,8 @@ window.Element = new Class(window.Element, {
       if (!element['setAttrs']) {
         Object.extend(element, Element.Commons);
         Object.extend(element, Element.Styles);
+        Object.extend(element, Element.Events);
+        element.cleanCache(); // cleans event cache
       }
       return element;
     }
