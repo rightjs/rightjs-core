@@ -12,17 +12,35 @@
   *
   * @param Object destintation object
   * @param Object source object
+  * @param Boolean flag if the function should not overwrite intersecting values
   * @return Objecte extended destination object
   */
 function $ext(dest, src, dont_overwrite) { 
-   var src = src || {};
+  var src = src || {};
 
-   for (var key in src)
-     if (!(dont_overwrite && defined(dest[key])))
-       dest[key] = src[key];
+  for (var key in src)
+    if (!(dont_overwrite && defined(dest[key])))
+      dest[key] = src[key];
 
-   return dest;
- };
+  return dest;
+};
+
+/**
+ * tries to execute all the functions passed as arguments
+ *
+ * NOTE: will hide all the exceptions raised by the functions
+ *
+ * @param Function to execute
+ * ......
+ * @return mixed first sucessfully executed function result or undefined by default
+ */
+function $try() {
+  for (var i=0; i < arguments.length; i++) {
+    try {
+      return arguments[i]();
+    } catch(e) {}
+  }
+};
 
 /**
  * checks if the given value or a reference points
@@ -41,17 +59,49 @@ function $ext(dest, src, dont_overwrite) {
  * @param mixed value
  * @return boolean check result
  */
-function defined(n) {
-  return n !== undefined;
+function defined(value) {
+  return value !== undefined;
 };
 
-function isObject(value) {
-  return typeof(value) == 'object' && value !== null;
+/**
+ * checks if the given value is a hash-like object
+ *
+ * @param mixed value
+ * @return boolean check result
+ */
+function isHash(value) {
+  return typeof(value) == 'object' && value !== null && value.constructor.toString().includes('function Object()');
 };
 
+/**
+ * checks if the given value is a function
+ *
+ * @param mixed value
+ * @return boolean check result
+ */
 function isFunction(value) {
   return typeof(value) == 'function';
-}
+};
+
+/**
+ * checks if the given value is a string
+ *
+ * @param mixed value
+ * @return boolean check result
+ */
+function isString(value) {
+  return typeof(value) == 'string' || value instanceof String;
+};
+
+/**
+ * checks if the given value is an array
+ *
+ * @param mixed value to check
+ * @return boolean check result
+ */
+function isArray(value) {
+  return value instanceof Array;
+};
 
 /**
  * converts any iterables into an array
@@ -64,4 +114,16 @@ function $A(it) {
   for (var i=0; i < it.length; i++)
     a.push(it[i]);
   return a;
-}
+};
+
+/**
+ * creates a real instance of the Number class out of the incoming value
+ *
+ * NOTE: if the incomming value is a string, then it will try to convert it into float
+ *
+ * @param mixed value
+ * @return Number instance
+ */
+function $N(value) {
+  return new Number(isString(value) ? value.toFloat() : value);
+};

@@ -7,7 +7,7 @@ var Class = function() {
   var args = $A(arguments), properties = args.pop() || {}, parent = args.pop();
   
   // if only the parent class has been specified
-  if (arguments.length == 1 && typeof(properties) == 'function') {
+  if (arguments.length == 1 && isFunction(properties)) {
     parent = properties; properties = {};
   }
   

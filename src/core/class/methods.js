@@ -23,7 +23,7 @@ Class.Methods = {
   extend: function() {
     var filter = ['prototype', 'name', 'parent', 'extend', 'include'];
     for (var i=0; i < arguments.length; i++) {
-      if (arguments[i] instanceof Object) {
+      if (isHash(arguments[i])) {
         for (var key in arguments[i]) {
           if (!filter.includes(key)) {
             this[key] = arguments[i][key];
@@ -46,15 +46,15 @@ Class.Methods = {
    */
   include: function() {
     for (var i=0; i < arguments.length; i++) {
-      if (arguments[i] instanceof Object) {
+      if (isHash(arguments[i])) {
         for (var key in arguments[i]) {
           if (key != 'klass' && key != 'constructor') {
-            if (this.parent && typeof(arguments[i][key])=='function') {
+            if (this.parent && isFunction(arguments[i][key])) {
               // handling the parent class method call
               (function(name, func) {
                 this.prototype[name] = function() {
                   // sets the pointer to the superclass method each time you call the method
-                  this['super'] = this['$super'] = typeof(this.constructor.parent.prototype[name]) == 'function' ?
+                  this['super'] = this['$super'] = isFunction(this.constructor.parent.prototype[name]) ?
                     this.constructor.parent.prototype[name] : undefined;
                   
                   return func.apply(this, arguments);

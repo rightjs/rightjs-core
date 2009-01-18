@@ -59,7 +59,7 @@ $ext(String.prototype, {
     
     if (option === true)
       eval(scripts);
-    else if (typeof(option) == 'function')
+    else if (isFunction(option))
       option(scripts, text);
     
     return text;

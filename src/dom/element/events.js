@@ -12,7 +12,7 @@ Element.Events = {
    * @return Element self
    */
   observe: function(what, callback) {
-    if (isObject(what)) {
+    if (isHash(what)) {
       for (var key in what) {
         this.observe(key, what[key]);
       }
@@ -38,7 +38,7 @@ Element.Events = {
   observes: function(what, callback) {
     var result = true;
         
-    if (isObject(what)) {
+    if (isHash(what)) {
       for (var key in what) {
         result = !!(result & this.observes(key, what[key]));
       }

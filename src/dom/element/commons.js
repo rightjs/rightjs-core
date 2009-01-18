@@ -12,7 +12,7 @@ Element.Commons = {
    * @return Element self
    */
   set: function(name, value) {
-    if (isObject(name)) {
+    if (isHash(name)) {
       for (var key in name)
         this.set(key, name[key]);
     } else {

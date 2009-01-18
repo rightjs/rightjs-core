@@ -5,5 +5,5 @@
  */
  
 function $(element) {
-  return Element.prepare(typeof(element)=='string' ? document.getElementById(element) : element);
+  return Element.prepare(isString(element) ? document.getElementById(element) : element);
 }

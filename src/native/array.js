@@ -11,7 +11,7 @@ $ext(Array.prototype, {
    * @param Integer optional offset
    * @return Integer index or -1 if not found
    */
-  indexOf: Array.prototype.indexOf ? Array.prototype.indexOf : function(value, from) {
+  indexOf: Array.prototype.indexOf || function(value, from) {
     for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0; i < this.length; i++)
       if (this[i] === value)
         return i;
@@ -24,7 +24,7 @@ $ext(Array.prototype, {
    * @param mixed value
    * @return Integer index or -1 if not found
    */
-  lastIndexOf: Array.prototype.lastIndexOf ? Array.prototype.lastIndexOf : function(value) {
+  lastIndexOf: Array.prototype.lastIndexOf || function(value) {
     for (var i=this.length-1; i >=0; i--)
       if (this[i] === value)
         return i;
@@ -45,7 +45,7 @@ $ext(Array.prototype, {
     return this;
   },
   // recatching the original JS 1.6 method 
-  forEach: Array.prototype.forEach ? Array.prototype.forEach : function(callback, scope) {
+  forEach: Array.prototype.forEach || function(callback, scope) {
     for (var i=0; i < this.length; i++)
       callback.apply(scope, [this[i], i, this]);
   },

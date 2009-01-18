@@ -42,7 +42,7 @@ $ext(Object, {
    */
   without: function() {
     var args = $A(arguments), object = args.shift(), filter = args[0] ? (
-      args[0] instanceof Array ? args[0] : args
+      isArray(args[0]) ? args[0] : args
     ) : [];
     
     var copy = {};
@@ -67,7 +67,7 @@ $ext(Object, {
    */
   only: function() {
     var args = $A(arguments), object = args.shift(), filter = args[0] ? (
-      args[0] instanceof Array ? args[0] : args
+      isArray(args[0]) ? args[0] : args
     ) : [];
     
     var copy = {};
