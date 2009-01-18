@@ -31,6 +31,17 @@ $ext(Object, {
   },
   
   /**
+   * checks if the object-hash has no keys
+   *
+   * @param Object object
+   * @return check result
+   */
+  empty: function(object) {
+    for (var key in object) break;
+    return !key;
+  },
+  
+  /**
    * returns a copy of the object which contains
    * all the same keys/values except the key-names
    * passed the the method arguments

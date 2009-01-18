@@ -121,7 +121,7 @@ Element.Events = {
   // checks if there is a cache for the event/callback
   _cached: function(what, callback) {
     var what = this._what(what);
-    if (defined(this._eventsCache[what]) && this._eventsCache[what].length > 0) {
+    if (defined(this._eventsCache[what]) && this._eventsCache[what].length) {
       if (isFunction(callback)) {
         for (var i=0; i < this._eventsCache[what].length; i++) {
           if (this._eventsCache[what][i] == callback) {

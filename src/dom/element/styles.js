@@ -59,7 +59,7 @@ Element.Styles = {
    * @return boolean check result
    */
   hasClass: function(name) {
-    return this.className.length > 0 && this.className.match(new RegExp('(^|\\s)'+ name + '(\\s|$)'));
+    return this.className.length && this.className.match(new RegExp('(^|\\s)'+ name + '(\\s|$)'));
   },
 
   /**
@@ -70,7 +70,7 @@ Element.Styles = {
    */
   addClass: function(name) {
     if (!this.hasClass(name)) {
-      this.className += (this.className.length > 0 ? ' ' : '') + name;
+      this.className += (this.className.length ? ' ' : '') + name;
     }
     return this;
   },

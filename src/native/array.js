@@ -96,6 +96,15 @@ $ext(Array.prototype, {
   },
   
   /**
+   * checks if the array has no elements in it
+   *
+   * @return boolean check result
+   */
+  empty: function() {
+    return !this.length;
+  },
+  
+  /**
    * creates a copy of the given array
    *
    * @return Array copy of the array

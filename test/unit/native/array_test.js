@@ -52,6 +52,11 @@ var ArrayTest = TestCase.create({
     this.assertEqual([], [1,2,3,4].clean());
   },
   
+  testEmpty: function() {
+    this.assert([].empty());
+    this.assertFalse([null].empty());
+  },
+  
   testClone: function() {
     var a = [1,2,3,4];
     var b = a.clone();
