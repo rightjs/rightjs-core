@@ -38,7 +38,7 @@ var Cookie = new Class({
    */
   initialize: function(name, options) {
     this.name = name;
-    this.options = Object.extend(this.options, options || {});
+    this.options = $ext(this.options, options || {});
   },
   
   /**

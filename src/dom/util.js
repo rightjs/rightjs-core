@@ -4,6 +4,6 @@
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
  
-var $ = function(element) {
+function $(element) {
   return Element.prepare(typeof(element)=='string' ? document.getElementById(element) : element);
 }

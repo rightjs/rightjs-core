@@ -142,7 +142,7 @@ Element.Events = {
  * adding correctly looking vitual methods for IE browsers
  */
 if (!Element.prototype.addEventListener) {
-  Object.extend(Element.Events, {
+  $ext(Element.Events, {
     addEventListener: function(what, callback, captive) {
       this.attachEvent('on'+ what, callback);
     },

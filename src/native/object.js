@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Object.extend(Object, {
+$ext(Object, {
   /**
    * extracts the list of the attribute names of the given object
    *
@@ -143,7 +143,7 @@ Object.extend(Object, {
     var args = $A(arguments), object = {};
     for (var i=0; i < args.length; i++) {
       if (typeof(args[i])=='object') {
-        Object.extend(object, args[i]);
+        $ext(object, args[i]);
       }
     }
     return object;

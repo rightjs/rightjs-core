@@ -17,7 +17,7 @@ var Class = function() {
   };
   
   // attaching main class-level methods
-  Object.extend(klass, Class.Methods);
+  $ext(klass, Class.Methods);
   
   // handling the parent class assign
   Class.Util.catchSuper(klass, parent);

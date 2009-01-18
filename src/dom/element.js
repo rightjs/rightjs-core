@@ -30,9 +30,9 @@ window.Element = new Class(window.Element, {
      */
     prepare: function(element) {
       if (!element['setAttrs']) {
-        Object.extend(element, Element.Commons);
-        Object.extend(element, Element.Styles);
-        Object.extend(element, Element.Events);
+        $ext(element, Element.Commons);
+        $ext(element, Element.Styles);
+        $ext(element, Element.Events);
         element.cleanCache(); // cleans event cache
       }
       return element;

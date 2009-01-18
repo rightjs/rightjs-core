@@ -14,7 +14,7 @@
   * @param Object source object
   * @return Objecte extended destination object
   */
- Object.extend = function(dest, src, dont_overwrite) { 
+function $ext(dest, src, dont_overwrite) { 
    var src = src || {};
 
    for (var key in src)

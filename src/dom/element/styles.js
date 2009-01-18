@@ -17,7 +17,7 @@ Element.Styles = {
     if (value) {
       var style = {}; style[hash] = value; hash = style;
     }
-    Object.extend(this.style, Object.eachKey(hash, function(key) {
+    $ext(this.style, Object.eachKey(hash, function(key) {
       return key.camelize();
     }));
     return this;

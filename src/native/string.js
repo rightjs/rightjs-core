@@ -3,12 +3,12 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Object.extend(String, {
+$ext(String, {
   // this is for unicode regexps 
   UTF8_DOWNS: 'a-zàèìòùáéíóúýâêîôûãñõäëïöü¡¿çßøåæþðёйцукенгшщзхъфывапролджэячсмитьбю',
   UTF8_UPS: 'A-ZÀÈÌÒÙÁÉÍÓÚÝÂÊÎÔÛÃÑÕÄËÏÖÜ¡¿ÇØÅÆÞÐЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ'
 });
-Object.extend(String.prototype, {
+$ext(String.prototype, {
   /**
    * checks if the string is an empty string
    *

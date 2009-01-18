@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Object.extend(Array.prototype, {
+$ext(Array.prototype, {
   /**
    * returns the index of the value in the array
    *

@@ -95,6 +95,9 @@ var ElementEventsTest = TestCase.create({
     this.assertFalse(clicked1);
     this.assert(clicked2);
     
+    this.assertFalse(this.el.observes('click', func1));
+    this.assert(this.el.observes('click'));
+    
     var clicked1 = false;
     var clicked2 = false;
     
@@ -104,5 +107,7 @@ var ElementEventsTest = TestCase.create({
     
     this.assertFalse(clicked1);
     this.assertFalse(clicked2);
+    
+    this.assertFalse(this.el.observes('click'));
   }
 });

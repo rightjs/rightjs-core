@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Object.extend(Math, {
+$ext(Math, {
   /**
    * the standard random method replacement, to make it more useful
    *

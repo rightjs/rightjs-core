@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Object.extend(Function.prototype, {
+$ext(Function.prototype, {
   /**
    * binds the function to be executed in the given scope
    *
