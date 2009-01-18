@@ -106,6 +106,20 @@ var UtilTest = TestCase.create({
     this.assertFalse(isArray(function(){}));
   },
   
+  test_isNumber: function() {
+    this.assert(isNumber(1));
+    this.assert(isNumber(1.1));
+    this.assert(isNumber(new Number(1)));
+    this.assert(isNumber(new Number(-1.1)));
+    
+    this.assertFalse(isNumber({}));
+    this.assertFalse(isNumber([]));
+    this.assertFalse(isNumber('1'));
+    this.assertFalse(isNumber(null));
+    this.assertFalse(isNumber(false));
+    this.assertFalse(isNumber(function() {}));
+  },
+  
   test_$A: function() {
     var args;
     (function() { args = $A(arguments); })(1,2,3,4);
@@ -117,5 +131,7 @@ var UtilTest = TestCase.create({
     this.assertInstanceOf(Number, $N(1.1));
     this.assertEqual($N(1), $N('1'));
     this.assertEqual($N(-1.1), $N('-1.1'));
+    this.assert($N(1) == 1);
+    this.assert($N(1.1) == 1.1);
   }
 });

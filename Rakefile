@@ -17,6 +17,7 @@ JS_SOURCES = %w{
   src/native/array.js
   src/native/string.js
   src/native/function.js
+  src/native/number.js
   src/core/class.js
   src/core/class/util.js
   src/core/class/methods.js

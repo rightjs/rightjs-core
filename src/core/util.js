@@ -104,6 +104,16 @@ function isArray(value) {
 };
 
 /**
+ * checks if the given value is a number
+ *
+ * @param mixed value to check
+ * @return boolean check result
+ */
+function isNumber(value) {
+  return typeof(value) == 'number' || value instanceof Number;
+};
+
+/**
  * converts any iterables into an array
  *
  * @param Object iterable
