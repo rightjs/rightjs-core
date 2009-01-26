@@ -148,7 +148,7 @@ $ext(Array.prototype, {
    */
   concat: function() {
     for (var i=0; i < arguments.length; i++) {
-      if (defined(arguments[i]['length'])) {
+      if (defined(arguments[i]) && defined(arguments[i]['length'])) {
         for (var j=0; j < arguments[i].length; j++) {
           this.push(arguments[i][j]);
         }

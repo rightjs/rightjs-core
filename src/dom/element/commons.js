@@ -28,7 +28,7 @@ Element.Commons = {
    * @return mixed value
    */
   get: function(name) {
-    var value = this.getAttribute(name);
+    var value = this.getAttribute(name) || this[name];
     return value == '' ? null : value;
   },
   
@@ -40,6 +40,10 @@ Element.Commons = {
    */
   has: function(name) {
     return this.get(name) != null;
+  },
+  
+  erase: function(name) {
+    return this;
   },
   
   /**
@@ -96,17 +100,5 @@ Element.Commons = {
    */
   toggle: function(effect, options) {
     return this[this.hidden() ? 'show' : 'hide'](effect, options);
-  },
-  
-  /**
-   * removes the elemnt out of this parent node
-   *
-   * @return Element self
-   */
-  remove: function() {
-    if (this.parentNode) {
-      this.parentNode.removeChild(this);
-    }
-    return this;
   }
 }

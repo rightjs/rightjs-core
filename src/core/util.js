@@ -137,3 +137,23 @@ function $A(it) {
 function $N(value) {
   return new Number(isString(value) ? value.toFloat() : value);
 };
+
+/**
+ * searches an element by id and/or extends it with the framework extentions
+ *
+ * @param String element id or Element to extend
+ * @return Element or null
+ */
+function $(element) {
+  return Element.prepare(isString(element) ? document.getElementById(element) : element);
+};
+
+/**
+ * searches for elements in the document which matches the given css-rule
+ *
+ * @param String css-rule
+ * @return Array matching elements list
+ */
+function $$(css_rule) {
+  return Element.select(document, css_rule);
+};

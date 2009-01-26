@@ -66,7 +66,7 @@ var ElementStylesTest = TestCase.create({
     this.assertNull(el.getOwnStyle('display'));
   },
   
-  testHasName: function() {
+  testHasClass: function() {
     var el = new Element('div');
     
     this.assert(!el.hasClass('foo'));
@@ -81,6 +81,14 @@ var ElementStylesTest = TestCase.create({
     
     this.assert(el.hasClass('foo'));
     this.assert(el.hasClass('boo'));
+  },
+  
+  testSetClass: function() {
+    var el = new Element('div');
+    
+    this.assertSame(el, el.setClass('foo bar'));
+    
+    this.assertEqual('foo bar', el.className);
   },
   
   testAddClass: function() {

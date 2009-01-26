@@ -133,5 +133,41 @@ var UtilTest = TestCase.create({
     this.assertEqual($N(-1.1), $N('-1.1'));
     this.assert($N(1) == 1);
     this.assert($N(1.1) == 1.1);
+  },
+  
+  test_$_Extending: function() {
+    var el = document.createElement('div');
+    
+    this.assertSame(el, $(el));
+    this.assertNotNull(el['hasClass'], "check if the object was prepared");
+  },
+  
+  getFreshNode: function() {
+    var id = 'some-testing-div-id';
+    var el = document.getElementById(id);
+    if (el) {
+      el.parentNode.removeChild(el);
+    }
+    var el = document.createElement('div');
+    el.id = id;
+    
+    document.body.appendChild(el);
+    
+    return el;
+  },
+  
+  test_$_Search: function() {
+    var el = this.getFreshNode();
+    
+    this.assertSame(el, $(el.id));
+    this.assertNotNull(el['hasClass']);
+  },
+  
+  test_$$: function() {
+    var el = this.getFreshNode();
+    el.className = 'some-weird-class';
+    
+    this.assertEqual([], $$('div.something-non-existing'));
+    //this.assert($$('div.some-weird-class') == [el]);
   }
 });

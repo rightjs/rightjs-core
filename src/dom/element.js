@@ -14,7 +14,7 @@ window.Element = new Class(window.Element, {
   initialize: function(tag_name, options) {
     var element = Element.prepare(document.createElement(tag_name)), options = options || {};
     
-    if (options['class'])   element.className = options['class'];
+    if (options['class'])   element.setClass(options['class']);
     if (options['style'])   element.setStyle(options['style']);
     if (options['observe']) element.observe(options['observe']);
     
@@ -29,8 +29,9 @@ window.Element = new Class(window.Element, {
      * @return Element
      */
     prepare: function(element) {
-      if (!element['setAttrs']) {
+      if (element && !element['cleanCache']) {
         $ext(element, Element.Commons);
+        $ext(element, Element.Structs);
         $ext(element, Element.Styles);
         $ext(element, Element.Events);
         element.cleanCache(); // cleans event cache

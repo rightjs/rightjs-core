@@ -24,9 +24,10 @@ JS_SOURCES = %w{
   src/util/cookie.js
   src/dom/element.js
   src/dom/element/commons.js
+  src/dom/element/structs.js
   src/dom/element/styles.js
   src/dom/element/events.js
-  src/dom/util.js
+  src/dom/element/selector.js
 }
 
 task :default => :build

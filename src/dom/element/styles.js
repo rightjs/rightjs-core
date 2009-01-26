@@ -61,6 +61,17 @@ Element.Styles = {
   hasClass: function(name) {
     return this.className.length && this.className.match(new RegExp('(^|\\s)'+ name + '(\\s|$)'));
   },
+  
+  /**
+   * sets the whole class-name string for the element
+   *
+   * @param String class-name
+   * @return Element self
+   */
+  setClass: function(class_name) {
+    this.className = class_name;
+    return this;
+  },
 
   /**
    * adds the given class name to the element

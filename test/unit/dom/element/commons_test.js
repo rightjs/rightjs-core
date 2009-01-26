@@ -75,13 +75,5 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(this.el);
     this.assertSame(this.el, this.el.toggle());
     this.assertVisible(this.el);
-  },
-  
-  testRemove: function() {
-    document.body.appendChild(this.el);
-    this.assertSame(document.body, this.el.parentNode);
-    this.assertCalled(document.body, 'removeChild', function() {
-      this.assertSame(this.el, this.el.remove());
-    }, this);
   }
 })
