@@ -277,5 +277,38 @@ var ElementSelectorTest = TestCase.create({
     this.assertNotMatchAtom('*:even', element);
     this.assertMatchAtom('*:even', element2);
     this.assertNotMatchAtom('*:even', element3);
+    
+    // testing pseudo selectors with types
+    var element4 = document.createElement('div');
+    div.appendChild(element4);
+    
+    this.assertMatchAtom('*:first-of-type', element);
+    this.assertMatchAtom('*:first-of-type', element3);
+    this.assertNotMatchAtom('*:first-of-type', element2);
+    this.assertNotMatchAtom('*:first-of-type', element4);
+    
+    this.assertMatchAtom('*:last-of-type', element2);
+    this.assertMatchAtom('*:last-of-type', element4);
+    this.assertNotMatchAtom('*:last-of-type', element);
+    this.assertNotMatchAtom('*:last-of-type', element3);
+    
+    var element5 = document.createElement('textarea');
+    div.appendChild(element5);
+    
+    this.assertMatchAtom('*:only-of-type', element5);
+    this.assertNotMatchAtom('*:only-of-type', element);
+    this.assertNotMatchAtom('*:only-of-type', element2);
+    this.assertNotMatchAtom('*:only-of-type', element3);
+    this.assertNotMatchAtom('*:only-of-type', element4);
+    
+    this.assertMatchAtom('*:nth-of-type(1)', element);
+    this.assertMatchAtom('*:nth-of-type(2)', element2);
+    this.assertMatchAtom('*:nth-of-type(1)', element3);
+    this.assertMatchAtom('*:nth-of-type(2)', element4);
+    
+    this.assertNotMatchAtom('*:nth-of-type(2)', element);
+    this.assertNotMatchAtom('*:nth-of-type(1)', element2);
+    this.assertNotMatchAtom('*:nth-of-type(2)', element3);
+    this.assertNotMatchAtom('*:nth-of-type(1)', element4);
   }
 });

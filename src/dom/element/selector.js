@@ -190,7 +190,7 @@ Element.extend({
           
           if ((m = css_rule.match(this.PSEUDO_RE))) {
             this.pseudo = m[1];
-            this.pseudoValue = m[3];
+            this.pseudoValue = m[3] == '' ? null : m[3];
             css_rule = css_rule.replace(m[0], '');
           } else {
             this.pseudo = null;
@@ -284,32 +284,44 @@ Element.extend({
             return (this.innerText || this.innerHTML || this.textContent || '').includes(text);
           },
 
-          'first-child': function() {
+          'first-child': function(tag_name) {
             var node = this;
             while ((node = node.previousSibling)) {
-              if (node.nodeType == 1) { // skip text nodes
+              if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name)) {
                 return false;
               }
             }
             return true;
           },
+          
+          'first-of-type': function() {
+            return arguments[1]['first-child'].call(this, this.tagName);
+          },
 
-          'last-child': function() {
+          'last-child': function(tag_name) {
             var node = this;
             while ((node = node.nextSibling)) {
-              if (node.nodeType == 1) { // skip text nodes
+              if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name)) {
                 return false;
               }
             }
             return true;
           },
-
-          'only-child': function() {
-            var match = arguments[1];
-            return this.parentNode && match['first-child'].call(this) && match['last-child'].call(this);
+          
+          'last-of-type': function() {
+            return arguments[1]['last-child'].call(this, this.tagName);
           },
 
-          'nth-child': function(number) {
+          'only-child': function(tag_name, matchers) {
+            return this.parentNode && matchers['first-child'].call(this, tag_name) 
+              && matchers['last-child'].call(this, tag_name);
+          },
+          
+          'only-of-type': function() {
+            return arguments[1]['only-child'].call(this, this.tagName, arguments[1]);
+          },
+
+          'nth-child': function(number, matchers, tag_name) {
             if (!this.parentNode) return false;
             
             number = number.toLowerCase();
@@ -329,22 +341,26 @@ Element.extend({
               // getting the element index
               var index = 1, node = this;
               while ((node = node.previousSibling)) {
-                if (node.nodeType == 1) index++;
+                if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name)) index++;
               }
               
               return (index - b) % a == 0 && (index - b) / a >= 0;
               
             } else {
-              return arguments[1]['index'].call(this, number.toInt() - 1);
+              return matchers['index'].call(this, number.toInt() - 1, matchers, tag_name);
             }
           },
           
+          'nth-of-type': function(number) {
+            return arguments[1]['nth-child'].call(this, number, arguments[1], this.tagName);
+          },
+          
           // virtual pseudo matchers
-          index: function(number) {
+          index: function(number, matchers, tag_name) {
             number = isString(number) ? number.toInt() : number;
             var node = this, count = 0;
             while ((node = node.previousSibling)) {
-              if (node.nodeType == 1 && ++count > number) return false;
+              if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name) && ++count > number) return false;
             }
             return count == number;
           },
