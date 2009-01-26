@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Element.Styles = {
+$ext(Element.Methods, {
   /**
    * assigns styles out of the hash to the element
    *
@@ -106,4 +106,4 @@ Element.Styles = {
    toggleClass: function(name) {
      return this[this.hasClass(name) ? 'removeClass' : 'addClass'](name);
    }
-};
+});

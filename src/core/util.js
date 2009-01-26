@@ -155,5 +155,5 @@ function $(element) {
  * @return Array matching elements list
  */
 function $$(css_rule) {
-  return Element.select(document, css_rule);
+  return $(document).select(css_rule);
 };

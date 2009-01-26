@@ -27,7 +27,7 @@ JS_SOURCES = %w{
   src/dom/element/structs.js
   src/dom/element/styles.js
   src/dom/element/events.js
-  src/dom/element/selector.js
+  src/dom/selector.js
 }
 
 task :default => :build

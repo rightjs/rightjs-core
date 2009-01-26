@@ -3,11 +3,11 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-var ElementSelectorTest = TestCase.create({
-  name: "ElementSelectorTest",
+var SelectorTest = TestCase.create({
+  name: "SelectorTest",
   
   atom: function(rule) {
-    return new Element.Selector.Atom(rule);
+    return new Selector.Atom(rule);
   },
   
   testAtom_idRecognition: function() {

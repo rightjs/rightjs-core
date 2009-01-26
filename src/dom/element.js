@@ -12,7 +12,7 @@ window.Element = new Class(window.Element, {
    * @return Element object
    */
   initialize: function(tag_name, options) {
-    var element = Element.prepare(document.createElement(tag_name)), options = options || {};
+    var element = $(document.createElement(tag_name)), options = options || {};
     
     if (options['class'])   element.setClass(options['class']);
     if (options['style'])   element.setStyle(options['style']);
@@ -30,14 +30,13 @@ window.Element = new Class(window.Element, {
      */
     prepare: function(element) {
       if (element && !element['cleanCache']) {
-        $ext(element, Element.Commons);
-        $ext(element, Element.Structs);
-        $ext(element, Element.Styles);
-        $ext(element, Element.Events);
-        element.cleanCache(); // cleans event cache
+        $ext(element, Element.Methods);
+        element.cleanCache(); // cleans the events cache
       }
       return element;
-    }
+    },
+    
+    Methods: {} // will be filled up in the submodules
   }
   
 });

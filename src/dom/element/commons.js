@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Element.Commons = {
+$ext(Element.Methods, {
   /**
    * sets the element attributes
    *
@@ -101,4 +101,4 @@ Element.Commons = {
   toggle: function(effect, options) {
     return this[this.hidden() ? 'show' : 'hide'](effect, options);
   }
-}
+});

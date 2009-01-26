@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Element.Events = {
+$ext(Element.Methods, {
   /**
    * initiates an event observing
    *
@@ -136,13 +136,13 @@ Element.Events = {
     return true;
   }
   
-};
+});
 
 /**
  * adding correctly looking vitual methods for IE browsers
  */
 if (!Element.prototype.addEventListener) {
-  $ext(Element.Events, {
+  $ext(Element.prototype, {
     addEventListener: function(what, callback, captive) {
       this.attachEvent('on'+ what, callback);
     },
@@ -151,4 +151,4 @@ if (!Element.prototype.addEventListener) {
       this.detachEvent('on'+ what, callback);
     }
   });
-}
+};

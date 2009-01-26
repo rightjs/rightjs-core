@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Element.Structs = {
+$ext(Element.Methods, {
   parent: function(css_rule) {
     return css_rule ? this.up(css_rule) : $(this.parentNode);
   },
@@ -41,15 +41,15 @@ Element.Structs = {
   },
   
   down: function(css_rule) {
-    return Element.down(this, css_rule);
+    return new Selector(css_rule).select(this, true).first();
   },
   
   select: function(css_rule) {
-    return Element.select(this, css_rule);
+    return new Selector(css_rule).select(this);
   },
   
   match: function(css_rule) {
-    return Element.match(this, css_rule);
+    return new Selector(css_rule).match(this);
   },
   
   /**
@@ -107,4 +107,4 @@ Element.Structs = {
   empty: function() {
     return this.innerHTML.blank();
   }
-};
+});
