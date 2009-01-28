@@ -57,6 +57,15 @@ var SelectorTest = TestCase.create({
     }, this);
   },
   
+  assertMatchRule: function(css_rule, elements, message) {
+    var selector = new Selector(css_rule);
+    elements.each(function(element) {
+      if (!selector.match(element)) {
+        this.throw_unexp("Element should match the rule '"+css_rule+"'", message);
+      }
+    }, this);
+  },
+  
   testSearch: function() {
     var block = document.createElement('div');
     var el1   = document.createElement('div');
@@ -112,6 +121,52 @@ var SelectorTest = TestCase.create({
     // trying late siblings
     this.assertSelect('input ~ *', block, [el12, el13]);
     this.assertSelect('div ~ *', block, [el2, el13]);
+  },
+  
+  testMatch: function() {
+    var block = document.createElement('div');
+    var el1   = document.createElement('div');
+    var el11  = document.createElement('input');
+    var el12  = document.createElement('div');
+    var el121 = document.createElement('div');
+    var el13  = document.createElement('h1');
+    var el2   = document.createElement('table');
+    
+    block.appendChild(el1);
+    block.appendChild(el2);
+    el1.appendChild(el11);
+    el1.appendChild(el12);
+    el1.appendChild(el13);
+    el12.appendChild(el121);
+    
+    block.id = 'test-block';
+    document.body.appendChild(block);
+    
+    /**
+    
+    <div id="test-block">
+      <div> el1
+        <input /> el11
+        <div> el12
+          <div></div> el121
+        </div>
+        <h1></h1> el13
+      </div>
+      <table></table> el2
+    </div>
+    
+     */
+     
+    try {
+      
+      this.assertMatchRule('div#test-block', [block]);
+      this.assertMatchRule('div#test-block *', [el1, el2, el11, el12, el13, el121]);
+      this.assertMatchRule('div#test-block div > div', [el12, el121]);
+      this.assertMatchRule('div#test-block input, div#test-block h1', [el11, el13]);
+      
+    } finally {
+      document.body.removeChild(block);
+    }
   },
   
   atom: function(rule) {

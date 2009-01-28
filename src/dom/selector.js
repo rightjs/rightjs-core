@@ -64,7 +64,11 @@ var Selector = new Class({
    * @return Boolean check result
    */
   match: function(element) {
-    return !this.atoms[0] || this.atoms[0].match(element);
+    if (element.parentNode) {
+      return this.select($(element).parents().pop()).includes(element);
+    } else {
+      return !this.atoms[0] || this.atoms[0].match(element);
+    }
   },
 
 // protected
@@ -399,7 +403,7 @@ var Selector = new Class({
         rule['select'] = function(element) {
           var founds = [];
           for (var i=0; i < this.length; i++) {
-            founds.concat(this[i].select(element));
+            founds.merge(this[i].select(element));
           }
           return founds;
         };
