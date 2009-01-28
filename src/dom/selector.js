@@ -4,8 +4,6 @@
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Selector = new Class({
-  ATOMS_SPLIT_RE: /(\s*([~>+ ])\s*)[^=]/,
-  atoms: [],
   
   /**
    * constructor
@@ -14,41 +12,35 @@ var Selector = new Class({
    * @return void
    */
   initialize: function(css_rule) {
-    this.atoms = [];
-    
-    var relation = null, match = null, Atom = Selector.Atom;
-    
-    while (match = css_rule.match(this.ATOMS_SPLIT_RE)) {
-      separator_pos = css_rule.indexOf(match[0]);
-      this.atoms.push(new Atom(css_rule.substring(0, separator_pos), relation));
-      
-      relation = match[2]; // <- puts the current relation to the next atom
-
-      // chopping off the first atom of the rule
-      css_rule = css_rule.substr(separator_pos+(match[1].length==1 ? 1 : match[1].length-1)).trim();
+    if (isString(css_rule)) {
+      if (css_rule.includes(',')) {
+        return Selector.build(css_rule); // building selections collection
+      } else {
+        this.parseAtoms(css_rule);
+      }
+    } else {
+      return css_rule; // bypassing the rule if it's already initialized
     }
-    this.atoms.push(new Atom(css_rule, relation));
   },
   
   /**
    * select all the subnodes of the element which are matching the rule
    *
    * @param Element element
-   * @param Boolean if set true, then the search will stop at the first positive hit
    * @param Array optional atoms list, used for internal purposes in a recursive search
    * @return Array list of found nodes
    */
-  select: function(element, only_one, atoms) {
+  select: function(element, atoms) {
     var founds = [], atoms = atoms || this.atoms, atom = atoms[0];
-    
+
     if (atom) {
-      founds = this.find[atom.rel](element, atom, only_one);
+      founds = this.find[atom.rel](element, atom);
       
       // if there's more than one atom in the rule, then go recursively for the rest of the atoms
       if (atoms.length > 1) {
         var sub_founds = [];
         for (var i=0; i < founds.length; i++) {
-          sub_founds.concat(this.search(founds[i], only_one, atoms.slice(1)));
+          sub_founds.merge(this.select(founds[i], atoms.slice(1)));
         }
         founds = sub_founds;
       }
@@ -76,34 +68,79 @@ var Selector = new Class({
   },
 
 // protected
+  ATOMS_SPLIT_RE: /(\s*([~>+ ])\s*)[^=]/,
+  atoms: [],
+  
+  parseAtoms: function(css_rule) {
+    this.atoms = [];
+    
+    var relation = null, match = null, Atom = Selector.Atom;
+    
+    while (match = css_rule.match(this.ATOMS_SPLIT_RE)) {
+      separator_pos = css_rule.indexOf(match[0]);
+      this.atoms.push(new Atom(css_rule.substring(0, separator_pos), relation));
+      
+      relation = match[2]; // <- puts the current relation to the next atom
+
+      // chopping off the first atom of the rule
+      css_rule = css_rule.substr(separator_pos+(match[1].length==1 ? 1 : match[1].length-1)).trim();
+    }
+    this.atoms.push(new Atom(css_rule, relation));
+  },
 
   find: {
     /**
      * search for any descendant nodes
      */
-    ' ': function(element, atom, only_one) {
-      return [];
+    ' ': function(element, atom) {
+      var all = element.getElementsByTagName(atom.tag), matched = [];
+      for (var i=0; i < all.length; i++) {
+        if (atom.match(all[i])) {
+          matched.push(all[i]);
+        }
+      }
+      
+      return matched;
     },
     
     /**
      * search for immidate descendant nodes
      */
-    '>': function(element, atom, only_one) {
-      return [];
+    '>': function(element, atom) {
+      var node = element.firstChild, matched = [];
+      while (node) {
+        if (atom.match(node)) {
+          matched.push(node);
+        }
+        node = node.nextSibling;
+      }
+      return matched;
     },
     
     /**
      * search for immiate sibling nodes
      */
-    '+': function(element, atom, only_one) {
+    '+': function(element, atom) {
+      while ((element = element.nextSibling)) {
+        if (element.nodeType == 1) {
+          if (atom.match(element))
+            return [element];
+          break;
+        }
+      }
       return [];
     },
     
     /**
      * search for late sibling nodes
      */
-    '~': function(element, atom, only_one) {
-      return [];
+    '~': function(element, atom) {
+      var match = [];
+      while ((element = element.nextSibling)) {
+        if (atom.match(element))
+          match.push(element);
+      }
+      return match;
     }
   },
   

@@ -41,7 +41,7 @@ $ext(Element.Methods, {
   },
   
   down: function(css_rule) {
-    return new Selector(css_rule).select(this, true).first();
+    return new Selector(css_rule).select(this).first();
   },
   
   select: function(css_rule) {

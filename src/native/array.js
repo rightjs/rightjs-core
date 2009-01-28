@@ -144,6 +144,8 @@ $ext(Array.prototype, {
    * concats all the arrays passed as the arguments
    * NOTE: this method _will_change_ the array by itself
    *
+   * @param Array to concat
+   * ....................
    * @return Array this
    */
   concat: function() {
@@ -154,6 +156,27 @@ $ext(Array.prototype, {
         }
       } else {
         this.push(arguments[i]);
+      }
+    }
+    return this;
+  },
+  
+  /**
+   * similar to the concat function but it adds only the values which are not on the list yet
+   *
+   * @param Array to merge
+   * ....................
+   * @return Array self
+   */
+  merge: function() {
+    for (var i=0; i < arguments.length; i++) {
+      if (defined(arguments[i]) && defined(arguments[i]['length'])) {
+        for (var j=0; j < arguments[i].length; j++) {
+          if (!this.includes(arguments[i][j]))
+            this.push(arguments[i][j]);
+        }
+      } else {
+        this.merge([arguments[i]]);
       }
     }
     return this;

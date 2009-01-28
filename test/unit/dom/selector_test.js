@@ -6,6 +6,114 @@
 var SelectorTest = TestCase.create({
   name: "SelectorTest",
   
+  testInstance: function() {
+    var selector = new Selector('div');
+    this.assertInstanceOf(Selector, selector);
+    this.assertSame(selector, new Selector(selector), 'checking instances bypassing');
+    
+    var selector = new Selector('div, span');
+    this.assertInstanceOf(Array, selector);
+    this.assertEqual(2, selector.length);
+    
+    this.assertNotNull(selector['select']);
+    this.assertNotNull(selector['match']);
+    
+    this.assertSame(selector, new Selector(selector));
+  },
+  
+  testAtomsParsing: function() {
+    var selector = new Selector('div span > table + input ~ textarea');
+    this.assertEqual(5, selector.atoms.length);
+    
+    this.assertEqual(' ', selector.atoms[0].rel);
+    this.assertEqual('div', selector.atoms[0].tag);
+    
+    this.assertEqual(' ', selector.atoms[1].rel);
+    this.assertEqual('span', selector.atoms[1].tag);
+    
+    this.assertEqual('>', selector.atoms[2].rel);
+    this.assertEqual('table', selector.atoms[2].tag);
+    
+    this.assertEqual('+', selector.atoms[3].rel);
+    this.assertEqual('input', selector.atoms[3].tag);
+    
+    this.assertEqual('~', selector.atoms[4].rel);
+    this.assertEqual('textarea', selector.atoms[4].tag);
+  },
+  
+  assertSelect: function(css_rule, block, elements, message) {
+    var selected = new Selector(css_rule).select(block);
+    if (!this.util.equal(selected, elements)) {
+      this.throw_unexp(elements, selected, message || "Trying '"+css_rule+"'");
+    }
+  },
+  
+  assertNotSelect: function(css_rule, block, elements, message) {
+    var selected = new Selector(css_rule).select(block);
+    elements.each(function(element) {
+      if (selected.includes(element)) {
+        this.throw_problem('It should not select the element: '+this.util.to_s(element), message);
+      }
+    }, this);
+  },
+  
+  testSearch: function() {
+    var block = document.createElement('div');
+    var el1   = document.createElement('div');
+    var el11  = document.createElement('input');
+    var el12  = document.createElement('div');
+    var el121 = document.createElement('div');
+    var el13  = document.createElement('h1');
+    var el2   = document.createElement('table');
+    
+    block.appendChild(el1);
+    block.appendChild(el2);
+    el1.appendChild(el11);
+    el1.appendChild(el12);
+    el1.appendChild(el13);
+    el12.appendChild(el121);
+    
+    /**
+    
+    <div>
+      <div> el1
+        <input /> el11
+        <div> el12
+          <div></div> el121
+        </div>
+        <h1></h1> el13
+      </div>
+      <table></table> el2
+    </div>
+    
+     */
+    
+    // seome simple selections
+    this.assertSelect('*', block, [el1, el11, el12, el121, el13, el2]);
+    this.assertSelect('div', block, [el1, el12, el121]);
+    this.assertSelect('input', block, [el11]);
+    this.assertSelect('input, table', block, [el11, el2]);
+    
+    // trying nested selections
+    this.assertSelect('div *', block, [el11, el12, el121, el13]);
+    this.assertSelect('div input', block, [el11]);
+    this.assertSelect('div div', block, [el12, el121]);
+    
+    // trying immidiate descendants
+    this.assertSelect('div > *', block, [el11, el12, el13, el121]);
+    this.assertSelect('div > input', block, [el11]);
+    this.assertSelect('div > div', block, [el12, el121]);
+    
+    // trying immidiate siblings
+    this.assertSelect('div + table', block, [el2]);
+    this.assertSelect('input + *', block, [el12]);
+    this.assertSelect('div + *', block, [el2, el13]);
+    
+    // trying late siblings
+    this.assertSelect('input ~ *', block, [el12, el13]);
+    this.assertSelect('div ~ *', block, [el2, el13]);
+  },
+  
   atom: function(rule) {
     return new Selector.Atom(rule);
   },

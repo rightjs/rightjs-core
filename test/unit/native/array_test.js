@@ -79,6 +79,10 @@ var ArrayTest = TestCase.create({
     this.assertEqual([1,2,3,4], [1,2].concat([3],[4]));
   },
   
+  testMerge: function() {
+    this.assertEqual([1,2,3,4], [1,2].merge([2,3],[3,4]));
+  },
+  
   testCompact: function() {
     this.assertEqual([1,2,3,4], [1,null, null,2,undefined,3,4].compact());
   },
