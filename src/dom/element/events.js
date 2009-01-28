@@ -20,6 +20,7 @@ $ext(Element.Methods, {
       var what = this._what(what);
       this.addEventListener(what, this._callback(what, callback), false);
     }
+    
     return this;
   },
   
@@ -142,7 +143,7 @@ $ext(Element.Methods, {
  * adding correctly looking vitual methods for IE browsers
  */
 if (!Element.prototype.addEventListener) {
-  $ext(Element.prototype, {
+  $ext(Element.Methods, {
     addEventListener: function(what, callback, captive) {
       this.attachEvent('on'+ what, callback);
     },
