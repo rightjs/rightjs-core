@@ -12,6 +12,7 @@ var Selector = new Class({
    * @return void
    */
   initialize: function(css_rule) {
+    var css_rule = css_rule || '*';
     if (isString(css_rule)) {
       if (css_rule.includes(',')) {
         return Selector.build(css_rule); // building selections collection
@@ -46,6 +47,10 @@ var Selector = new Class({
       }
     }
     
+    // extending the found elements
+    for (var i=0; i < founds.length; i++)
+      $(founds[i]);
+    
     return founds;
   },
   
@@ -64,8 +69,8 @@ var Selector = new Class({
    * @return Boolean check result
    */
   match: function(element) {
-    if (element.parentNode) {
-      return this.select($(element).parents().pop()).includes(element);
+    if (this.atoms.length > 1 && element.parentNode) {
+      return this.select($(element).parents().last()).includes(element);
     } else {
       return !this.atoms[0] || this.atoms[0].match(element);
     }
@@ -126,7 +131,7 @@ var Selector = new Class({
      */
     '+': function(element, atom) {
       while ((element = element.nextSibling)) {
-        if (element.nodeType == 1) {
+        if (element.tagName) {
           if (atom.match(element))
             return [element];
           break;
@@ -287,7 +292,7 @@ var Selector = new Class({
         'first-child': function(tag_name) {
           var node = this;
           while ((node = node.previousSibling)) {
-            if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name)) {
+            if (node.tagName && (!tag_name || node.tagName == tag_name)) {
               return false;
             }
           }
@@ -301,7 +306,7 @@ var Selector = new Class({
         'last-child': function(tag_name) {
           var node = this;
           while ((node = node.nextSibling)) {
-            if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name)) {
+            if (node.tagName && (!tag_name || node.tagName == tag_name)) {
               return false;
             }
           }
@@ -341,7 +346,7 @@ var Selector = new Class({
             // getting the element index
             var index = 1, node = this;
             while ((node = node.previousSibling)) {
-              if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name)) index++;
+              if (node.tagName && (!tag_name || node.tagName == tag_name)) index++;
             }
             
             return (index - b) % a == 0 && (index - b) / a >= 0;
@@ -360,7 +365,7 @@ var Selector = new Class({
           number = isString(number) ? number.toInt() : number;
           var node = this, count = 0;
           while ((node = node.previousSibling)) {
-            if (node.nodeType == 1 && (!tag_name || node.tagName == tag_name) && ++count > number) return false;
+            if (node.tagName && (!tag_name || node.tagName == tag_name) && ++count > number) return false;
           }
           return count == number;
         },

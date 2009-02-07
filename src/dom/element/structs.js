@@ -1,6 +1,14 @@
 /**
  * The DOM Element unit structures handling module
  *
+ * NOTE: all the methods will process and return only the Element nodes
+ *       all the textual nodes will be skipped
+ *
+ * NOTE: if a css-rule was specified then the result of the method
+ *       will be filtered/adjusted depends on the rule
+ *
+ *       the css-rule might be a string, a Selector or a Selector.Atom instance
+ *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 $ext(Element.Methods, {
@@ -13,7 +21,8 @@ $ext(Element.Methods, {
   },
   
   subNodes: function(css_rule) {
-    return this.firstChild ? [$(this.firstChild)].concat(this.firstChild.rCollect('nextSibling', css_rule)) : [];
+    return $(this.firstChild) ? (this.firstChild.tagName ? [this.firstChild] : []
+      ).concat(this.firstChild.rCollect('nextSibling', css_rule)) : [];
   },
   
   siblings: function(css_rule) {
@@ -41,7 +50,7 @@ $ext(Element.Methods, {
   },
   
   down: function(css_rule) {
-    return new Selector(css_rule).select(this).first();
+    return this.select(css_rule).first();
   },
   
   select: function(css_rule) {
@@ -62,11 +71,10 @@ $ext(Element.Methods, {
   rCollect: function(attr, css_rule) {
     var node = this, nodes = [];
     
-    while (node[attr]) {
-      node = node[attr];
-      
-      if (node.nodeType == 1 && (!css_rule || Element.match(node, css_rule)))
+    while ((node = node[attr])) {
+      if (node.tagName && (!css_rule || $(node).match(css_rule))) {
         nodes.push($(node));
+      }
     }
     
     return nodes;

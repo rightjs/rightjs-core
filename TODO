@@ -1,0 +1,6 @@
+make the Element object have all the Element.Methods in static version, so it was possible to process 
+elements faster, without actual extending (where possible).
+
+
+make it possible to specify the start node for the element matching methods, so it was not get always
+matched against the document node and was working faster.

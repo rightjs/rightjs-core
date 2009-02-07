@@ -1,0 +1,9 @@
+Why not extend the Element.prototype
+
+Because in IE it will not work anyway. And so if you will write a crossbrowsing code like a mature man,
+then you might end up checking something on Gecko and forget about it on IE. And it might pass some time
+before you notice the issue.
+
+For the moment that's the point.
+
+Just use the $ function and the framework selectors as it meant and your code will work everywhere.
