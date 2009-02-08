@@ -68,6 +68,8 @@ var UtilTest = TestCase.create({
     this.assertFalse(isHash(false));
     this.assertFalse(isHash(function() {}));
     this.assertFalse(isHash(new String('a')));
+    this.assertFalse(isHash(new Element('div')));
+    this.assertFalse(isHash(document.createElement('div')));
   },
   
   test_isFunction: function() {
@@ -120,6 +122,35 @@ var UtilTest = TestCase.create({
     this.assertFalse(isNumber(function() {}));
   },
   
+  test_isElement: function() {
+    this.assert(isElement(document.createElement('div')));
+    this.assert(isElement(new Element('span')));
+    this.assert(isElement(document.body));
+    
+    this.assertFalse(isElement(1));
+    this.assertFalse(isElement({}));
+    this.assertFalse(isElement([]));
+    this.assertFalse(isElement('1'));
+    this.assertFalse(isElement(null));
+    this.assertFalse(isElement(false));
+    this.assertFalse(isElement(function() {}));
+    this.assertFalse(isElement(document.createTextNode('asdfasdfasd')));
+  },
+  
+  testIsNode: function() {
+    this.assert(isNode(document.createElement('div')));
+    this.assert(isNode(document.createTextNode('asdfasdf')));
+    this.assert(isNode(new Element('div')));
+    
+    this.assertFalse(isElement(1));
+    this.assertFalse(isElement({}));
+    this.assertFalse(isElement([]));
+    this.assertFalse(isElement('1'));
+    this.assertFalse(isElement(null));
+    this.assertFalse(isElement(false));
+    this.assertFalse(isElement(function() {}));
+  },
+  
   test_$A: function() {
     var args;
     (function() { args = $A(arguments); })(1,2,3,4);
@@ -133,6 +164,13 @@ var UtilTest = TestCase.create({
     this.assertEqual($N(-1.1), $N('-1.1'));
     this.assert($N(1) == 1);
     this.assert($N(1.1) == 1.1);
+  },
+  
+  test_$E: function() {
+    var div = $E('div', {id: 'div-id'});
+    this.assert(isElement(div));
+    this.assertEqual('DIV', div.tagName);
+    this.assertEqual('div-id', div.id);
   },
   
   test_$_Extending: function() {

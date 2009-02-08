@@ -70,7 +70,9 @@ function defined(value) {
  * @return boolean check result
  */
 function isHash(value) {
-  return typeof(value) == 'object' && value !== null && value.constructor.toString().includes('function Object()');
+  return typeof(value) == 'object' && value !== null && value.constructor &&
+    value.constructor.toString().includes('function Object()') && 
+    value.toString().indexOf('object HTML') == -1; // <- Opera fix
 };
 
 /**
@@ -114,6 +116,26 @@ function isNumber(value) {
 };
 
 /**
+ * checks if the given value is an element
+ *
+ * @param mixed value to check
+ * @return boolean check result
+ */
+function isElement(value) {
+  return value && !!value.tagName;
+};
+
+/**
+ * checks if the given value is a DOM-node
+ *
+ * @param mixed value to check
+ * @return boolean check result
+ */
+function isNode(value) {
+  return value && !!value.nodeType;
+};
+
+/**
  * converts any iterables into an array
  *
  * @param Object iterable
@@ -139,6 +161,17 @@ function $N(value) {
 };
 
 /**
+ * shortcut to instance new elements
+ *
+ * @param String tag name
+ * @param object options
+ * @return Element instance
+ */
+function $E(tag_name, options) {
+  return new Element(tag_name, options);
+};
+
+/**
  * searches an element by id and/or extends it with the framework extentions
  *
  * @param String element id or Element to extend
@@ -155,5 +188,5 @@ function $(element) {
  * @return Array matching elements list
  */
 function $$(css_rule) {
-  return $(document).select(css_rule);
+  return $(document.body).select(css_rule);
 };

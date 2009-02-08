@@ -14,14 +14,17 @@ window.Element = new Class(window.Element, {
   initialize: function(tag_name, options) {
     var element = $(document.createElement(tag_name)), options = options || {};
     
+    if (options['html'])    element.update(options['html']);
     if (options['class'])   element.setClass(options['class']);
     if (options['style'])   element.setStyle(options['style']);
     if (options['observe']) element.observe(options['observe']);
     
-    return element.set(Object.without(options, 'class', 'style', 'observe'));
+    return element.set(Object.without(options, 'class', 'style', 'observe', 'html'));
   },
   
   extend: {
+    Methods: {}, // will be filled up in the submodules
+    
     /**
      * prepares an element for usage
      *
@@ -29,14 +32,42 @@ window.Element = new Class(window.Element, {
      * @return Element
      */
     prepare: function(element) {
-      if (element && !element['cleanCache']) {
+      if (element && element.tagName && !element.cleanCache) {
         $ext(element, Element.Methods);
         element.cleanCache(); // cleans the events cache
       }
       return element;
     },
     
-    Methods: {} // will be filled up in the submodules
+    /**
+     * creates a fragment out of the incomming data
+     *
+     * @param mixed a string of html, or a list of nodes or a single node
+     * @return DocumentFragment
+     */
+    createFragment: function(content) {
+      var fragment;
+      
+      if (isString(content)) {
+        fragment = content.toFragment();
+        
+      } else {
+        fragment = document.createDocumentFragment();
+        
+        if (isNode(content)) {
+          fragment.appendChild(content);
+        } else if (content.length) {
+          for (var i=0, length = content.length; i < length; i++) {
+            // in case of NodeList unit, the elements will be removed out of the list during the appends
+            // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
+            // then we always hit the first element of the stack
+            fragment.appendChild(content[content.length == length ? i : 0]);
+          }
+        }
+      }
+      
+      return fragment;
+    }
   }
   
 });

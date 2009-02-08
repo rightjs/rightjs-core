@@ -9,7 +9,7 @@ var ElementStructsTest = TestCase.create({
   setUp: function() {
     this.el = new Element('div');
   },
-  
+
   testParent: function() {
     var el = document.createElement('div');
     el.appendChild(this.el);
@@ -257,6 +257,89 @@ var ElementStructsTest = TestCase.create({
     this.assertCalled(document.body, 'removeChild', function() {
       this.assertSame(this.el, this.el.remove());
     }, this);
+  },
+  
+  testInsert: function() {
+    this.el.insert("<div></div><script>self['____test'] = 2;</script>");
+    this.assertEqual('<div></div>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual(2, self['____test']);
+    self['____test'] = null;
+    
+    this.assertSame(this.el, this.el.insert(document.createElement('span'), 'bottom'));
+    this.assertEqual('<div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    
+    this.el.insert(new Element('p'), 'top');
+    this.assertEqual('<p></p><div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    
+    this.el.down('div').insert('<blockquote></blockquote><cite></cite>', 'before');
+    this.assertEqual('<p></p><blockquote></blockquote><cite></cite><div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    
+    this.el.down('blockquote').insert([new Element('b'), new Element('u')], 'after');
+    this.assertEqual('<p></p><blockquote></blockquote><b></b><u></u><cite></cite><div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    
+    this.el.down('p').insert('some string', 'instead');
+    this.assertEqual('some string<blockquote></blockquote><b></b><u></u><cite></cite><div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+  },
+  
+  testReplace: function() {
+    this.el.innerHTML = '<p></p><div></div><span></span>';
+    this.el.down('div').replace('<ul></ul><ul></ul><script>self["____test"]=4;</script>');
+    
+    this.assertEqual('<p></p><ul></ul><ul></ul><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual(4, self['____test']);
+    self['____test'] = null;
+    
+    this.assertSame(this.el.down('ul'), this.el.down('ul').replace(document.createElement('cite')));
+    this.assertEqual('<p></p><cite></cite><ul></ul><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    
+    this.el.down('span').replace([$E('div'), $E('b')]);
+    this.assertEqual('<p></p><cite></cite><ul></ul><div></div><b></b>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    
+    this.el.down('div').replace('div string');
+    this.assertEqual('<p></p><cite></cite><ul></ul>div string<b></b>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+  },
+  
+  testUpdate: function() {
+    this.el.update('<div></div><script>self["____test"] = 8;</script>');
+    this.assertEqual('<div></div>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual(8, self['____test']);
+    self['____test'] = null;
+    
+    this.assertSame(this.el, this.el.update(document.createElement('span')));
+    this.assertEqual('<span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    
+    this.el.update([$E('p'), $E('b'), $E('u')]);
+    this.assertEqual('<p></p><b></b><u></u>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+  },
+  
+  testWrap: function() {
+    var p = document.createElement('p');
+    var div = document.createElement('div');
+    
+    div.appendChild(this.el)
+    this.assertSame(this.el, this.el.wrap(p));
+    
+    this.assertEqual('<p><div></div></p>', div.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+  },
+  
+  testClean: function() {
+    this.el.innerHTML = 'asdfasdf <b>asdfsdf</b> <div>asdfasdf</div>';
+    
+    this.assertSame(this.el, this.el.clean());
+    this.assertEqual('', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+  },
+  
+  testEmpty: function() {
+    this.assert(this.el.empty());
+    
+    this.el.innerHTML = "     \n\n\n  ";
+    this.assert(this.el.empty());
+    
+    this.el.innerHTML = "<div></div>";
+    this.assertFalse(this.el.empty());
+    
+    this.el.innerHTML = 'asdf';
+    this.assertFalse(this.el.empty());
   }
   
 });

@@ -102,5 +102,14 @@ var StringTest = TestCase.create({
     this.assertEqual(-4.4, '-4-4'.toFloat());
     this.assertEqual(4.0, '4-4'.toFloat(true));
     this.assert(isNaN('asdf'.toFloat()));
+  },
+  
+  testToFragment: function() {
+    var string = '<div><p></p></div>asdfasdf<div>bla</div>';
+    var fragment = string.toFragment();
+    var div = document.createElement('div');
+    div.appendChild(fragment);
+    
+    this.assertEqual(string.toLowerCase(), div.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
   }
 });
