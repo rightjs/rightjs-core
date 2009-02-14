@@ -16,3 +16,5 @@ try optimize the search with document.querySelector
 remove unnecessary elements extention requests in the search/select process where it's possible.
 
 there's seems to be a memory leaking problem in IE6, each run makes the test go slower. Investigate what's the problem.
+
+investigate/patch String to support negative offsets

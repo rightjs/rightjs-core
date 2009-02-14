@@ -190,3 +190,8 @@ function $(element) {
 function $$(css_rule) {
   return $(document.body).select(css_rule);
 };
+
+// todo me
+function $w(string) {
+  return string.trim().split(/\s+/);
+}

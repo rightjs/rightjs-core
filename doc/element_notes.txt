@@ -7,3 +7,14 @@ before you notice the issue.
 For the moment that's the point.
 
 Just use the $ function and the framework selectors as it meant and your code will work everywhere.
+
+
+---
+
+For each Element.Methods method we have got an Element class level method which will get executed
+on an incoming element without actual extending of the element, which may be useful when you need
+to have a lot of quick checks of elements out of the DOM structure.
+
+The methods are not declared in any actual code, but getting generated automatically out of the
+Element.Methods module. That's a tricky business, so watch out for your fancy hacking in the code
+to keep the generator happy.

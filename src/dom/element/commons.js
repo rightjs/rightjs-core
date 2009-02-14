@@ -42,7 +42,14 @@ $ext(Element.Methods, {
     return this.get(name) != null;
   },
   
+  /**
+   * erases the given attribute of the element
+   *
+   * @param String attr name
+   * @return Element self
+   */
   erase: function(name) {
+    this.removeAttribute(name);
     return this;
   },
   
