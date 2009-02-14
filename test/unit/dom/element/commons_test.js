@@ -16,7 +16,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertEqual('some-id', this.el.id);
   },
   
-  testSetSimple_classLevel: function() {
+  testSetSimple_static: function() {
     this.assertSame(this.div, Element.set(this.div, 'id', 'some-id'));
     this.assertEqual('some-id', this.div.id);
     this.assertNull(this.div['set'], "checking that the element was not extended");
@@ -32,7 +32,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertEqual('foo bar', this.el.className);
   },
   
-  testSetHash_classLevel: function() {
+  testSetHash_static: function() {
     this.assertSame(this.div, Element.set(this.div, {
       id: 'another-id',
       className: 'foo bar'
@@ -50,7 +50,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertNull(this.el.get('title'));
   },
   
-  testGet_classLevel: function() {
+  testGet_static: function() {
     this.div.id = 'something';
     this.assertEqual(this.div.id, Element.get(this.div, 'id'));
     this.assertNull(Element.get(this.div, 'title'));
@@ -64,7 +64,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertFalse(this.el.has('title'));
   },
   
-  testHas_classLevel: function() {
+  testHas_static: function() {
     this.div.id = 'something';
     this.assert(Element.has(this.div, 'id'));
     this.assertFalse(Element.has(this.div, 'title'));
@@ -78,7 +78,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertFalse(this.el.has('id'));
   },
   
-  testErase_classLevel: function() {
+  testErase_static: function() {
     this.div.id = 'somethig';
     this.assertSame(this.div, Element.erase(this.div, 'id'));
     this.assertFalse(Element.has(this.div, 'id'));
@@ -92,7 +92,7 @@ var ElementCommonsTest = TestCase.create({
     this.assert(this.el.hidden());
   },
   
-  testHidden_classLevel: function() {
+  testHidden_static: function() {
     this.assertFalse(Element.hidden(this.div));
     this.div.style.display = 'none';
     this.assert(Element.hidden(this.div));
@@ -106,7 +106,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertFalse(this.el.visible());
   },
   
-  testVisible_classLevel: function() {
+  testVisible_static: function() {
     this.assert(Element.visible(this.div));
     this.div.style.display = 'none';
     this.assertFalse(Element.visible(this.div));
@@ -120,7 +120,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(this.el);
   },
   
-  testHide_classLevel: function() {
+  testHide_static: function() {
     this.assertVisible(this.div);
     this.assertSame(this.div, Element.hide(this.div));
     this.assertHidden(this.div);
@@ -135,7 +135,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(this.el);
   },
   
-  testShow_classLevel: function() {
+  testShow_static: function() {
     this.div.style.display = 'none';
     this.assertHidden(this.div)
     this.assertSame(this.div, Element.show(this.div));
@@ -151,7 +151,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertStyle(this.el, {display: 'inline'});
   },
   
-  testHideShowPrevDisplayRestoration_classLevel: function() {
+  testHideShowPrevDisplayRestoration_static: function() {
     this.div.style.display = 'inline';
     Element.hide(this.div);
     Element.show(this.div);
@@ -166,7 +166,7 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(this.el);
   },
   
-  testToggle_classLevel: function() {
+  testToggle_static: function() {
     this.assertVisible(this.div);
     this.assertSame(this.div, Element.toggle(this.div));
     this.assertHidden(this.div);

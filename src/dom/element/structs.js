@@ -123,7 +123,8 @@ $ext(Element.Methods, {
    * @return Element self
    */
   update: function(content) {
-    return this.clean().insert(content);
+    this.clean(); // Don't putt them in one line, it will break the static calls
+    return this.insert(content);
   },
   
   /**

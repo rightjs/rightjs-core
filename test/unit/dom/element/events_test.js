@@ -9,10 +9,13 @@ var ElementEventsTest = TestCase.create({
   setUp: function() {
     this.el = new Element('div');
     document.body.appendChild(this.el);
+    this.div = document.createElement('div');
+    document.body.appendChild(this.div);
   },
   
   tearDown: function() {
     this.el.remove();
+    Element.remove(this.div);
   },
   
   testObserve: function() {
@@ -20,6 +23,15 @@ var ElementEventsTest = TestCase.create({
     this.assertSame(this.el, this.el.observe('click', function() { wired = true; }));
     this.fireClick(this.el);
     this.assert(wired);
+  },
+  
+  testObserve_static: function() {
+    var wired = false;
+  //  this.assertSame(this.div, Element.observe(this.div, 'click', function() { wired = true; }));
+  //  this.fireClick(this.div);
+  //  this.assert(wired);
+    
+  //  this.assertNull(this.div['observe'], "should not be wired");
   },
   
   testObserve_nameVariations: function() {

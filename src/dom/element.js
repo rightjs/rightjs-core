@@ -56,7 +56,7 @@ window.Element = new Class(window.Element, {
         
         if (isNode(content)) {
           fragment.appendChild(content);
-        } else if (content.length) {
+        } else if (content && content.length) {
           for (var i=0, length = content.length; i < length; i++) {
             // in case of NodeList unit, the elements will be removed out of the list during the appends
             // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes

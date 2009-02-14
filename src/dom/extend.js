@@ -10,11 +10,13 @@
 //
 
 var stub_this_calls = function(string) {
-  return string.replace(/this\.([a-z0-9_]+)\((?:.*)\)/img, function(match) {
-    var name = match.substr(5).split('(')[0], end = match.substr(match.indexOf('(')+1);
+  return string.replace(/this\.([a-z0-9_]+)(\.(call|apply))?\((?:.*)\)/img, function(match) {
+    var name = match.substr(5).split(/\.|\(/)[0], end = match.substr(match.indexOf('(')+1);
     
     if (isFunction(Element.Methods[name])) {
-      match = "Element."+name+"(this"+(end.match(/^\s*\)/) ? '' : ', ')+stub_this_calls(end);
+      match = "Element."+ name +
+        (match.match(new RegExp("this."+name+"(\.(call|apply))?\()"))[1] || '')+
+        "(this"+(end.match(/^\s*\)/) ? '' : ', ')+stub_this_calls(end);
     }
     
     return match;
@@ -26,11 +28,14 @@ var stub_this_calls = function(string) {
     
     return "Element"+match.substr(4, match.length - end.length - 4)+
         "this" + (end.match(/^\s*\)/) ? '' : ', ')+stub_this_calls(end);
-  });
+  }
+  
+  // some custom case replacements
+  ).replace(/this\.insertions/g, 'Element.Methods.insertions');
 };
 
 for (var key in Element.Methods) {
-//$w('toggle toggleClass getStyle getOwnStyle getViewStyle _cleanStyle').each(function(key) {
+//$w('subNodes hide toggle').each(function(key) {
   
   if (isFunction(Element.Methods[key])) {
     
