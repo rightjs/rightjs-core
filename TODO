@@ -1,26 +1,28 @@
-make the Element object have all the Element.Methods in static version, so it was possible to process 
-elements faster, without actual extending (where possible).
-
-
-make it possible to specify the start node for the element matching methods, so it was not get always
-matched against the document node and was working faster.
-
 
 handle the various css naming/values cases. Like opacity, filter, overflow etc.
 
 do performance tests if it is worth to move the regexps in the String object into precompiled constants
 
-add nice evalScripts/extractScripts methods for the String object.
-
-
-try optimize the search with document.querySelector
-
-remove unnecessary elements extention requests in the search/select process where it's possible.
+try to optimize the search with document.querySelector
 
 there's seems to be a memory leaking problem in IE6, each run makes the test go slower. Investigate what's the problem.
 
 investigate/patch String to support negative offsets
 
-see if there's a fancier and more efficient way to test Element instance methods along with the static mirrors
-
 see if you can shortify the Element static mirrors generation code.
+
+--------
+Completed
+---------
+
+add nice evalScripts/extractScripts methods for the String object.
+
+make the Element object have all the Element.Methods in static version, so it was possible to process 
+elements faster, without actual extending (where possible).
+
+make it possible to specify the start node for the element matching methods, so it was not get always
+matched against the document node and was working faster.
+
+remove unnecessary elements extention requests in the search/select process where it's possible.
+
+see if there's a fancier and more efficient way to test Element instance methods along with the static mirrors

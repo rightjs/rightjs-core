@@ -45,6 +45,20 @@ var StringTest = TestCase.create({
     this.assertEqual("alert('bla');\nalert('foo');\n", scripts);
   },
   
+  testExtractScripts: function() {
+    this.assertEqual(
+      "alert('bla');\nalert('foo');",
+      "<script>\nalert('bla');\n\n\n</script> asdf <script>\talert('foo');</script>".extractScripts().trim()
+    );
+  },
+  
+  testEvalScripts: function() {
+    self.______called______ = false;
+    "asdf <script>self.______called______ = true;</script>".evalScripts();
+    this.assert(self.______called______);
+    self.______called______ = undefined;
+  },
+  
   testCamelize: function() {
     this.assertEqual('asdfAsdfAsdf', 'asdf_asdf_asdf'.camelize());
     this.assertEqual('asdfAsdfAsdf', 'asdf-asdf-asdf'.camelize());

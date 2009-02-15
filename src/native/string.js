@@ -68,6 +68,27 @@ $ext(String.prototype, {
   },
   
   /**
+   * extracts all the scripts out of the string
+   *
+   * @return String the extracted stcripts
+   */
+  extractScripts: function() {
+    var scripts = '';
+    this.stripScripts(function(s,t) { scripts = s; });
+    return scripts;
+  },
+  
+  /**
+   * evals all the scripts in the string
+   *
+   * @return String self (unchanged version with scripts still in their place)
+   */
+  evalScripts: function() {
+    eval(this.extractScripts());
+    return this;
+  },
+  
+  /**
    * converts underscored or dasherized string to a camelized one
    * @returns String camelized version
    */
