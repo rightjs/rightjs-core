@@ -11,6 +11,8 @@
 //
 (function() {
   
+  $ext(Element.prototype, Element.Methods);
+  
   var stub_this_calls = function(string) {
     return string.replace(/this\.([a-z0-9_]+)(\.(call|apply))?\((?:(.|\n)*)\)/img, function(match) {
       var name = match.substr(5).split(/\.|\(/)[0], end = stub_this_calls(match.substr(match.indexOf('(')+1));
@@ -40,13 +42,9 @@
   };
 
   for (var key in Element.Methods) {
-  //$w('getViewStyle').each(function(key) {
-
     if (isFunction(Element.Methods[key])) {
-      //var source = Element.Methods[key].toString();
-      
       eval("var func = "+stub_this_calls(Element.Methods[key].toString()));
-      //alert(func);
+      
       Element[key] = (function(method) {
         return function() {
           var args = $A(arguments), element = args.shift();
@@ -55,8 +53,6 @@
         };
       })(func);
     }
-
-  //})
   }
   
 })();

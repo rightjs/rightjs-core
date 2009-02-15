@@ -47,9 +47,11 @@ var Selector = new Class({
       }
     }
     
-    // extending the found elements
-    for (var i=0; i < founds.length; i++)
-      $(founds[i]);
+    // extending the top level search result
+    if (atoms == this.atoms) {
+      for (var i=0; i < founds.length; i++)
+        $(founds[i]);
+    }
     
     return founds;
   },
@@ -70,7 +72,7 @@ var Selector = new Class({
    */
   match: function(element) {
     if (this.atoms.length > 1 && element.parentNode) {
-      return this.select($(element).parents().last()).includes(element);
+      return this.select(Element.parents(element).last()).includes(element);
     } else {
       return !this.atoms[0] || this.atoms[0].match(element);
     }
@@ -245,7 +247,7 @@ var Selector = new Class({
       },
       
       matchAttr: function(element, name, operator, value) {
-        var attr = $(element).get(name) || '';
+        var attr = Element.get(element, name) || '';
         switch(operator) {
           case '=':  return attr == value;
           case '*=': return attr.includes(value);
@@ -282,7 +284,7 @@ var Selector = new Class({
         },
 
         not: function(css_rule) {
-          return !$(this).match(css_rule);
+          return !Element.match(this, css_rule);
         },
 
         contains: function(text) {

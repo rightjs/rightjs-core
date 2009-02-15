@@ -177,7 +177,7 @@ $ext(Element.Methods, {
     var node = this, nodes = [];
 
     while ((node = node[attr])) {
-      if (node.tagName && (!css_rule || $(node).match(css_rule))) {
+      if (node.tagName && (!css_rule || Element.match(node, css_rule))) {
         nodes.push($(node));
       }
     }
