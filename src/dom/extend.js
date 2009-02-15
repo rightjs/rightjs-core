@@ -29,7 +29,7 @@
 
     // handling hacks like this[bla_bla_bla]
     ).replace(/this\[(?:.+?)\]\((?:(.|\n)*)\)/img, function(match) {
-      var els = match.split(/\[(?:(.|\n)+)\]\(/im), end = els[1];
+      var els = match.split(/\[(?:.+)\]\(/im), end = els[1];
 
       return "Element"+match.substr(4, match.length - end.length - 4)+
           "this" + (end.match(/^\s*\)/) ? '' : ', ')+stub_this_calls(end);

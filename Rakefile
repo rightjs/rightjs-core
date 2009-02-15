@@ -28,6 +28,7 @@ JS_SOURCES = %w{
   src/dom/element/styles.js
   src/dom/element/events.js
   src/dom/selector.js
+  src/dom/extend.js
 }
 
 task :default => :build
