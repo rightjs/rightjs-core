@@ -18,108 +18,160 @@ var ElementEventsTest = TestCase.create({
     Element.remove(this.div);
   },
   
+  _callFor: function(element, name) {
+    return element == this.el ? 
+      function() {
+        var args = $A(arguments), element = args.shift();
+        return element[name].apply(element, args);
+      } :
+      Element[name];
+  },
+  
   testObserve: function() {
-    var wired = false;
-    this.assertSame(this.el, this.el.observe('click', function() { wired = true; }));
-    this.fireClick(this.el);
-    this.assert(wired);
+    this.assertObserve(this.el);
   },
   
   testObserve_static: function() {
-    var wired = false;
-  //  this.assertSame(this.div, Element.observe(this.div, 'click', function() { wired = true; }));
-  //  this.fireClick(this.div);
-  //  this.assert(wired);
-    
-  //  this.assertNull(this.div['observe'], "should not be wired");
+    this.assertObserve(this.div);
+    this.assertNull(this.div['observe'], "should not be wired");
+  },
+  
+  assertObserve: function(element) {
+    var wired = false, call = this._callFor(element, 'observe');
+    this.assertSame(element, call(element, 'click', function() { wired = true; }));
+    this.fireClick(element);
+    this.assert(wired);
   },
   
   testObserve_nameVariations: function() {
+    this.assertObserve_nameVariations(this.el);
+  },
+  
+  testObserve_nameVariations_static: function() {
+    this.assertObserve_nameVariations(this.div);
+  },
+  
+  assertObserve_nameVariations: function(element, call) {
+    var call = this._callFor(element, 'observe');
+    
     var clicked = false;
     var hovered = false;
-    this.el.observe('onclick', function() { clicked = true; });
-    this.el.observe('onMouseOver', function() { hovered = true; });
+    call(element, 'onclick', function() { clicked = true; });
+    call(element, 'onMouseOver', function() { hovered = true; });
     
-    this.fireClick(this.el);
-    this.fireMouseOver(this.el);
+    this.fireClick(element);
+    this.fireMouseOver(element);
     
     this.assert(clicked);
     this.assert(hovered);
   },
   
   testObserve_aHash: function() {
+    this.assertObserve_aHash(this.el);
+  },
+  
+  testObserve_aHash: function() {
+    this.assertObserve_aHash(this.div);
+  },
+  
+  assertObserve_aHash: function(element) {
+    var observe = this._callFor(element, 'observe');
     var clicked = false;
     var hovered = false;
     
-    this.assertSame(this.el, this.el.observe({
+    this.assertSame(element, observe(element, {
       click:     function() {clicked = true},
       mouseover: function() {hovered = true}
     }));
     
-    this.fireClick(this.el);
-    this.fireMouseOver(this.el);
+    this.fireClick(element);
+    this.fireMouseOver(element);
     
     this.assert(clicked);
     this.assert(hovered);
   },
   
   testObserves: function() {
-    var func = function() {};
-    this.el.observe('click', func);
+    this.assertObserves(this.el);
+  },
+  
+  testObserves_static: function() {
+    this.assertObserves(this.div);
+    this.assertNull(this.div['observes'], "should not be wired");
+  },
+  
+  assertObserves: function(element) {
+    var func = function() {},
+        observe = this._callFor(element, 'observe'),
+        observes = this._callFor(element, 'observes');
+        
+    observe(element, 'click', func);
     
-    this.assert(this.el.observes('click'));
-    this.assert(this.el.observes('click', func));
+    this.assert(observes(element, 'click'));
+    this.assert(observes(element, 'click', func));
     
-    this.assertFalse(this.el.observes('mouseover'));
-    this.assertFalse(this.el.observes('click', function() {}));
+    this.assertFalse(observes(element, 'mouseover'));
+    this.assertFalse(observes(element, 'click', function() {}));
     
-    this.el.observe('mouseover', function() {});
+    observe(element, 'mouseover', function() {});
     
-    this.assert(this.el.observes({
+    this.assert(observes(element, {
       click: func
     }));
     
-    this.assert(this.el.observes({
+    this.assert(observes(element, {
       click: func,
       mouseover: null
     }));
     
-    this.assertFalse(this.el.observes({
+    this.assertFalse(observes(element, {
       click: func,
       mousedown: null
     }));
   },
   
   testStopObserving: function() {
+    this.assertStopObserving(this.el);
+  },
+  
+  testStopObserving_static: function() {
+    this.assertStopObserving(this.div);
+    this.assertNull(this.div['stopObserve'], "should not be wired");
+  },
+  
+  assertStopObserving: function(element) {
     var clicked1 = false;
     var clicked2 = false;
+    var observe  = this._callFor(element, 'observe');
+    var observes = this._callFor(element, 'observes');
+    var stopObserving = this._callFor(element, 'stopObserving');
     
     var func1 = function() {clicked1 = true;};
     var func2 = function() {clicked2 = true;};
     
-    this.el.observe('click', func1);
-    this.el.observe('click', func2);
+    observe(element, 'click', func1);
+    observe(element, 'click', func2);
     
-    this.assertSame(this.el, this.el.stopObserving('click', func1));
+    this.assertSame(element, stopObserving(element, 'click', func1));
     
-    this.fireClick(this.el);
+    this.fireClick(element);
     
     this.assertFalse(clicked1);
     this.assert(clicked2);
     
-    this.assertFalse(this.el.observes('click', func1));
-    this.assert(this.el.observes('click'));
+    this.assertFalse(observes(element, 'click', func1));
+    this.assert(observes(element, 'click'));
     
     var clicked1 = false;
     var clicked2 = false;
     
-    this.assertSame(this.el, this.el.stopObserving('click'));
+    this.assertSame(element, stopObserving(element, 'click'));
     
-    this.fireClick(this.el);
+    this.fireClick(element);
     
     this.assertFalse(clicked1);
     this.assertFalse(clicked2);
     
-    this.assertFalse(this.el.observes('click'));
+    this.assertFalse(observes(element, 'click'));
   }
 });

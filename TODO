@@ -22,3 +22,5 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 investigate/patch String to support negative offsets
 
 see if there's a fancier and more efficient way to test Element instance methods along with the static mirrors
+
+see if you can shortify the Element static mirrors generation code.

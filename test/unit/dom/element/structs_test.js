@@ -11,7 +11,27 @@ var ElementStructsTest = TestCase.create({
     this.div = document.createElement('div');
   },
   
-  _testParent: function(element, select) {
+  // prepares a right callback for a test
+  _callFor: function(element, name) {
+    return element == this.el ? 
+      function() {
+        var args = $A(arguments), element = args.shift();
+        return element[name].apply(element, args);
+      } :
+      Element[name];
+  },
+  
+  testParent: function() {
+    this._testParent(this.el);
+  },
+  
+  testParent_static: function() {
+    this._testParent(this.div);
+    this.assertNull(this.div['parent'], "should not get extended");
+  },
+  
+  _testParent: function(element) {
+    var select = this._callFor(element, 'parent');
     var el = document.createElement('div');
     el.appendChild(element);
     
@@ -32,22 +52,18 @@ var ElementStructsTest = TestCase.create({
     this.assertSame(el2, select(element, 'div.our-guy'));
     this.assert(el['parent'], "checking if the element was extened");
   },
-
-  testParent: function() {
-    this._testParent(this.el, function(element, css_rule) {
-      return element.parent(css_rule);
-    })
+  
+  testParents: function() {
+    this._testParents(this.el);
   },
   
-  testParent_static: function() {
-    this._testParent(this.div, function(element, css_rule) {
-      return Element.parent(element, css_rule);
-    });
-    
-    this.assertNull(this.div['parent'], "should not get extended");
+  testParents_static: function() {
+    this._testParents(this.div);
+    this.assertNull(this.div['parents'], "should not get extended");
   },
   
   _testParents: function(element, select) {
+    var select = this._callFor(element, 'parents');
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -64,21 +80,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([el1, el3], select(element, 'div, span'), "getting the filtered parents list");
   },
   
-  testParents: function() {
-    this._testParents(this.el, function(element, css_rule) {
-      return element.parents(css_rule);
-    });
+  testSubNodes: function() {
+    this._testSubNodes(this.el);
   },
   
-  testParents_static: function() {
-    this._testParents(this.div, function(element, css_rule) {
-      return Element.parents(element, css_rule);
-    });
+  testSubNodes_static: function() {
+    this._testSubNodes(this.div);
+    this.assertNull(this.div['subNodes'], "should not get extended");
+  },
+  
+  _testSubNodes: function(element) {
+    var select = this._callFor(element, 'subNodes');
     
-    this.assertNull(this.div['parents'], "should not get extended");
-  },
-  
-  _testSubNodes: function(element, select) {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -99,21 +112,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([el1, el3], select(element, 'div, span'), "getting the filtered parents list");
   },
   
-  testSubNodes: function() {
-    this._testSubNodes(this.el, function(element, css_rule) {
-      return element.subNodes(css_rule);
-    });
+  testSiblings: function() {
+    this._testSiblings(this.el);
   },
   
-  testSubNodes_static: function() {
-    this._testSubNodes(this.div, function(element, css_rule) {
-      return Element.subNodes(element, css_rule);
-    });
+  testSiblings_static: function() {
+    this._testSiblings(this.div);
+    this.assertNull(this.div['siblings'], "should not get extended");
+  },
+  
+  _testSiblings: function(element) {
+    var select = this._callFor(element, 'siblings');
     
-    this.assertNull(this.div['subNodes'], "should not get extended");
-  },
-  
-  _testSiblings: function(element, select) {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -134,21 +144,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([el1, el3], select(element, 'div, span'), "getting the filtered siblings list");
   },
   
-  testSiblings: function() {
-    this._testSiblings(this.el, function(element, css_rule) {
-      return element.siblings(css_rule);
-    });
+  testNextSiblings: function() {
+    this._testNextSiblings(this.el);
   },
   
-  testSiblings_static: function() {
-    this._testSiblings(this.div, function(element, css_rule) {
-      return Element.siblings(element, css_rule);
-    });
+  testNextSiblings_static: function() {
+    this._testNextSiblings(this.div);
+    this.assertNull(this.div['nextSiblings'], "should not get extended");
+  },
+  
+  _testNextSiblings: function(element) {
+    var select = this._callFor(element, 'nextSiblings');
     
-    this.assertNull(this.div['siblings'], "should not get extended");
-  },
-  
-  _testNextSiblings: function(element, select) {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -168,21 +175,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([el3], select(element, 'span'), "checking the filtered list");
   },
   
-  testNextSiblings: function() {
-    this._testNextSiblings(this.el, function(element, css_rule) {
-      return element.nextSiblings(css_rule);
-    });
+  testPrevSiblings: function() {
+    this._testPrevSiblings(this.el);
   },
   
-  testNextSiblings_static: function() {
-    this._testNextSiblings(this.div, function(element, css_rule) {
-      return Element.nextSiblings(element, css_rule);
-    });
+  testPrevSiblings_static: function() {
+    this._testPrevSiblings(this.div);
+    this.assertNull(this.div['prevSiblings'], "should not get extended");
+  },
+  
+  _testPrevSiblings: function(element) {
+    var select = this._callFor(element, 'prevSiblings');
     
-    this.assertNull(this.div['nextSiblings'], "should not get extended");
-  },
-  
-  _testPrevSiblings: function(element, select) {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -202,21 +206,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([el1], select(element, 'div'), "checking the filtered list");
   },
   
-  testPrevSiblings: function() {
-    this._testPrevSiblings(this.el, function(element, css_rule) {
-      return element.prevSiblings(css_rule);
-    });
+  testNext: function() {
+    this._testNext(this.el);
   },
   
-  testPrevSiblings_static: function() {
-    this._testPrevSiblings(this.div, function(element, css_rule) {
-      return Element.prevSiblings(element, css_rule);
-    });
+  testNext_static: function() {
+    this._testNext(this.div);
+    this.assertNull(this.div['next'], "should not get extended");
+  },
+  
+  _testNext: function(element) {
+    var select = this._callFor(element, 'next');
     
-    this.assertNull(this.div['prevSiblings'], "should not get extended");
-  },
-  
-  _testNext: function(element, select) {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -235,21 +236,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual(el3, select(element, 'span'), "checking the filtered list");
   },
   
-  testNext: function() {
-    this._testNext(this.el, function(element, css_rule) {
-      return element.next(css_rule);
-    });
+  testPrev: function() {
+    this._testPrev(this.el);
   },
   
-  testNext_static: function() {
-    this._testNext(this.div, function(element, css_rule) {
-      return Element.next(element, css_rule);
-    });
+  testPrev_static: function() {
+    this._testPrev(this.div);
+    this.assertNull(this.div['prev'], "should not get extended");
+  },
+  
+  _testPrev: function(element) {
+    var select = this._callFor(element, 'prev');
     
-    this.assertNull(this.div['next'], "should not get extended");
-  },
-  
-  _testPrev: function(element, select) {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -268,20 +266,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual(el1, select(element, 'div'), "checking the filtered list");
   },
   
-  testPrev: function() {
-    this._testPrev(this.el, function(element, css_rule) {
-      return element.prev(css_rule);
-    });
+  testUp: function() {
+    this._testUp(this.el);
   },
   
-  testPrev_static: function() {
-    this._testPrev(this.div, function(element, css_rule) {
-      return Element.prev(element, css_rule);
-    });
-    this.assertNull(this.div['prev'], "should not get extended");
+  testUp_static: function() {
+    this._testUp(this.div);
+    this.assertNull(this.div['up'], "should not get extended");
   },
   
-  _testUp: function(element, select) {
+  _testUp: function(element) {
+    var select = this._callFor(element, 'up');
+    
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -296,20 +292,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual(el2, select(element, 'p'), "getting the filtered parents list");
   },
   
-  testUp: function() {
-    this._testUp(this.el, function(element, css_rule) {
-      return element.up(css_rule);
-    });
+  testDown: function() {
+    this._testDown(this.el)
   },
   
-  testUp_static: function() {
-    this._testUp(this.div, function(element, css_rule) {
-      return Element.up(element, css_rule);
-    });
-    this.assertNull(this.div['up'], "should not get extended");
+  testDown_static: function() {
+    this._testDown(this.div);
+    this.assertNull(this.div['down'], "should not get extended");
   },
   
-  _testDown: function(element, select) {
+  _testDown: function(element) {
+    var select = this._callFor(element, 'down');
+    
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -331,20 +325,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual(el4, select(element, 'div.our-guy'));
   },
   
-  testDown: function() {
-    this._testDown(this.el, function(element, css_rule) {
-      return element.down(css_rule);
-    })
+  testSelect: function() {
+    this._testSelect(this.el);
   },
   
-  testDown_static: function() {
-    this._testDown(this.div, function(element, css_rule) {
-      return Element.down(element, css_rule);
-    });
-    this.assertNull(this.div['down'], "should not get extended");
+  testSelect_select: function() {
+    this._testSelect(this.div);
+    this.assertNull(this.div['select'], "should not get extended");
   },
   
-  _testSelect: function(element, select) {
+  _testSelect: function(element) {
+    var select = this._callFor(element, 'select');
+    
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -363,19 +355,6 @@ var ElementStructsTest = TestCase.create({
     this.assert(el1['select']);
     this.assert(el2['select']);
     this.assert(el4['select']);
-  },
-  
-  testSelect: function() {
-    this._testSelect(this.el, function(element, css_rule) {
-      return element.select(css_rule);
-    });
-  },
-  
-  testSelect_select: function() {
-    this._testSelect(this.div, function(element, css_rule) {
-      return Element.select(element, css_rule);
-    });
-    this.assertNull(this.div['select'], "should not get extended");
   },
   
   testMatch: function() {
@@ -410,7 +389,18 @@ var ElementStructsTest = TestCase.create({
     this.assertFalse($(el1).match('span div'));
   },
   
-  _testRemove: function(element, call) {
+  testRemove: function() {
+    this._testRemove(this.el);
+  },
+  
+  testRemove_static: function() {
+    this._testRemove(this.div);
+    this.assertNull(this.div['remove'], "should not get extended");
+  },
+  
+  _testRemove: function(element) {
+    var call = this._callFor(element, 'remove');
+    
     document.body.appendChild(element);
     this.assertSame(document.body, element.parentNode);
     this.assertCalled(document.body, 'removeChild', function() {
@@ -418,20 +408,18 @@ var ElementStructsTest = TestCase.create({
     }, this);
   },
   
-  testRemove: function() {
-    this._testRemove(this.el, function(element) {
-      return element.remove();
-    });
+  testInsert: function() {
+    this._testInsert(this.el);
   },
   
-  testRemove_static: function() {
-    this._testRemove(this.div, function(element) {
-      return Element.remove(element);
-    });
-    this.assertNull(this.div['remove'], "should not get extended");
+  testInsert_static: function() {
+    this._testInsert(this.div);
+    this.assertNull(this.div['insert'], "should not get extended");
   },
   
-  _testInsert: function(element, call) {
+  _testInsert: function(element) {
+    var call = this._callFor(element, 'insert');
+    
     call(element, "<div></div><script>self['____test'] = 2;</script>");
     this.assertEqual('<div></div>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     this.assertEqual(2, self['____test']);
@@ -453,19 +441,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('some string<blockquote></blockquote><b></b><u></u><cite></cite><div></div><span></span>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
-  testInsert: function() {
-    this._testInsert(this.el, function() {
-      var args = $A(arguments), element = args.shift();
-      return element.insert.apply(element, args);
-    });
+  testReplace: function() {
+    this._testReplace(this.el);
   },
   
-  testInsert_static: function() {
-    this._testInsert(this.div, Element.insert);
-    this.assertNull(this.div['insert'], "should not get extended");
+  testReplace_static: function() {
+    this._testReplace(this.div);
+    this.assertNull(this.div['replace'], "should not get extended");
   },
   
-  _testReplace: function(element, call) {
+  _testReplace: function(element) {
+    var call = this._callFor(element, 'replace');
+    
     element.innerHTML = '<p></p><div></div><span></span>';
     call(Element.down(element, 'div'), '<ul></ul><ul></ul><script>self["____test"]=4;</script>');
     
@@ -483,19 +470,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('<p></p><cite></cite><ul></ul>div string<b></b>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
-  testReplace: function() {
-    this._testReplace(this.el, function() {
-      var args = $A(arguments), element = args.shift();
-      return element.replace.apply(element, args);
-    })
+  testUpdate: function() {
+    this._testUpdate(this.el);
   },
   
-  testReplace_static: function() {
-    this._testReplace(this.div, Element.replace);
-    this.assertNull(this.div['replace'], "should not get extended");
+  testUpdate_static: function() {
+    this._testUpdate(this.div);
+    this.assertNull(this.div['update'], "should not get extended");
   },
   
   _testUpdate: function(element, call) {
+    var call = this._callFor(element, 'update');
+    
     call(element, '<div></div><script>self["____test"] = 8;</script>');
     this.assertEqual('<div></div>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     this.assertEqual(8, self['____test']);
@@ -508,19 +494,18 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('<p></p><b></b><u></u>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
-  testUpdate: function() {
-    this._testUpdate(this.el, function() {
-      var args = $A(arguments), element = args.shift();
-      return element.update.apply(element, args);
-    });
+  testWrap: function() {
+    this._testWrap(this.el);
   },
   
-  testUpdate_static: function() {
-    this._testUpdate(this.div, Element.update);
-    this.assertNull(this.div['update'], "should not get extended");
+  testWrap_static: function() {
+    this._testWrap(this.div);
+    this.assertNull(this.div['wrap'], "should not get extended");
   },
   
   _testWrap: function(element, call) {
+    var call = this._callFor(element, 'wrap');
+    
     var p = document.createElement('p');
     var div = document.createElement('div');
     
@@ -530,40 +515,36 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('<p><div></div></p>', div.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
-  testWrap: function() {
-    this._testWrap(this.el, function(element, wrap) {
-      return element.wrap(wrap);
-    });
+  testClean: function() {
+    this._testClean(this.el);
   },
   
-  testWrap_static: function() {
-    this._testWrap(this.div, function(element, wrap) {
-      return Element.wrap(element, wrap);
-    });
-    this.assertNull(this.div['wrap'], "should not get extended");
+  testClean_static: function() {
+    this._testClean(this.div);
+    this.assertNull(this.div['clean'], "should not get extended");
   },
   
-  _testClean: function(element, call) {
+  _testClean: function(element) {
+    var call = this._callFor(element, 'clean');
+    
     element.innerHTML = 'asdfasdf <b>asdfsdf</b> <div>asdfasdf</div>';
     
     this.assertSame(element, call(element));
     this.assertEqual('', element.innerHTML); //.toLowerCase().replace(/\s+</mg, "<"));
   },
   
-  testClean: function() {
-    this._testClean(this.el, function(element) {
-      return element.clean();
-    });
+  testEmpty: function() {
+    this._testEmpty(this.el);
   },
   
-  testClean_static: function() {
-    this._testClean(this.div, function(element) {
-      return Element.clean(element);
-    });
-    this.assertNull(this.div['clean'], "should not get extended");
+  testEmpty_static: function() {
+    this._testEmpty(this.el);
+    this.assertNull(this.div['empty'], "should not get extended");
   },
   
-  _testEmpty: function(element, call) {
+  _testEmpty: function(element) {
+    var call = this._callFor(element, 'empty');
+    
     this.assert(call(element));
     
     element.innerHTML = "     \n\n\n  ";
@@ -574,19 +555,6 @@ var ElementStructsTest = TestCase.create({
     
     element.innerHTML = 'asdf';
     this.assertFalse(call(element));
-  },
-  
-  testEmpty: function() {
-    this._testEmpty(this.el, function(element) {
-      return element.empty();
-    });
-  },
-  
-  testEmpty_static: function() {
-    this._testEmpty(this.el, function(element) {
-      return element.empty();
-    });
-    this.assertNull(this.div['empty'], "should not get extended");
   }
   
 });

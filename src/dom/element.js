@@ -32,9 +32,8 @@ window.Element = new Class(window.Element, {
      * @return Element
      */
     prepare: function(element) {
-      if (element && element.tagName && !element.cleanCache) {
+      if (element && element.tagName && !element.set) {
         $ext(element, Element.Methods);
-        element.cleanCache(); // cleans the events cache
       }
       return element;
     },

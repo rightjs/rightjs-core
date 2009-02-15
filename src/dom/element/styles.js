@@ -43,7 +43,7 @@ $ext(Element.Methods, {
   // returns the view level computed style
   getViewStyle: function(key) {
     return this._cleanStyle((document.defaultView ?
-      document.defaultView.getComputedStyle(this, null) : this.currentStyle
+      document.defaultView.getComputedStyle(this, null) : this.currentStyle || {}
     )[key.camelize()]);
   },
   

@@ -79,6 +79,7 @@ $ext(Element.Methods, {
    * @return void
    */
   cleanCache: function(what, callback) {
+    this._eventsCache = this._eventsCache || {};
     if (what) {
       this._eventsCache[what] = callback ? this._eventsCache[what].without(callback) : [];
     } else {
@@ -113,15 +114,16 @@ $ext(Element.Methods, {
    * @return void
    */ 
   _callback: function(what, callback) {
+    this._eventsCache = this._eventsCache || {};
     this._eventsCache[what] = this._eventsCache[what] || [];
     this._eventsCache[what].push(callback);
     return callback;
   },
-  _eventsCache: {},
   
   // checks if there is a cache for the event/callback
   _cached: function(what, callback) {
     var what = this._what(what);
+    this._eventsCache = this._eventsCache || {};
     if (defined(this._eventsCache[what]) && this._eventsCache[what].length) {
       if (isFunction(callback)) {
         for (var i=0; i < this._eventsCache[what].length; i++) {
