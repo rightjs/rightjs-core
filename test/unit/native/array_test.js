@@ -24,6 +24,13 @@ var ArrayTest = TestCase.create({
     }));
   },
   
+  testEachWithBreak: function() {
+    this.assertEqual([2,2,3,4], [1,2,3,4].each(function(value, i, list) {
+      list[i] = value * 2;
+      $break();
+    }));
+  },
+  
   testFirst: function() {
     this.assertEqual(1, [1,2,3].first());
     this.assert([].first() === undefined);
@@ -69,9 +76,25 @@ var ArrayTest = TestCase.create({
     this.assertEqual([2,4], [1,2,3,4].select(function(i) { return i%2==0; }));
   },
   
+  testSelectWithBreak: function() {
+    this.assertEqual([2], [1,2,3,4].select(function(i) {
+      if (i > 2) $break();
+      return i%2==0;
+    }));
+  },
+  
   testCollect: function() {
     var a = [1,2,3,4];
     this.assertEqual([2,4,6,8], a.collect(function(item) { return item * 2; }));
+    this.assertEqual([1,2,3,4], a);
+  },
+  
+  testCollectWithBreak: function() {
+    var a = [1,2,3,4];
+    this.assertEqual([2,4], a.collect(function(item) {
+      if (item > 2) $break();
+      return item * 2;
+    }));
     this.assertEqual([1,2,3,4], a);
   },
   

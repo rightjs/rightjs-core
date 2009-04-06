@@ -41,7 +41,10 @@ $ext(Array.prototype, {
    * @return Array this
    */
   each: function(callback, scope) {
-    this.forEach(callback, scope);
+    try {
+      this.forEach(callback, scope);
+    } catch(Break) {}
+    
     return this;
   },
   // recatching the original JS 1.6 method 
@@ -121,9 +124,12 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   select: function(callback, scope) {
-    for (var collection = [], i=0; i < this.length; i++)
-      if (callback.apply(scope, [this[i], i, this]))
-        collection.push(this[i]);
+    try {
+      for (var collection = [], i=0; i < this.length; i++)
+        if (callback.apply(scope, [this[i], i, this]))
+          collection.push(this[i]);
+    } catch(Break) {}
+    
     return collection;
   },
   
@@ -135,8 +141,11 @@ $ext(Array.prototype, {
    * @return Array collected
    */
   collect: function(callback, scope) {
-    for (var collection = [], i=0; i < this.length; i++)
-      collection.push(callback.apply(scope, [this[i], i, this]));
+    try {
+      for (var collection = [], i=0; i < this.length; i++)
+        collection.push(callback.apply(scope, [this[i], i, this]));
+    } catch(Break) {}
+    
     return collection;
   },
   

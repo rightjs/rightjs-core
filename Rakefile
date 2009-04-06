@@ -22,6 +22,7 @@ JS_SOURCES = %w{
   src/core/class/util.js
   src/core/class/methods.js
   src/util/cookie.js
+  src/util/break.js
   src/dom/element.js
   src/dom/element/commons.js
   src/dom/element/structs.js

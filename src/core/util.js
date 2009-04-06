@@ -43,6 +43,16 @@ function $try() {
 };
 
 /**
+ * throws an exception to break iterations throw a callback
+ *
+ * @return void
+ * @throws Break
+ */
+function $break() {
+  throw new Break();
+};
+
+/**
  * checks if the given value or a reference points
  * to a really defined value
  *
