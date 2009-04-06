@@ -39,11 +39,15 @@ task :build do
   Dir.mkdir BUILD_DIR
   
   puts ' * Compiling the sources'
-  @compiler = FrontCompiler.new
+  
   File.open(BUILD_DIR + "/" + BUILD_FILE, "w") do |file|
     file.write File.open('src/HEADER.js', 'r').read
     
-    file.write @compiler.compact_files(JS_SOURCES)
+    file.write FrontCompiler.new.compact_js(
+      JS_SOURCES.collect do |file_name|
+        File.open(file_name).read
+      end.join("\n")
+    ).create_self_build
   end
 end
 
