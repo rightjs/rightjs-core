@@ -152,7 +152,7 @@ $ext(String.prototype, {
    * @return boolean check result
    */
   endsWith: function(string, ignorecase) {
-    var end_str = this.substr(this.length - string.length, this.length);
+    var end_str = this.substring(this.length - string.length);
     return ignorecase ? end_str.toLowerCase() == string.toLowerCase() :
       end_str == string;
   },
