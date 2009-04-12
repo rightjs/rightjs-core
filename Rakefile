@@ -29,6 +29,10 @@ JS_SOURCES = %w{
   src/dom/element/styles.js
   src/dom/element/events.js
   src/dom/selector.js
+  src/dom/selector/atom.js
+  src/dom/selector/manual.js
+  src/dom/selector/native.js
+  src/dom/selector/multiple.js
   src/dom/extend.js
 }
 

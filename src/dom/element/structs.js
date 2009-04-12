@@ -50,7 +50,7 @@ $ext(Element.Methods, {
   },
   
   down: function(css_rule) {
-    return this.select(css_rule).first();
+    return new Selector(css_rule).first(this);
   },
   
   select: function(css_rule) {

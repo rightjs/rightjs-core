@@ -26,6 +26,10 @@
     <script type="text/javascript" src="../src/dom/element/styles.js"></script>
     <script type="text/javascript" src="../src/dom/element/events.js"></script>
     <script type="text/javascript" src="../src/dom/selector.js"></script>
+    <script type="text/javascript" src="../src/dom/selector/atom.js"></script>
+    <script type="text/javascript" src="../src/dom/selector/manual.js"></script>
+    <script type="text/javascript" src="../src/dom/selector/native.js"></script>
+    <script type="text/javascript" src="../src/dom/selector/multiple.js"></script>
     <script type="text/javascript" src="../src/dom/extend.js"></script>
     
     <script type="text/javascript" src="unit/core/util_test.js"></script>
@@ -44,6 +48,9 @@
     <script type="text/javascript" src="unit/dom/element/styles_test.js"></script>
     <script type="text/javascript" src="unit/dom/element/events_test.js"></script>
     <script type="text/javascript" src="unit/dom/selector_test.js"></script>
+    <script type="text/javascript" src="unit/dom/selector/atom_test.js"></script>
+    <script type="text/javascript" src="unit/dom/selector/manual_test.js"></script>
+    <script type="text/javascript" src="unit/dom/selector/multiple_test.js"></script>
     
     <script type="text/javascript">
       new TestSuite(
@@ -62,7 +69,10 @@
         ElementStructsTest,
         ElementStylesTest,
         ElementEventsTest,
-        SelectorTest
+        SelectorTest,
+        SelectorAtomTest,
+        SelectorManualTest,
+        SelectorMultipleTest
       ).runOnLoad();
     </script>
   </head>

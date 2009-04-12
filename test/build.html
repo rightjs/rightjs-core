@@ -25,6 +25,9 @@
     <script type="text/javascript" src="unit/dom/element/styles_test.js"></script>
     <script type="text/javascript" src="unit/dom/element/events_test.js"></script>
     <script type="text/javascript" src="unit/dom/selector_test.js"></script>
+    <script type="text/javascript" src="unit/dom/selector/atom_test.js"></script>
+    <script type="text/javascript" src="unit/dom/selector/manual_test.js"></script>
+    <script type="text/javascript" src="unit/dom/selector/multiple_test.js"></script>
     
     <script type="text/javascript">
       new TestSuite(
@@ -43,7 +46,10 @@
         ElementStructsTest,
         ElementStylesTest,
         ElementEventsTest,
-        SelectorTest
+        SelectorTest,
+        SelectorAtomTest,
+        SelectorManualTest,
+        SelectorMultipleTest
       ).runOnLoad();
     </script>
   </head>
