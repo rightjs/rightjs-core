@@ -72,6 +72,14 @@ var ArrayTest = TestCase.create({
     this.assertNotSame(a,b);
   },
   
+  testWalk: function() {
+    var a = [1,2,3,4];
+    var b = a.walk(function(i) { return i * 2;});
+    
+    this.assertSame(a,b);
+    this.assertEqual([2,4,6,8], a);
+  },
+  
   testSelect: function() {
     this.assertEqual([2,4], [1,2,3,4].select(function(i) { return i%2==0; }));
   },

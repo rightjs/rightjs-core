@@ -117,6 +117,20 @@ $ext(Array.prototype, {
   },
   
   /**
+   * applies the given lambda to each element in the array
+   *
+   * @param Function lambda
+   * @param Object optional scope
+   * @return Array self
+   */
+  walk: function(lambda, scope) {
+    for (var i=0; i < this.length; i++)
+      this[i] = lambda.apply(scope, [this[i], i, this]);
+      
+    return this;
+  },
+  
+  /**
    * creates a list of the array items which are matched in the given callback function
    *
    * @param Function callback
