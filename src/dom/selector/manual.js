@@ -73,7 +73,10 @@ Selector.Manual = new Class({
    */
   match: function(element) {
     if (element.parentNode) {
-      var parent = Element.parents(element).last();
+      // searching for the top parent node
+      // NOTE: don't use the Element.parents in here to avoid annecessary elements extending
+      var p = element, parent;
+      while ((p = p.parentNode)) parent = p;
     } else {
       // putting the element in a temporary context so we could test it
       var parent = document.createElement('div'), fake_parent = true;
@@ -82,7 +85,7 @@ Selector.Manual = new Class({
     
     var match = this.select(parent).includes(element);
     
-    if (fake_parent) parent.removeChild(element);
+    if (fake_parent) Element.remove(element);
     
     return match;
   },

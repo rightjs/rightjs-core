@@ -7,7 +7,7 @@
  * NOTE: if a css-rule was specified then the result of the method
  *       will be filtered/adjusted depends on the rule
  *
- *       the css-rule might be a string, a Selector or a Selector.Atom instance
+ *       the css-rule might be a string or a Selector instance
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
@@ -174,10 +174,10 @@ $ext(Element.Methods, {
    * @return Array found elements
    */
   rCollect: function(attr, css_rule) {
-    var node = this, nodes = [];
+    var node = this, nodes = [], selector = css_rule ? new Selector(css_rule) : null;
 
     while ((node = node[attr])) {
-      if (node.tagName && (!css_rule || Element.match(node, css_rule))) {
+      if (node.tagName && (!css_rule || Element.match(node, selector))) {
         nodes.push($(node));
       }
     }

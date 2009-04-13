@@ -1,9 +1,12 @@
 /**
  * The DOM elements selection handling class
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Selector = new Class({
+  extend: {
+    cache: {}
+  },
     
   /**
    * constructor
@@ -12,6 +15,10 @@ var Selector = new Class({
    * @return void
    */
   initialize: function(css_rule) {
+    var cached = isString(css_rule) ? Selector.cache[css_rule] : css_rule;
+    if (cached) return cached;
+    Selector.cache[css_rule] = this;
+    
     this.setCssRule(css_rule);
     
     var strategy = 'Manual';

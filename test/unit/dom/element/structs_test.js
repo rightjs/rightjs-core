@@ -24,7 +24,7 @@ var ElementStructsTest = TestCase.create({
   testParent: function() {
     this._testParent(this.el);
   },
-  
+
   testParent_static: function() {
     this._testParent(this.div);
     this.assertNull(this.div['parent'], "should not get extended");
@@ -48,7 +48,7 @@ var ElementStructsTest = TestCase.create({
     el3.appendChild(el2);
     
     el2.className = 'our-guy';
-
+    
     this.assertSame(el2, select(element, 'div.our-guy'));
     this.assert(el['parent'], "checking if the element was extened");
   },
@@ -86,10 +86,7 @@ var ElementStructsTest = TestCase.create({
   
   testSubNodes_static: function() {
     this._testSubNodes(this.div);
-    
-    // FIXME looks like with the new selectors, in this case the element
-    //       will be extended anyway
-    //this.assertNull(this.div['subNodes'], "should not get extended");
+    this.assertNull(this.div['subNodes'], "should not get extended");
   },
   
   _testSubNodes: function(element) {
@@ -563,5 +560,4 @@ var ElementStructsTest = TestCase.create({
     element.innerHTML = 'asdf';
     this.assertFalse(call(element));
   }
-  
 });
