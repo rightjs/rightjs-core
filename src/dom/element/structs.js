@@ -174,10 +174,10 @@ $ext(Element.Methods, {
    * @return Array found elements
    */
   rCollect: function(attr, css_rule) {
-    var node = this, nodes = [], selector = css_rule ? new Selector(css_rule) : null;
+    var node = this, nodes = [];
 
     while ((node = node[attr])) {
-      if (node.tagName && (!css_rule || Element.match(node, selector))) {
+      if (node.tagName && (!css_rule || Element.match(node, css_rule))) {
         nodes.push($(node));
       }
     }
