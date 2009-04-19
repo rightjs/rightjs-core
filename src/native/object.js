@@ -42,6 +42,19 @@ $ext(Object, {
   },
   
   /**
+   * clones the given object
+   *
+   * @param Object original
+   * @return Object clone
+   */
+  clone: function(object) {
+    var clone = {};
+    for (var key in object)
+      clone[key] = object;
+    return clone;
+  },
+  
+  /**
    * returns a copy of the object which contains
    * all the same keys/values except the key-names
    * passed the the method arguments
@@ -96,7 +109,7 @@ $ext(Object, {
    * with ones which the callback function returns
    *
    * NOTE: the callback function has to return an array like [key, value]
-   *       if the callbac function returns nothing or the array doesn't have
+   *       if the callback function returns nothing or the array doesn't have
    *       the key the entry won't be changed
    *
    * WARNING: it is meant that the incomming object will be changed

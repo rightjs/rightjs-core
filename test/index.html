@@ -25,6 +25,10 @@
     <script type="text/javascript" src="../src/dom/element/structs.js"></script>
     <script type="text/javascript" src="../src/dom/element/styles.js"></script>
     <script type="text/javascript" src="../src/dom/element/events.js"></script>
+    <script type="text/javascript" src="../src/dom/event.js"></script>
+    <script type="text/javascript" src="../src/dom/event/base.js"></script>
+    <script type="text/javascript" src="../src/dom/event/mouse.js"></script>
+    <script type="text/javascript" src="../src/dom/event/keyboard.js"></script>
     <script type="text/javascript" src="../src/dom/selector.js"></script>
     <script type="text/javascript" src="../src/dom/selector/atom.js"></script>
     <script type="text/javascript" src="../src/dom/selector/manual.js"></script>
@@ -32,49 +36,7 @@
     <script type="text/javascript" src="../src/dom/selector/multiple.js"></script>
     <script type="text/javascript" src="../src/dom/extend.js"></script>
     
-    <script type="text/javascript" src="unit/core/util_test.js"></script>
-    <script type="text/javascript" src="unit/core/browser_test.js"></script>
-    <script type="text/javascript" src="unit/native/object_test.js"></script>
-    <script type="text/javascript" src="unit/native/math_test.js"></script>
-    <script type="text/javascript" src="unit/native/array_test.js"></script>
-    <script type="text/javascript" src="unit/native/string_test.js"></script>
-    <script type="text/javascript" src="unit/native/function_test.js"></script>
-    <script type="text/javascript" src="unit/native/number_test.js"></script>
-    <script type="text/javascript" src="unit/core/class_test.js"></script>
-    <script type="text/javascript" src="unit/util/cookie_test.js"></script>
-    <script type="text/javascript" src="unit/dom/element_test.js"></script>
-    <script type="text/javascript" src="unit/dom/element/commons_test.js"></script>
-    <script type="text/javascript" src="unit/dom/element/structs_test.js"></script>
-    <script type="text/javascript" src="unit/dom/element/styles_test.js"></script>
-    <script type="text/javascript" src="unit/dom/element/events_test.js"></script>
-    <script type="text/javascript" src="unit/dom/selector_test.js"></script>
-    <script type="text/javascript" src="unit/dom/selector/atom_test.js"></script>
-    <script type="text/javascript" src="unit/dom/selector/manual_test.js"></script>
-    <script type="text/javascript" src="unit/dom/selector/multiple_test.js"></script>
-    
-    <script type="text/javascript">
-      new TestSuite(
-        UtilTest,
-        BrowserTest,
-        ObjectTest,
-        MathTest,
-        ArrayTest,
-        StringTest,
-        FunctionTest,
-        NumberTest,
-        ClassTest,
-        CookieTest,
-        ElementTest,
-        ElementCommonsTest,
-        ElementStructsTest,
-        ElementStylesTest,
-        ElementEventsTest,
-        SelectorTest,
-        SelectorAtomTest,
-        SelectorManualTest,
-        SelectorMultipleTest
-      ).runOnLoad();
-    </script>
+    <script type="text/javascript" src="./init.js"></script>
   </head>
   <body>
     The project Tests

@@ -12,27 +12,38 @@ BUILD_FILE = 'right.js'
 JS_SOURCES = %w{
   src/core/util.js
   src/core/browser.js
+  
   src/native/object.js
   src/native/math.js
   src/native/array.js
   src/native/string.js
   src/native/function.js
   src/native/number.js
+  
   src/core/class.js
   src/core/class/util.js
   src/core/class/methods.js
+  
   src/util/cookie.js
   src/util/break.js
+  
   src/dom/element.js
   src/dom/element/commons.js
   src/dom/element/structs.js
   src/dom/element/styles.js
   src/dom/element/events.js
+  
   src/dom/selector.js
   src/dom/selector/atom.js
   src/dom/selector/manual.js
   src/dom/selector/native.js
   src/dom/selector/multiple.js
+  
+  src/dom/event.js
+  src/dom/event/base.js
+  src/dom/event/mouse.js
+  src/dom/event/keyboard.js
+  
   src/dom/extend.js
 }
 
