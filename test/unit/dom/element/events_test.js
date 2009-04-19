@@ -156,10 +156,10 @@ var ElementEventsTest = TestCase.create({
     
     this.fireClick(element);
     
-    this.assertFalse(clicked1);
+    this.assertFalse(clicked1, "didn't call the first function");
     this.assert(clicked2);
     
-    this.assertFalse(observes(element, 'click', func1));
+    this.assertFalse(observes(element, 'click', func1), "Checking by function stop");
     this.assert(observes(element, 'click'));
     
     var clicked1 = false;
@@ -169,9 +169,9 @@ var ElementEventsTest = TestCase.create({
     
     this.fireClick(element);
     
-    this.assertFalse(clicked1);
-    this.assertFalse(clicked2);
+    this.assertFalse(clicked1, "assuring didn't call the first function");
+    this.assertFalse(clicked2, "assuring didn't call the second function");
     
-    this.assertFalse(observes(element, 'click'));
+    this.assertFalse(observes(element, 'click'), "checking the whole event stop");
   }
 });

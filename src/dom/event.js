@@ -44,9 +44,7 @@ var Event = new Class(Event, {
         Event.Base.ext(event);
         
         // FIXME: there should be a nicer way to determine the event type
-        var name = event.type || '';
-        name = name.startsWith('on') ? name.slice(2) : name;
-        name = name == 'contextmenu' ? 'rightclick'  : name;
+        var name = Event.cleanName(event.type || '');
         
         if (Event.Mouse.prototype.NAMES.includes(name)) {
           Event.Mouse.ext(event);
@@ -56,6 +54,19 @@ var Event = new Class(Event, {
       }
       
       return event;
+    },
+    
+    /**
+     * cleans up the event name
+     *
+     * @param String event name
+     * @return String fixed event name
+     */
+    cleanName: function(name) {
+      name = name.toLowerCase();
+      name = name.startsWith('on') ? name.slice(2) : name;
+      name = name == 'contextmenu' ? 'rightclick'  : name;
+      return name;
     }
   },
   
@@ -71,7 +82,7 @@ var Event = new Class(Event, {
     var args = $A(arguments), event = args.shift(), options = args.pop() || {};
     
     if (isString(event)) {
-      var name = (event.startsWith('on', true) ? event.substr(2) : event).toLowerCase();
+      var name = Event.cleanName(event);
       if (Event.Keyboard.prototype.NAMES.includes(name)) {
         event = new Event.Keyboard(name, options);
       } else {

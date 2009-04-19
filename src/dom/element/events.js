@@ -44,7 +44,7 @@ $ext(Element.Methods, {
         result = !!(result & this.observes(key, what[key]));
       }
     } else {
-      result = this._cached(what, callback);
+      result = this._cached(this._what(what), callback) !== false;
     }
     
     return result;
@@ -58,17 +58,18 @@ $ext(Element.Methods, {
    * @return Element self
    */
   stopObserving: function(what, callback) {
-    var what = this._what(what);
+    var what = this._what(what), wrap = this._cached(what, callback);
+    
     if (callback) {
-      this.removeEventListener(what, callback, false);
+      this.removeEventListener(what, wrap, false);
     } else {
       var cache = this._eventsCache[what] || [];
       for (var i=0; i < cache.length; i++) {
-        this.removeEventListener(what, cache[i], false);
+        this.removeEventListener(what, cache[i].wrap, false);
       }
     }
     
-    return this.cleanCache(what, isFunction(callback) ? callback : null);
+    return this.cleanCache(what, callback);
   },
   
   /**
@@ -81,7 +82,15 @@ $ext(Element.Methods, {
   cleanCache: function(what, callback) {
     this._eventsCache = this._eventsCache || {};
     if (what) {
-      this._eventsCache[what] = callback ? this._eventsCache[what].without(callback) : [];
+      var clean = [];
+      if (callback) {
+        for (var i=0; i < this._eventsCache[what].length; i++) {
+          if (this._eventsCache[what][i].orig != callback) {
+            clean.push(this._eventsCache[what][i]);
+          }
+        }
+      }
+      this._eventsCache[what] = clean;
     } else {
       this._eventsCache = {};
     }
@@ -96,10 +105,7 @@ $ext(Element.Methods, {
    * @return String clean event name
    */
   _what: function(what) {
-    what = what.toLowerCase();
-    if (what.startsWith('on')) {
-      what = what.substr(2, what.length);
-    }
+    what = Event.cleanName(what);
     if (what == 'mousewheel' && Browser.Gecko) {
       what = 'DOMMouseScroll';
     }
@@ -114,21 +120,28 @@ $ext(Element.Methods, {
    * @return void
    */ 
   _callback: function(what, callback) {
+    var wrap = (function(callback) {
+      return function() {
+        Event.ext(arguments[0]);
+        return callback.apply(null, arguments);
+      };
+    })(callback);
+    
     this._eventsCache = this._eventsCache || {};
     this._eventsCache[what] = this._eventsCache[what] || [];
-    this._eventsCache[what].push(callback);
-    return callback;
+    this._eventsCache[what].push({orig: callback, wrap: wrap});
+    
+    return wrap;
   },
   
   // checks if there is a cache for the event/callback
   _cached: function(what, callback) {
-    var what = this._what(what);
     this._eventsCache = this._eventsCache || {};
     if (defined(this._eventsCache[what]) && this._eventsCache[what].length) {
       if (isFunction(callback)) {
         for (var i=0; i < this._eventsCache[what].length; i++) {
-          if (this._eventsCache[what][i] == callback) {
-            return true;
+          if (this._eventsCache[what][i].orig == callback) {
+            return this._eventsCache[what][i].wrap;
           }
         }
         return false;
@@ -136,7 +149,7 @@ $ext(Element.Methods, {
     } else {
       return false;
     }
-    return true;
+    return null;
   }
   
 });
