@@ -48,7 +48,7 @@ var SelectorTest = TestCase.create({
     var elements = elements instanceof Array ? elements : [elements];
     elements.each(function(element) {
       if (!selector.match(element)) {
-        this.throw_unexp("Element should match the rule '"+css_rule+"'", message);
+        this.throw_problem("Element should match the rule '"+css_rule+"'", message);
       }
     }, this);
   },
@@ -58,7 +58,7 @@ var SelectorTest = TestCase.create({
     var elements = elements instanceof Array ? elements : [elements];
     elements.each(function(element) {
       if (selector.match(element)) {
-        this.throw_unexp("Element should not match the rule '"+css_rule+"'", message);
+        this.throw_problem("Element should not match the rule '"+css_rule+"'", message);
       }
     }, this);
   },

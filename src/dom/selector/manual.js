@@ -4,7 +4,7 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Selector.Manual = new Class({
-  ATOMS_SPLIT_RE: /(\s*([~>+ ])\s*)[^=]/,
+  ATOMS_SPLIT_RE: /(\s*([~>+ ])\s*)(?![^\s\)\]]*(\)|\]))/,
   
   /**
    * constructor
@@ -80,6 +80,7 @@ Selector.Manual = new Class({
     } else {
       // putting the element in a temporary context so we could test it
       var parent = document.createElement('div'), fake_parent = true;
+      parent.id = '-----fake'; // <- this id is used in the manual 'match' method, to determine if the element originally had no parent node
       parent.appendChild(element);
     }
     

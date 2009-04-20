@@ -74,8 +74,8 @@ var Selector = new Class({
     
     // converting virtual selectors into real ones
     var dict = [
-      [/:last/g, ':last-child'],
-      [/:only/g, ':only-child'],
+      [/:last(?!-)/g, ':last-child'],
+      [/:only(?!-)/g, ':only-child'],
       [/:odd/g,  ':nth-child(2n+1)'],
       [/:even/g, ':nth-child(2n)'],
       [/:nth-child\(odd\)/g,  ':nth-child(2n+1)'],

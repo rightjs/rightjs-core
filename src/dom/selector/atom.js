@@ -164,7 +164,7 @@ Selector.Atom = new Class({
     },
 
     'only-child': function(tag_name, matchers) {
-      return this.parentNode && matchers['first-child'].call(this, tag_name) 
+      return matchers.hasParent(this) && matchers['first-child'].call(this, tag_name) 
         && matchers['last-child'].call(this, tag_name);
     },
     
@@ -173,8 +173,7 @@ Selector.Atom = new Class({
     },
 
     'nth-child': function(number, matchers, tag_name) {
-      if (!this.parentNode) return false;
-      
+      if (!matchers.hasParent(this)) return false;
       number = number.toLowerCase();
       
       if (number == 'n') return true;
@@ -212,6 +211,13 @@ Selector.Atom = new Class({
         if (node.tagName && (!tag_name || node.tagName == tag_name) && ++count > number) return false;
       }
       return count == number;
+    },
+    
+    // checking if the element has a parent node
+    // the '-----fake' parent is a temporary context for the element
+    // just of the matching process
+    hasParent: function(element) {
+      return element.parentNode && element.parentNode.id != '-----fake';
     }
   }
 });
