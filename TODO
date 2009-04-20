@@ -1,9 +1,6 @@
-
 handle the various css naming/values cases. Like opacity, filter, overflow etc.
 
 do performance tests if it is worth to move the regexps in the String object into precompiled constants
-
-try to optimize the search with document.querySelector
 
 there's seems to be a memory leaking problem in IE6, each run makes the test go slower. Investigate what's the problem.
 
@@ -17,6 +14,8 @@ add '&methodName' feature to the Array's collect/etc methods
 --------
 Completed
 ---------
+
+try to optimize the search with document.querySelector
 
 implement Array's 'walk' method
 

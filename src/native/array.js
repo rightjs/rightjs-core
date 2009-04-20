@@ -124,8 +124,11 @@ $ext(Array.prototype, {
    * @return Array self
    */
   walk: function(lambda, scope) {
-    for (var i=0; i < this.length; i++)
-      this[i] = lambda.apply(scope, [this[i], i, this]);
+    for (var i=0; i < this.length; i++) {
+      try {
+        this[i] = lambda.apply(scope, [this[i], i, this]);
+      } catch(e) { if (e instanceof Break) break; else throw(e); }
+    }
       
     return this;
   },
@@ -138,11 +141,11 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   select: function(callback, scope) {
-    try {
-      for (var collection = [], i=0; i < this.length; i++)
+    for (var collection = [], i=0; i < this.length; i++)
+      try {
         if (callback.apply(scope, [this[i], i, this]))
           collection.push(this[i]);
-    } catch(Break) {}
+      } catch(e) { if (e instanceof Break) break; else throw(e); }
     
     return collection;
   },
@@ -155,10 +158,10 @@ $ext(Array.prototype, {
    * @return Array collected
    */
   collect: function(callback, scope) {
-    try {
-      for (var collection = [], i=0; i < this.length; i++)
+    for (var collection = [], i=0; i < this.length; i++)
+      try {
         collection.push(callback.apply(scope, [this[i], i, this]));
-    } catch(Break) {}
+      } catch(e) { if (e instanceof Break) break; else throw(e); }
     
     return collection;
   },

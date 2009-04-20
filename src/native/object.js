@@ -119,17 +119,17 @@ $ext(Object, {
    * @return Object the incomming object with changes
    */
   walk: function(object, callback) {
-    try {
-      var keys = Object.keys(object);
-      for (var i=0; i < keys.length; i++) {
-        var values = callback(keys[i], object[keys[i]]);
+    var keys = Object.keys(object);
+    for (var i=0; i < keys.length; i++) {
+      try {
+        var values = callback(keys[i], object[keys[i]], object);
 
         if (values && values[0] && defined(values[1])) {
           delete(object[keys[i]]);
           object[values[0]] = values[1];
         }
-      }
-    } catch(Break) {}
+      } catch(e) { if (e instanceof Break) break; else throw(e); }
+    }
     
     return object;
   },
