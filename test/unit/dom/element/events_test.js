@@ -173,5 +173,26 @@ var ElementEventsTest = TestCase.create({
     this.assertFalse(clicked2, "assuring didn't call the second function");
     
     this.assertFalse(observes(element, 'click'), "checking the whole event stop");
+  },
+  
+  testFire: function() {
+    var element = new Element('div');
+    document.body.appendChild(element);
+    
+    var clicked = false;
+    element.observe('click', function() { clicked = true; });
+    
+    var event = element.fire('click');
+    
+    this.assert(clicked);
+    this.assert('click', event.eventName);
+    
+    clicked = false;
+    
+    var event = element.click();
+    
+    this.assert(clicked);
+    
+    element.remove();
   }
 });

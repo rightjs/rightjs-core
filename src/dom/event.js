@@ -43,10 +43,8 @@ var Event = new Class(Event, {
       if (!event.stop) {
         Event.Base.ext(event);
         
-        // FIXME: there should be a nicer way to determine the event type
-        var name = Event.cleanName(event.type || '');
-        
-        if (Event.Mouse.prototype.NAMES.includes(name)) {
+        event.eventName = Event.cleanName(event.type || '');
+        if (Event.Mouse.prototype.NAMES.includes(event.eventName)) {
           Event.Mouse.ext(event);
         } else if (defined(event.keyCode)){
           Event.Keyboard.ext(event);

@@ -73,6 +73,33 @@ $ext(Element.Methods, {
   },
   
   /**
+   * fires an event on the element
+   *
+   * @param String event name
+   * @param Object optional event options
+   * @return Event fired event
+   */
+  fire: function(name, options) {
+    var event = new Event(name, options);
+    if (document.createEvent) {
+      this.dispatchEvent(event);
+    } else {
+      this.fireEvent(event.eventType, event);
+    }
+    return event;
+  },
+  
+  /**
+   * shortcut to fire a mouse-click event
+   *
+   * @param Object optional event options
+   * @return Event fired event
+   */
+  click: function(options) {
+    return this.fire('click', options);
+  },
+  
+  /**
    * cleans the events cache
    *
    * @param String optional event name
