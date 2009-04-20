@@ -43,7 +43,7 @@ $ext(Array.prototype, {
   each: function(callback, scope) {
     try {
       this.forEach(callback, scope);
-    } catch(Break) {}
+    } catch(e) { if (!(e instanceof Break)) throw(e); }
     
     return this;
   },
@@ -124,11 +124,10 @@ $ext(Array.prototype, {
    * @return Array self
    */
   walk: function(lambda, scope) {
-    for (var i=0; i < this.length; i++) {
-      try {
+    try {
+      for (var i=0; i < this.length; i++)
         this[i] = lambda.apply(scope, [this[i], i, this]);
-      } catch(e) { if (e instanceof Break) break; else throw(e); }
-    }
+    } catch(e) { if (!(e instanceof Break)) throw(e); }
       
     return this;
   },
@@ -141,11 +140,11 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   select: function(callback, scope) {
-    for (var collection = [], i=0; i < this.length; i++)
-      try {
+    try {
+      for (var collection = [], i=0; i < this.length; i++)
         if (callback.apply(scope, [this[i], i, this]))
           collection.push(this[i]);
-      } catch(e) { if (e instanceof Break) break; else throw(e); }
+    } catch(e) { if (!(e instanceof Break)) throw(e); }
     
     return collection;
   },
@@ -158,10 +157,10 @@ $ext(Array.prototype, {
    * @return Array collected
    */
   collect: function(callback, scope) {
-    for (var collection = [], i=0; i < this.length; i++)
-      try {
+    try {
+      for (var collection = [], i=0; i < this.length; i++)
         collection.push(callback.apply(scope, [this[i], i, this]));
-      } catch(e) { if (e instanceof Break) break; else throw(e); }
+    } catch(e) { if (!(e instanceof Break)) throw(e); }
     
     return collection;
   },
