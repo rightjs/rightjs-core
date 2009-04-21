@@ -83,7 +83,6 @@ Selector.Manual = new Class({
       parent.id = '-----fake'; // <- this id is used in the manual 'match' method, to determine if the element originally had no parent node
       parent.appendChild(element);
     }
-    
     var match = this.select(parent).includes(element);
     
     if (fake_parent) Element.remove(element);

@@ -27,6 +27,6 @@ Selector.Native = new Class({
   // as a temporary solution add the element tag name as a scope so the result
   // contained only the internal nested nodes.
   fixedCssRule: function(element) {
-    return element.tagName + ' ' +this.cssRule;
+    return (element.tagName ? element.tagName+ ' ' : '') +this.cssRule;
   }
 });

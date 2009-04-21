@@ -164,7 +164,7 @@ Selector.Atom = new Class({
     },
 
     'only-child': function(tag_name, matchers) {
-      return matchers.hasParent(this) && matchers['first-child'].call(this, tag_name) 
+      return matchers['first-child'].call(this, tag_name) 
         && matchers['last-child'].call(this, tag_name);
     },
     

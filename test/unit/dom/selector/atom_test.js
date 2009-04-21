@@ -188,7 +188,7 @@ var SelectorAtomTest = TestCase.create({
     div.appendChild(element);
     
     this.assertMatchAtom('*:only-child', element);
-    this.assertNotMatchAtom('*:only-child', element2);
+    this.assertMatchAtom('*:only-child', element2);
     
     div.appendChild(element2);
     
