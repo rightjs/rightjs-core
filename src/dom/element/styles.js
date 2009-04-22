@@ -105,5 +105,17 @@ $ext(Element.Methods, {
    */
    toggleClass: function(name) {
      return this[this.hasClass(name) ? 'removeClass' : 'addClass'](name);
+   },
+   
+   /**
+    * adds the given class-name to the element
+    * and removes it from all the element siblings
+    *
+    * @param String class name
+    * @return Element self
+    */
+   radioClass: function(name) {
+     this.siblings().walk('removeClass', name);
+     return this.addClass(name);
    }
 });

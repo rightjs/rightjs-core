@@ -235,5 +235,60 @@ var ElementStylesTest = TestCase.create({
     this.assertHasNoClassName(this.div, 'foo');
     
     this.assertNull(this.div['toggleClass'], "should not get extended");
+  },
+  
+  testRadioClass: function() {
+    var block = document.createElement('div');
+    var el1 = document.createElement('div');
+    var el2 = document.createElement('div');
+    var el3 = document.createElement('div');
+    
+    block.appendChild(el1);
+    block.appendChild(el2);
+    block.appendChild(el3);
+    
+    $(el1).radioClass('test');
+    this.assertHasClassName(el1, 'test');
+    this.assertHasNoClassName(el2, 'test');
+    this.assertHasNoClassName(el3, 'test');
+    
+    $(el2).radioClass('test');
+    this.assertHasNoClassName(el1, 'test');
+    this.assertHasClassName(el2, 'test');
+    this.assertHasNoClassName(el3, 'test');
+    
+    $(el3).radioClass('test');
+    this.assertHasNoClassName(el1, 'test');
+    this.assertHasNoClassName(el2, 'test');
+    this.assertHasClassName(el3, 'test');
+  },
+  
+  testRadioClass_static: function() {
+    var block = document.createElement('div');
+    var el1 = document.createElement('div');
+    var el2 = document.createElement('div');
+    var el3 = document.createElement('div');
+    
+    block.appendChild(el1);
+    block.appendChild(el2);
+    block.appendChild(el3);
+    
+    Element.radioClass(el1, 'test');
+    this.assertHasClassName(el1, 'test');
+    this.assertHasNoClassName(el2, 'test');
+    this.assertHasNoClassName(el3, 'test');
+    this.assertNull(el1['radioClass']);
+    
+    Element.radioClass(el2, 'test');
+    this.assertHasNoClassName(el1, 'test');
+    this.assertHasClassName(el2, 'test');
+    this.assertHasNoClassName(el3, 'test');
+    //this.assertNull(el2['radioClass']);
+    
+    Element.radioClass(el3, 'test');
+    this.assertHasNoClassName(el1, 'test');
+    this.assertHasNoClassName(el2, 'test');
+    this.assertHasClassName(el3, 'test');
+    //this.assertNull(el3['radioClass']);
   }
 });
