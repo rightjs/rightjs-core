@@ -1,3 +1,5 @@
+move Array extensions in the Enumerable extension
+
 handle the various css naming/values cases. Like opacity, filter, overflow etc.
 
 do performance tests if it is worth to move the regexps in the String object into precompiled constants

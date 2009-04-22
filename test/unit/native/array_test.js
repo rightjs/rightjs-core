@@ -162,6 +162,10 @@ var ArrayTest = TestCase.create({
     this.assertEqual([1,2,3,4], [1,2].merge([2,3],[3,4]));
   },
   
+  testFlatten: function() {
+    this.assertEqual([1,2,3,4,5,6,7,8], [1,[2,3],[4,[5,6],[7,8]]].flatten());
+  },
+  
   testCompact: function() {
     this.assertEqual([1,2,3,4], [1,null, null,2,undefined,3,4].compact());
   },
@@ -181,5 +185,27 @@ var ArrayTest = TestCase.create({
   
   testWithout: function() {
     this.assertEqual([1,4], [1,2,3,4].without(2,3));
+  },
+  
+  testAny: function() {
+    this.assert([0,false,null,1].any());
+    this.assertFalse([0,false,null].any());
+    
+    this.assert($w('1 12 123 1234').any(function(string) { return string.length > 3;}));
+    this.assertFalse($w('1 12 123 1234').any(function(string) { return string.length > 4;}));
+    
+    this.assert($w('anny manny poop').any('match', /oo/));
+    this.assertFalse($w('anny manny poop').any('match', /robot/));
+  },
+  
+  testAll: function() {
+    this.assert([1, true, ' '].all());
+    this.assertFalse([true, ' ', 0].all());
+    
+    this.assert($w('1 12 123 1234').all(function(string) { return string.length > 0; }));
+    this.assertFalse($w('1 12 123 1234').all(function(string) { return string.length > 1; }));
+    
+    this.assert($w('anny manny banny').all('match', /a/));
+    this.assertFalse($w('anny manny banny').all('match', /m/));
   }
 });

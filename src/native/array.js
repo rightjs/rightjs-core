@@ -225,6 +225,25 @@ $ext(Array.prototype, {
   },
   
   /**
+   * flats out complex array into a single dimension array
+   *
+   * @return Array flatten copy
+   */
+  flatten: function() {
+    for (var copy = [], i=0; i < this.length; i++) {
+      if (this[i] instanceof Array) {
+        var flat = this[i].flatten();
+        for (var j=0; j < flat.length; j++) {
+          copy.push(flat[j]);
+        }
+      } else {
+        copy.push(this[i]);
+      }
+    }
+    return copy;
+  },
+  
+  /**
    * returns a copy of the array whithout any null or undefined values
    *
    * @return Array filtered version
@@ -275,6 +294,53 @@ $ext(Array.prototype, {
       if (!filter.includes(this[i]))
         copy.push(this[i]);
     return copy;
+  },
+  
+  /**
+   * checks if any of the array elements is logically true
+   *
+   * @param Function optional callback for checks
+   * @param Object optional scope for the callback
+   * @return Boolean check result
+   */
+  any: function(callback, scope) {
+    var func = function(value) { return !!value; };
+    if (isString(callback)) {
+      var args = $A(arguments).slice(1), func = function(value, i) {
+        return this._call(callback, args, i);
+      };
+    } else if (callback) {
+      func = callback;
+    }
+    for (var i=0; i < this.length; i++) {
+      if (func.apply(this, [this[i], i, this]))
+        return true;
+    }
+    return false;
+  },
+  
+  /**
+   * checks if all the array elements are logically true
+   *
+   * @param Function optional callback for checks
+   * @param Object optional scope for the callback
+   * @return Boolean check result
+   */
+  all: function(callback, scope) {
+    var func = function(value) { return !!value; };
+    if (isString(callback)) {
+      var args = $A(arguments).slice(1), func = function(value, i) {
+        return this._call(callback, args, i);
+      };
+    } else if (callback) {
+      func = callback;
+    }
+    for (var i=0; i < this.length; i++) {
+      if (!func.apply(this, [this[i], i, this]))
+        return false;
+    }
+    
+    return true;
   },
   
 // private
