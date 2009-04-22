@@ -91,6 +91,25 @@ var ArrayTest = TestCase.create({
     this.assertEqual([2,4,3,4], a);
   },
   
+  testWalkByName: function() {
+    var s = 'Mary Linda Anna Sandy';
+    
+    var a = $w(s);
+    var b = a.walk('toLowerCase');
+    this.assertSame(b, a);
+    this.assertEqual($w(s.toLowerCase()), a);
+    
+    var a = $w(s);
+    var b = a.walk('replace', /a/g, 'u');
+    this.assertSame(b, a);
+    this.assertEqual($w(s.replace(/a/g, 'u')), a);
+    
+    var a = $w(s);
+    var b = a.walk('length');
+    this.assertSame(b,a);
+    this.assertEqual([4, 5, 4, 5], a);
+  },
+  
   testSelect: function() {
     this.assertEqual([2,4], [1,2,3,4].select(function(i) { return i%2==0; }));
   },
@@ -100,6 +119,17 @@ var ArrayTest = TestCase.create({
       if (i > 2) $break();
       return i%2==0;
     }));
+  },
+  
+  testSelectByName: function() {
+    var a = ['', ' ', 'a'];
+    
+    this.assertEqual([''],      a.select('empty'));
+    this.assertEqual(['', ' '], a.select('blank'));
+    this.assertEqual([' ', 'a'], a.select('length'));
+    
+    var a = $w('banana orange lime apple');
+    this.assertEqual($w('banana orange apple'), a.select('includes', 'a'));
   },
   
   testCollect: function() {
@@ -115,6 +145,13 @@ var ArrayTest = TestCase.create({
       return item * 2;
     }));
     this.assertEqual([1,2,3,4], a);
+  },
+  
+  testCollectByName: function() {
+    var a = $w('1 12 123 1234');
+    this.assertEqual([1,2,3,4], a.collect('length'));
+    this.assertEqual([false, false, true, true], a.collect('includes', '3'));
+    this.assertEqual($w('1 12 125 1254'), a.collect('replace', /3/, '5'));
   },
   
   testConcat: function() {

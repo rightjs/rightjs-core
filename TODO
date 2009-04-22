@@ -8,12 +8,12 @@ investigate/patch String to support negative offsets
 
 see if you can shortify the Element static mirrors generation code.
 
-add '&methodName' feature to the Array's collect/etc methods
-[1,2,3].collect('methodName', [attributes])
-
 --------
 Completed
 ---------
+
+add '&methodName' feature to the Array's collect/etc methods
+[1,2,3].collect('methodName', [attributes])
 
 try to optimize the search with document.querySelector
 
