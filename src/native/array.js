@@ -144,7 +144,7 @@ $ext(Array.prototype, {
    * @param Object optional scope
    * @return Array filtered copy
    */
-  select: function(callback, scope) {
+  filter: function(callback, scope) {
     var collection = [], func = function(value, i) {
       if (callback.apply(scope, [value, i, this]))
         collection.push(value);
@@ -167,7 +167,7 @@ $ext(Array.prototype, {
    * @param Object optional scope
    * @return Array collected
    */
-  collect: function(callback, scope) {
+  map: function(callback, scope) {
     var collection = [], func = function(value, i) {
       collection.push(callback.apply(scope, [value, i, this]));
     };
@@ -176,6 +176,7 @@ $ext(Array.prototype, {
         collection.push(this._call(callback, args, i));
       };
     }
+    
     this.each(func, this);
     
     return collection;
@@ -301,7 +302,7 @@ $ext(Array.prototype, {
    *
    * @param Function optional callback for checks
    * @param Object optional scope for the callback
-   * @return Boolean check result
+   * @return mixed the first non-false item or false if nothing found
    */
   any: function(callback, scope) {
     var func = function(value) { return !!value; };
@@ -314,7 +315,7 @@ $ext(Array.prototype, {
     }
     for (var i=0; i < this.length; i++) {
       if (func.apply(this, [this[i], i, this]))
-        return true;
+        return this[i];
     }
     return false;
   },
@@ -327,7 +328,7 @@ $ext(Array.prototype, {
    * @return Boolean check result
    */
   all: function(callback, scope) {
-    var func = function(value) { return !!value; };
+    var func = function(value) { return value; };
     if (isString(callback)) {
       var args = $A(arguments).slice(1), func = function(value, i) {
         return this._call(callback, args, i);

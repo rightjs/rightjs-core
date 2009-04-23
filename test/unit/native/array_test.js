@@ -110,48 +110,48 @@ var ArrayTest = TestCase.create({
     this.assertEqual([4, 5, 4, 5], a);
   },
   
-  testSelect: function() {
-    this.assertEqual([2,4], [1,2,3,4].select(function(i) { return i%2==0; }));
+  testFilter: function() {
+    this.assertEqual([2,4], [1,2,3,4].filter(function(i) { return i%2==0; }));
   },
   
-  testSelectWithBreak: function() {
-    this.assertEqual([2], [1,2,3,4].select(function(i) {
+  testFilterWithBreak: function() {
+    this.assertEqual([2], [1,2,3,4].filter(function(i) {
       if (i > 2) $break();
       return i%2==0;
     }));
   },
   
-  testSelectByName: function() {
+  testFilterByName: function() {
     var a = ['', ' ', 'a'];
     
-    this.assertEqual([''],      a.select('empty'));
-    this.assertEqual(['', ' '], a.select('blank'));
-    this.assertEqual([' ', 'a'], a.select('length'));
+    this.assertEqual([''],      a.filter('empty'));
+    this.assertEqual(['', ' '], a.filter('blank'));
+    this.assertEqual([' ', 'a'], a.filter('length'));
     
     var a = $w('banana orange lime apple');
-    this.assertEqual($w('banana orange apple'), a.select('includes', 'a'));
+    this.assertEqual($w('banana orange apple'), a.filter('includes', 'a'));
   },
   
-  testCollect: function() {
+  testMap: function() {
     var a = [1,2,3,4];
-    this.assertEqual([2,4,6,8], a.collect(function(item) { return item * 2; }));
+    this.assertEqual([2,4,6,8], a.map(function(item) { return item * 2; }));
     this.assertEqual([1,2,3,4], a);
   },
   
-  testCollectWithBreak: function() {
+  testMapWithBreak: function() {
     var a = [1,2,3,4];
-    this.assertEqual([2,4], a.collect(function(item) {
+    this.assertEqual([2,4], a.map(function(item) {
       if (item > 2) $break();
       return item * 2;
     }));
     this.assertEqual([1,2,3,4], a);
   },
   
-  testCollectByName: function() {
+  testMapByName: function() {
     var a = $w('1 12 123 1234');
-    this.assertEqual([1,2,3,4], a.collect('length'));
-    this.assertEqual([false, false, true, true], a.collect('includes', '3'));
-    this.assertEqual($w('1 12 125 1254'), a.collect('replace', /3/, '5'));
+    this.assertEqual([1,2,3,4], a.map('length'));
+    this.assertEqual([false, false, true, true], a.map('includes', '3'));
+    this.assertEqual($w('1 12 125 1254'), a.map('replace', /3/, '5'));
   },
   
   testConcat: function() {
