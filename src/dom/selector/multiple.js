@@ -12,14 +12,9 @@ Selector.Multiple  = new Class({
    */
   initialize: function(css_rule) {
     this.cssRule = css_rule;
-    this.selectors = [];
-    
-    var rules = css_rule.split(',');
-    for (var i=0; i < rules.length; i++) {
-      if (!rules[i].blank()) {
-        this.selectors.push(new Selector.Manual(rules[i]));
-      }
-    }
+    this.selectors = css_rule.split(',').map(function(rule) {
+      return rule.blank() ? null : new Selector.Manual(rule);
+    }).compact();
   },
 
   /**
@@ -29,13 +24,7 @@ Selector.Multiple  = new Class({
    * @return Element matching element or null if nothing found
    */
   first: function(node) {
-    var founds = [];
-    for (var i=0; i < this.selectors.length; i++) {
-      var found = this.selectors[i].first(node);
-      if (found) founds.push(found);
-    }
-    
-    return founds.first();
+    return this.selectors.map('first', node).any();
   },
 
   /**
@@ -45,11 +34,7 @@ Selector.Multiple  = new Class({
    * @return Array found nodes
    */
   select: function(node) {
-    var founds = [];
-    for (var i=0; i < this.selectors.length; i++)
-      founds.merge(this.selectors[i].select(node));
-
-    return founds;
+    return this.selectors.map('select', node, null).flatten().uniq();
   },
 
   /**
@@ -59,10 +44,6 @@ Selector.Multiple  = new Class({
    * @return boolean check result
    */
   match: function(node) {
-    for (var i=0; i < this.selectors.length; i++) {
-      if (this.selectors[i].match(node))
-        return true;
-    }
-    return !this.selectors.length; // fallback true only if there's no rules on the list
+    return !!this.selectors.any('match', node) || !this.selectors.length;
   }
 });

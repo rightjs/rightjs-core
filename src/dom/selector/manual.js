@@ -76,7 +76,7 @@ Selector.Manual = new Class({
       // searching for the top parent node
       // NOTE: don't use the Element.parents in here to avoid annecessary elements extending
       var p = element, parent;
-      while ((p = p.parentNode)) parent = p;
+      while ((p = p.parentNode) && p.tagName) parent = p;
     } else {
       // putting the element in a temporary context so we could test it
       var parent = document.createElement('div'), fake_parent = true;
