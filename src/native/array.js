@@ -123,18 +123,8 @@ $ext(Array.prototype, {
    * @param Object optional scope
    * @return Array self
    */
-  walk: function(callback, scope) {
-    var func = function(value, i) {
-      this[i] = callback.apply(scope, [value, i, this]);
-    };
-    if (isString(callback)) {
-      var args = $A(arguments).slice(1), func = function(value, i) {
-        this[i] = this._call(callback, args, i);
-      };
-    }
-    this.each(func, this)
-      
-    return this;
+  walk: function() {
+    return this.each(this._call(arguments, 'this[i]=$c'), this);
   },
   
   /**
@@ -144,20 +134,10 @@ $ext(Array.prototype, {
    * @param Object optional scope
    * @return Array filtered copy
    */
-  filter: function(callback, scope) {
-    var collection = [], func = function(value, i) {
-      if (callback.apply(scope, [value, i, this]))
-        collection.push(value);
-    };
-    if (isString(callback)) {
-      var args = $A(arguments).slice(1), func = function(value, i) {
-        if (this._call(callback, args, i))
-          collection.push(value);
-      };
-    }
-    this.each(func, this);
-    
-    return collection;
+  filter: function() {
+    var c = [];
+    this.each(this._call(arguments, 'if($c)c.push(v)', c), this);
+    return c;
   },
   
   /**
@@ -167,24 +147,16 @@ $ext(Array.prototype, {
    * @param Object optional scope
    * @return Array collected
    */
-  map: function(callback, scope) {
-    var collection = [], func = function(value, i) {
-      collection.push(callback.apply(scope, [value, i, this]));
-    };
-    if (isString(callback)) {
-      var args = $A(arguments).slice(1), func = function(value, i) {
-        collection.push(this._call(callback, args, i));
-      };
-    }
-    
-    this.each(func, this);
-    
-    return collection;
+  map: function() {
+    var c = [];
+    this.each(this._call(arguments, 'c.push($c)', c), this);
+    return c;
   },
   
   /**
    * concats all the arrays passed as the arguments
-   * NOTE: this method _will_change_ the array by itself
+   * NOTE: this method unlike the original method 
+   *       _will_change_ the array by itself
    *
    * @param Array to concat
    * ....................
@@ -192,12 +164,8 @@ $ext(Array.prototype, {
    */
   concat: function() {
     for (var i=0; i < arguments.length; i++) {
-      if (isArray(arguments[i])) {
-        for (var j=0; j < arguments[i].length; j++) {
-          this.push(arguments[i][j]);
-        }
-      } else {
-        this.push(arguments[i]);
+      for (var j=0; j < arguments[i].length; j++) {
+        this.push(arguments[i][j]);
       }
     }
     return this;
@@ -205,7 +173,6 @@ $ext(Array.prototype, {
   
   /**
    * similar to the concat function but it adds only the values which are not on the list yet
-   * NOTE: this method _will_change_ the array by itself
    *
    * @param Array to merge
    * ....................
@@ -213,13 +180,9 @@ $ext(Array.prototype, {
    */
   merge: function() {
     for (var i=0; i < arguments.length; i++) {
-      if (isArray(arguments[i])) {
-        for (var j=0; j < arguments[i].length; j++) {
-          if (!this.includes(arguments[i][j]))
-            this.push(arguments[i][j]);
-        }
-      } else {
-        this.merge([arguments[i]]);
+      for (var j=0; j < arguments[i].length; j++) {
+        if (!this.includes(arguments[i][j]))
+          this.push(arguments[i][j]);
       }
     }
     return this;
@@ -232,7 +195,7 @@ $ext(Array.prototype, {
    */
   flatten: function() {
     for (var copy = [], i=0; i < this.length; i++) {
-      if (this[i] instanceof Array) {
+      if (isArray(this[i])) {
         var flat = this[i].flatten();
         for (var j=0; j < flat.length; j++) {
           copy.push(flat[j]);
@@ -250,10 +213,7 @@ $ext(Array.prototype, {
    * @return Array filtered version
    */
   compact: function() {
-    for (var copy = [], i=0; i < this.length; i++)
-      if (this[i] != null && this[i] !== undefined)
-        copy.push(this[i]);
-    return copy;
+    return this.without(null, undefined);
   },
   
   /**
@@ -262,10 +222,7 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   uniq: function() {
-    for (var copy = [], i=0; i < this.length; i++)
-      if (!copy.includes(this[i]))
-        copy.push(this[i]);
-    return copy;
+    return [].merge(this);
   },
   
   /**
@@ -304,20 +261,8 @@ $ext(Array.prototype, {
    * @param Object optional scope for the callback
    * @return mixed the first non-false item or false if nothing found
    */
-  any: function(callback, scope) {
-    var func = function(value) { return !!value; };
-    if (isString(callback)) {
-      var args = $A(arguments).slice(1), func = function(value, i) {
-        return this._call(callback, args, i);
-      };
-    } else if (callback) {
-      func = callback;
-    }
-    for (var i=0; i < this.length; i++) {
-      if (func.apply(this, [this[i], i, this]))
-        return this[i];
-    }
-    return false;
+  any: function() {
+    return this._all(arguments, 'any');
   },
   
   /**
@@ -327,25 +272,48 @@ $ext(Array.prototype, {
    * @param Object optional scope for the callback
    * @return Boolean check result
    */
-  all: function(callback, scope) {
-    var func = function(value) { return value; };
-    if (isString(callback)) {
-      var args = $A(arguments).slice(1), func = function(value, i) {
-        return this._call(callback, args, i);
-      };
-    } else if (callback) {
-      func = callback;
-    }
-    for (var i=0; i < this.length; i++) {
-      if (!func.apply(this, [this[i], i, this]))
-        return false;
-    }
-    
-    return true;
+  all: function() {
+    return this._all(arguments, 'all');
   },
   
 // private
-  _call: function(attr, args, i) {
-    return isFunction(this[i][attr]) ? this[i][attr].apply(this[i], [].merge(args).merge([this[i], i, this])) : this[i][attr];
+
+  // compiles the callback function for the walk/filter/map methods
+  _call: function(args, pattern, c) {
+    var a = $A(args), m = a.shift();
+    if (isString(m)) {
+      var replace = 'isFunction(v[m])?v[m].apply(v,[].concat(a).concat([v,i,this])):v[m]';
+    } else {
+      var s = a.shift(), replace = 'm.apply(s,[v,i,this])';
+    }
+    eval('var func=function(v,i){'+pattern.replace('$c', replace)+'}');
+    
+    return func;
+  },
+  
+  // processes the all and any methods
+  _all: function(args, what) {
+    var args = $A(args), callback = args.shift(), scope = this;
+    
+    if (!callback) {
+      callback = function(value) { return !!value; };
+    } else if (isFunction(callback)) {
+      scope = args.shift();
+    } else if (isString(callback)) {
+      var attr = callback;
+      callback = function(value,i) {
+        return !!(isFunction(value[attr]) ?
+          value[attr].apply(value, [].concat(args).concat([value,i,this])) : 
+          value[attr]);
+      };
+    }
+    
+    var break_value = what != 'all';
+    for (var i=0; i < this.length; i++) {
+      if (callback.apply(scope, [this[i],i,this]) == break_value)
+        return what == 'all' ? false : this[i];
+    }
+    
+    return !break_value;
   }
 });
