@@ -151,11 +151,8 @@ function isNode(value) {
  * @param Object iterable
  * @return Array list
  */
-function $A(it) {
-  var a = [];
-  for (var i=0; i < it.length; i++)
-    a.push(it[i]);
-  return a;
+function $A(iterable) {
+  return [].concat(iterable);
 };
 
 /**

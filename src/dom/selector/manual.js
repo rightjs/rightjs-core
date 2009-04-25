@@ -72,20 +72,26 @@ Selector.Manual = new Class({
    * @return boolean check result
    */
   match: function(element) {
-    if (element.parentNode) {
-      // searching for the top parent node
-      // NOTE: don't use the Element.parents in here to avoid annecessary elements extending
-      var p = element, parent;
-      while ((p = p.parentNode) && p.tagName) parent = p;
+    // if there's just one atom, we simple match against it.
+    if (this.atoms.length > 1) {
+      if (element.parentNode) {
+          // searching for the top parent node
+          // NOTE: don't use the Element.parents in here to avoid annecessary elements extending
+          var p = element, parent;
+          while ((p = p.parentNode)) parent = p;
+        } else {
+          // putting the element in a temporary context so we could test it
+          var parent = document.createElement('div'), fake_parent = true;
+          parent.id = '-----fake'; // <- this id is used in the manual 'match' method, to determine if the element originally had no parent node
+          parent.appendChild(element);
+        }
+
+        var match = this.select(parent).includes(element);
+        if (fake_parent) Element.remove(element);
     } else {
-      // putting the element in a temporary context so we could test it
-      var parent = document.createElement('div'), fake_parent = true;
-      parent.id = '-----fake'; // <- this id is used in the manual 'match' method, to determine if the element originally had no parent node
-      parent.appendChild(element);
+      // if there's more than one atom, we match the element in a context
+      var match = this.atoms[0].match(element);
     }
-    var match = this.select(parent).includes(element);
-    
-    if (fake_parent) Element.remove(element);
     
     return match;
   },

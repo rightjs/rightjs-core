@@ -1,6 +1,6 @@
 SelectorMultipleTest = TestCase.create({
   name: 'SelectorMultipleTest',
-  /*
+  
   testInstance: function() {
     var selector = new Selector.Multiple('a, div, span');
     this.assertEqual(3, selector.selectors.length);
@@ -8,7 +8,7 @@ SelectorMultipleTest = TestCase.create({
     this.assertEqual('div', selector.selectors[1].cssRule);
     this.assertEqual('span', selector.selectors[2].cssRule);
   },
-  */
+  
   testMethods: function() {
     var div = document.createElement('div');
     var span1 = document.createElement('span');
@@ -19,7 +19,7 @@ SelectorMultipleTest = TestCase.create({
     
     var selector = new Selector.Multiple('a, table, span');
     
-    //this.assertSame(span1, selector.first(div));
+    this.assertSame(span1, selector.first(div));
     this.assertEqual([span1, span2], selector.select(div));
     this.assert(selector.match(span1));
     this.assert(selector.match(span2));
