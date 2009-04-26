@@ -5,6 +5,7 @@
  */
 $ext(Array.prototype, {
   /**
+   * IE fix
    * returns the index of the value in the array
    *
    * @param mixed value
@@ -19,6 +20,7 @@ $ext(Array.prototype, {
   },
   
   /**
+   * IE fix
    * returns the last index of the value in the array
    *
    * @param mixed value
@@ -121,10 +123,10 @@ $ext(Array.prototype, {
    *
    * @param Function callback
    * @param Object optional scope
-   * @return Array self
+   * @return Array new list of processed items
    */
   walk: function() {
-    return this.each(this._call(arguments, 'this[i]=$c'), this);
+    return this._call(arguments, 'c[i]=$c');
   },
   
   /**
@@ -135,9 +137,7 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   filter: function() {
-    var c = [];
-    this.each(this._call(arguments, 'if($c)c.push(v)', c), this);
-    return c;
+    return this._call(arguments, 'if($c)c.push(v)');
   },
   
   /**
@@ -148,44 +148,28 @@ $ext(Array.prototype, {
    * @return Array collected
    */
   map: function() {
-    var c = [];
-    this.each(this._call(arguments, 'c.push($c)', c), this);
-    return c;
+    return this._call(arguments, 'c.push($c)');
   },
-  
-  /**
-   * concats all the arrays passed as the arguments
-   * NOTE: this method unlike the original method 
-   *       _will_change_ the array by itself
-   *
-   * @param Array to concat
-   * ....................
-   * @return Array this
-   */
-  concat: function() {
-    for (var i=0; i < arguments.length; i++) {
-      for (var j=0; j < arguments[i].length; j++) {
-        this.push(arguments[i][j]);
-      }
-    }
-    return this;
-  },
-  
+    
   /**
    * similar to the concat function but it adds only the values which are not on the list yet
    *
    * @param Array to merge
    * ....................
-   * @return Array self
+   * @return Array new merged
    */
   merge: function() {
-    for (var i=0; i < arguments.length; i++) {
-      for (var j=0; j < arguments[i].length; j++) {
-        if (!this.includes(arguments[i][j]))
-          this.push(arguments[i][j]);
+    for (var copy = this.clone(), i=0; i < arguments.length; i++) {
+      if (isArray(arguments[i])) {
+        for (var j=0; j < arguments[i].length; j++) {
+          if (!copy.includes(arguments[i][j]))
+            copy.push(arguments[i][j]);
+        }  
+      } else if (!copy.includes(arguments[i])) {
+        copy.push(arguments[i]);
       }
     }
-    return this;
+    return copy;
   },
   
   /**
@@ -194,16 +178,14 @@ $ext(Array.prototype, {
    * @return Array flatten copy
    */
   flatten: function() {
-    for (var copy = [], i=0; i < this.length; i++) {
-      if (isArray(this[i])) {
-        var flat = this[i].flatten();
-        for (var j=0; j < flat.length; j++) {
-          copy.push(flat[j]);
-        }
+    var copy = [];
+    this.each(function(value) {
+      if (isArray(value)) {
+        copy = copy.concat(value.flatten());
       } else {
-        copy.push(this[i]);
+        copy.push(value);
       }
-    }
+    });
     return copy;
   },
   
@@ -248,9 +230,11 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   without: function() {
-    for (var filter = $A(arguments), copy = [], i=0; i < this.length; i++)
-      if (!filter.includes(this[i]))
-        copy.push(this[i]);
+    var filter = $A(arguments), copy = [];
+    this.each(function(value) {
+      if (!filter.includes(value))
+        copy.push(value);
+    });
     return copy;
   },
   
@@ -279,8 +263,8 @@ $ext(Array.prototype, {
 // private
 
   // compiles the callback function for the walk/filter/map methods
-  _call: function(args, pattern, c) {
-    var a = $A(args), m = a.shift();
+  _call: function(args, pattern) {
+    var a = $A(args), m = a.shift(), c=[];
     if (isString(m)) {
       var replace = 'isFunction(v[m])?v[m].apply(v,[].concat(a).concat([v,i,this])):v[m]';
     } else {
@@ -288,7 +272,9 @@ $ext(Array.prototype, {
     }
     eval('var func=function(v,i){'+pattern.replace('$c', replace)+'}');
     
-    return func;
+    this.each(func, this);
+    
+    return c;
   },
   
   // processes the all and any methods
@@ -308,12 +294,15 @@ $ext(Array.prototype, {
       };
     }
     
-    var break_value = what != 'all';
-    for (var i=0; i < this.length; i++) {
-      if (callback.apply(scope, [this[i],i,this]) == break_value)
-        return what == 'all' ? false : this[i];
-    }
+    var break_value = what != 'all', result = null;
     
-    return !break_value;
+    this.each(function(value,i,list) {
+      if (callback.apply(scope, [value,i,list]) == break_value) {
+        result = what == 'all' ? false : value;
+        $break();
+      }
+    });
+    
+    return result === null ? !break_value : result;
   }
 });

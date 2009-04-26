@@ -76,8 +76,8 @@ var ArrayTest = TestCase.create({
     var a = [1,2,3,4];
     var b = a.walk(function(i) { return i * 2;});
     
-    this.assertSame(a,b);
-    this.assertEqual([2,4,6,8], a);
+    this.assertEqual([2,4,6,8], b);
+    this.assertNotSame(a,b);
   },
   
   testWalkWithBreak: function() {
@@ -87,8 +87,8 @@ var ArrayTest = TestCase.create({
       return i * 2;
     });
     
-    this.assertSame(a,b);
-    this.assertEqual([2,4,3,4], a);
+    this.assertNotSame(a,b);
+    this.assertEqual([2,4], b);
   },
   
   testWalkByName: function() {
@@ -96,22 +96,25 @@ var ArrayTest = TestCase.create({
     
     var a = $w(s);
     var b = a.walk('toLowerCase');
-    this.assertSame(b, a);
-    this.assertEqual($w(s.toLowerCase()), a);
+    this.assertNotSame(b, a);
+    this.assertEqual($w(s.toLowerCase()), b);
     
     var a = $w(s);
     var b = a.walk('replace', /a/g, 'u');
-    this.assertSame(b, a);
-    this.assertEqual($w(s.replace(/a/g, 'u')), a);
+    this.assertNotSame(b, a);
+    this.assertEqual($w(s.replace(/a/g, 'u')), b);
     
     var a = $w(s);
     var b = a.walk('length');
-    this.assertSame(b,a);
-    this.assertEqual([4, 5, 4, 5], a);
+    this.assertNotSame(b,a);
+    this.assertEqual([4, 5, 4, 5], b);
   },
   
   testFilter: function() {
-    this.assertEqual([2,4], [1,2,3,4].filter(function(i) { return i%2==0; }));
+    var a = [1,2,3,4];
+    var b = a.filter(function(i) { return i%2==0; });
+    this.assertEqual([2,4], b);
+    this.assertNotSame(a,b);
   },
   
   testFilterWithBreak: function() {
@@ -155,23 +158,38 @@ var ArrayTest = TestCase.create({
   },
   
   testConcat: function() {
-    this.assertEqual([1,2,3,4], [1,2].concat([3],[4]));
+    var a = [1,2];
+    var b = a.concat([3],[4],5);
+    this.assertEqual([1,2,3,4,5], b);
+    this.assertNotSame(b,a);
   },
   
   testMerge: function() {
-    this.assertEqual([1,2,3,4], [1,2].merge([2,3],[3,4]));
+    var a = [1,2];
+    var b = a.merge([2,3],[3,4],4,5);
+    this.assertEqual([1,2,3,4,5], b);
+    this.assertNotSame(b,a);
   },
   
   testFlatten: function() {
-    this.assertEqual([1,2,3,4,5,6,7,8], [1,[2,3],[4,[5,6],[7,8]]].flatten());
+    var a = [1,[2,3],[4,[5,6],[7,8]]];
+    var b = a.flatten();
+    this.assertEqual([1,2,3,4,5,6,7,8], b);
+    this.assertNotSame(b,a);
   },
   
   testCompact: function() {
-    this.assertEqual([1,2,3,4], [1,null, null,2,undefined,3,4].compact());
+    var a = [1,null, null,2,undefined,3,4];
+    var b = a.compact();
+    this.assertEqual([1,2,3,4], b);
+    this.assertNotSame(b,a);
   },
   
   testUnique: function() {
-    this.assertEqual([1,2,3,4], [1,2,1,2,3,1,2,3,4,1,2,3,4].uniq());
+    var a = [1,2,1,2,3,1,2,3,4,1,2,3,4];
+    var b = a.uniq();
+    this.assertEqual([1,2,3,4], b);
+    this.assertNotSame(b,a);
   },
   
   testIncludes: function() {
@@ -184,7 +202,10 @@ var ArrayTest = TestCase.create({
   },
   
   testWithout: function() {
-    this.assertEqual([1,4], [1,2,3,4].without(2,3));
+    var a = [1,2,3,4];
+    var b = a.without(2,3);
+    this.assertEqual([1,4], b);
+    this.assertNotSame(b,a);
   },
   
   testAny: function() {

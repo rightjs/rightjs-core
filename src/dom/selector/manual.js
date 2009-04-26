@@ -56,7 +56,7 @@ Selector.Manual = new Class({
       if (atoms.length > 1) {
         var sub_founds = [];
         for (var i=0; i < founds.length; i++) {
-          sub_founds.merge(this.select(founds[i], atoms.slice(1)));
+          sub_founds = sub_founds.merge(this.select(founds[i], atoms.slice(1)));
         }
         founds = sub_founds;
       }
@@ -72,8 +72,8 @@ Selector.Manual = new Class({
    * @return boolean check result
    */
   match: function(element) {
-    // if there's just one atom, we simple match against it.
-    if (this.atoms.length > 1) {
+    // if there's more than one atom, we match the element in a context
+    if (!this.atoms || this.atoms.length > 1) {
       if (element.parentNode) {
           // searching for the top parent node
           // NOTE: don't use the Element.parents in here to avoid annecessary elements extending
@@ -89,7 +89,7 @@ Selector.Manual = new Class({
         var match = this.select(parent).includes(element);
         if (fake_parent) Element.remove(element);
     } else {
-      // if there's more than one atom, we match the element in a context
+      // if there's just one atom, we simple match against it.
       var match = this.atoms[0].match(element);
     }
     

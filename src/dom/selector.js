@@ -73,7 +73,7 @@ var Selector = new Class({
     this.cssRule = css_rule || '*';
     
     // converting virtual selectors into real ones
-    var dict = [
+    [
       [/:last(?!-)/g, ':last-child'],
       [/:only(?!-)/g, ':only-child'],
       [/:odd/g,  ':nth-child(2n+1)'],
@@ -81,10 +81,9 @@ var Selector = new Class({
       [/:nth-child\(odd\)/g,  ':nth-child(2n+1)'],
       [/:nth-child\(even\)/g, ':nth-child(2n)'],
       [/:index\(\s*\d+\s*\)/g, function(m) {return ":nth-child("+(m.match(/\d+/).first().toInt() + 1)+")"}]
-    ];
-    for (var i=0; i < dict.length; i++) {
-      this.cssRule = this.cssRule.replace(dict[i][0], dict[i][1]);
-    }
+    ].each(function(pair) {
+      this.cssRule = this.cssRule.replace(pair[0], pair[1]);
+    }, this);
     
     return this;
   }
