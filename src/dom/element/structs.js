@@ -162,9 +162,6 @@ $ext(Element.Methods, {
   empty: function() {
     return this.innerHTML.blank();
   },
-  
-  
-// protected
 
   /**
    * recursively collects nodes by pointer attribute name
@@ -184,6 +181,8 @@ $ext(Element.Methods, {
     
     return nodes;
   },
+  
+// protected
   
   // list of insertions handling functions
   // NOTE: each of the methods will be called in the contects of the current element

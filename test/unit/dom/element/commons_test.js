@@ -174,5 +174,31 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(this.div);
     
     this.assertNull(this.div['toggle'], "checking that the element was not extended");
+  },
+  
+  testRadio: function() {
+    var block = document.createElement('div');
+    var div1  = new Element('div');
+    var div2  = new Element('div');
+    var div3  = new Element('div');
+    
+    block.appendChild(div1);
+    block.appendChild(div2);
+    block.appendChild(div3);
+    
+    this.assertSame(div1, div1.radio());
+    this.assertVisible(div1, 'div1');
+    this.assertHidden(div2);
+    this.assertHidden(div3);
+    
+    this.assertSame(div2, div2.radio());
+    this.assertVisible(div2, 'div2');
+    this.assertHidden(div1);
+    this.assertHidden(div3);
+    
+    this.assertSame(div3, div3.radio());
+    this.assertVisible(div3, 'div3');
+    this.assertHidden(div2);
+    this.assertHidden(div1);
   }
 })

@@ -1,3 +1,7 @@
+Regexp#escape
+
+String#escapeHTML #truncate  ???
+
 move Array extensions in the Enumerable extension
 
 handle the various css naming/values cases. Like opacity, filter, overflow etc.
@@ -13,6 +17,8 @@ see if you can shortify the Element static mirrors generation code.
 --------
 Completed
 ---------
+
+Element#radio
 
 add '&methodName' feature to the Array's collect/etc methods
 [1,2,3].collect('methodName', [attributes])

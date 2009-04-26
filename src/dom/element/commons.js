@@ -94,7 +94,7 @@ $ext(Element.Methods, {
    * @return Element self
    */
   show: function(effect, options) {
-    this.style.display = this.__prevDisplay || '';
+    this.style.display = this.__prevDisplay == 'none' ? '' : this.__prevDisplay || '';
     return this;
   },
   
@@ -107,5 +107,17 @@ $ext(Element.Methods, {
    */
   toggle: function(effect, options) {
     return this[this.hidden() ? 'show' : 'hide'](effect, options);
+  },
+  
+  /**
+   * shows the element and hides all the sibligns
+   *
+   * @param String optional effect name
+   * @param Object the optional effect options
+   * @return Element self
+   */
+  radio: function(effect, options) {
+    this.siblings().walk('hide', effect, options);
+    return this.show();
   }
 });
