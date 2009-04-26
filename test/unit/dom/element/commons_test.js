@@ -200,5 +200,22 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(div3, 'div3');
     this.assertHidden(div2);
     this.assertHidden(div1);
+  },
+  
+  testRadio_static: function() {
+    var block = document.createElement('div');
+    var div1  = document.createElement('div');
+    var div2  = document.createElement('div');
+    var div3  = document.createElement('div');
+    
+    block.appendChild(div1);
+    block.appendChild(div2);
+    block.appendChild(div3);
+    
+    this.assertSame(div2, Element.radio(div2));
+    this.assertVisible(div2);
+    this.assertHidden(div1);
+    this.assertHidden(div3);
+    this.assertNull(div2['radio']);
   }
 })
