@@ -37,10 +37,12 @@ var ElementEventsTest = TestCase.create({
   },
   
   assertObserve: function(element) {
-    var wired = false, call = this._callFor(element, 'observe');
-    this.assertSame(element, call(element, 'click', function() { wired = true; }));
+    var wired = false, call = this._callFor(element, 'observe'), context = null;
+    this.assertSame(element, call(element, 'click', function() { wired = true; context = this; }));
     this.fireClick(element);
     this.assert(wired);
+    //alert(context == window);
+    this.assertSame(element, context);
   },
   
   testObserve_nameVariations: function() {
@@ -102,8 +104,8 @@ var ElementEventsTest = TestCase.create({
   
   assertObserves: function(element) {
     var func = function() {},
-        observe = this._callFor(element, 'observe'),
-        observes = this._callFor(element, 'observes');
+      observe  = this._callFor(element, 'observe'),
+      observes = this._callFor(element, 'observes');
         
     observe(element, 'click', func);
     
@@ -146,7 +148,7 @@ var ElementEventsTest = TestCase.create({
     var observes = this._callFor(element, 'observes');
     var stopObserving = this._callFor(element, 'stopObserving');
     
-    var func1 = function() {clicked1 = true;};
+    var func1 = function() {alert('ooops');clicked1 = true;};
     var func2 = function() {clicked2 = true;};
     
     observe(element, 'click', func1);
@@ -179,20 +181,51 @@ var ElementEventsTest = TestCase.create({
     var element = new Element('div');
     document.body.appendChild(element);
     
-    var clicked = false;
-    element.observe('click', function() { clicked = true; });
+    var clicked = false, event = null;
+    element.observe('click', function(e) { event = e; clicked = true; });
     
-    var event = element.fire('click');
+    this.assertSame(element, element.fire('click'));
     
     this.assert(clicked);
     this.assert('click', event.eventName);
     
-    clicked = false;
+    element.remove();
+  },
+  
+  testObserversShortcuts: function() {
+    var element = new Element('div');
     
-    var event = element.click();
+    this.assertNotNull(element.onClick);
+    this.assertNotNull(element.click);
     
-    this.assert(clicked);
+    var first = false, second = false;
+    
+    this.assertSame(element, element.onClick(function() { first = true }));
+    this.assertSame(element, element.onClick(function() { second = true }));
+    
+    document.body.appendChild(element);
+    
+    element.click();
+    
+    this.assert(first);
+    this.assert(second);
     
     element.remove();
+  },
+  
+  testObserverShortcutsList: function() {
+    var element = new Element('div');
+    
+    this.assertEqual(
+      Event.Mouse.prototype.NAMES.concat(Event.Keyboard.prototype.NAMES),
+      Element.Methods.NATIVE_EVENTS
+    );
+    
+    this.assertEqual(Element.Methods.NATIVE_EVENTS, element.NATIVE_EVENTS);
+    
+    Element.Methods.NATIVE_EVENTS.each(function(name) {
+      this.assertTypeOf('function', element[name]);
+      this.assertTypeOf('function', element['on'+name.capitalize()]);
+    }, this);
   }
 });

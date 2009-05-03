@@ -15,6 +15,11 @@ var tests = {
   FunctionTest:          'unit/native/function_test.js',
   NumberTest:            'unit/native/number_test.js',
   
+  EventTest:             'unit/dom/event_test.js',
+  EventBaseTest:         'unit/dom/event/base_test.js',
+  EventMouseTest:        'unit/dom/event/mouse_test.js',
+  EventKeyboardTest:     'unit/dom/event/keyboard_test.js',
+  
   ElementTest:           'unit/dom/element_test.js',
   ElementStylesTest:     'unit/dom/element/styles_test.js',
   ElementCommonsTest:    'unit/dom/element/commons_test.js',
@@ -26,11 +31,6 @@ var tests = {
   SelectorAtomTest:      'unit/dom/selector/atom_test.js',
   SelectorManualTest:    'unit/dom/selector/manual_test.js',
   SelectorMultipleTest:  'unit/dom/selector/multiple_test.js',
-  
-  EventTest:             'unit/dom/event_test.js',
-  EventBaseTest:         'unit/dom/event/base_test.js',
-  EventMouseTest:        'unit/dom/event/mouse_test.js',
-  EventKeyboardTest:     'unit/dom/event/keyboard_test.js',
   
   CookieTest:            'unit/util/cookie_test.js'
 };

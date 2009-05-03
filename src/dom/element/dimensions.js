@@ -6,14 +6,6 @@
  */
 $ext(Element.Methods, {
   
-  width: function() {
-    return this.offsetWidth;
-  },
-  
-  height: function() {
-    return this.offsetHeight;
-  },
-  
   top: function() {
     return this.dimensions().top;
   },
@@ -22,8 +14,8 @@ $ext(Element.Methods, {
     return this.dimensions().left;
   },
   
-  size: function() {
-    return { x: this.width(), y: this.height() };
+  sizes: function() {
+    return { x: this.offsetWidth, y: this.offsetHeight };
   },
   
   position: function() {
@@ -59,8 +51,8 @@ $ext(Element.Methods, {
     return {
       top:        top,
       left:       left,
-      width:      this.size().x,
-      height:     this.size().y,
+      width:      this.sizes().x,
+      height:     this.sizes().y,
       scrollLeft: this.scrolls().x,
       scrollTop:  this.scrolls().y
     };

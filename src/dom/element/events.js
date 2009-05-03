@@ -86,19 +86,9 @@ $ext(Element.Methods, {
     } else {
       this.fireEvent(event.eventType, event);
     }
-    return event;
+    return this;
   },
-  
-  /**
-   * shortcut to fire a mouse-click event
-   *
-   * @param Object optional event options
-   * @return Event fired event
-   */
-  click: function(options) {
-    return this.fire('click', options);
-  },
-  
+    
   /**
    * cleans the events cache
    *
@@ -150,11 +140,13 @@ $ext(Element.Methods, {
     var wrap = (function(callback) {
       return function() {
         Event.ext(arguments[0]);
-        return callback.apply(null, arguments);
+        return callback.apply(this, arguments);
       };
     })(callback);
     
-    this._eventsCache = this._eventsCache || {};
+    if (Browser.IE) wrap = wrap.bind(this);
+    
+    this._eventsCache       = this._eventsCache       || {};
     this._eventsCache[what] = this._eventsCache[what] || [];
     this._eventsCache[what].push({orig: callback, wrap: wrap});
     
@@ -186,12 +178,28 @@ $ext(Element.Methods, {
  */
 if (!Element.prototype.addEventListener) {
   $ext(Element.Methods, {
-    addEventListener: function(what, callback, captive) {
+    addEventListener: function(what, callback) {
       this.attachEvent('on'+ what, callback);
     },
     
-    removeEventListener: function(what, callback, captive) {
+    removeEventListener: function(what, callback) {
       this.detachEvent('on'+ what, callback);
     }
   });
 };
+
+/**
+ * creating shortcuts for the native events
+ *
+ */
+(Element.Methods.NATIVE_EVENTS = Event.Mouse.prototype.NAMES.concat(Event.Keyboard.prototype.NAMES)).each(function(name) {
+  // creates events firing methods like element.click();
+  Element.Methods[name] = function(options) {
+    return this.fire(name, options);
+  };
+  // creates events assignment methods like element.onClick(function(){});
+  Element.Methods['on'+name.capitalize()] = function(callback) {
+    return this.observe(name, callback);
+  };
+});
+

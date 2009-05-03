@@ -27,6 +27,11 @@ JS_SOURCES = %w{
   src/util/cookie.js
   src/util/break.js
   
+  src/dom/event.js
+  src/dom/event/base.js
+  src/dom/event/mouse.js
+  src/dom/event/keyboard.js
+  
   src/dom/element.js
   src/dom/element/styles.js
   src/dom/element/commons.js
@@ -39,11 +44,6 @@ JS_SOURCES = %w{
   src/dom/selector/manual.js
   src/dom/selector/native.js
   src/dom/selector/multiple.js
-  
-  src/dom/event.js
-  src/dom/event/base.js
-  src/dom/event/mouse.js
-  src/dom/event/keyboard.js
   
   src/dom/extend.js
 }
