@@ -1,7 +1,7 @@
 /**
  * DOM Element events handling methods
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Element.Methods, {
   /**

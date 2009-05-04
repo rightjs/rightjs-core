@@ -100,13 +100,7 @@ var EventTest = TestCase.create({
       }, this);
     }
   },
-  
-  testWrongEventTypeInstance: function() {
-    this.assertThrows(String, function() {
-      var event = new Event('undefined type');
-    });
-  },
-  
+    
   testInstanceWithOptions: function() {
     var event = new Event('click', {
       altKey: true,
@@ -117,5 +111,17 @@ var EventTest = TestCase.create({
     this.assert(event.altKey);
     this.assert(event.ctrlKey);
     this.assert(event.shiftKey);
+  },
+  
+  testCustomEvent: function() {
+    var event = new Event('custom', {
+      foo: 'foo',
+      bar: 'bar'
+    });
+    
+    this.assertInstanceOf(Event.Custom, event);
+    this.assertEqual('custom', event.eventName);
+    this.assertEqual('foo', event.foo);
+    this.assertEqual('bar', event.bar);
   }
 });

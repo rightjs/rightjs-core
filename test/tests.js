@@ -32,6 +32,7 @@ var tests = {
   SelectorManualTest:    'unit/dom/selector/manual_test.js',
   SelectorMultipleTest:  'unit/dom/selector/multiple_test.js',
   
+  ObserverTest:          'unit/util/observer_test.js',
   CookieTest:            'unit/util/cookie_test.js'
 };
 

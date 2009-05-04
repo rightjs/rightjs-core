@@ -81,10 +81,12 @@ var Event = new Class(Event, {
     
     if (isString(event)) {
       var name = Event.cleanName(event);
-      if (Event.Keyboard.prototype.NAMES.includes(name)) {
+      if (Event.Mouse.prototype.NAMES.includes(name)) {
+        event = new Event.Mouse(name, options);
+      } else if (Event.Keyboard.prototype.NAMES.includes(name)) {
         event = new Event.Keyboard(name, options);
       } else {
-        event = new Event.Mouse(name, options);
+        event = new Event.Custom(name, options);
       }
     }
     

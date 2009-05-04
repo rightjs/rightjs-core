@@ -91,12 +91,8 @@ Event.Base = new Class(Event.NATIVE, {
    */
   options: function(name, options) {
     options = Object.merge({}, Event.Base.OPTIONS, this.OPTIONS, options);
+    options.name = name;
     
-    if (this.NAMES.includes(name)) {
-      options.name = name;
-    } else {
-      throw("Unknown event type '"+name+"'");
-    }
     return options;
   }
 });

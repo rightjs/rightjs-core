@@ -24,6 +24,7 @@ JS_SOURCES = %w{
   src/core/class/util.js
   src/core/class/methods.js
   
+  src/util/observer.js
   src/util/cookie.js
   src/util/break.js
   
@@ -31,6 +32,7 @@ JS_SOURCES = %w{
   src/dom/event/base.js
   src/dom/event/mouse.js
   src/dom/event/keyboard.js
+  src/dom/event/custom.js
   
   src/dom/element.js
   src/dom/element/styles.js
