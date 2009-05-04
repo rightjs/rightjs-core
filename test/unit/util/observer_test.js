@@ -15,16 +15,6 @@ var ObserverTest = TestCase.create({
     this.assertNotNull(o.fire, "has 'fire' method");
   },
   
-  testCreate: function() {
-    var o = {};
-    Observer.create(o);
-    
-    this.assertNotNull(o.observe, "has 'observe' method");
-    this.assertNotNull(o.observes, "has 'observes' method");
-    this.assertNotNull(o.stopObserving, "has 'stopObserving' method");
-    this.assertNotNull(o.fire, "has 'fire' method");
-  },
-  
   testObserve: function() {
     var o = new Observer();
     var f1 = function() {};
@@ -275,5 +265,74 @@ var ObserverTest = TestCase.create({
     this.assertInstanceOf(Event.Custom, e1);
     this.assertSame(o, scope);
     this.assertEqual('custom data', data);
+  },
+  
+  testCreate: function() {
+    var o = {};
+    
+    var wire_name, wire_call, wire_scope, stop_name, stop_call, stop_scope, wrap_name, wrap_call, wrap_scope;
+    
+    Observer.create(o, {
+      wire: function(name, callback) {
+        wire_name  = name;
+        wire_call  = callback;
+        wire_scope = this;
+      },
+      stop: function(name, callback) {
+        stop_name  = name;
+        stop_call  = callback;
+        stop_scope = this;
+      },
+      wrap: function(name, callback) {
+        wrap_name  = name;
+        wrap_call  = callback;
+        wrap_scope = this;
+        
+        return callback;
+      },
+      
+      shorts: ['bar']
+    });
+    
+    // checking the observer methods existance
+    this.assertNotNull(o.observe);
+    this.assertNotNull(o.observes);
+    this.assertNotNull(o.stopObserving);
+    this.assertNotNull(o.fire);
+    
+    // checking the shortcuts existance
+    this.assertNotNull(o.onBar);
+    this.assertNotNull(o.bar);
+    
+    // trying to wire some function
+    var fired = false, scope = null;
+    var f1 = function() { fired = true; scope = this; };
+    
+    this.assertSame(o, o.observe('foo', f1));
+    this.assert(o.observes('foo', f1));
+    
+    // trying to fire the event
+    this.assertSame(o, o.fire('foo'));
+    
+    this.assert(fired);
+    this.assertSame(o, scope);
+    
+    // trying to stop the event
+    this.assertSame(o, o.stopObserving('foo'));
+    
+    this.assertFalse(o.observes('foo'));
+    
+    // checking the callbacks values
+    this.assertEqual('foo', wire_name);
+    this.assertEqual('foo', wrap_name);
+    this.assertEqual('foo', stop_name);
+    
+    this.assertSame(f1, wire_call);
+    this.assertSame(f1, wrap_call);
+    this.assertSame(f1, stop_call);
+    
+    this.assertSame(o, wire_scope);
+    this.assertSame(o, wrap_scope);
+    this.assertSame(o, stop_scope);
   }
 })

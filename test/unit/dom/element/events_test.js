@@ -216,14 +216,7 @@ var ElementEventsTest = TestCase.create({
   testObserverShortcutsList: function() {
     var element = new Element('div');
     
-    this.assertEqual(
-      Event.Mouse.prototype.NAMES.concat(Event.Keyboard.prototype.NAMES),
-      Element.Methods.NATIVE_EVENTS
-    );
-    
-    this.assertEqual(Element.Methods.NATIVE_EVENTS, element.NATIVE_EVENTS);
-    
-    Element.Methods.NATIVE_EVENTS.each(function(name) {
+    Event.Mouse.NAMES.concat(Event.Keyboard.NAMES).each(function(name) {
       this.assertTypeOf('function', element[name]);
       this.assertTypeOf('function', element['on'+name.capitalize()]);
     }, this);

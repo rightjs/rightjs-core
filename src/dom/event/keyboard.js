@@ -8,15 +8,10 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Event.Keyboard = new Class(Event.Base, {
-  NAMES: $w('keypress keydown keyup'),
-  
-  // default keyboard related events options
-  OPTIONS: {
-    keyCode:  0,
-    charCode: 0
-  },
   
   extend: {
+    NAMES: $w('keypress keydown keyup'),
+    
     /**
      * automatically generates the key checking methods like
      * isEscape()
@@ -40,6 +35,12 @@ Event.Keyboard = new Class(Event.Base, {
       
       return event;
     }
+  },
+  
+  // default keyboard related events options
+  OPTIONS: {
+    keyCode:  0,
+    charCode: 0
   },
   
 // protected

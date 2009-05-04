@@ -67,8 +67,8 @@ var EventTest = TestCase.create({
   },
   
   testMouseEventInstance: function() {
-    for (var i=0; i < Event.Mouse.prototype.NAMES.length; i++) {
-      var event_name = Event.Mouse.prototype.NAMES[i];
+    for (var i=0; i < Event.Mouse.NAMES.length; i++) {
+      var event_name = Event.Mouse.NAMES[i];
       
       this.assertCalled([
         [Event.Base,  'ext'], // should apply the basic extensions
@@ -89,8 +89,8 @@ var EventTest = TestCase.create({
   },
   
   testKeyboardEventInstance: function() {
-    for (var i=0; i < Event.Keyboard.prototype.NAMES.length; i++) {
-      var event_name = Event.Keyboard.prototype.NAMES[i];
+    for (var i=0; i < Event.Keyboard.NAMES.length; i++) {
+      var event_name = Event.Keyboard.NAMES[i];
       
       this.assertCalled([
         [Event.Base,     'ext'], // should apply the basic extensions

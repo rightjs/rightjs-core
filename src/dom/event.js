@@ -44,7 +44,7 @@ var Event = new Class(Event, {
         Event.Base.ext(event);
         
         event.eventName = Event.cleanName(event.type || '');
-        if (Event.Mouse.prototype.NAMES.includes(event.eventName)) {
+        if (Event.Mouse.NAMES.includes(event.eventName)) {
           Event.Mouse.ext(event);
         } else if (defined(event.keyCode)){
           Event.Keyboard.ext(event);
@@ -65,6 +65,18 @@ var Event = new Class(Event, {
       name = name.startsWith('on') ? name.slice(2) : name;
       name = name == 'contextmenu' ? 'rightclick'  : name;
       return name;
+    },
+    
+    /**
+     * returns a real, browser specific event name 
+     *
+     * @param String clean unified name
+     * @return String real name
+     */
+    realName: function(name) {
+      if (name == 'mousewheel' && Browser.Gecko) name = 'DOMMouseScroll';
+      if (name == 'rightclick' && Browser.IE)    name = 'contextmenu';
+      return name;
     }
   },
   
@@ -81,9 +93,9 @@ var Event = new Class(Event, {
     
     if (isString(event)) {
       var name = Event.cleanName(event);
-      if (Event.Mouse.prototype.NAMES.includes(name)) {
+      if (Event.Mouse.NAMES.includes(name)) {
         event = new Event.Mouse(name, options);
-      } else if (Event.Keyboard.prototype.NAMES.includes(name)) {
+      } else if (Event.Keyboard.NAMES.includes(name)) {
         event = new Event.Keyboard(name, options);
       } else {
         event = new Event.Custom(name, options);

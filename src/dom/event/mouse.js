@@ -8,16 +8,10 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Event.Mouse = new Class(Event.Base, {
-  NAMES: $w('click middleclick rightclick dblclick mousedown mouseup mouseover mouseout mousemove'),
-  
-  // default mouse events related options
-  OPTIONS: {
-    pointerX: 0,
-    pointerY: 0,
-    button:   0
-  },
   
   extend: {
+    NAMES: $w('click middleclick rightclick dblclick mousedown mouseup mouseover mouseout mousemove'),
+    
     Methods: {
       isLeftClick: function() {
         return this.which == 0;
@@ -42,6 +36,13 @@ Event.Mouse = new Class(Event.Base, {
       return event;
     }
   },
+  
+  // default mouse events related options
+  OPTIONS: {
+    pointerX: 0,
+    pointerY: 0,
+    button:   0
+  },
 
 // protecteds
   build: function(options) {
@@ -53,8 +54,8 @@ Event.Mouse = new Class(Event.Base, {
   options: function(name, options) {
     options = this.$super(name, options);
     options.button = Event.BUTTONS[options.name] || 0;
+    options.name   = Event.realName(options.name);
     if (Browser.IE) {
-      options.name   = options.name == 'rightclick' ? 'contextmenu' : options.name;
       options.button = options.button == 1 ? 4 : options.button; // <- IE gets the middle button as 4
     }
     return options;

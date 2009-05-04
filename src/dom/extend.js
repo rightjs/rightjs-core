@@ -38,12 +38,17 @@
     }
 
     // some custom case replacements
-    ).replace(/this\.insertions/g, 'Element.Methods.insertions');
+    ).replace(/this\.insertions/g, 'Element.Methods.insertions'
+    ).replace(/this\._oO/g, 'Element.Methods._oO');
   };
 
   for (var key in Element.Methods) {
     if (isFunction(Element.Methods[key])) {
+//      console.log(key);
+//      console.log(Element.Methods[key].toString());
+//      console.log(stub_this_calls(Element.Methods[key].toString()));
       eval("var func = "+stub_this_calls(Element.Methods[key].toString()));
+      
       
       Element[key] = (function(method) {
         return function() {
