@@ -1,7 +1,7 @@
 /**
  * The String class extentions
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(String, {
   // this is for unicode regexps 
@@ -58,11 +58,11 @@ $ext(String.prototype, {
     });
     
     if (option === true)
-      eval(scripts);
+      $eval(scripts);
     else if (isFunction(option))
       option(scripts, text);
     else if (isNumber(option))
-      eval.bind(scripts).delay(options);
+      $eval.bind(scripts).delay(options);
     
     return text;
   },
@@ -84,7 +84,7 @@ $ext(String.prototype, {
    * @return String self (unchanged version with scripts still in their place)
    */
   evalScripts: function() {
-    eval(this.extractScripts());
+    $eval(this.extractScripts());
     return this;
   },
   

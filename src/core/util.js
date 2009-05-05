@@ -1,7 +1,7 @@
 /**
  * There are some util methods
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
  
  /**
@@ -41,6 +41,26 @@ function $try() {
     } catch(e) {}
   }
 };
+
+/**
+ * evals the given javascript text in the context of the current window
+ *
+ * @param String javascript
+ * @return void
+ */
+function $eval(text) {
+  if (!isString(text) || text.blank()) return;
+  if (window.execScript) {
+    window.execScript(text);
+  } else if (document.head) {
+    var script = document.createElement('script');
+    script.setAttribute('type', 'text/javascript');
+    script.text = text;
+    document.head.appendChild(script);
+  } else {
+    eval(text);
+  }
+}
 
 /**
  * throws an exception to break iterations throw a callback

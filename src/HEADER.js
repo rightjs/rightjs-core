@@ -5,5 +5,5 @@
  * See http://github.com/MadRabbit/rightjs
  * for the original source codes
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */

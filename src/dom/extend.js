@@ -44,11 +44,7 @@
 
   for (var key in Element.Methods) {
     if (isFunction(Element.Methods[key])) {
-//      console.log(key);
-//      console.log(Element.Methods[key].toString());
-//      console.log(stub_this_calls(Element.Methods[key].toString()));
       eval("var func = "+stub_this_calls(Element.Methods[key].toString()));
-      
       
       Element[key] = (function(method) {
         return function() {

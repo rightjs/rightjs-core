@@ -55,12 +55,14 @@ var Observer = new Class({
      */
     createShortcuts: function(object, names) {
       names.each(function(name) {
-        object[name] = function(options) {
+        var shortcuts = {}, name = name.replace(/:/g, '_').toLowerCase().camelize();
+        shortcuts[name] = function(options) {
           return this.fire(name, options);
         };
-        object['on'+name.toLowerCase().camelize().capitalize()] = function(callback) {
+        shortcuts['on'+name.capitalize()] = function(callback) {
           return this.observe(name, callback);
         };
+        $ext(object, shortcuts, true);
       });
       
       return object;

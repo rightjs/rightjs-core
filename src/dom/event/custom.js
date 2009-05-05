@@ -12,11 +12,7 @@ Event.Custom = new Class({
    */
   initialize: function(name, options) {
     this.eventName = Event.cleanName(name);
-    
-    var options = options || {};
-    for (var key in options) {
-      this[key] = options[key];
-    }
+    this.options   = options;
   },
   
   // just a dummy function to prevent the event extending

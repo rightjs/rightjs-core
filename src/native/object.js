@@ -1,7 +1,7 @@
 /**
  * The Object class extentions
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Object, {
   /**
@@ -174,5 +174,19 @@ $ext(Object, {
       }
     }
     return object;
+  },
+  
+  /**
+   * converts a hash-object into an equivalent url query string
+   *
+   * @param Object object
+   * @return String query
+   */
+  toQueryString: function(object) {
+    var tokens = [];
+    for (var key in object) {
+      tokens.push(key+'='+encodeURIComponent(object[key]))
+    }
+    return tokens.join('&');
   }
 });

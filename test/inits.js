@@ -29,6 +29,8 @@ var scripts = [
   'dom/selector/manual.js',
   'dom/selector/native.js',
   'dom/selector/multiple.js',
+  'xhr/xhr.js',
+  'xhr/element.js',
   'dom/extend.js'
 ];
 

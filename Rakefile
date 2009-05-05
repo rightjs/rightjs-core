@@ -10,44 +10,47 @@ BUILD_DIR = 'build'
 BUILD_FILE = 'right.js'
 
 JS_SOURCES = %w{
-  src/core/util.js
-  src/core/browser.js
+  core/util.js
+  core/browser.js
   
-  src/native/object.js
-  src/native/math.js
-  src/native/array.js
-  src/native/string.js
-  src/native/function.js
-  src/native/number.js
+  native/object.js
+  native/math.js
+  native/array.js
+  native/string.js
+  native/function.js
+  native/number.js
   
-  src/core/class.js
-  src/core/class/util.js
-  src/core/class/methods.js
+  core/class.js
+  core/class/util.js
+  core/class/methods.js
   
-  src/util/observer.js
-  src/util/cookie.js
-  src/util/break.js
+  util/observer.js
+  util/cookie.js
+  util/break.js
   
-  src/dom/event.js
-  src/dom/event/base.js
-  src/dom/event/mouse.js
-  src/dom/event/keyboard.js
-  src/dom/event/custom.js
+  dom/event.js
+  dom/event/base.js
+  dom/event/mouse.js
+  dom/event/keyboard.js
+  dom/event/custom.js
   
-  src/dom/element.js
-  src/dom/element/styles.js
-  src/dom/element/commons.js
-  src/dom/element/structs.js
-  src/dom/element/dimensions.js
-  src/dom/element/events.js
+  dom/element.js
+  dom/element/styles.js
+  dom/element/commons.js
+  dom/element/structs.js
+  dom/element/dimensions.js
+  dom/element/events.js
   
-  src/dom/selector.js
-  src/dom/selector/atom.js
-  src/dom/selector/manual.js
-  src/dom/selector/native.js
-  src/dom/selector/multiple.js
+  dom/selector.js
+  dom/selector/atom.js
+  dom/selector/manual.js
+  dom/selector/native.js
+  dom/selector/multiple.js
   
-  src/dom/extend.js
+  xhr/xhr.js
+  xhr/element.js
+  
+  dom/extend.js
 }
 
 task :default => :build
@@ -64,7 +67,7 @@ task :build do
     
     file.write FrontCompiler.new.compact_js(
       JS_SOURCES.collect do |file_name|
-        File.open(file_name).read
+        File.open('src/'+file_name).read
       end.join("\n")
     ).create_self_build
   end

@@ -121,7 +121,9 @@ var EventTest = TestCase.create({
     
     this.assertInstanceOf(Event.Custom, event);
     this.assertEqual('custom', event.eventName);
-    this.assertEqual('foo', event.foo);
-    this.assertEqual('bar', event.bar);
+    this.assertEqual({
+      foo: 'foo',
+      bar: 'bar'
+    }, event.options);
   }
 });
