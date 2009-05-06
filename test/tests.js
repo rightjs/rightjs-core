@@ -1,7 +1,6 @@
 /**
  * this script builds and runs all the tests
  */
-
 var tests = {
   UtilTest:              'unit/core/util_test.js',
   
@@ -33,7 +32,9 @@ var tests = {
   SelectorMultipleTest:  'unit/dom/selector/multiple_test.js',
   
   ObserverTest:          'unit/util/observer_test.js',
-  CookieTest:            'unit/util/cookie_test.js'
+  CookieTest:            'unit/util/cookie_test.js',
+  
+  XhrTest:               'unit/xhr/xhr_test.js'
 };
 
 var test_names = [];

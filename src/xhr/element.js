@@ -13,7 +13,7 @@ $ext(Element.Methods, {
    * @return Element this
    */
   load: function(url, options) {
-    new Xhr(url, options).update(this);
+    new Xhr(url, Object.merge({method: 'get'}, options)).update(this);
     return this;
   }
 });

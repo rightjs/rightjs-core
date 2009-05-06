@@ -37,6 +37,12 @@ var UtilTest = TestCase.create({
     this.assertFalse(assigned1);
     this.assert(assigned2);
   },
+  
+  test_$eval: function() {
+    window.____a = null;
+    $eval('var ____a = 1;');
+    this.assertEqual(1, window.____a, 'getting shure the script was evaled in the window scope');
+  },
    
   testDefined: function() {
     var smth = null;
@@ -176,8 +182,8 @@ var UtilTest = TestCase.create({
   test_$_Extending: function() {
     var el = document.createElement('div');
     
-    //this.assertSame(el, $(el));
-    //this.assertNotNull(el['hasClass'], "check if the object was prepared");
+    this.assertSame(el, $(el));
+    this.assertNotNull(el['hasClass'], "check if the object was prepared");
   },
   
   getFreshNode: function() {
@@ -207,5 +213,9 @@ var UtilTest = TestCase.create({
     
     this.assertEqual([], $$('div.something-non-existing'));
     //this.assert($$('div.some-weird-class') == [el]);
+  },
+  
+  test_$w: function() {
+    this.assertEqual(['any', 'beny', 'crubs'], $w("any    beny  \n\n\t crubs "));
   }
 });

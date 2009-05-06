@@ -52,13 +52,11 @@ function $eval(text) {
   if (!isString(text) || text.blank()) return;
   if (window.execScript) {
     window.execScript(text);
-  } else if (document.head) {
+  } else {
     var script = document.createElement('script');
     script.setAttribute('type', 'text/javascript');
     script.text = text;
-    document.head.appendChild(script);
-  } else {
-    eval(text);
+    document.body.appendChild(script);
   }
 }
 
@@ -220,7 +218,12 @@ function $$(css_rule) {
   return $(document.body).select(css_rule);
 };
 
-// todo me
+/**
+ * shortcut, generates an array of words from a given string
+ *
+ * @param String string
+ * @return Array of words
+ */
 function $w(string) {
   return string.trim().split(/\s+/);
 }

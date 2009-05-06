@@ -101,7 +101,7 @@ $ext(Element.Methods, {
       }
       
       this.insertions[position].call(this, Element.createFragment(content));
-      eval(scripts);
+      $eval(scripts);
     }
     return this;
   },
