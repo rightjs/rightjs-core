@@ -115,7 +115,7 @@ $ext(Array.prototype, {
    * @return Array copy of the array
    */
   clone: function() {
-    return [].concat(this);
+    return this.slice(0);
   },
   
   /**

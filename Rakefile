@@ -19,6 +19,7 @@ JS_SOURCES = %w{
   native/string.js
   native/function.js
   native/number.js
+  native/regexp.js
   
   core/class.js
   core/class/util.js

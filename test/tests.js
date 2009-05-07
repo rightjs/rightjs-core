@@ -13,6 +13,7 @@ var tests = {
   StringTest:            'unit/native/string_test.js',
   FunctionTest:          'unit/native/function_test.js',
   NumberTest:            'unit/native/number_test.js',
+  RegexpTest:            'unit/native/regexp_test.js',
   
   EventTest:             'unit/dom/event_test.js',
   EventBaseTest:         'unit/dom/event/base_test.js',

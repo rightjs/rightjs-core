@@ -1,6 +1,8 @@
 Write tests for the Cookie unit
 
-Regexp#escape
+Think about moving part of the Array extensions to an Enumerable unit
+
+Implement a Hash unit
 
 String#escapeHTML #truncate  ???
 
@@ -13,6 +15,8 @@ see if you can shortify the Element static mirrors generation code.
 --------
 Completed
 ---------
+
+Regexp#escape
 
 Make Selector unit behave the same way as the native selectors do
 
