@@ -1,22 +1,20 @@
+Write tests for the Cookie unit
+
 Regexp#escape
 
 String#escapeHTML #truncate  ???
 
-move Array extensions in the Enumerable extension
-
 handle the various css naming/values cases. Like opacity, filter, overflow etc.
 
-do performance tests if it is worth to move the regexps in the String object into precompiled constants
-
 there's seems to be a memory leaking problem in IE6, each run makes the test go slower. Investigate what's the problem.
-
-investigate/patch String to support negative offsets
 
 see if you can shortify the Element static mirrors generation code.
 
 --------
 Completed
 ---------
+
+Make Selector unit behave the same way as the native selectors do
 
 Element#radio
 

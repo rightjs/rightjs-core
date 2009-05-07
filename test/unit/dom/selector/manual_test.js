@@ -1,6 +1,6 @@
 var SelectorManualTest = TestCase.create({
   name: 'SelectorManualTest',
-  
+
   testAtomsParsing: function() {
     var selector = new Selector.Manual('div span > table + input ~ textarea');
     this.assertEqual(5, selector.atoms.length);
@@ -19,8 +19,8 @@ var SelectorManualTest = TestCase.create({
     
     this.assertEqual('~', selector.atoms[4].rel);
     this.assertEqual('textarea', selector.atoms[4].tag);
-  }/*,
-  
+  },
+
   assertSelect: function(css_rule, block, elements, message) {
     var selected = new Selector(css_rule).select(block);
     if (!this.util.equal(selected, elements)) {
@@ -57,10 +57,10 @@ var SelectorManualTest = TestCase.create({
       <table></table> el2
     </div>
     
-     *//*
+     */
     
     // trying immidiate descendants
     this.assertSelect('div > *',      block, [el11, el12, el121, el13]);
     this.assertSelect('div + *',      block, [el13, el2]);
-  } */
+  }
 });

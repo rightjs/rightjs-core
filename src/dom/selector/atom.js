@@ -51,6 +51,8 @@ Selector.Atom = new Class({
     this.id  = (css_rule.match(this.ID_RE) || [1, null])[1];
     this.tag = (css_rule.match(this.TAG_RE) || '*').toString().toLowerCase();
     this.classes = (css_rule.match(this.CLASS_RE) || [1, ''])[1].split('.').without('');
+    
+    this.buildMatch();
   },
 
   /**
@@ -59,27 +61,43 @@ Selector.Atom = new Class({
    * @param Element element
    * @return Boolean check result
    */
-  match: function(element) {
-    return !!(this.matchId(element) && this.matchTag(element) && this.matchClass(element) 
-      && this.matchAttrs(element) && this.matchPseudo(element));
-  },
+  match: null, // this method is dinamically generated depend on the situation
 
 // protected
 
+  // building the match method for the particular case
+  buildMatch: function() {
+    var matchers = [];
+    
+    if (this.id)                        matchers.push('matchId');
+    if (this.tag != '*')                matchers.push('matchTag');
+    if (this.classes.length)            matchers.push('matchClass');
+    if (Object.keys(this.attrs).length) matchers.push('matchAttrs');
+    if (this.pseudo)                    matchers.push('matchPseudo');
+    
+    if (matchers.length) {
+      this.match = function(element) {
+        for (var i=0; i < matchers.length; i++)
+          if (!this[matchers[i]](element))
+            return false;
+        return true;
+      }
+    } else {
+      this.match = function() { return true; }
+    }
+  },
+
   matchId: function(element) {
-    return !this.id || element.id == this.id;
+    return element.id == this.id;
   },
 
   matchTag: function(element) {
-    return this.tag == '*' || element.tagName.toLowerCase() == this.tag;
+    return element.tagName.toLowerCase() == this.tag;
   },
 
   matchClass: function(element) {
-    if (this.classes.length) {
-      var names = element.className.split(' ');
-      return names.includes.apply(names, this.classes);
-    }
-    return true;
+    var names = element.className.split(' ');
+    return names.includes.apply(names, this.classes);
   },
 
   matchAttrs: function(element) {
@@ -105,8 +123,7 @@ Selector.Atom = new Class({
   },
 
   matchPseudo: function(element) {
-    return !this.pseudo || (this.pseudoMatchers[this.pseudo] &&
-      this.pseudoMatchers[this.pseudo].call(element, this.pseudoValue, this.pseudoMatchers));
+    return this.pseudoMatchers[this.pseudo].call(element, this.pseudoValue, this.pseudoMatchers);
   },
 
   /**

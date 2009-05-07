@@ -54,14 +54,35 @@ Selector.Manual = new Class({
       
       // if there is more atoms go recoursively
       if (atoms.length > 1) {
-        var sub_founds = [];
+        if (atoms[1].rel != ' ' && atoms[1].rel != '>') this._hsr = true; // checking if the rule has siblings relations
+        
+        var sub_founds = [], sub_result, index;
         for (var i=0; i < founds.length; i++) {
-          sub_founds = sub_founds.merge(this.select(founds[i], atoms.slice(1)));
+          sub_result = this.select(founds[i], atoms.slice(1));
+          
+          if (atoms[1].rel == '>') {
+            // injecting intersecting search results, so they were placed correctly
+            // FIXME there gotta be a better way
+            for (var j=0; j < sub_result.length; j++) {
+              if ((index = founds.indexOf(sub_result[j])) != -1) {
+                sub_result = sub_result.slice(0, index+1).concat(
+                  this.select(founds[index], atoms.slice(1))).concat(
+                    sub_result.slice(index+1));
+              }
+            }
+          }
+          
+          sub_founds = sub_founds.concat(sub_result);
         }
+        
         founds = sub_founds;
       }
+      
+      // removing duplications and reorganizing the result in a case of siblings search
+      if (atoms.length == this.atoms.length && atoms.length > 1 && founds.length > 1)
+        founds = this._hsr ? this.sortFounds(founds.uniq(), node) : founds.uniq();
     }
-
+    
     return founds;
   },
 
@@ -97,6 +118,25 @@ Selector.Manual = new Class({
   },
   
 // protected
+  
+  // reorganising the search result in the original structure order
+  // so it was consitent with the native css-matching algorithm
+  //
+  // FIXME: there gotta be a better way
+  sortFounds: function(founds, node) {
+    var result = [], child = node.firstChild;
+    
+    while (child) {
+      if (founds.indexOf(child) != -1)
+        result.push(child);
+      else
+        result = result.concat(this.sortFounds(founds, child));
+        
+      child = child.nextSibling;
+    }
+    
+    return result;
+  },
 
   find: {
     /**

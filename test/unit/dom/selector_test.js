@@ -19,10 +19,7 @@ var SelectorTest = TestCase.create({
   assertSelect: function(css_rule, block, elements, message) {
     var selected = new Selector(css_rule).select(block);
     
-    // FIXME there's a problem with the manual search sort result
-    // if (!this.util.equal(selected, elements)) {
-      
-    if (!this.util.equal(selected.sort(), elements.sort())) {
+    if (!this.util.equal(selected, elements)) {
       this.throw_unexp(elements, selected, message || "Trying '"+css_rule+"'");
     }
   },
@@ -106,7 +103,7 @@ var SelectorTest = TestCase.create({
     this.assertSelect('div div',      block, [el12, el121]);
     
     // trying immidiate descendants
-    //this.assertSelect('div > *',      block, [el11, el12, el121, el13]);
+    this.assertSelect('div > *',      block, [el11, el12, el121, el13]);
     this.assertSelect('div > input',  block, [el11]);
     this.assertSelect('div > div',    block, [el12, el121]);
     
@@ -133,12 +130,10 @@ var SelectorTest = TestCase.create({
     
     this.assertFirst('input ~ *',     block, el12);
     
-    // FIXME those ones work incorrectly
-    //       because of the manual search select order
-    //this.assertSelect('div + *',      block, [el13, el2]);
-    //this.assertSelect('div ~ *',      block, [el13, el2]);
-    //this.assertFirst('div + *',       block, el13);
-    //this.assertFirst('div ~ *',       block, el13);
+    this.assertSelect('div + *',      block, [el13, el2]);
+    this.assertSelect('div ~ *',      block, [el13, el2]);
+    this.assertFirst('div + *',       block, el13);
+    this.assertFirst('div ~ *',       block, el13);
   },
   
   testMatch: function() {
