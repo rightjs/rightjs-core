@@ -13,13 +13,13 @@ JS_SOURCES = %w{
   core/util.js
   core/browser.js
   
-  native/object.js
-  native/math.js
-  native/array.js
-  native/string.js
-  native/function.js
-  native/number.js
-  native/regexp.js
+  lang/object.js
+  lang/math.js
+  lang/array.js
+  lang/string.js
+  lang/function.js
+  lang/number.js
+  lang/regexp.js
   
   core/class.js
   core/class/util.js
