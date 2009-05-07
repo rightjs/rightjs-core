@@ -66,7 +66,7 @@ Event.Keyboard = new Class(Event.Base, {
   initGecko: function(event, options) {
     event.initKeyEvent(options.name,
       options.bubbles, options.cancelable, document.defaultView,
-      options.ctrlKey, options.altKey, options.shiftKey, options.metakey,
+      options.ctrlKey, options.altKey, options.shiftKey, options.metaKey,
       options.keyCode, options.charCode
     );
   },
@@ -74,7 +74,7 @@ Event.Keyboard = new Class(Event.Base, {
   initWebkit: function(event, options) {
     event.initKeyboardEvent(options.name,
       options.bubbles, options.cancelable, document.defaultView,
-      null, 0, options.ctrlKey, options.altKey, options.shiftKey, options.metakey
+      null, 0, options.ctrlKey, options.altKey, options.shiftKey, options.metaKey
     );
   },
   

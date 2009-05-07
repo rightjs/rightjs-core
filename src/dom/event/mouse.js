@@ -71,7 +71,7 @@ Event.Mouse = new Class(Event.Base, {
   initW3C: function(event, options) {
     event.initMouseEvent(options.name, options.bubbles, options.cancelable, document.defaultView,
       name == 'dblclick' ? 2 : 1, options.pointerX, options.pointerY, options.pointerX, options.pointerY,
-      options.ctrlKey, options.altKey, options.shiftKey, options.metakey, options.button, options.element
+      options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.button, options.element
     );
   }
 });

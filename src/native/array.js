@@ -270,9 +270,8 @@ $ext(Array.prototype, {
     } else {
       var s = a.shift(), replace = 'm.apply(s,[v,i,this])';
     }
-    eval('var func=function(v,i){'+pattern.replace('$c', replace)+'}');
     
-    this.each(func, this);
+    eval('this.each(function(v,i){'+pattern.replace('$c', replace)+'}, this);');
     
     return c;
   },
