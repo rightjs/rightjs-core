@@ -48,8 +48,12 @@ JS_SOURCES = %w{
   dom/selector/native.js
   dom/selector/multiple.js
   
+  dom/form.js
+  dom/form/element.js
+  
   xhr/xhr.js
   xhr/element.js
+  xhr/iframed.js
   
   dom/extend.js
 }

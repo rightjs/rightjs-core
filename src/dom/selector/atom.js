@@ -49,7 +49,7 @@ Selector.Atom = new Class({
     }
     
     this.id  = (css_rule.match(this.ID_RE) || [1, null])[1];
-    this.tag = (css_rule.match(this.TAG_RE) || '*').toString().toLowerCase();
+    this.tag = (css_rule.match(this.TAG_RE) || '*').toString().toUpperCase();
     this.classes = (css_rule.match(this.CLASS_RE) || [1, ''])[1].split('.').without('');
     
     this.buildMatch();
@@ -92,7 +92,7 @@ Selector.Atom = new Class({
   },
 
   matchTag: function(element) {
-    return element.tagName.toLowerCase() == this.tag;
+    return element.tagName == this.tag;
   },
 
   matchClass: function(element) {

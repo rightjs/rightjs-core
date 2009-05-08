@@ -102,7 +102,8 @@ var Xhr = new Class(Observer, {
    * @return Xhr self
    */
   send: function(params) {
-    var add_params = {}, url = this.url.split('?'), url_params = url.length > 1 ? url[1] : '', url = url[0];
+    var add_params = {}, url = this.url.split('?'), url_params = url.length > 1 ? url[1] : '',
+      url = url[0], params = this.prepareParams(params);
     
     var method = this.method.toUpperCase();
     if (['PUT', 'DELETE'].includes(method)) {
@@ -114,7 +115,7 @@ var Xhr = new Class(Observer, {
       this.setHeader('Content-type', 'application/x-www-form-urlencoded; charset='+this.encoding);
     }
     
-    this.xhr = this.createXhr();
+    this.xhr = this.createXhr(params);
     this.fire('create');
     
     this.xhr.open(method, url, this.async);
@@ -162,12 +163,23 @@ var Xhr = new Class(Observer, {
   
 // protected
   // creates new request instance
-  createXhr: function() {
-    try {
+  createXhr: function(params) {
+    if (this.form && this.form.getElements().map('type').includes('file')) {
+      return Xhr.IFramed(this.form);
+    } else try {
       return new XMLHttpRequest();
     } catch(e) {
       return new ActiveXObject('MSXML2.XMLHTTP');
     }
+  },
+  
+  // prepares user sending params
+  prepareParams: function(params) {
+    if (params && params.tagName == 'FORM') {
+      this.form = params;
+      params = params.values();
+    }
+    return params;
   },
   
   // converts all the params into a url params string

@@ -1,7 +1,7 @@
 /**
  * The DOM Element unit handling
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 window.Element = new Class(window.Element, {
   /**
@@ -33,7 +33,19 @@ window.Element = new Class(window.Element, {
      */
     prepare: function(element) {
       if (element && element.tagName && !element.set) {
-        $ext(element, Element.Methods);
+        $ext(element, Element.Methods, true);
+        
+        switch(element.tagName) {
+          case 'FORM':
+            Form.ext(element);
+            break;
+            
+          case 'INPUT':
+          case 'SELECT':
+          case 'TEXTAREA':
+            Form.Element.ext(element);
+            break;
+        }
       }
       return element;
     },

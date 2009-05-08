@@ -1,0 +1,161 @@
+/**
+ * The Form unit tests
+ *
+ * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ */
+var FormTest = TestCase.create({
+  name: 'FormTest',
+  
+  testInstance: function() {
+    var form = new Form({
+      id: 'my-form'
+    });
+    
+    this.assertEqual('FORM', form.tagName);
+    this.assertEqual('my-form', form.id);
+  },
+  
+  setForm: function() {
+    return new Form({
+      'html': ""+
+        "<p>"+
+          "<label>Name</label>"+
+          "<input type='text' name='name' value='Bob'/>"+
+        "</p>"+
+        "<p>"+
+          "<label>Password</label>"+
+          "<input type='password' name='password' value='secret'/>"+
+        "</p>"+
+        "<p>"+
+          "<label>Keep me</label>"+
+          "<input type='checkbox' name='keep_me' value='1'/>"+
+        "</p>"+
+        "<p>"+
+          "<label>Text:</label>"+
+          "<textarea name='text'>Boo boo boo</textarea>"+
+        "</p>"+
+        "<p>"+
+          "<label>Kinda:</label>"+
+          "<select name='kinda'>"+
+            "<option value='0'>Zero</option>"+
+            "<option value='1' selected='true'>Alpha</option>"+
+            "<option value='2'>Bravo</option>"+
+          "</select>"+
+        "</p>"+
+        "<p>"+
+          "<label>Items:</label>"+
+          "<select name='items' multiple='true'>"+
+            "<option value='1'>First</option>"+
+            "<option value='2' selected='true'>Second</option>"+
+            "<option value='3' selected='true'>Third</option>"+
+          "</select>"+
+        "</p>"+
+        "<p>"+
+          "<label>Who:</label>"+
+          "<input type='radio' name='who' value='bob' id='who-bob'/>"+
+          "<input type='radio' name='who' value='nik' id='who-nik'/>"+
+        "</p>"+
+        "<p>"+
+          "<input type='submit' value='Sumbit'/>"+
+          "<input type='reset' value='Reset'/>"+
+          "<input type='button' value='Cancel'/>"+
+        "</p>"+
+      ""
+    });
+  },
+  
+  testGetElements: function() {
+    var form = this.setForm();
+    
+    //alert($A(form.elements).map('type'));
+    //this.assertEqual($A(form.elements), form.getElements());
+    
+    //form.getElements().each(function(element) {
+    //  this.assert(element['getValue']);
+    //}, this);
+  }/*,
+  
+  testInputs: function() {
+    var form = this.setForm();
+    
+    this.assertEqual([
+      form.name, form.password, form.keep_me, form.text, form.kinda, form.items,
+      form.down('#who-bob'), form.down('#who-nik')
+    ], form.inputs());
+  },
+  
+  testFocus: function() {
+    var form = this.setForm();
+    
+    this.assertSame(form, form.focus());
+    this.assert(form.name.focused);
+  },
+  
+  testBlur: function() {
+    var form = this.setForm();
+    form.focus();
+    
+    this.assertSame(form, form.blur());
+    
+    form.getElements().each(function(element) {
+      this.assertFalse(element.focused);
+    }, this);
+  },
+  
+  testDisable: function() {
+    var form = this.setForm();
+    
+    this.assertSame(form, form.disable());
+    
+    form.getElements().each(function(element) {
+      this.assert(element.disabled);
+    }, this);
+  },
+  
+  testEnable: function() {
+    var form = this.setForm().disable();
+    
+    this.assertSame(form, form.enable());
+    
+    form.getElements().each(function(element) {
+      this.assertFalse(element.disabled);
+    }, this);
+  },
+  
+  testValues: function() {
+    var form = this.setForm();
+    
+    this.assertEqual({
+      name: 'Bob',
+      password: 'secret',
+      text:     'Boo boo boo',
+      kinda:    '1',
+      items:    ['2', '3']
+    }, form.values());
+    
+    form.keep_me.checked = true;
+    form.down('#who-bob').checked = true;
+    
+    this.assertEqual({
+      name: 'Bob',
+      password: 'secret',
+      keep_me:  '1',
+      text:     'Boo boo boo',
+      kinda:    '1',
+      items:    ['2', '3'],
+      who:      'bob'
+    }, form.values());
+    
+    alert(form.getElements().map('type'))
+  },
+  
+  testSerialize: function() {
+    var form = this.setForm();
+    
+    this.assertEqual(
+      'name=Bob&password=secret&text=Boo%20boo%20boo&kinda=1&items=2%2C3',
+      form.serialize()
+    )
+  }*/
+});
+

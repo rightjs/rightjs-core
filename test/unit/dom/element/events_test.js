@@ -217,8 +217,8 @@ var ElementEventsTest = TestCase.create({
     var element = new Element('div');
     
     Event.Mouse.NAMES.concat(Event.Keyboard.NAMES).each(function(name) {
-      this.assertTypeOf('function', element[name]);
-      this.assertTypeOf('function', element['on'+name.capitalize()]);
+      this.assertNotNull(element[name]);
+      this.assertNotNull(element['on'+name.capitalize()]);
     }, this);
   }
 });

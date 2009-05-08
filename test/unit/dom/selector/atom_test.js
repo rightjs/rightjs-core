@@ -36,11 +36,11 @@ var SelectorAtomTest = TestCase.create({
     }, this);
     
     ['div', 'DIV', 'div.asdf', 'div#asdf', 'div[asdf=asdf]', 'div:last'].each(function(rule) {
-      this.assertEqual('div', this.atom(rule).tag, "Checking '"+rule+"'");
+      this.assertEqual('DIV', this.atom(rule).tag, "Checking '"+rule+"'");
     }, this);
     
-    this.assertEqual('p', this.atom('  p ').tag);
-    this.assertEqual('table', this.atom('table').tag);
+    this.assertEqual('P', this.atom('  p ').tag);
+    this.assertEqual('TABLE', this.atom('table').tag);
   },
   
   testClassesRecognition: function() {

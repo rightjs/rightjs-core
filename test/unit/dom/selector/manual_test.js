@@ -6,19 +6,19 @@ var SelectorManualTest = TestCase.create({
     this.assertEqual(5, selector.atoms.length);
     
     this.assertEqual(' ', selector.atoms[0].rel);
-    this.assertEqual('div', selector.atoms[0].tag);
+    this.assertEqual('DIV', selector.atoms[0].tag);
     
     this.assertEqual(' ', selector.atoms[1].rel);
-    this.assertEqual('span', selector.atoms[1].tag);
+    this.assertEqual('SPAN', selector.atoms[1].tag);
     
     this.assertEqual('>', selector.atoms[2].rel);
-    this.assertEqual('table', selector.atoms[2].tag);
+    this.assertEqual('TABLE', selector.atoms[2].tag);
     
     this.assertEqual('+', selector.atoms[3].rel);
-    this.assertEqual('input', selector.atoms[3].tag);
+    this.assertEqual('INPUT', selector.atoms[3].tag);
     
     this.assertEqual('~', selector.atoms[4].rel);
-    this.assertEqual('textarea', selector.atoms[4].tag);
+    this.assertEqual('TEXTAREA', selector.atoms[4].tag);
   },
 
   assertSelect: function(css_rule, block, elements, message) {

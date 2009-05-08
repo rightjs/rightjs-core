@@ -32,10 +32,14 @@ var tests = {
   SelectorManualTest:    'unit/dom/selector/manual_test.js',
   SelectorMultipleTest:  'unit/dom/selector/multiple_test.js',
   
+  FormTest:              'unit/dom/form_test.js',
+  FormElementTest:       'unit/dom/form/element_test.js',
+  
   ObserverTest:          'unit/util/observer_test.js',
   CookieTest:            'unit/util/cookie_test.js',
   
-  XhrTest:               'unit/xhr/xhr_test.js'
+  XhrTest:               'unit/xhr/xhr_test.js',
+  XhrIFramedTest:        'unit/xhr/xhr_iframed_test.js'
 };
 
 var test_names = [];
