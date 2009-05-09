@@ -56,10 +56,16 @@ var Observer = new Class({
     createShortcuts: function(object, names) {
       names.each(function(name) {
         var shortcuts = {}, name = name.replace(/:/g, '_').toLowerCase().camelize();
-        shortcuts[name] = function(options) {
-          return this.fire(name, options);
+        shortcuts[name] = function() {
+          return this.fire.apply(this, [name].concat($A(arguments)));
         };
         shortcuts['on'+name.capitalize()] = function(callback) {
+          if (isString(callback)) {
+            var args = $A(arguments), method = args.shift();
+            callback = (function() {
+              this[method].apply(this, args);
+            }).bind(this);
+          }
           return this.observe(name, callback);
         };
         $ext(object, shortcuts, true);

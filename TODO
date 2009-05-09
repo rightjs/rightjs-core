@@ -1,4 +1,6 @@
-Rename #includes -> #include
+Element.addMethods
+
+Create alias #includes -> #include
 
 Write tests for the Cookie unit
 
@@ -17,6 +19,8 @@ see if you can shortify the Element static mirrors generation code.
 --------
 Completed
 ---------
+
+Observer self calls by name
 
 Regexp#escape
 

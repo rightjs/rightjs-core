@@ -334,5 +334,23 @@ var ObserverTest = TestCase.create({
     this.assertSame(o, wire_scope);
     this.assertSame(o, wrap_scope);
     this.assertSame(o, stop_scope);
+  },
+  
+  testByNameObserving: function() {
+    var o = new Observer({
+      shorts: ['bar']
+    });
+    
+    var args = null, o_this = null;
+    o.foo = function() {
+      o_this = this;
+      args   = $A(arguments);
+    };
+    
+    o.onBar('foo', 1, 2, 3);
+    o.bar();
+    
+    this.assertSame(o, o_this);
+    this.assertEqual([1,2,3], args);
   }
 })
