@@ -13,4 +13,4 @@ $ext(RegExp, {
   escape: function(string) {
     return String(string).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
   }
-})
+});
