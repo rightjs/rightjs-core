@@ -151,6 +151,20 @@ var Observer = new Class({
         return this;
       },
       
+      /**
+       * returns the event listeners list
+       *
+       * @param String event name
+       * @return Array event listeners
+       */
+      listeners: function(name) {
+        var result = [], name = Event.cleanName(name);
+        if (this._oCache && this._oCache[name]) {
+          result = this._oCache[name].map(function(pair) { return pair['orig']; });
+        }
+        return result;
+      },
+      
     // protected
 
       /**

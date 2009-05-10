@@ -159,6 +159,21 @@ var ObserverTest = TestCase.create({
     this.assert(e3);
   },
   
+  testListeners: function() {
+    var o = new Observer();
+    
+    var f1 = function() {};
+    var f2 = function() {};
+    var f3 = function() {};
+    
+    o.observe('foo', f1);
+    o.observe('foo', f2);
+    o.observe('bar', f3);
+    
+    this.assertEqual([f1, f2], o.listeners('foo'));
+    this.assertEqual([f3], o.listeners('bar'));
+  },
+  
   testShortcutsGeneration: function() {
     var o = new Observer({
       shorts: ['foo', 'bar']

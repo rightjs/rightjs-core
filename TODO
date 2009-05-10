@@ -1,3 +1,7 @@
+Fix the build
+
+Fix the custom events arguments bypassing
+
 Element.addMethods
 
 Create alias #includes -> #include
@@ -19,6 +23,8 @@ see if you can shortify the Element static mirrors generation code.
 --------
 Completed
 ---------
+
+Observer#listeners
 
 Observer self calls by name
 
