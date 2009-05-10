@@ -115,7 +115,7 @@ Element.addMethods({
     * @return Element self
     */
    radioClass: function(name) {
-     this.siblings().walk('removeClass', name);
+     this.siblings().each('removeClass', name);
      return this.addClass(name);
    }
 });

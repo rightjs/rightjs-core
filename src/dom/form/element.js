@@ -45,7 +45,7 @@ Form.Element = {
     */
     setValue: function(value) {
       if (this.type == 'select-multiple') {
-        value = (isArray(value) ? value : [value]).walk(String);
+        value = (isArray(value) ? value : [value]).map(String);
         $A(this.childNodes).each(function(option) {
           option.selected = value.includes(option.value);
         });

@@ -37,7 +37,7 @@ var Form = new Class(Element, {
        * @return Array of elements
        */
       getElements: function() {
-        return $A(this.elements).walk($);
+        return $A(this.elements).map($);
       },
       
       /**
@@ -68,7 +68,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       blur: function() {
-        this.getElements().walk('blur');
+        this.getElements().each('blur');
         return this;
       },
       
@@ -78,7 +78,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       disable: function() {
-        this.getElements().walk('disable');
+        this.getElements().each('disable');
         return this;
       },
       
@@ -88,7 +88,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       enable: function() {
-        this.getElements().walk('enable');
+        this.getElements().each('enable');
         return this;
       },
       

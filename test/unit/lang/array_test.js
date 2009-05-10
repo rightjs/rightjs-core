@@ -18,19 +18,6 @@ var ArrayTest = TestCase.create({
     this.assertEqual(-1, [1,2,1,2].lastIndexOf(3));
   },
   
-  testEach: function() {
-    this.assertEqual([2,4,6,8], [1,2,3,4].each(function(value, i, list) {
-      list[i] = value * 2;
-    }));
-  },
-  
-  testEachWithBreak: function() {
-    this.assertEqual([2,2,3,4], [1,2,3,4].each(function(value, i, list) {
-      list[i] = value * 2;
-      $break();
-    }));
-  },
-  
   testFirst: function() {
     this.assertEqual(1, [1,2,3].first());
     this.assert([].first() === undefined);
@@ -72,42 +59,56 @@ var ArrayTest = TestCase.create({
     this.assertNotSame(a,b);
   },
   
-  testWalk: function() {
-    var a = [1,2,3,4];
-    var b = a.walk(function(i) { return i * 2;});
-    
-    this.assertEqual([2,4,6,8], b);
-    this.assertNotSame(a,b);
+  testEach: function() {
+    this.assertEqual([2,4,6,8], [1,2,3,4].each(function(value, i, list) {
+      list[i] = value * 2;
+    }));
   },
   
-  testWalkWithBreak: function() {
-    var a = [1,2,3,4];
-    var b = a.walk(function(i) {
-      if (i > 2) $break();
-      return i * 2;
+  testEachWithBreak: function() {
+    this.assertEqual([2,2,3,4], [1,2,3,4].each(function(value, i, list) {
+      list[i] = value * 2;
+      $break();
+    }));
+  },
+  
+  testEachByName: function() {
+    var Dummy = new Class({
+      initialize: function(number) {
+        this.number = number;
+      },
+      
+      kick: function() {
+        this.args = $A(arguments);
+        this.context = this;
+      }
     });
     
-    this.assertNotSame(a,b);
-    this.assertEqual([2,4], b);
+    var dummies = [
+      new Dummy(1),
+      new Dummy(2),
+      new Dummy(3)
+    ];
+    
+    dummies.each('kick', 1, 2, 3);
+    
+    dummies.each(function(dummy) {
+      this.assertEqual([1,2,3], dummy.args);
+      this.assertSame(dummy, dummy.context);
+    }, this);
   },
   
-  testWalkByName: function() {
-    var s = 'Mary Linda Anna Sandy';
-    
-    var a = $w(s);
-    var b = a.walk('toLowerCase');
-    this.assertNotSame(b, a);
-    this.assertEqual($w(s.toLowerCase()), b);
-    
-    var a = $w(s);
-    var b = a.walk('replace', /a/g, 'u');
-    this.assertNotSame(b, a);
-    this.assertEqual($w(s.replace(/a/g, 'u')), b);
-    
-    var a = $w(s);
-    var b = a.walk('length');
-    this.assertNotSame(b,a);
-    this.assertEqual([4, 5, 4, 5], b);
+  testMap: function() {
+    var a = [1,2,3,4];
+    this.assertEqual([2,4,6,8], a.map(function(item) { return item * 2; }));
+    this.assertEqual([1,2,3,4], a);
+  },
+  
+  testMapByName: function() {
+    var a = $w('1 12 123 1234');
+    this.assertEqual([1,2,3,4], a.map('length'));
+    this.assertEqual([false, false, true, true], a.map('includes', '3'));
+    this.assertEqual($w('1 12 125 1254'), a.map('replace', /3/, '5'));
   },
   
   testFilter: function() {
@@ -115,13 +116,6 @@ var ArrayTest = TestCase.create({
     var b = a.filter(function(i) { return i%2==0; });
     this.assertEqual([2,4], b);
     this.assertNotSame(a,b);
-  },
-  
-  testFilterWithBreak: function() {
-    this.assertEqual([2], [1,2,3,4].filter(function(i) {
-      if (i > 2) $break();
-      return i%2==0;
-    }));
   },
   
   testFilterByName: function() {
@@ -135,26 +129,29 @@ var ArrayTest = TestCase.create({
     this.assertEqual($w('banana orange apple'), a.filter('includes', 'a'));
   },
   
-  testMap: function() {
+  testWalk: function() {
     var a = [1,2,3,4];
-    this.assertEqual([2,4,6,8], a.map(function(item) { return item * 2; }));
-    this.assertEqual([1,2,3,4], a);
+    var b = a.walk(function(i) { return i * 2;});
+    
+    this.assertEqual([2,4,6,8], b);
+    this.assertSame(a,b);
   },
   
-  testMapWithBreak: function() {
-    var a = [1,2,3,4];
-    this.assertEqual([2,4], a.map(function(item) {
-      if (item > 2) $break();
-      return item * 2;
-    }));
-    this.assertEqual([1,2,3,4], a);
-  },
-  
-  testMapByName: function() {
-    var a = $w('1 12 123 1234');
-    this.assertEqual([1,2,3,4], a.map('length'));
-    this.assertEqual([false, false, true, true], a.map('includes', '3'));
-    this.assertEqual($w('1 12 125 1254'), a.map('replace', /3/, '5'));
+  testWalkByName: function() {
+    var s = 'Mary Linda Anna Sandy';
+    
+    var a = $w(s);
+    var b = a.walk('toLowerCase');
+    this.assertSame(b, a);
+    this.assertEqual($w(s.toLowerCase()), b);
+    
+    var a = $w(s);
+    var b = a.walk('replace', /a/g, 'u');
+    this.assertEqual($w(s.replace(/a/g, 'u')), b);
+    
+    var a = $w(s);
+    var b = a.walk('length');
+    this.assertEqual([4, 5, 4, 5], b);
   },
   
   testConcat: function() {

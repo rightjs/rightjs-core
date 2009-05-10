@@ -34,28 +34,6 @@ $ext(Array.prototype, {
   },
   
   /**
-   * calls the given callback function in the given scope for each element of the array
-   *
-   * NOTE: it return the array by itself
-   *
-   * @param Function callback
-   * @param Object scope
-   * @return Array this
-   */
-  each: function(callback, scope) {
-    try {
-      this.forEach(callback, scope);
-    } catch(e) { if (!(e instanceof Break)) throw(e); }
-    
-    return this;
-  },
-  // recatching the original JS 1.6 method 
-  forEach: Array.prototype.forEach || function(callback, scope) {
-    for (var i=0; i < this.length; i++)
-      callback.apply(scope, [this[i], i, this]);
-  },
-  
-  /**
    * returns the first element of the array
    *
    * @return mixed first element of the array
@@ -119,25 +97,15 @@ $ext(Array.prototype, {
   },
   
   /**
-   * applies the given lambda to each element in the array
+   * calls the given callback function in the given scope for each element of the array
    *
    * @param Function callback
-   * @param Object optional scope
-   * @return Array new list of processed items
+   * @param Object scope
+   * @return Array this
    */
-  walk: function() {
-    return this._call(arguments, 'c[i]=$c');
-  },
-  
-  /**
-   * creates a list of the array items which are matched in the given callback function
-   *
-   * @param Function callback
-   * @param Object optional scope
-   * @return Array filtered copy
-   */
-  filter: function() {
-    return this._call(arguments, 'if($c)c.push(v)');
+  each: function() {
+    this._call(arguments, 'forEach');
+    return this;
   },
   
   /**
@@ -148,7 +116,32 @@ $ext(Array.prototype, {
    * @return Array collected
    */
   map: function() {
-    return this._call(arguments, 'c.push($c)');
+    return this._call(arguments, '_map');
+  },
+  
+  /**
+   * creates a list of the array items which are matched in the given callback function
+   *
+   * @param Function callback
+   * @param Object optional scope
+   * @return Array filtered copy
+   */
+  filter: function() {
+    return this._call(arguments, '_filter');
+  },
+  
+  /**
+   * applies the given lambda to each element in the array
+   *
+   * NOTE: changes the array by itself
+   *
+   * @param Function callback
+   * @param Object optional scope
+   * @return Array this
+   */
+  walk: function() {
+    this.map.apply(this, arguments).forEach(function(value, i) { this[i] = value; }, this);
+    return this;
   },
     
   /**
@@ -179,7 +172,7 @@ $ext(Array.prototype, {
    */
   flatten: function() {
     var copy = [];
-    this.each(function(value) {
+    this.forEach(function(value) {
       if (isArray(value)) {
         copy = copy.concat(value.flatten());
       } else {
@@ -259,47 +252,63 @@ $ext(Array.prototype, {
   },
   
 // private
-
-  // compiles the callback function for the walk/filter/map methods
-  _call: function(args, pattern) {
-    var a = $A(args), m = a.shift(), c=[];
-    if (isString(m)) {
-      var replace = 'isFunction(v[m])?v[m].apply(v,[].concat(a).concat([v,i,this])):v[m]';
-    } else {
-      var s = a.shift(), replace = 'm.apply(s,[v,i,this])';
+  
+  // recatching the original JS 1.6 method 
+  forEach: Array.prototype.forEach || function(callback, scope) {
+    for (var i=0; i < this.length; i++)
+      callback.call(scope, this[i], i, this);
+  },
+  
+  _filter: Array.prototype.filter || function(callback, scope) {
+    for (var result=[], i=0; i < this.length; i++) {
+      if (callback.call(scope, this[i], i, this))
+        result.push(this[i]);
     }
-    
-    eval('this.each(function(v,i){'+pattern.replace('$c', replace)+'}, this);');
-    
-    return c;
+    return result;
+  },
+  
+  _map: Array.prototype.map || function(callback, scope) {
+    for (var result=[], i=0; i < this.length; i++) {
+      result.push(callback.call(scope, this[i], i, this));
+    }
+    return result;
+  },
+
+  // handles the each/map/filter methods wrapups
+  _call: function(args, name) {
+    try {
+      return this[name].apply(this, this._guessCallback(args));
+    } catch(e) { if (!(e instanceof Break)) throw(e); }
   },
   
   // processes the all and any methods
-  _all: function(args, what) {
-    var args = $A(args), callback = args.shift(), scope = this;
+  _all: function(args, name) {
+    var pair = this._guessCallback(args), callback = pair[0], scope = pair[1], break_value = name != 'all', result = null;
+    if (!callback) callback = function(value) { return value; };
     
-    if (!callback) {
-      callback = function(value) { return !!value; };
-    } else if (isFunction(callback)) {
-      scope = args.shift();
-    } else if (isString(callback)) {
-      var attr = callback;
-      callback = function(value,i) {
-        return !!(isFunction(value[attr]) ?
-          value[attr].apply(value, [].concat(args).concat([value,i,this])) : 
-          value[attr]);
-      };
+    for (var i=0; i < this.length; i++) {
+      if (!!(callback.call(scope, this[i], i, this)) == break_value) {
+        result = name == 'all' ? false : this[i];
+        break;
+      }
     }
     
-    var break_value = what != 'all', result = null;
-    
-    this.each(function(value,i,list) {
-      if (callback.apply(scope, [value,i,list]) == break_value) {
-        result = what == 'all' ? false : value;
-        $break();
-      }
-    });
-    
     return result === null ? !break_value : result;
+  },
+  
+  // guesses the callback/scope pair out of the arguments list
+  _guessCallback: function(args) {
+    var args = $A(args), callback = args.shift(), scope = this;
+    
+    if (isString(callback)) {
+      var attr = callback;
+      callback = function(object) {
+        return isFunction(object[attr]) ? object[attr].apply(object, args) : object[attr];
+      }
+    } else {
+      scope = args.shift();
+    }
+    
+    return [callback, scope];
   }
 });

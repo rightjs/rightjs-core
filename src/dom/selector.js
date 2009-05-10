@@ -50,7 +50,7 @@ var Selector = new Class({
    * @return Array list of found nodes
    */
   select: function(element) {
-    return this.strategy.select(element).walk($);
+    return this.strategy.select(element).map($);
   },
   
   /**

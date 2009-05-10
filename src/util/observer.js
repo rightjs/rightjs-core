@@ -147,7 +147,7 @@ var Observer = new Class({
        */
       fire: function(name, options) {
         var event = new Event(name, options);
-        this._oCached(name).walk('call', this, event);
+        this._oCached(name).each('call', this, event);
         return this;
       },
       

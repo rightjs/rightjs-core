@@ -117,7 +117,7 @@ Element.addMethods({
    * @return Element self
    */
   radio: function(effect, options) {
-    this.siblings().walk('hide', effect, options);
+    this.siblings().each('hide', effect, options);
     return this.show();
   }
 });
