@@ -230,12 +230,10 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   without: function() {
-    var filter = $A(arguments), copy = [];
-    this.each(function(value) {
-      if (!filter.includes(value))
-        copy.push(value);
+    var filter = $A(arguments);
+    return this.filter(function(value) {
+      return !filter.includes(value);
     });
-    return copy;
   },
   
   /**
