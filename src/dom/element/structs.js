@@ -11,7 +11,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-$ext(Element.Methods, {
+Element.addMethods({
   parent: function(css_rule) {
     return css_rule ? this.up(css_rule) : $(this.parentNode);
   },

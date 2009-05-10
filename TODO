@@ -1,8 +1,10 @@
+Think about how to invoke the JavaScript 1.6 map/filter/??? methods
+
+See how to get rid of evals in the Array#_call method
+
 Fix the build
 
 Fix the custom events arguments bypassing
-
-Element.addMethods
 
 Create alias #includes -> #include
 
@@ -23,6 +25,8 @@ see if you can shortify the Element static mirrors generation code.
 --------
 Completed
 ---------
+
+Element.addMethods
 
 Observer#listeners
 

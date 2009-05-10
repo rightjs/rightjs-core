@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-$ext(Element.Methods, {
+Element.addMethods({
   /**
    * sets the element attributes
    *

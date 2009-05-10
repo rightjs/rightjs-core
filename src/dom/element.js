@@ -23,7 +23,7 @@ window.Element = new Class(window.Element, {
   },
   
   extend: {
-    Methods: {}, // will be filled up in the submodules
+    Methods: {}, // DO NOT Extend this object manually unless you need it, use Element#addMethods
     
     /**
      * prepares an element for usage
@@ -48,6 +48,41 @@ window.Element = new Class(window.Element, {
         }
       }
       return element;
+    },
+    
+    /**
+     * registeres the methods on the custom element methods list
+     * will add them to prototype and will generate a non extensive static mirror
+     * 
+     * USAGE:
+     *  Element.addMethods({
+     *    foo: function(bar) {}
+     *  });
+     *
+     *  $(element).foo(bar);
+     *  Element.foo(element, bar);
+     *
+     * @param Object new methods list
+     * @param Boolean flag if the method should keep the existing methods alive
+     * @return Element the global Element object
+     */
+    addMethods: function(methods, dont_overwrite) {
+      $ext(this.Methods,   methods, dont_overwrite);
+      $ext(this.prototype, methods, dont_overwrite);
+      
+      for (var name in methods) {
+        if (isFunction(methods[name]) && !(dont_overwrite && defined(Element[name]))) {
+          eval('var f='+this._stubThisCalls(methods[name].toString()));
+          
+          Element[name] = (function(method) {
+            return function() {
+              return method.apply(arguments[0], $A(arguments).slice(1));
+            };
+          })(f);
+        }
+      }
+      
+      return this;
     },
     
     /**
@@ -78,6 +113,38 @@ window.Element = new Class(window.Element, {
       }
       
       return fragment;
+    },
+    
+  // protected
+    // replaces all the this.xxxx() calls with Element.xxxx() calls
+    _stubThisCalls: function(source) {
+      var $this = this;
+      return source.replace(/this\.([a-z0-9_]+)(\.(call|apply))?\((?:(.|\n)*)\)/img, function(match) {
+        var name = match.substr(5).split(/\.|\(/)[0], end = $this._stubThisCalls(match.substr(match.indexOf('(')+1));
+
+        if (isFunction(Element.Methods[name])) {
+          match = "Element."+ name +
+            (match.match(new RegExp("this."+name+"(\.(call|apply))?\()"))[1] || '')+
+            "(this"+(end.match(/^\s*\)/) ? '' : ', ')+end;
+        } else {
+          // attaching the processed end to make sure everything is handled
+          match = match.substr(0, match.indexOf('(')+1) + end;
+        }
+        
+        return match;
+      }
+
+      // handling hacks like this[bla_bla_bla]
+      ).replace(/this\[(?:.+?)\]\((?:(.|\n)*)\)/img, function(match) {
+        var els = match.split(/\[(?:.+)\]\(/im), end = els[1];
+
+        return "Element"+match.substr(4, match.length - end.length - 4)+
+            "this" + (end.match(/^\s*\)/) ? '' : ', ')+$this._stubThisCalls(end);
+      }
+
+      // some custom case replacements
+      ).replace(/this\.insertions/g, 'Element.Methods.insertions'
+      ).replace(/this\._oO/g, 'Element.Methods._oO');
     }
   }
   

@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-$ext(Element.Methods, {
+Element.addMethods({
   /**
    * assigns styles out of the hash to the element
    *

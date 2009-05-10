@@ -36,9 +36,9 @@ JS_SOURCES = %w{
   dom/event/custom.js
   
   dom/element.js
+  dom/element/structs.js
   dom/element/styles.js
   dom/element/commons.js
-  dom/element/structs.js
   dom/element/dimensions.js
   dom/element/events.js
   
@@ -54,8 +54,6 @@ JS_SOURCES = %w{
   xhr/xhr.js
   xhr/element.js
   xhr/iframed.js
-  
-  dom/extend.js
 }
 
 task :default => :build

@@ -63,6 +63,38 @@ var ElementTest = TestCase.create({
     this.assertEqual(1, self['__test']);
   },
   
+  testAddMethods: function() {
+    var foo = function(title) {
+      this.title = title;
+      this.id    = this.___bar();
+      return this;
+    };
+    var bar = function() { return this.title + '-id' };
+    
+    this.assertSame(Element, Element.addMethods({
+      ___foo: foo,
+      ___bar: bar
+    }));
+    
+    this.assertSame(Element.prototype.___foo, foo);
+    this.assertSame(Element.prototype.___bar, bar);
+    
+    this.assertSame(Element.Methods.___foo, foo);
+    this.assertSame(Element.Methods.___bar, bar);
+    
+    this.assertTypeOf('function', Element.___foo);
+    this.assertTypeOf('function', Element.___foo);
+    
+    var div = document.createElement('div');
+    
+    this.assertSame(div, Element.___foo(div, 'some-title'));
+    
+    this.assertEqual('some-title', div.title);
+    this.assertEqual('some-title-id', div.id);
+    
+    this.assertNull(div['___foo']);
+    this.assertNull(div['___bar']);
+  },
   
   testElement_createFragment: function() {
     var string = '<div><p></p></div><span></span>';

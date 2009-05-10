@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-$ext(Element.Methods, {
+Element.addMethods({
   /**
    * performs an Xhr request to the given url
    * and updates the element internals with the responseText
