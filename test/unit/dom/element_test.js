@@ -76,9 +76,6 @@ var ElementTest = TestCase.create({
       ___bar: bar
     }));
     
-    this.assertSame(Element.prototype.___foo, foo);
-    this.assertSame(Element.prototype.___bar, bar);
-    
     this.assertSame(Element.Methods.___foo, foo);
     this.assertSame(Element.Methods.___bar, bar);
     
@@ -91,9 +88,6 @@ var ElementTest = TestCase.create({
     
     this.assertEqual('some-title', div.title);
     this.assertEqual('some-title-id', div.id);
-    
-    this.assertNull(div['___foo']);
-    this.assertNull(div['___bar']);
   },
   
   testElement_createFragment: function() {

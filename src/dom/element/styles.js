@@ -14,12 +14,10 @@ Element.addMethods({
    * @return Element self
    */
   setStyle: function(hash, value) {
-    if (value) {
-      var style = {}; style[hash] = value; hash = style;
-    }
-    $ext(this.style, Object.eachKey(hash, function(key) {
-      return key.camelize();
-    }));
+    if (value) { var style = {}; style[hash] = value; hash = style; }
+    
+    $ext(this.style, hash);
+    
     return this;
   },
   
@@ -93,7 +91,7 @@ Element.addMethods({
    * @return Element self
    */
   removeClass: function(name) {
-    this.className = this.className.replace(new RegExp('(^|\\s)'+ name + '(?:\\s|$)'), '$1');
+    this.className = this.className.replace(new RegExp("(^|\\s+)" + name + "(\\s+|$)"), ' ').trim();
     return this;
   },
   

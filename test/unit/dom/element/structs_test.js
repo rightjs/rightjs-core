@@ -27,7 +27,6 @@ var ElementStructsTest = TestCase.create({
 
   testParent_static: function() {
     this._testParent(this.div);
-    this.assertNull(this.div['parent'], "should not get extended");
   },
   
   _testParent: function(element) {
@@ -59,7 +58,6 @@ var ElementStructsTest = TestCase.create({
   
   testParents_static: function() {
     this._testParents(this.div);
-    this.assertNull(this.div['parents'], "should not get extended");
   },
   
   _testParents: function(element, select) {
@@ -86,7 +84,6 @@ var ElementStructsTest = TestCase.create({
   
   testSubNodes_static: function() {
     this._testSubNodes(this.div);
-    this.assertNull(this.div['subNodes'], "should not get extended");
   },
   
   _testSubNodes: function(element) {
@@ -118,7 +115,6 @@ var ElementStructsTest = TestCase.create({
   
   testSiblings_static: function() {
     this._testSiblings(this.div);
-    this.assertNull(this.div['siblings'], "should not get extended");
   },
   
   _testSiblings: function(element) {
@@ -150,7 +146,6 @@ var ElementStructsTest = TestCase.create({
   
   testNextSiblings_static: function() {
     this._testNextSiblings(this.div);
-    this.assertNull(this.div['nextSiblings'], "should not get extended");
   },
   
   _testNextSiblings: function(element) {
@@ -181,7 +176,6 @@ var ElementStructsTest = TestCase.create({
   
   testPrevSiblings_static: function() {
     this._testPrevSiblings(this.div);
-    this.assertNull(this.div['prevSiblings'], "should not get extended");
   },
   
   _testPrevSiblings: function(element) {
@@ -212,7 +206,6 @@ var ElementStructsTest = TestCase.create({
   
   testNext_static: function() {
     this._testNext(this.div);
-    this.assertNull(this.div['next'], "should not get extended");
   },
   
   _testNext: function(element) {
@@ -242,7 +235,6 @@ var ElementStructsTest = TestCase.create({
   
   testPrev_static: function() {
     this._testPrev(this.div);
-    this.assertNull(this.div['prev'], "should not get extended");
   },
   
   _testPrev: function(element) {
@@ -272,7 +264,6 @@ var ElementStructsTest = TestCase.create({
   
   testUp_static: function() {
     this._testUp(this.div);
-    this.assertNull(this.div['up'], "should not get extended");
   },
   
   _testUp: function(element) {
@@ -298,7 +289,6 @@ var ElementStructsTest = TestCase.create({
   
   testDown_static: function() {
     this._testDown(this.div);
-    this.assertNull(this.div['down'], "should not get extended");
   },
   
   _testDown: function(element) {
@@ -331,7 +321,6 @@ var ElementStructsTest = TestCase.create({
   
   testSelect_select: function() {
     this._testSelect(this.div);
-    this.assertNull(this.div['select'], "should not get extended");
   },
   
   _testSelect: function(element) {
@@ -399,7 +388,6 @@ var ElementStructsTest = TestCase.create({
   
   testRemove_static: function() {
     this._testRemove(this.div);
-    this.assertNull(this.div['remove'], "should not get extended");
   },
   
   _testRemove: function(element) {
@@ -418,7 +406,6 @@ var ElementStructsTest = TestCase.create({
   
   testInsert_static: function() {
     this._testInsert(this.div);
-    this.assertNull(this.div['insert'], "should not get extended");
   },
   
   _testInsert: function(element) {
@@ -451,7 +438,6 @@ var ElementStructsTest = TestCase.create({
   
   testReplace_static: function() {
     this._testReplace(this.div);
-    this.assertNull(this.div['replace'], "should not get extended");
   },
   
   _testReplace: function(element) {
@@ -480,7 +466,6 @@ var ElementStructsTest = TestCase.create({
   
   testUpdate_static: function() {
     this._testUpdate(this.div);
-    this.assertNull(this.div['update'], "should not get extended");
   },
   
   _testUpdate: function(element, call) {
@@ -504,7 +489,6 @@ var ElementStructsTest = TestCase.create({
   
   testWrap_static: function() {
     this._testWrap(this.div);
-    this.assertNull(this.div['wrap'], "should not get extended");
   },
   
   _testWrap: function(element, call) {
@@ -525,7 +509,6 @@ var ElementStructsTest = TestCase.create({
   
   testClean_static: function() {
     this._testClean(this.div);
-    this.assertNull(this.div['clean'], "should not get extended");
   },
   
   _testClean: function(element) {
@@ -543,7 +526,6 @@ var ElementStructsTest = TestCase.create({
   
   testEmpty_static: function() {
     this._testEmpty(this.el);
-    this.assertNull(this.div['empty'], "should not get extended");
   },
   
   _testEmpty: function(element) {

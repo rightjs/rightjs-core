@@ -43,6 +43,21 @@ var UtilTest = TestCase.create({
     $eval('var ____a = 1;');
     this.assertEqual(1, window.____a, 'getting shure the script was evaled in the window scope');
   },
+  
+  test_$alias: function() {
+    var o = {
+      foo: function() {},
+      bar: function() {}
+    };
+    
+    this.assertSame(o, $alias(o, {
+      foo: '_foo',
+      bar: '_bar'
+    }));
+    
+    this.assertSame(o.foo, o._foo);
+    this.assertSame(o.bar, o._bar);
+  },
    
   testDefined: function() {
     var smth = null;

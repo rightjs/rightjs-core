@@ -67,13 +67,12 @@ var FormTest = TestCase.create({
   testGetElements: function() {
     var form = this.setForm();
     
-    //alert($A(form.elements).map('type'));
-    //this.assertEqual($A(form.elements), form.getElements());
+    this.assertEqual($A(form.elements), form.getElements());
     
-    //form.getElements().each(function(element) {
-    //  this.assert(element['getValue']);
-    //}, this);
-  }/*,
+    form.getElements().each(function(element) {
+      this.assert(element['getValue']);
+    }, this);
+  },
   
   testInputs: function() {
     var form = this.setForm();
@@ -137,7 +136,7 @@ var FormTest = TestCase.create({
     form.down('#who-bob').checked = true;
     
     this.assertEqual({
-      name: 'Bob',
+      name:     'Bob',
       password: 'secret',
       keep_me:  '1',
       text:     'Boo boo boo',
@@ -145,8 +144,6 @@ var FormTest = TestCase.create({
       items:    ['2', '3'],
       who:      'bob'
     }, form.values());
-    
-    alert(form.getElements().map('type'))
   },
   
   testSerialize: function() {
@@ -156,6 +153,6 @@ var FormTest = TestCase.create({
       'name=Bob&password=secret&text=Boo%20boo%20boo&kinda=1&items=2%2C3',
       form.serialize()
     )
-  }*/
+  }
 });
 

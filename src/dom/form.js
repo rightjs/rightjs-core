@@ -20,13 +20,12 @@ var Form = new Class(Element, {
   
   extend: {
     /**
-     * invokes the form element extending procedure
+     * IE browsers manual elements extending
      *
      * @param Element form
      * @return Form element
      */
     ext: function(element) {
-      Observer.createShortcuts(element, $w('submit reset focus'));
       return $ext(element, this.Methods);
     },
     
@@ -162,3 +161,9 @@ var Form = new Class(Element, {
     }
   }
 });
+
+Observer.createShortcuts(Form.Methods, $w('submit reset focus'));
+
+try { // extending the form element prototype
+  $ext(HTMLFormElement.prototype, Form.Methods);
+} catch(e) {}

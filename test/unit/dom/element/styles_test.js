@@ -13,14 +13,13 @@ var ElementStylesTest = TestCase.create({
   },
   
   testSetStyleWithKeyValue: function() {
-    this.assertSame(this.el, this.el.setStyle('font-size', '14px'));
+    this.assertSame(this.el, this.el.setStyle('fontSize', '14px'));
     this.assertStyle(this.el, {fontSize: '14px'});
   },
   
   testSetStyleWithKeyValue_static: function() {
-    this.assertSame(this.div, Element.setStyle(this.div, 'font-size', '14px'));
+    this.assertSame(this.div, Element.setStyle(this.div, 'fontSize', '14px'));
     this.assertStyle(this.div, {fontSize: '14px'});
-    this.assertNull(this.div['setStyle'], "should not get extended");
   },
   
   testSetStyleAsHash: function() {
@@ -43,25 +42,12 @@ var ElementStylesTest = TestCase.create({
     
     this.assertSame(this.div, Element.setStyle(this.div, style));
     this.assertStyle(this.div, style);
-    this.assertNull(this.div['setStyle'], "should not get extended");
-  },
-  
-  testSetStyleAsHashWithDashedKeys: function() {
-    this.el.setStyle({
-      'font-size': '14px',
-      'border-size': '2px'
-    });
-    
-    this.assertStyle(this.el, {
-      fontSize: '14px',
-      borderSize: '2px'
-    })
   },
   
   testGetStyleWithElementLevelStyles: function() {
     this.el.setStyle({
-      'font-size': '12px',
-      'border-size': '2px'
+      'fontSize': '12px',
+      'borderSize': '2px'
     });
     
     this.assertEqual('12px', this.el.getStyle('font-size'));
@@ -80,9 +66,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertEqual('12px', Element.getOwnStyle(this.div, 'font-size'));
     this.assertEqual('2px', Element.getOwnStyle(this.div, 'borderSize'));
-    
-    this.assertNull(this.div['getStyle'], "should not get extended");
-    this.assertNull(this.div['getOwnStyle'], "should not get extended");
   },
   
   testGetStyleWithCSSLevelStyles: function() {
@@ -111,9 +94,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertNull(Element.getOwnStyle(this.div, 'font-size'));
     this.assertNull(Element.getOwnStyle(this.div, 'display'));
-    
-    this.assertNull(this.div['getStyle'], "should not get extended");
-    this.assertNull(this.div['getViewStyle'], "should not get extended");
   },
   
   testHasClass: function() {
@@ -144,8 +124,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assert(Element.hasClass(this.div, 'foo'));
     this.assert(Element.hasClass(this.div, 'boo'));
-    
-    this.assertNull(this.div['hasClass'], "should not get extended");
   },
   
   testSetClass: function() {
@@ -156,7 +134,6 @@ var ElementStylesTest = TestCase.create({
   testSetClass_static: function() {
     this.assertSame(this.div, Element.setClass(this.div, 'foo bar'));
     this.assertEqual('foo bar', this.div.className);
-    this.assertNull(this.div['setClass'], "should not get extended");
   },
   
   testAddClass: function() {
@@ -193,8 +170,6 @@ var ElementStylesTest = TestCase.create({
     
     Element.addClass(this.div, 'boo');
     this.assertEqual('foo boo', this.div.className, "check if the class was not added twice");
-    
-    this.assertNull(this.div['addClass'], "should not get extended");
   },
   
   testRemoveClass: function() {
@@ -215,8 +190,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertSame(this.div, Element.removeClass(this.div, 'boo'), "check if the method returns the element again");
     this.assertEqual('', this.div.className);
-    
-    this.assertNull(this.div['removeClass'], "should not get extended");
   },
   
   testToggleClass: function() {
@@ -233,8 +206,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertSame(this.div, Element.toggleClass(this.div, 'foo'));
     this.assertHasNoClassName(this.div, 'foo');
-    
-    this.assertNull(this.div['toggleClass'], "should not get extended");
   },
   
   testRadioClass: function() {
@@ -277,18 +248,15 @@ var ElementStylesTest = TestCase.create({
     this.assertHasClassName(el1, 'test');
     this.assertHasNoClassName(el2, 'test');
     this.assertHasNoClassName(el3, 'test');
-    this.assertNull(el1['radioClass']);
     
     Element.radioClass(el2, 'test');
     this.assertHasNoClassName(el1, 'test');
     this.assertHasClassName(el2, 'test');
     this.assertHasNoClassName(el3, 'test');
-    //this.assertNull(el2['radioClass']);
     
     Element.radioClass(el3, 'test');
     this.assertHasNoClassName(el1, 'test');
     this.assertHasNoClassName(el2, 'test');
     this.assertHasClassName(el3, 'test');
-    //this.assertNull(el3['radioClass']);
   }
 });

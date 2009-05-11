@@ -14,19 +14,19 @@ window.Element = new Class(window.Element, {
   initialize: function(tag_name, options) {
     var element = $(document.createElement(tag_name)), options = options || {};
     
-    if (options['html'])    element.update(options['html']);
-    if (options['class'])   element.setClass(options['class']);
-    if (options['style'])   element.setStyle(options['style']);
-    if (options['observe']) element.observe(options['observe']);
+    if (options['html'])    { element.update(options['html']);     delete(options['html']);    }
+    if (options['class'])   { element.setClass(options['class']);  delete(options['class']);   }
+    if (options['style'])   { element.setStyle(options['style']);  delete(options['style']);   }
+    if (options['observe']) { element.observe(options['observe']); delete(options['observe']); }
     
-    return element.set(Object.without(options, 'class', 'style', 'observe', 'html'));
+    return element.set(options);
   },
   
   extend: {
     Methods: {}, // DO NOT Extend this object manually unless you need it, use Element#addMethods
     
     /**
-     * prepares an element for usage
+     * IE browsers manual elements extending
      *
      * @param Element
      * @return Element
@@ -39,9 +39,10 @@ window.Element = new Class(window.Element, {
           case 'FORM':
             Form.ext(element);
             break;
-            
+
           case 'INPUT':
           case 'SELECT':
+          case 'BUTTON':
           case 'TEXTAREA':
             Form.Element.ext(element);
             break;
@@ -67,8 +68,11 @@ window.Element = new Class(window.Element, {
      * @return Element the global Element object
      */
     addMethods: function(methods, dont_overwrite) {
-      $ext(this.Methods,   methods, dont_overwrite);
-      $ext(this.prototype, methods, dont_overwrite);
+      $ext(this.Methods, methods, dont_overwrite);
+      
+      try { // busting up the basic element prototypes
+        $ext(HTMLElement.prototype, methods, dont_overwrite);
+      } catch(e) {}
       
       for (var name in methods) {
         if (isFunction(methods[name]) && !(dont_overwrite && defined(Element[name]))) {

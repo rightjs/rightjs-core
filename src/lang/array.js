@@ -302,8 +302,10 @@ $ext(Array.prototype, {
     
     if (isString(callback)) {
       var attr = callback;
-      callback = function(object) {
-        return isFunction(object[attr]) ? object[attr].apply(object, args) : object[attr];
+      if (this.length && isFunction(this[0][attr])) {
+        callback = function(object) { return object[attr].apply(object, args); };
+      } else {
+        callback = function(object) { return object[attr]; };
       }
     } else {
       scope = args.shift();

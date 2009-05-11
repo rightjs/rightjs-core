@@ -11,13 +11,12 @@ Element.addMethods({
    * @param mixed attribute value
    * @return Element self
    */
-  set: function(name, value) {
-    if (isHash(name)) {
-      for (var key in name)
-        this.set(key, name[key]);
-    } else {
-      this[name] = value;
-    }
+  set: function(hash, value) {
+    if (value) { var val = {}; val[hash] = value; hash = val; }
+
+    for (var key in hash)
+      this[key] = hash[key];
+      
     return this;
   },
   

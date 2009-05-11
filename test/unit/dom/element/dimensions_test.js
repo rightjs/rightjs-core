@@ -22,33 +22,29 @@ ElementDimensionsTest = TestCase.create({
     
   testTop: function() {
     this.assert(Element.top(this.div) > 0);
-    this.assertNull(this.div['top']);
     this.assert($(this.div).top() > 0);
   },
   
   testLeft: function() {
     this.assert(Element.left(this.div) > 0);
-    this.assertNull(this.div['left']);
     this.assert($(this.div).left() > 0);
   },
   
   testSize: function() {
     this.assertEqual({x: 400, y: 300}, Element.sizes(this.div));
-    this.assertNull(this.div['sizes']);
     this.assertEqual({x: 400, y: 300}, $(this.div).sizes());
   },
   
   testPosition: function() {
     var pos = Element.position(this.div);
     this.assert(pos.x > 0 && pos.y > 0);
-    this.assertNull(this.div['position']);
+    
     var pos = $(this.div).position();
     this.assert(pos.x > 0 && pos.y > 0);
   },
   
   testScrolls: function() {
     this.assertEqual({x:0, y:0}, Element.scrolls(this.div));
-    this.assertNull(this.div['scrolls']);
     this.assertEqual({x:0, y:0}, $(this.div).scrolls());
   },
   
@@ -65,7 +61,6 @@ ElementDimensionsTest = TestCase.create({
   testSetWidth: function() {
     this.assertSame(this.div, Element.setWidth(this.div, 500));
     this.assertEqual(500, this.div.offsetWidth);
-    this.assertNull(this.div['setWidth']);
     
     this.assertSame(this.div, $(this.div).setWidth(600));
     this.assertEqual(600, this.div.offsetWidth);
@@ -76,7 +71,6 @@ ElementDimensionsTest = TestCase.create({
   testSetHeight: function() {
     this.assertSame(this.div, Element.setHeight(this.div, 500));
     this.assertEqual(500, this.div.offsetHeight);
-    this.assertNull(this.div['setHeight']);
     
     this.assertSame(this.div, $(this.div).setHeight(600));
     this.assertEqual(600, this.div.offsetHeight);
@@ -87,7 +81,6 @@ ElementDimensionsTest = TestCase.create({
   testSetSize: function() {
     this.assertSame(this.div, Element.setSize(this.div, 600, 500));
     this.assertEqual({x: 600, y: 500}, Element.sizes(this.div));
-    this.assertNull(this.div['setSize']);
     
     this.assertSame(this.div, $(this.div).setSize(500, 600));
     this.assertEqual({x: 500, y: 600}, this.div.sizes());
@@ -99,6 +92,5 @@ ElementDimensionsTest = TestCase.create({
   testSetPosition: function() {
     this.assertSame(this.div, Element.setPosition(this.div, 40, 40));
     this.assertEqual({x: 40, y: 40}, Element.position(this.div));
-    this.assertNull(this.div['setPosition']);
   }
 });

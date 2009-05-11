@@ -19,7 +19,7 @@ function $ext(dest, src, dont_overwrite) {
   var src = src || {};
 
   for (var key in src)
-    if (!(dont_overwrite && defined(dest[key])))
+    if (!(dont_overwrite && dest[key] !== undefined))
       dest[key] = src[key];
 
   return dest;
@@ -68,6 +68,20 @@ function $eval(text) {
  */
 function $break() {
   throw new Break();
+};
+
+/**
+ * generates aliases for the object properties
+ *
+ * @param Object object
+ * @param Object aliases hash
+ * @return Object the extended objects
+ */
+function $alias(object, names) {
+  for (var old_name in names) {
+    object[names[old_name]] = object[old_name];
+  }
+  return object;
 };
 
 /**
@@ -205,7 +219,8 @@ function $E(tag_name, options) {
  * @return Element or null
  */
 function $(element) {
-  return Element.prepare(isString(element) ? document.getElementById(element) : element);
+  var element = typeof(element) == 'string' ? document.getElementById(element) : element;
+  return element.set ? element : Element.prepare(element);
 };
 
 /**

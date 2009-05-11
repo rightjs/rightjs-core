@@ -19,7 +19,6 @@ var ElementCommonsTest = TestCase.create({
   testSetSimple_static: function() {
     this.assertSame(this.div, Element.set(this.div, 'id', 'some-id'));
     this.assertEqual('some-id', this.div.id);
-    this.assertNull(this.div['set'], "checking that the element was not extended");
   },
   
   testSetHash: function() {
@@ -40,8 +39,6 @@ var ElementCommonsTest = TestCase.create({
     
     this.assertEqual('another-id', this.div.id);
     this.assertEqual('foo bar', this.div.className);
-    
-    this.assertNull(this.div['set'], "checking that the element was not extended");
   },
   
   testGet: function() {
@@ -54,8 +51,6 @@ var ElementCommonsTest = TestCase.create({
     this.div.id = 'something';
     this.assertEqual(this.div.id, Element.get(this.div, 'id'));
     this.assertNull(Element.get(this.div, 'title'));
-    
-    this.assertNull(this.div['get'], "checking that the element was not extended");
   },
   
   testHas: function() {
@@ -68,8 +63,6 @@ var ElementCommonsTest = TestCase.create({
     this.div.id = 'something';
     this.assert(Element.has(this.div, 'id'));
     this.assertFalse(Element.has(this.div, 'title'));
-    
-    this.assertNull(this.div['has'], "checking that the element was not extended");
   },
   
   testErase: function() {
@@ -82,8 +75,6 @@ var ElementCommonsTest = TestCase.create({
     this.div.id = 'somethig';
     this.assertSame(this.div, Element.erase(this.div, 'id'));
     this.assertFalse(Element.has(this.div, 'id'));
-    
-    this.assertNull(this.div['erase'], "checking that the element was not extended");
   },
   
   testHidden: function() {
@@ -96,8 +87,6 @@ var ElementCommonsTest = TestCase.create({
     this.assertFalse(Element.hidden(this.div));
     this.div.style.display = 'none';
     this.assert(Element.hidden(this.div));
-    
-    this.assertNull(this.div['hidden'], "checking that the element was not extended");
   },
   
   testVisible: function() {
@@ -110,8 +99,6 @@ var ElementCommonsTest = TestCase.create({
     this.assert(Element.visible(this.div));
     this.div.style.display = 'none';
     this.assertFalse(Element.visible(this.div));
-    
-    this.assertNull(this.div['visible'], "checking that the element was not extended");
   },
   
   testHide: function() {
@@ -124,8 +111,6 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(this.div);
     this.assertSame(this.div, Element.hide(this.div));
     this.assertHidden(this.div);
-    
-    this.assertNull(this.div['hide'], "checking that the element was not extended");
   },
   
   testShow: function() {
@@ -140,8 +125,6 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(this.div)
     this.assertSame(this.div, Element.show(this.div));
     this.assertVisible(this.div);
-    
-    this.assertNull(this.div['show'], "checking that the element was not extended");
   },
   
   testHideShowPrevDisplayRestoration: function() {
@@ -172,8 +155,6 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(this.div);
     this.assertSame(this.div, Element.toggle(this.div));
     this.assertVisible(this.div);
-    
-    this.assertNull(this.div['toggle'], "checking that the element was not extended");
   },
   
   testRadio: function() {
@@ -216,6 +197,5 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(div2);
     this.assertHidden(div1);
     this.assertHidden(div3);
-    this.assertNull(div2['radio']);
   }
 })

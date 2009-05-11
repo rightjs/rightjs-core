@@ -235,3 +235,4 @@ var Observer = new Class({
     }
   }
 });
+Observer.Methods.on = Observer.Methods.observe;

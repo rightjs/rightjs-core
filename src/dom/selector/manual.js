@@ -14,6 +14,13 @@ Selector.Manual = new Class({
   initialize: function(css_rule) {
     var css_rule = css_rule.trim();
     this.cssRule = css_rule;
+    
+    // if there's just a tag, use a quick search
+    if (css_rule.match(/^[a-z\*]$/)) {
+      this.select = function(element) { return $A(element.getElementsByTagName(css_rule)); };
+      return this;
+    }
+    
     this.atoms = [];
 
     var relation = null, match = null;

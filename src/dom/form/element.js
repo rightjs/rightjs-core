@@ -5,7 +5,7 @@
  */
 Form.Element = {
   /**
-   * Invokes the form element extension process
+   * IE browsers manual elements extending
    *
    * @param Element element
    * @return Element extended element
@@ -15,8 +15,6 @@ Form.Element = {
     element._blur   = element.blur;
     element._focus  = element.focus;
     element._select = element.select;
-    
-    Observer.createShortcuts(element, $w('disable enable focus blur'));
     
     return $ext(element, this.Methods);
   },
@@ -113,3 +111,16 @@ Form.Element = {
     }
   }
 };
+
+Observer.createShortcuts(Form.Element.Methods, $w('disable enable focus blur'));
+
+try { // extending the input element prototypes
+  [HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement, HTMLButtonElement].each(function(klass) {
+    $alias(klass.prototype, {
+      blur:   '_blur',
+      focus:  '_focus',
+      select: '_select'
+    });
+    $ext(klass.prototype, Form.Element.Methods);
+  });
+} catch(e) {}

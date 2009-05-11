@@ -33,7 +33,6 @@ var ElementEventsTest = TestCase.create({
   
   testObserve_static: function() {
     this.assertObserve(this.div);
-    this.assertNull(this.div['observe'], "should not be wired");
   },
   
   assertObserve: function(element) {
@@ -99,7 +98,6 @@ var ElementEventsTest = TestCase.create({
   
   testObserves_static: function() {
     this.assertObserves(this.div);
-    this.assertNull(this.div['observes'], "should not be wired");
   },
   
   assertObserves: function(element) {
@@ -138,7 +136,6 @@ var ElementEventsTest = TestCase.create({
   
   testStopObserving_static: function() {
     this.assertStopObserving(this.div);
-    this.assertNull(this.div['stopObserve'], "should not be wired");
   },
   
   assertStopObserving: function(element) {
