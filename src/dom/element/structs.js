@@ -13,7 +13,7 @@
  */
 Element.addMethods({
   parent: function(css_rule) {
-    return css_rule ? this.up(css_rule) : $(this.parentNode);
+    return css_rule ? this.parents(css_rule).first() : $(this.parentNode);
   },
   
   parents: function(css_rule) {
@@ -45,11 +45,7 @@ Element.addMethods({
     return this.prevSiblings(css_rule).first();
   },
   
-  up: function(css_rule) {
-    return this.parents(css_rule).first();
-  },
-  
-  down: function(css_rule) {
+  first: function(css_rule) {
     return new Selector(css_rule).first(this);
   },
   

@@ -1,4 +1,4 @@
-Do Element structural methods review
+Get rid of static calls
 
 Fix the manual css-selector E[foo]	an E element with a "foo" attribute
 
@@ -8,7 +8,7 @@ Add observer lists of listeners support. Move the by name calls into the generic
 
 Create alias #includes -> #include
 
-Write tests for the Cookie unit
+Rework the cookies handling, so that the cookies object was extended
 
 Think about moving part of the Array extensions to an Enumerable unit
 
@@ -22,9 +22,11 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 
 see if you can shortify the Element static mirrors generation code.
 
---------
+---------
 Completed
 ---------
+
+Do Element structural methods review
 
 Fix the build
 

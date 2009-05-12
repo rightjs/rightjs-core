@@ -220,7 +220,7 @@ function $E(tag_name, options) {
  */
 function $(element) {
   var element = typeof(element) == 'string' ? document.getElementById(element) : element;
-  return element.set ? element : Element.prepare(element);
+  return (!element || element.set) ? element : Element.prepare(element);
 };
 
 /**
@@ -230,7 +230,7 @@ function $(element) {
  * @return Array matching elements list
  */
 function $$(css_rule) {
-  return $(document.body).select(css_rule);
+  return new Selector(css_rule).select(document);
 };
 
 /**

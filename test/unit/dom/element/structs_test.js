@@ -258,41 +258,16 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual(el1, select(element, 'div'), "checking the filtered list");
   },
   
-  testUp: function() {
-    this._testUp(this.el);
+  testFirst: function() {
+    this._testFirst(this.el)
   },
   
-  testUp_static: function() {
-    this._testUp(this.div);
+  testFirst_static: function() {
+    this._testFirst(this.div);
   },
   
-  _testUp: function(element) {
-    var select = this._callFor(element, 'up');
-    
-    var el1 = document.createElement('div');
-    var el2 = document.createElement('p');
-    var el3 = document.createElement('span');
-    
-    el1.appendChild(element);
-    el2.appendChild(el1);
-    el3.appendChild(el2);
-    
-    this.assertEqual(el1, select(element));
-    this.assert(el1['up']);
-    
-    this.assertEqual(el2, select(element, 'p'), "getting the filtered parents list");
-  },
-  
-  testDown: function() {
-    this._testDown(this.el)
-  },
-  
-  testDown_static: function() {
-    this._testDown(this.div);
-  },
-  
-  _testDown: function(element) {
-    var select = this._callFor(element, 'down');
+  _testFirst: function(element) {
+    var select = this._callFor(element, 'first');
     
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
@@ -309,7 +284,7 @@ var ElementStructsTest = TestCase.create({
     el4.className = 'our-guy';
 
     this.assertEqual(el1, select(element));
-    this.assert(el1['down']);
+    this.assert(el1['first']);
     
     this.assertEqual(el2, select(element, 'p'), "getting the filtered parents list");
     this.assertEqual(el4, select(element, 'div.our-guy'));
@@ -339,9 +314,6 @@ var ElementStructsTest = TestCase.create({
     el3.appendChild(el4);
     
     el4.className = 'our-guy';
-    
-    // FIXME there's a problem with the manual search sort result
-    // this.assertEqual([el1, el4, el2], select(element, 'div, p'));
     
     this.assertEqual([el1, el4, el2].sort(), select(element, 'div, p').sort());
     
@@ -422,13 +394,13 @@ var ElementStructsTest = TestCase.create({
     call(element, new Element('p'), 'top');
     this.assertEqual('<p></p><div></div><span></span>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    call(Element.down(element,'div'), '<blockquote></blockquote><cite></cite>', 'before');
+    call(Element.first(element,'div'), '<blockquote></blockquote><cite></cite>', 'before');
     this.assertEqual('<p></p><blockquote></blockquote><cite></cite><div></div><span></span>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    call(Element.down(element, 'blockquote'), [new Element('b'), new Element('u')], 'after');
+    call(Element.first(element, 'blockquote'), [new Element('b'), new Element('u')], 'after');
     this.assertEqual('<p></p><blockquote></blockquote><b></b><u></u><cite></cite><div></div><span></span>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    call(Element.down(element, 'p'), 'some string', 'instead');
+    call(Element.first(element, 'p'), 'some string', 'instead');
     this.assertEqual('some string<blockquote></blockquote><b></b><u></u><cite></cite><div></div><span></span>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
@@ -444,19 +416,19 @@ var ElementStructsTest = TestCase.create({
     var call = this._callFor(element, 'replace');
     
     element.innerHTML = '<p></p><div></div><span></span>';
-    call(Element.down(element, 'div'), '<ul></ul><ul></ul><script>self["____test"]=4;</script>');
+    call(Element.first(element, 'div'), '<ul></ul><ul></ul><script>self["____test"]=4;</script>');
     
     this.assertEqual('<p></p><ul></ul><ul></ul><span></span>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     this.assertEqual(4, self['____test']);
     self['____test'] = null;
     
-    this.assertSame(Element.down(element, 'ul'), call(Element.down(element, 'ul'), document.createElement('cite')));
+    this.assertSame(Element.first(element, 'ul'), call(Element.first(element, 'ul'), document.createElement('cite')));
     this.assertEqual('<p></p><cite></cite><ul></ul><span></span>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    call(Element.down(element, 'span'), [$E('div'), $E('b')]);
+    call(Element.first(element, 'span'), [$E('div'), $E('b')]);
     this.assertEqual('<p></p><cite></cite><ul></ul><div></div><b></b>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    call(Element.down(element, 'div'), 'div string');
+    call(Element.first(element, 'div'), 'div string');
     this.assertEqual('<p></p><cite></cite><ul></ul>div string<b></b>', element.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   

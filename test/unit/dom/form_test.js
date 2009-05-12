@@ -79,7 +79,7 @@ var FormTest = TestCase.create({
     
     this.assertEqual([
       form.name, form.password, form.keep_me, form.text, form.kinda, form.items,
-      form.down('#who-bob'), form.down('#who-nik')
+      form.first('#who-bob'), form.first('#who-nik')
     ], form.inputs());
   },
   
@@ -133,7 +133,7 @@ var FormTest = TestCase.create({
     }, form.values());
     
     form.keep_me.checked = true;
-    form.down('#who-bob').checked = true;
+    form.first('#who-bob').checked = true;
     
     this.assertEqual({
       name:     'Bob',
