@@ -27,7 +27,7 @@ Form.Element = {
     */
     getValue: function() {
       if (this.type == 'select-multiple') {
-        return $A(this.childNodes).map(function(option) {
+        return $A(this.getElementsByTagName('option')).map(function(option) {
           return option.selected ? option.value : null;
         }).compact();
       } else {
@@ -44,7 +44,7 @@ Form.Element = {
     setValue: function(value) {
       if (this.type == 'select-multiple') {
         value = (isArray(value) ? value : [value]).map(String);
-        $A(this.childNodes).each(function(option) {
+        $A(this.getElementsByTagName('option')).each(function(option) {
           option.selected = value.includes(option.value);
         });
       } else {
