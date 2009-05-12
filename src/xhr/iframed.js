@@ -14,7 +14,7 @@ Xhr.IFramed = new Class({
   initialize: function(form) {
     this.form = form;
     
-    this.iframe = new Element('iframe', { src: '', width: '0', height: '0' });
+    this.iframe = new Element('iframe', { src: 'about:blank', width: '0', height: '0' });
     this.iframe.setAttribute('frameborder', 0);
     this.iframe.id = this.iframe.name = 'xhr-frame-'+Math.random();
     

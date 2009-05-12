@@ -1,3 +1,7 @@
+Do Element structural methods review
+
+Fix the manual css-selector E[foo]	an E element with a "foo" attribute
+
 Make the observer support #observes and #stopObserving check callbacks without event name
 
 Add observer lists of listeners support. Move the by name calls into the generic handler
