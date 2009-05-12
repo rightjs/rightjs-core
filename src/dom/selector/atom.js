@@ -118,6 +118,7 @@ Selector.Atom = new Class({
       case '!=': return attr != value;
       case '~=': return attr.split(' ').includes(value);
       case '|=': return attr.split('-').includes(value);
+      default:   return attr != '';
     }
     return false;
   },
