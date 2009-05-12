@@ -59,14 +59,8 @@ var Observer = new Class({
         shortcuts[name] = function() {
           return this.fire.apply(this, [name].concat($A(arguments)));
         };
-        shortcuts['on'+name.capitalize()] = function(callback) {
-          if (isString(callback)) {
-            var args = $A(arguments), method = args.shift();
-            callback = (function() {
-              this[method].apply(this, args);
-            }).bind(this);
-          }
-          return this.observe(name, callback);
+        shortcuts['on'+name.capitalize()] = function() {
+          return this.observe.apply(this, [name].concat($A(arguments)));
         };
         $ext(object, shortcuts, true);
       });
@@ -90,6 +84,10 @@ var Observer = new Class({
             this.observe(key, name[key]);
           }
         } else {
+          if (isString(callback)) {
+            var args = $A(arguments).slice(1), method = args.shift();
+            callback = (function() { this[method].apply(this, args); }).bind(this);
+          }
           var callback = this._oReg(name, callback), name = Event.cleanName(name);
           if (this._oO['wire']) this._oO['wire'].call(this, name, callback);
         }
@@ -112,6 +110,7 @@ var Observer = new Class({
             result = !!(result & this.observes(key, name[key]));
           }
         } else {
+          if (isFunction(name)) { callback = name; name = this._oName(callback); }
           result = !!this._oCached(name, callback).length; // method returns an array
         }
 
@@ -128,10 +127,11 @@ var Observer = new Class({
        * @return Observer self
        */
       stopObserving: function(name, callback) {
+        if (isFunction(name)) { callback = name; name = this._oName(callback); }
+        
         if (this._oO['stop']) {
-          var name = Event.cleanName(name);
           this._oCached(name, callback).each(function(callback) {
-            this._oO['stop'].call(this, name, callback);
+            this._oO['stop'].call(this, Event.cleanName(name), callback);
           }, this);
         }
           
@@ -231,8 +231,28 @@ var Observer = new Class({
           });
         }
         return result;
+      },
+      
+      /**
+       * tries to find the event name by the original callback
+       *
+       * @param Function original callback
+       * @return String event name or an empty string if nothing found
+       */
+      _oName: function(callback) {
+        if (this._oCache) {
+          for (var key in this._oCache) {
+            if (this._oCache[key].any(function (pair) {
+              return pair.orig == callback;
+            })) {
+              return key;
+            }
+          }
+        }
+        return '';
       }
     }
   }
 });
-Observer.Methods.on = Observer.Methods.observe;
+
+$alias(Observer.Methods, { observe: 'on' });

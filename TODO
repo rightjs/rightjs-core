@@ -1,10 +1,8 @@
-Make the observer support #observes and #stopObserving check callbacks without event name
-
-Add observer lists of listeners support. Move the by name calls into the generic handler
+Implement the document object extensions, like 'ready' event
 
 Create alias #includes -> #include
 
-Rework the cookies handling, so that the cookies object was extended
+Write tests for the Cookie object
 
 Think about moving part of the Array extensions to an Enumerable unit
 
@@ -21,6 +19,10 @@ see if you can shortify the Element static mirrors generation code.
 ---------
 Completed
 ---------
+
+Make the observer support #observes and #stopObserving check callbacks without event name
+
+Add observer lists of listeners support. Move the by name calls into the generic handler
 
 Fix the manual css-selector E[foo]	an E element with a "foo" attribute
 

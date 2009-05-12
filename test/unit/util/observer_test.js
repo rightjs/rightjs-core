@@ -81,6 +81,11 @@ var ObserverTest = TestCase.create({
     // checking weird names support
     this.assert(o.observes('FOO'));
     this.assert(o.observes('onBar'));
+    
+    // testing direct by function check
+    this.assert(o.observes(f1));
+    this.assert(o.observes(f2));
+    this.assertFalse(o.observes(new Function()));
   },
   
   testStopObserving: function() {
@@ -114,6 +119,12 @@ var ObserverTest = TestCase.create({
     
     this.assertFalse(o.observes('foo'));
     this.assertFalse(o.observes('bar'));
+    
+    // trying unsubscribe function just by the function call
+    o.observe('foo', f1);
+    this.assert(o.observes(f1));
+    this.assertSame(o, o.stopObserving(f1));
+    this.assertFalse(o.observes(f1));
   },
   
   testFire: function() {
