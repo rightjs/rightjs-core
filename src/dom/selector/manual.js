@@ -109,13 +109,13 @@ Selector.Manual = new Class({
           while ((p = p.parentNode)) parent = p;
         } else {
           // putting the element in a temporary context so we could test it
-          var parent = document.createElement('div'), fake_parent = true;
+          var parent = document.createElement('div'), parent_is_fake = true;
           parent.id = '-----fake'; // <- this id is used in the manual 'match' method, to determine if the element originally had no parent node
           parent.appendChild(element);
         }
 
         var match = this.select(parent).includes(element);
-        if (fake_parent) Element.remove(element);
+        if (parent_is_fake) parent.removeChild(element);
     } else {
       // if there's just one atom, we simple match against it.
       var match = this.atoms[0].match(element);

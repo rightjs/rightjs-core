@@ -79,12 +79,9 @@ var ElementTest = TestCase.create({
     this.assertSame(Element.Methods.___foo, foo);
     this.assertSame(Element.Methods.___bar, bar);
     
-    this.assertTypeOf('function', Element.___foo);
-    this.assertTypeOf('function', Element.___foo);
+    var div = new Element('div');
     
-    var div = document.createElement('div');
-    
-    this.assertSame(div, Element.___foo(div, 'some-title'));
+    this.assertSame(div, div.___foo('some-title'));
     
     this.assertEqual('some-title', div.title);
     this.assertEqual('some-title-id', div.id);

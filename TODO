@@ -1,5 +1,3 @@
-Get rid of static calls
-
 Fix the manual css-selector E[foo]	an E element with a "foo" attribute
 
 Make the observer support #observes and #stopObserving check callbacks without event name
@@ -25,6 +23,8 @@ see if you can shortify the Element static mirrors generation code.
 ---------
 Completed
 ---------
+
+Get rid of the Element static calls
 
 Do Element structural methods review
 

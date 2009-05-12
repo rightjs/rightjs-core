@@ -1,24 +1,10 @@
-Why not extend the Element.prototype
+We don't support static non-extensive calls for the element unit.
 
-Because in IE it will not work anyway. And so if you will write a crossbrowsing code like a mature man,
-then you might end up checking something on Gecko and forget about it on IE. And it might pass some time
-before you notice the issue.
+The policy is following.
 
-For the moment that's the point.
+There are quite a lot of Element unit extensions in the framework and it makes quite a big deal in terms of time consumption to extend every requested element. So we extend the HTMLElement unit prototype, so that every element had all the extensions instantly. This works perfectly in WebKit, Gecko and Opera engines, and should be working in IE8. Old IE browsers will need the extending anyway so we keep the functionality for them.
 
-Just use the $ function and the framework selectors as it meant and your code will work everywhere.
-
-
----
-
-For each Element.Methods method we have got an Element class level method which will get executed
-on an incoming element without actual extending of the element, which may be useful when you need
-to have a lot of quick checks of elements out of the DOM structure.
-
-The methods are not declared in any actual code, but getting generated automatically out of the
-Element.Methods module. That's a tricky business, so watch out for your fancy hacking in the code
-to keep the generator happy.
-
+So we don't need static methods for all the modern browsers, and as for IE7 and zombie IE6, those browsers probably will hand around the next 20 years, so we provide them the same exact functionality via the $ function, but we basically oriented to the future and won't bend the system to support them nicely.
 ---
 
 For IE7,8 browsers to make them support the native querySelector methods you need to specify

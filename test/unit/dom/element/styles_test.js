@@ -9,17 +9,11 @@ var ElementStylesTest = TestCase.create({
   
   setUp: function() {
     this.el = new Element('div');
-    this.div = document.createElement('div');
   },
   
   testSetStyleWithKeyValue: function() {
     this.assertSame(this.el, this.el.setStyle('fontSize', '14px'));
     this.assertStyle(this.el, {fontSize: '14px'});
-  },
-  
-  testSetStyleWithKeyValue_static: function() {
-    this.assertSame(this.div, Element.setStyle(this.div, 'fontSize', '14px'));
-    this.assertStyle(this.div, {fontSize: '14px'});
   },
   
   testSetStyleAsHash: function() {
@@ -31,17 +25,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertSame(this.el, this.el.setStyle(style));
     this.assertStyle(this.el, style);
-  },
-  
-  testSetStyleAsHash_static: function() {
-    var style = {
-      fontSize: '14px',
-      borderSize: '2px',
-      display: 'block'
-    }
-    
-    this.assertSame(this.div, Element.setStyle(this.div, style));
-    this.assertStyle(this.div, style);
   },
   
   testGetStyleWithElementLevelStyles: function() {
@@ -57,17 +40,6 @@ var ElementStylesTest = TestCase.create({
     this.assertEqual('2px', this.el.getOwnStyle('borderSize'));
   },
   
-  testGetStyleWithElementLevelStyles_static: function() {
-    this.div.style.fontSize = '12px';
-    this.div.style.borderSize = '2px';
-    
-    this.assertEqual('12px', Element.getStyle(this.div, 'font-size'));
-    this.assertEqual('2px', Element.getStyle(this.div, 'borderSize'));
-    
-    this.assertEqual('12px', Element.getOwnStyle(this.div, 'font-size'));
-    this.assertEqual('2px', Element.getOwnStyle(this.div, 'borderSize'));
-  },
-  
   testGetStyleWithCSSLevelStyles: function() {
     this.el.className = 'test---1234';
     document.body.appendChild(this.el);
@@ -80,20 +52,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertNull(this.el.getOwnStyle('font-size'));
     this.assertNull(this.el.getOwnStyle('display'));
-  },
-  
-  testGetStyleWithCSSLevelStyles_static: function() {
-    this.div.className = 'test---1234';
-    document.body.appendChild(this.div);
-    
-    this.assertEqual('14px', Element.getStyle(this.div, 'font-size'));
-    this.assertEqual('none', Element.getStyle(this.div, 'display'));
-    
-    this.assertEqual('14px', Element.getViewStyle(this.div, 'fontSize'));
-    this.assertEqual('none', Element.getViewStyle(this.div, 'display'));
-    
-    this.assertNull(Element.getOwnStyle(this.div, 'font-size'));
-    this.assertNull(Element.getOwnStyle(this.div, 'display'));
   },
   
   testHasClass: function() {
@@ -111,29 +69,9 @@ var ElementStylesTest = TestCase.create({
     this.assert(this.el.hasClass('boo'));
   },
   
-  testHasClass_static: function() {
-    this.assert(!Element.hasClass(this.div, 'foo'));
-    this.assert(!Element.hasClass(this.div, 'boo'));
-    
-    this.div.className = 'foo';
-    
-    this.assert( Element.hasClass(this.div, 'foo'));
-    this.assert(!Element.hasClass(this.div, 'boo'));
-    
-    this.div.className = 'foo boo';
-    
-    this.assert(Element.hasClass(this.div, 'foo'));
-    this.assert(Element.hasClass(this.div, 'boo'));
-  },
-  
   testSetClass: function() {
     this.assertSame(this.el, this.el.setClass('foo bar'));
     this.assertEqual('foo bar', this.el.className);
-  },
-  
-  testSetClass_static: function() {
-    this.assertSame(this.div, Element.setClass(this.div, 'foo bar'));
-    this.assertEqual('foo bar', this.div.className);
   },
   
   testAddClass: function() {
@@ -154,24 +92,6 @@ var ElementStylesTest = TestCase.create({
     this.assertEqual('foo boo', this.el.className, "check if the class was not added twice");
   },
   
-  testAddClass_static: function() {
-    this.assertHasNoClassName(this.div, 'foo');
-    this.assertHasNoClassName(this.div, 'boo');
-    
-    Element.addClass(this.div, 'foo');
-    
-    this.assertHasClassName(this.div, 'foo');
-    this.assertHasNoClassName(this.div, 'boo');
-    
-    this.assertSame(this.div, Element.addClass(this.div, 'boo'), "check if the method returns the element again");
-    
-    this.assertHasClassName(this.div, 'foo');
-    this.assertHasClassName(this.div, 'boo');
-    
-    Element.addClass(this.div, 'boo');
-    this.assertEqual('foo boo', this.div.className, "check if the class was not added twice");
-  },
-  
   testRemoveClass: function() {
     this.el.className = 'foo boo';
       
@@ -182,30 +102,12 @@ var ElementStylesTest = TestCase.create({
     this.assertEqual('', this.el.className);
   },
   
-  testRemoveClass_static: function() {
-    this.div.className = 'foo boo';
-      
-    Element.removeClass(this.div, 'foo');
-    this.assertEqual('boo', this.div.className);
-    
-    this.assertSame(this.div, Element.removeClass(this.div, 'boo'), "check if the method returns the element again");
-    this.assertEqual('', this.div.className);
-  },
-  
   testToggleClass: function() {
     this.el.toggleClass('foo');
     this.assertHasClassName(this.el, 'foo');
     
     this.assertSame(this.el, this.el.toggleClass('foo'));
     this.assertHasNoClassName(this.el, 'foo');
-  },
-  
-  testToggleClass_static: function() {
-    Element.toggleClass(this.div, 'foo');
-    this.assertHasClassName(this.div, 'foo');
-    
-    this.assertSame(this.div, Element.toggleClass(this.div, 'foo'));
-    this.assertHasNoClassName(this.div, 'foo');
   },
   
   testRadioClass: function() {
@@ -229,32 +131,6 @@ var ElementStylesTest = TestCase.create({
     this.assertHasNoClassName(el3, 'test');
     
     $(el3).radioClass('test');
-    this.assertHasNoClassName(el1, 'test');
-    this.assertHasNoClassName(el2, 'test');
-    this.assertHasClassName(el3, 'test');
-  },
-  
-  testRadioClass_static: function() {
-    var block = document.createElement('div');
-    var el1 = document.createElement('div');
-    var el2 = document.createElement('div');
-    var el3 = document.createElement('div');
-    
-    block.appendChild(el1);
-    block.appendChild(el2);
-    block.appendChild(el3);
-    
-    Element.radioClass(el1, 'test');
-    this.assertHasClassName(el1, 'test');
-    this.assertHasNoClassName(el2, 'test');
-    this.assertHasNoClassName(el3, 'test');
-    
-    Element.radioClass(el2, 'test');
-    this.assertHasNoClassName(el1, 'test');
-    this.assertHasClassName(el2, 'test');
-    this.assertHasNoClassName(el3, 'test');
-    
-    Element.radioClass(el3, 'test');
     this.assertHasNoClassName(el1, 'test');
     this.assertHasNoClassName(el2, 'test');
     this.assertHasClassName(el3, 'test');

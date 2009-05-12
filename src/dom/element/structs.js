@@ -119,8 +119,7 @@ Element.addMethods({
    * @return Element self
    */
   update: function(content) {
-    this.clean(); // Don't putt them in one line, it will break the static calls
-    return this.insert(content);
+    return this.clean().insert(content);
   },
   
   /**
@@ -170,7 +169,7 @@ Element.addMethods({
     var node = this, nodes = [];
 
     while ((node = node[attr])) {
-      if (node.tagName && (!css_rule || Element.match(node, css_rule))) {
+      if (node.tagName && (!css_rule || new Selector(css_rule).match(node))) {
         nodes.push($(node));
       }
     }

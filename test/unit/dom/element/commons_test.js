@@ -8,17 +8,11 @@ var ElementCommonsTest = TestCase.create({
   
   setUp: function() {
     this.el = new Element('div');
-    this.div = document.createElement('div');
   },
   
   testSetSimple: function() {
     this.assertSame(this.el, this.el.set('id', 'some-id'));
     this.assertEqual('some-id', this.el.id);
-  },
-  
-  testSetSimple_static: function() {
-    this.assertSame(this.div, Element.set(this.div, 'id', 'some-id'));
-    this.assertEqual('some-id', this.div.id);
   },
   
   testSetHash: function() {
@@ -31,26 +25,10 @@ var ElementCommonsTest = TestCase.create({
     this.assertEqual('foo bar', this.el.className);
   },
   
-  testSetHash_static: function() {
-    this.assertSame(this.div, Element.set(this.div, {
-      id: 'another-id',
-      className: 'foo bar'
-    }));
-    
-    this.assertEqual('another-id', this.div.id);
-    this.assertEqual('foo bar', this.div.className);
-  },
-  
   testGet: function() {
     this.el.id = 'something';
     this.assertEqual(this.el.id, this.el.get('id'));
     this.assertNull(this.el.get('title'));
-  },
-  
-  testGet_static: function() {
-    this.div.id = 'something';
-    this.assertEqual(this.div.id, Element.get(this.div, 'id'));
-    this.assertNull(Element.get(this.div, 'title'));
   },
   
   testHas: function() {
@@ -59,22 +37,10 @@ var ElementCommonsTest = TestCase.create({
     this.assertFalse(this.el.has('title'));
   },
   
-  testHas_static: function() {
-    this.div.id = 'something';
-    this.assert(Element.has(this.div, 'id'));
-    this.assertFalse(Element.has(this.div, 'title'));
-  },
-  
   testErase: function() {
     this.el.id = 'somethig';
     this.assertSame(this.el, this.el.erase('id'));
     this.assertFalse(this.el.has('id'));
-  },
-  
-  testErase_static: function() {
-    this.div.id = 'somethig';
-    this.assertSame(this.div, Element.erase(this.div, 'id'));
-    this.assertFalse(Element.has(this.div, 'id'));
   },
   
   testHidden: function() {
@@ -83,34 +49,16 @@ var ElementCommonsTest = TestCase.create({
     this.assert(this.el.hidden());
   },
   
-  testHidden_static: function() {
-    this.assertFalse(Element.hidden(this.div));
-    this.div.style.display = 'none';
-    this.assert(Element.hidden(this.div));
-  },
-  
   testVisible: function() {
     this.assert(this.el.visible());
     this.el.style.display = 'none';
     this.assertFalse(this.el.visible());
   },
   
-  testVisible_static: function() {
-    this.assert(Element.visible(this.div));
-    this.div.style.display = 'none';
-    this.assertFalse(Element.visible(this.div));
-  },
-  
   testHide: function() {
     this.assertVisible(this.el);
     this.assertSame(this.el, this.el.hide());
     this.assertHidden(this.el);
-  },
-  
-  testHide_static: function() {
-    this.assertVisible(this.div);
-    this.assertSame(this.div, Element.hide(this.div));
-    this.assertHidden(this.div);
   },
   
   testShow: function() {
@@ -120,25 +68,11 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(this.el);
   },
   
-  testShow_static: function() {
-    this.div.style.display = 'none';
-    this.assertHidden(this.div)
-    this.assertSame(this.div, Element.show(this.div));
-    this.assertVisible(this.div);
-  },
-  
   testHideShowPrevDisplayRestoration: function() {
     this.el.style.display = 'inline';
     this.el.hide();
     this.el.show();
     this.assertStyle(this.el, {display: 'inline'});
-  },
-  
-  testHideShowPrevDisplayRestoration_static: function() {
-    this.div.style.display = 'inline';
-    Element.hide(this.div);
-    Element.show(this.div);
-    this.assertStyle(this.div, {display: 'inline'});
   },
   
   testToggle: function() {
@@ -147,14 +81,6 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(this.el);
     this.assertSame(this.el, this.el.toggle());
     this.assertVisible(this.el);
-  },
-  
-  testToggle_static: function() {
-    this.assertVisible(this.div);
-    this.assertSame(this.div, Element.toggle(this.div));
-    this.assertHidden(this.div);
-    this.assertSame(this.div, Element.toggle(this.div));
-    this.assertVisible(this.div);
   },
   
   testRadio: function() {
@@ -181,21 +107,5 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(div3, 'div3');
     this.assertHidden(div2);
     this.assertHidden(div1);
-  },
-  
-  testRadio_static: function() {
-    var block = document.createElement('div');
-    var div1  = document.createElement('div');
-    var div2  = document.createElement('div');
-    var div3  = document.createElement('div');
-    
-    block.appendChild(div1);
-    block.appendChild(div2);
-    block.appendChild(div3);
-    
-    this.assertSame(div2, Element.radio(div2));
-    this.assertVisible(div2);
-    this.assertHidden(div1);
-    this.assertHidden(div3);
   }
 })

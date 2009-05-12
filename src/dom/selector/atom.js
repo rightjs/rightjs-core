@@ -109,7 +109,7 @@ Selector.Atom = new Class({
   },
   
   matchAttr: function(element, name, operator, value) {
-    var attr = Element.get(element, name) || '';
+    var attr = element.getAttribute(name) || element[name] || '';
     switch(operator) {
       case '=':  return attr == value;
       case '*=': return attr.includes(value);
@@ -145,7 +145,7 @@ Selector.Atom = new Class({
     },
 
     not: function(css_rule) {
-      return !Element.match(this, css_rule);
+      return !new Selector(css_rule).match(this);
     },
 
     contains: function(text) {
