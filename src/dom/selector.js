@@ -50,7 +50,8 @@ var Selector = new Class({
    * @return Array list of found nodes
    */
   select: function(element) {
-    return this.strategy.select(element).map($);
+    var elements = this.strategy.select(element);
+    return Browser.OLD ? elements.map(Element.prepare) : elements;
   },
   
   /**

@@ -170,7 +170,7 @@ Element.addMethods({
 
     while ((node = node[attr])) {
       if (node.tagName && (!css_rule || new Selector(css_rule).match(node))) {
-        nodes.push($(node));
+        nodes.push(Browser.OLD ? Element.prepare(node) : node);
       }
     }
     

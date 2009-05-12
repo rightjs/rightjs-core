@@ -220,7 +220,7 @@ function $E(tag_name, options) {
  */
 function $(element) {
   var element = typeof(element) == 'string' ? document.getElementById(element) : element;
-  return (!element || element.set) ? element : Element.prepare(element);
+  return Browser.OLD ? Element.prepare(element) : element;
 };
 
 /**
