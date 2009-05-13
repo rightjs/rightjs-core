@@ -1,6 +1,6 @@
 = Intro
 
-RightJS extends the native Array class with several additional useful methods, which makes arrays a pretty powerful tool in your projects. Some methods are new for JavaScript, some already exists in later specifications of JavaScript. RightJS tries to be most effective, so if your browser supports some of the methods it will use the browser's native method, if not, it will provide some manual method with the same API.
+RightJS extends the native Array class with several additional useful methods, which makes arrays pretty powerful tool in your projects. Some methods are new for JavaScript, some already exists in later specifications of JavaScript. RightJS tries to be most effective, so if your browser supports some of the methods it will use the browser's native method, if not, it will provide some manual method with the same API.
 
 Additionally RightJS provides some new features borrowed from the RubyOnRails framework. Methods which takes a function as an argument, meant {#each}, {#map}, {#filter}, etc, in case when you need simultaneously call same method on every item in the array, you can just pass the method name as a string, and optionally pass some arguments.
 
@@ -20,7 +20,7 @@ For example
   var marked_eleemnts  = elements.filter('hasClass', 'marked');
 </code>
 
-As you can see it's pretty much powerful tool and it has almost no overhead. On most of the modern browsers it will work almost as fast as you would do it in a normal for loop.
+As you can see it's pretty nifty tool and it has almost no overhead. On most of the modern browsers it will work almost as fast as you would do it in a normal for loop.
 
 === Iterators Handling
 
@@ -45,7 +45,7 @@ Every item on the array will get call for their 'foo' method with arguments 1,2,
 
 Most of the modern browsers support the JavaScript 1.6 specification and provides a number of fast native methods to work with iterations. RightJS will reuse them internally in all possible cases, and that makes it work almost as fast as a pure DOM version would do in similar cases.
 
-For the obsolete browsers, RightJS generates the missing methods in JavaScript, it certainly gives its own overhead, but it is still fairly fast for most of the cases.
+For the obsolete browsers, RightJS generates the missing methods in pure JavaScript, it certainly gives its own overhead, but it is still fairly fast for most of the cases.
 
 And yes, don't take it in a wrong way, if you really, really need to process some huge amount of data as quickly as possible, don't be ashamed and use the old fashioned 'for' loop.
 
