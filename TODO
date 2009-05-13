@@ -1,3 +1,5 @@
+Implement the whitelist option for the String#stripTags method
+
 Implement the document object extensions, like 'ready' event
 
 Create alias #includes -> #include
