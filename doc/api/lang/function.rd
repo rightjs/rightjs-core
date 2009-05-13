@@ -1,6 +1,8 @@
 = Intro
 
-Along with the other basic native units, RightJS extends the Function unit to provide some pretty much standard functionality like binding, working with timeouts etc.
+Along with the other basic native units, RightJS extends the Function unit to 
+provide some pretty much standard functionality like binding, working with 
+timeouts etc.
 
 ### Function#bind
 
@@ -8,7 +10,8 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   bind(Object scope[, argument,...]) -> Function new
 
 == Description
-  Binds the function to be executed in a different context. Additionally can take optional curry arguments
+  Binds the function to be executed in a different context. Additionally can 
+  take optional curry arguments
 
 == Example
   var object = {
@@ -31,7 +34,8 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   bindAsEventListener(Object scope[, argument, ...]) -> Function new
 
 == Description
-  Binds the function to the given scope the way that it was handled the first argument as an event
+  Binds the function to the given scope the way that it was handled the first 
+  argument as an event
 
 == Example
   var object = {

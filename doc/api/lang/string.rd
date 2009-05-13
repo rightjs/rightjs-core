@@ -1,17 +1,23 @@
 = Intro
 
-RightJS extends the native String class with some additional powerful methods to make your life easier.
+RightJS extends the native String class with some additional powerful methods 
+to make your life easier.
 
 == UTF-8 Support
 
-Basically, pure JavaScript does not support all the fancy non-ascii utf-8 symbols in regular expressions, so when you do some call like
+Basically, pure JavaScript does not support all the fancy non-ascii utf-8 
+symbols in regular expressions, so when you do some call like
 
 <code>
   'йокарный бабай'.match(/a-z/);
   'йокарный бабай'.match(/\w/);
 </code>
 
-It will return null. To fix somehow the situation we have added two constants to the String class {String.UTF8_UPS} and {String.UTF8_DOWNS}, they both contains most of the fancy characters from the european languages, respectively in upper and lower cases. You can use them in your regular expressions if you need so.
+It will return null. To fix somehow the situation we have added two constants 
+to the String class {String.UTF8_UPS} and {String.UTF8_DOWNS}, they both 
+contains most of the fancy characters from the european languages, 
+respectively in upper and lower cases. You can use them in your regular 
+expressions if you need so.
 
 We are already use them in some strings processing, like for example
 
@@ -93,7 +99,11 @@ We are already use them in some strings processing, like for example
 == Description
   Strips all the javascript tags out of the string.
   
-  This method takes several possible arguments. If a boolean true is passed the the scripts will be evaluated after extraction. If an integer number was passed the scripts will be evaluated with delay in microseconds equal to the number. If a function is passed every script body will be tossed into the function.
+  This method takes several possible arguments. If a boolean true is passed 
+  the the scripts will be evaluated after extraction. If an integer number was 
+  passed the scripts will be evaluated with delay in microseconds equal to the 
+  number. If a function is passed every script body will be tossed into the 
+  function.
 
 == Example
   var string = 'asdf<script>alert('bla');</script>';
@@ -117,7 +127,8 @@ We are already use them in some strings processing, like for example
   extractScripts() -> String scripts
 
 == Description
-  Extracts bodies of every script tag in the string and returns them as a single string
+  Extracts bodies of every script tag in the string and returns them as a 
+  single string
 
 == Example
   var string = 'asdf <script>alert(1);</script>asdf<script>alert(2);</script>';
@@ -255,7 +266,8 @@ We are already use them in some strings processing, like for example
 == Description
   Converts the string into a float number.
   
-  NOTE: processes dashes and comas as decimal pinter unless you pass true as the parameter
+  NOTE: processes dashes and comas as decimal pinter unless you pass true as 
+  the parameter
 
 == Example
   '123.45'.toFloat(); // -> 123.45
@@ -270,7 +282,9 @@ We are already use them in some strings processing, like for example
   toFragment() -> DocumentFragment
 
 == Description
-  Processes the string as an html text and converts it into a DocumentFrament unit so you could work with it like with a single DOM unit. Used to bust up DOM manipulations on complex structures.
+  Processes the string as an html text and converts it into a DocumentFrament 
+  unit so you could work with it like with a single DOM unit. Used to bust up 
+  DOM manipulations on complex structures.
 
 == Example
   var fragment = '<b>b</b><i>i</i><u>u</u>'.toFragment();

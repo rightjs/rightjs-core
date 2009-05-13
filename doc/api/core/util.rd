@@ -1,6 +1,7 @@
 = Intro
 
-RightJS comes with some collection of small handy methods which will help you with everyday coding operations, checks etc.
+RightJS comes with some collection of small handy methods which will help you 
+with everyday coding operations, checks etc.
 
 ### $
 
@@ -73,7 +74,8 @@ RightJS comes with some collection of small handy methods which will help you wi
   $ext(Object first, Object second[, boolean dont_overwrite]) -> Object first
 
 == Description
-  Extends the first object with data from the second object. Skips all the intersecting keys if the third argument is true
+  Extends the first object with data from the second object. Skips all the 
+  intersecting keys if the third argument is true
 
 == Example
   var o = {1:1};
@@ -87,7 +89,8 @@ RightJS comes with some collection of small handy methods which will help you wi
   $try(Function function[, Function function, ...]) -> mixed result
 
 == Description
-  Evaluates the arguments functions one by one, and returns the result of the first one which does not raises any exception
+  Evaluates the arguments functions one by one, and returns the result of the 
+  first one which does not raises any exception
 
 == Example
   var result = $try(
@@ -105,7 +108,8 @@ RightJS comes with some collection of small handy methods which will help you wi
   $eval(String code)
 
 == Description
-  Evaluates the given piece of JavaScript code in the context of the current window
+  Evaluates the given piece of JavaScript code in the context of the current 
+  window
 
 == Example
   $eval('var foo = "bar";');

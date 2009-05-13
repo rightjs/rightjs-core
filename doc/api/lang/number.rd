@@ -1,6 +1,10 @@
 = Intro
 
-Generally in JavaScript numbers tends to be treated as types, creating the old-school differentiation between objects and types. But in really all the numbers are objects too and if you assign a number to a variable you can take advantages out of it objective nature. For this purpose RightJS extends the Number class with some additional handy methods.
+Generally in JavaScript numbers tends to be treated as types, creating the 
+old-school differentiation between objects and types. But in really all the 
+numbers are objects too and if you assign a number to a variable you can take 
+advantages out of it objective nature. For this purpose RightJS extends the 
+Number class with some additional handy methods.
 
 ### Number#abs
 
@@ -64,7 +68,8 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
   times(Function lambda[, Object scope]) -> number self
 
 == Description
-  Call the given lambda function the number of times equal to the current number
+  Call the given lambda function the number of times equal to the current 
+  number
 
 == Example
   var numbers = [];
@@ -83,7 +88,8 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
   upto(number stop, Function lambda[, Object scope]) -> number self
 
 == Description
-  Iterates the given lambda function from the current number up to the given stop number
+  Iterates the given lambda function from the current number up to the given 
+  stop number
 
 == Example
   var numbers = [];
@@ -102,7 +108,8 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
   downto(number end, Function lambda[, Object scope]) -> number self
 
 == Description
-  Iterates the given lambda function from the current number down to the given stop number
+  Iterates the given lambda function from the current number down to the given 
+  stop number
 
 == Example
   var numbers = [];

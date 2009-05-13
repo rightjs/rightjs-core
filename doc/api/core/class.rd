@@ -1,6 +1,10 @@
 = Intro
 
-As RightJS claims to be an object-oriented framework, it certainly provides the Class unit. Our Class unit pretty much starts with the Prototype framework classes, extends the ideas from the MooTools framework, spices it with ideas from the Ruby language etc. If you already have experience with those things, it should be quite natural.
+As RightJS claims to be an object-oriented framework, it certainly provides
+the Class unit. Our Class unit pretty much starts with the Prototype framework
+classes, extends the ideas from the MooTools framework, spices it with ideas
+from the Ruby language etc. If you already have experience with those things,
+it should be quite natural.
 
 == Definition
 
@@ -20,7 +24,10 @@ Definitions of classes in RightJS is pretty standard and simple
 
 == Inheritance
 
-Inheritance is pretty natural thing in RightJS. To make one class be inherited from another, you just pass the superclass as the first argument to the Class call. And then inside your sub-class methods, you can refer to the superclass methods by calling the <tt>this.$super</tt> method.
+Inheritance is pretty natural thing in RightJS. To make one class be inherited
+from another, you just pass the superclass as the first argument to the Class
+call. And then inside your sub-class methods, you can refer to the superclass
+methods by calling the <tt>this.$super</tt> method.
 
 <code>
   var Animal = new Class({
@@ -64,9 +71,13 @@ Inheritance is pretty natural thing in RightJS. To make one class be inherited f
 
 == Extending And Mixing
 
-Additionally we brought the Ruby extending and including principles into our classes. That a pretty powerful tool which lets you share modules between classes and take advantages of multiple inheritance.
+Additionally we brought the Ruby extending and including principles into our 
+classes. That a pretty powerful tool which lets you share modules between 
+classes and take advantages of multiple inheritance.
 
-The principles are fairly simple. You use <tt>.extend()</tt> method to extend the class level structure and <tt>.include()</tt> to extend the class prototype level. For example.
+The principles are fairly simple. You use <tt>.extend()</tt> method to extend 
+the class level structure and <tt>.include()</tt> to extend the class 
+prototype level. For example.
 
 <code>
   var mixin = {
@@ -101,7 +112,10 @@ You even can extend your classes after definition.
   Klass.include(mixin1, mixin2, mixin3);
 </code>
 
-But note, if you put extensions inline with the class definition, then rest of your methods will have a priority over the mixed in methods, and if you extend your class later, then the mixed in methods will have priority over the defined in the class. For example.
+But note, if you put extensions inline with the class definition, then rest of 
+your methods will have a priority over the mixed in methods, and if you extend 
+your class later, then the mixed in methods will have priority over the 
+defined in the class. For example.
 
 <code>
   var mixin = {
@@ -121,7 +135,8 @@ But note, if you put extensions inline with the class definition, then rest of y
   Klass.foo == 'bar';
 </code>
 
-And eventually you can use the <tt>extend</tt> attribute to create inline class level definitions right in your class. Just like that.
+And eventually you can use the <tt>extend</tt> attribute to create inline 
+class level definitions right in your class. Just like that.
 
 <code>
   var Klass = new Class({

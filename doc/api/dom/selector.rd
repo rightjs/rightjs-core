@@ -1,14 +1,22 @@
 = Intro
 
-Selectors are abstract, object oriented interface to deal with the css-based elements selections on you page. In most of the cases you don't need to have a deal with them, but sometimes it might be useful to instance and keep selectors directly.
+Selectors are abstract, object oriented interface to deal with the css-based 
+elements selections on you page. In most of the cases you don't need to have a 
+deal with them, but sometimes it might be useful to instance and keep 
+selectors directly.
 
 == Performance
 
-If your browsers has support of the native css-selectors then the things are really quick. Currently thats the WebKit based browsers, Firefox should roll it out with the 3.1 release, IE8 have it in their own way too. If your browser does not support it, then we have our own pure JavaScript css-selection engine, which has lots of optimizations and does pretty good too.
+If your browsers has support of the native css-selectors then the things are 
+really quick. Currently thats the WebKit based browsers, Firefox should roll 
+it out with the 3.1 release, IE8 have it in their own way too. If your browser 
+does not support it, then we have our own pure JavaScript css-selection 
+engine, which has lots of optimizations and does pretty good too.
 
 == Internet Explorer Support
 
-To switch on the native css-selectors in IE8, you need to specify the following option in your page header.
+To switch on the native css-selectors in IE8, you need to specify the 
+following option in your page header.
 
 <meta http-equiv="X-UA-Compatible" content="IE=8">
 
@@ -30,7 +38,8 @@ To switch on the native css-selectors in IE8, you need to specify the following 
   first(Element element) -> Element or null
 
 == Description
-  Matches the first element in the given element scope which matches the selector
+  Matches the first element in the given element scope which matches the 
+  selector
 
 == Example
   var selector = new Selector('div');
