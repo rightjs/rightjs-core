@@ -1,0 +1,25 @@
+I'm not sure about the exact format for now. Just keep it simple and more or less close to the RDoc formatting system.
+
+The folders and file names should follow the files and folders structure of the source code directory.
+
+Every method description should look kinda like that.
+
+>>>>>>>>>>>>>>>>>
+
+### Klass#method
+
+== Semantic
+  method(...) -> return type
+  
+== Description
+  Short description in here
+  
+== Example
+  Some usage example in here
+  
+<<<<<<<<<<<<<<<<<
+
+And when you refer to any method in the system make it like {Klass#method} and {Klass.method}, so we could link them together later.
+
+
+This is pretty much it for now.
