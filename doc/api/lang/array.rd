@@ -136,7 +136,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Applies the given function in the given optional scope on every item in the array.
   
 == Example
-<code>
   var elements = some_html_elements_list;
   
   elements.each(function(element, i) {
@@ -149,7 +148,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   
   elements.each('toggle'); // will call toggle() on every element in the array
   elements.each('addClass', 'marked'); // will add the 'marked' class to every element
-</code>
 
 
 
@@ -163,7 +161,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Collects the results of applying the lambda function on every element of the array.
   
 == Example
-<code>
   var strings = ['anny', 'banny', 'manny'];
   
   strings.map(function(string, i) {
@@ -179,7 +176,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   strings.map('replace', 'nn', 'b');
   
   // -> ['aby', 'baby', 'maby'];
-</code>
   
 
 ### Array#filter
@@ -192,7 +188,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Creates a new array which contains all the items from the original array which being passed to the lambda function returns true.
   
 == Example
-<code>
   var strings = ['anny', 'manny', 'banny', 'bob'];
   
   strings.filter(function(string, i) {
@@ -205,7 +200,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   
   strings.filter('match', /[a-z]ann/);
   // -> ['manny', 'banny']
-</code>
 
 
 ### Array#walk
@@ -218,7 +212,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Changes every item in the array by passing them through the given lambda function
 
 == Example
-<code>
   var names = ['anny', 'manny', 'banny', 'bob'];
   
   names.walk(function(name, i) {
@@ -234,7 +227,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   names.walk('last').walk('capitalize');
   
   // ['Anny', 'Manny', 'Banny', 'Bob'];
-</code>
 
 
 ### Array#merge
@@ -246,11 +238,9 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Picks up items from the given arrays which does not exists in the current array, combine them with the items from the current array and returns the result as a new array.
   
 == Example
-<code>
   [0,1,2,3].merge([2,3,4], [3,4,5], [1,5,6]);
   
   // -> [0,1,2,3,4,5,6];
-</code>
   
 
 ### Array#flatten
@@ -262,11 +252,10 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Converts a multi-dimensional array in a single dimensioned one.
   
 == Example
-<code>
   [0,1,[2,3,[4,5,[6,7],8],9]].flatten();
   
   // -> [0,1,2,3,4,5,6,7,8,9];
-</code>
+
 
 ### Array#compact
 
@@ -277,11 +266,10 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Creates a new array which contains all the non-null and non-undefined values from the original array
   
 == Example
-<code>
   [null, 0, undefined, 1, 2, 3, null].compact();
   
   // -> [0, 1, 2, 3];
-</code>
+
 
 ### Array#uniq
 
@@ -292,11 +280,11 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Picks up all the unique values out of the original array
   
 == Example
-<code>
   [0,1,1,2,0,1,2,3,3].uniq();
   
   // -> [0,1,2,3];
-</code>
+
+
 
 ### Array#includes
 
@@ -307,12 +295,11 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Checks that the item appears in the array. If several items specified, checks if _all_ of them are in the array.
   
 == Example
-<code>
   [0,1,2,3].includes(0);   // true
   [0,1,2,3].includes(4);   // false
   [0,1,2,3].includes(1,2); // true
   [0,1,2,3].includes(2,4); // false
-</code>
+
 
 ### without
 
@@ -323,11 +310,11 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Creates a new array without the specified values
   
 == Example
-<code>
   [0,1,2,3].without(1,3);
   
   // -> [0,2];
-</code>
+
+
 
 ### Array#any
 
@@ -340,7 +327,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   Returns the first non-false item or false if nothing found.
   
 == Example
-<code>
   [0,null,undefined].any(); // false
   [0,null,null,1].any();    // 1
   
@@ -356,7 +342,7 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   
   ['a', 'b', 'c'].any('blank');      // false
   ['a', 'b', 'c'].any('match', 'b'); // 'b'
-</code>
+
 
 ### Array#all
 
@@ -370,7 +356,6 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   into the lambda function
   
 == Example
-<code>
   [0,1,2,3].all(); // false
   [1,2,3,4].all(); // true
   
@@ -381,4 +366,3 @@ And yes, don't take it in a wrong way, if you really, really need to process som
   
   ['', ' ', '  '].all('blank'); // true
   ['', ' ', ' a'].all('blank'); // false
-</code>

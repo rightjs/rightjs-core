@@ -11,7 +11,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   Binds the function to be executed in a different context. Additionally can take optional curry arguments
 
 == Example
-<code>
   var object = {
     attr: 'value'
   };
@@ -24,7 +23,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   var result = bind('argument2');
   
   // -> 'value: argument1: argument2'
-</code>
 
 
 ### Function#bindAsEventListener
@@ -36,7 +34,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   Binds the function to the given scope the way that it was handled the first argument as an event
 
 == Example
-<code>
   var object = {
     attr: 'value'
   };
@@ -49,7 +46,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   observer.fire('foo');
   
   // -> 'value > foo > argument1 > argument2'
-</code>
 
 
 
@@ -62,7 +58,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   Standard functional approach currying feature
 
 == Example
-<code>
   var multiplier = function(x, y) {
     return x * y
   };
@@ -71,7 +66,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   double(2); // 4
   double(4); // 8
   double(8); // 16
-</code>
 
 
 
@@ -84,7 +78,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   Schedules a delayed execution for the function.
 
 == Example
-<code>
   var func = function() {
     alert('boo');
   };
@@ -95,7 +88,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   // you can cancel the delayed execution
   
   window.clearTimeout(timeout);
-</code>
 
 
 
@@ -108,7 +100,6 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   Makes the function be periodically executed with the given timeout
 
 == Example
-<code>
   var func = function() {
     // check something
   };
@@ -119,6 +110,5 @@ Along with the other basic native units, RightJS extends the Function unit to pr
   // to stop it just pass it to the standard clearInterval method
   
   window.clearInterval(marker);
-</code>
 
 

@@ -5,35 +5,27 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
 ### Number#abs
 
 == Semantic
-  
   abs() -> number absolute value
 
 == Description
-  
   Returns an absolute value of the number
 
 == Example
-<code>
   (-1).abs(); // 1
   (22).abs(); // 22
-</code>
 
 
 
 ### Number#ceil
 
 == Semantic
-  
   ceil() -> number
 
 == Description
-  
   Returns the smallest integer bigger than or equal to the current number
 
 == Example
-<code>
   (2.2).ceil(); // 3
-</code>
 
 
 
@@ -41,36 +33,27 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
 ### Number#floor
 
 == Semantic
-  
   floor() -> number
 
 == Description
-  
   Returns the biggest integer smaller than or equal to the current number
 
 == Example
-<code>
   (2.2).floor(); // 2
-</code>
-
 
 
 
 ### Number#round
 
 == Semantic
-  
   round() -> number
 
 == Description
-  
   Returns the closest integer number fro the current number
 
 == Example
-<code>
   (2.2).round(); // 2
   (8.8).round(); // 8
-</code>
 
 
 
@@ -78,22 +61,18 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
 ### Number#times
 
 == Semantic
-  
   times(Function lambda[, Object scope]) -> number self
 
 == Description
-  
   Call the given lambda function the number of times equal to the current number
 
 == Example
-<code>
   var numbers = [];
   (4).times(function(i) {
     numbers.push(i);
   });
   
   numbers; // [0,1,2,3]
-</code>
 
 
 
@@ -101,15 +80,12 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
 ### Number#upto
 
 == Semantic
-  
   upto(number stop, Function lambda[, Object scope]) -> number self
 
 == Description
-  
   Iterates the given lambda function from the current number up to the given stop number
 
 == Example
-<code>
   var numbers = [];
   
   (4).upto(8, function(i) {
@@ -117,23 +93,18 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
   });
   
   numbers; // [4,5,6,7,8]
-</code>
-
 
 
 
 ### Number#downto
 
 == Semantic
-  
   downto(number end, Function lambda[, Object scope]) -> number self
 
 == Description
-  
   Iterates the given lambda function from the current number down to the given stop number
 
 == Example
-<code>
   var numbers = [];
   
   (8).downto(4, function(i) {
@@ -141,4 +112,3 @@ Generally in JavaScript numbers tends to be treated as types, creating the old-s
   });
   
   numbers; // [8,7,6,5,4]
-</code>

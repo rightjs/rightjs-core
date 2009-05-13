@@ -31,11 +31,10 @@ We are already use them in some strings processing, like for example
   Checks if the string is empty
 
 == Example
-<code>
   ''.empty();  // true
   ' '.empty(); // false
   'a'.empty(); // false
-</code>
+
 
 
 ### String#blank
@@ -47,12 +46,11 @@ We are already use them in some strings processing, like for example
   Checks if the string contains only spices and equivalent chars
 
 == Example
-<code>
   ''.blank();   // true
   ' '.blank();  // true
   "\n".blank(); // true
   ' a'.blank(); // false
-</code>
+
 
 
 
@@ -65,9 +63,8 @@ We are already use them in some strings processing, like for example
   Removes trailing spaces at the beginning and the end of the string
 
 == Example
-<code>
   ' asdf '.trim(); // -> 'asdf'
-</code>
+
 
 
 
@@ -80,9 +77,8 @@ We are already use them in some strings processing, like for example
   Removes all the tags out of the string
 
 == Example
-<code>
   'a <b>c</b> d'.stripTags(); // -> 'a c d'
-</code>
+
 
 
 
@@ -100,7 +96,6 @@ We are already use them in some strings processing, like for example
   This method takes several possible arguments. If a boolean true is passed the the scripts will be evaluated after extraction. If an integer number was passed the scripts will be evaluated with delay in microseconds equal to the number. If a function is passed every script body will be tossed into the function.
 
 == Example
-<code>
   var string = 'asdf<script>alert('bla');</script>';
   
   string.stripScripts();     // -> 'asdf'
@@ -112,7 +107,7 @@ We are already use them in some strings processing, like for example
   });
   
   // will return 'asdf'
-</code>
+
 
 
 
@@ -125,11 +120,10 @@ We are already use them in some strings processing, like for example
   Extracts bodies of every script tag in the string and returns them as a single string
 
 == Example
-<code>
   var string = 'asdf <script>alert(1);</script>asdf<script>alert(2);</script>';
   
   string.extractScripts(); // 'alert(1);alert(2);'
-</code>
+
 
 
 
@@ -144,11 +138,10 @@ We are already use them in some strings processing, like for example
   NOTE: this method will not remove the scripts out of the string
 
 == Example
-<code>
   var string = 'asdf <script>alert(1);</script>';
   
   string.evalScripts(); // 'asdf <script>alert(1);</script>' and you'll see the alert
-</code>
+
 
 
 
@@ -161,9 +154,8 @@ We are already use them in some strings processing, like for example
   Converts a string from underscored/dashed version into a camelized one
 
 == Example
-<code>
   'foo-bar'.camelize(); // 'fooBar'
-</code>
+
 
 
 
@@ -176,9 +168,8 @@ We are already use them in some strings processing, like for example
   Converts camelcased or dashed string into underscored one
 
 == Example
-<code>
   'fooBar'.underscored(); // 'foo_bar'
-</code>
+
 
 
 
@@ -191,9 +182,8 @@ We are already use them in some strings processing, like for example
   Creates a capitalized version of the string
 
 == Example
-<code>
   'boo boo boo'.capitalize(); // 'Boo Boo Boo'
-</code>
+
 
 
 
@@ -206,10 +196,8 @@ We are already use them in some strings processing, like for example
   Checks if the string contains given substring
 
 == Example
-<code>
   'foo'.includes('bar'); // false
   'foo'.includes('oo');  // true
-</code>
 
 
 
@@ -222,12 +210,10 @@ We are already use them in some strings processing, like for example
   Checks if the string starts with the given substring
 
 == Example
-<code>
   'onSomething'.startsWith('on'); // true
   
   'onSomething'.startsWith('onsome');       // false
   'onSomething'.startsWith('onsome', true); // true
-</code>
 
 
 
@@ -240,12 +226,11 @@ We are already use them in some strings processing, like for example
   Checks if the string ends up with the given substring
 
 == Example
-<code>
   'image.gif'.endsWith('.gif'); // true
   
   'image.gif'.endsWith('.GIF');       // false
   'image.gif'.endsWith('.GIF', true); // true
-</code>
+
 
 
 
@@ -258,9 +243,7 @@ We are already use them in some strings processing, like for example
   Converts the string into an Integer number
 
 == Example
-<code>
   '123'.toInt(); // -> 123
-</code>
 
 
 
@@ -275,11 +258,9 @@ We are already use them in some strings processing, like for example
   NOTE: processes dashes and comas as decimal pinter unless you pass true as the parameter
 
 == Example
-<code>
   '123.45'.toFloat(); // -> 123.45
   '123,45'.toFloat(); // -> 123.45
   '123-45'.toFloat(); // -> 123.45
-</code>
 
 
 
@@ -292,8 +273,6 @@ We are already use them in some strings processing, like for example
   Processes the string as an html text and converts it into a DocumentFrament unit so you could work with it like with a single DOM unit. Used to bust up DOM manipulations on complex structures.
 
 == Example
-<code>
   var fragment = '<b>b</b><i>i</i><u>u</u>'.toFragment();
   
   fragment.childNodes; // [b, i, u]
-</code>
