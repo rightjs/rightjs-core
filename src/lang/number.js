@@ -7,16 +7,25 @@ $ext(Number.prototype, {
   /**
    * executes the given callback the given number of times
    *
-   * NOTE: the callback function will receive the iteration number on each call
-   *
    * @param Function callback
    * @param Object optional callback execution scope
    * @return void
    */
   times: function(callback, scope) {
-    for (var i=0; i < this; i++) {
+    for (var i=0; i < this; i++)
       callback.call(scope, i);
-    }
+    return this;
+  },
+  
+  upto: function(number, callback, scope) {
+    for (var i=this+0; i <= number; i++)
+      callback.call(scope, i);
+    return this;
+  },
+  
+  downto: function(number, callback, scope) {
+    for (var i=this+0; i >= number; i--)
+      callback.call(scope, i);
     return this;
   },
   

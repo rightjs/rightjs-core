@@ -107,7 +107,6 @@ var UtilTest = TestCase.create({
   
   test_isString: function() {
     this.assert(isString('a'));
-    this.assert(isString(new String('a')));
     
     this.assertFalse(isString(1));
     this.assertFalse(isString({}));
@@ -132,8 +131,7 @@ var UtilTest = TestCase.create({
   test_isNumber: function() {
     this.assert(isNumber(1));
     this.assert(isNumber(1.1));
-    this.assert(isNumber(new Number(1)));
-    this.assert(isNumber(new Number(-1.1)));
+    this.assert(isNumber(-1.1));
     
     this.assertFalse(isNumber({}));
     this.assertFalse(isNumber([]));
@@ -176,15 +174,6 @@ var UtilTest = TestCase.create({
     var args;
     (function() { args = $A(arguments); })(1,2,3,4);
     this.assertEqual([1,2,3,4], args);
-  },
-  
-  test_$N: function() {
-    this.assertInstanceOf(Number, $N(1));
-    this.assertInstanceOf(Number, $N(1.1));
-    this.assertEqual($N(1), $N('1'));
-    this.assertEqual($N(-1.1), $N('-1.1'));
-    this.assert($N(1) == 1);
-    this.assert($N(1.1) == 1.1);
   },
   
   test_$E: function() {

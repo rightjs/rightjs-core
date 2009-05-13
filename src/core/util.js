@@ -134,7 +134,7 @@ function isFunction(value) {
  * @return boolean check result
  */
 function isString(value) {
-  return typeof(value) == 'string' || value instanceof String;
+  return typeof(value) == 'string';
 };
 
 /**
@@ -154,7 +154,7 @@ function isArray(value) {
  * @return boolean check result
  */
 function isNumber(value) {
-  return typeof(value) == 'number' || value instanceof Number;
+  return typeof(value) == 'number';
 };
 
 /**
@@ -187,18 +187,6 @@ function $A(it) {
   for (var a=[], i=0; i < it.length; i++)
     a[i] = it[i];
   return a;
-};
-
-/**
- * creates a real instance of the Number class out of the incoming value
- *
- * NOTE: if the incomming value is a string, then it will try to convert it into float
- *
- * @param mixed value
- * @return Number instance
- */
-function $N(value) {
-  return new Number(isString(value) ? value.toFloat() : value);
 };
 
 /**
