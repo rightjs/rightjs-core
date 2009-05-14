@@ -1,3 +1,13 @@
+Make Observer#listeners return all the listeners if the event name was not specified.
+
+Think if it possible to check Observer#observes against a string method name
+
+Add the Element#insertTo method
+
+Create a workout to handle the IE's problems with attributes assignment for the newly created elements
+
+Rework the observers so that they keep a plain list of cache and see if it will be faster and more compact
+
 Implement the whitelist option for the String#stripTags method
 
 Implement the document object extensions, like 'ready' event
