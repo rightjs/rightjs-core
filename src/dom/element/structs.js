@@ -102,6 +102,11 @@ Element.addMethods({
     return this;
   },
   
+  insertTo: function(element, position) {
+    $(element).insert(this, position);
+    return this;
+  },
+  
   /**
    * replaces the current element by the given content
    *

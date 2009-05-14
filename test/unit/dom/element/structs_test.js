@@ -276,6 +276,17 @@ var ElementStructsTest = TestCase.create({
     );
   },
   
+  testInsertTo: function() {
+    var div = document.createElement('div');
+    
+    this.el.innerHTML = 'element';
+    
+    this.assertSame(this.el, this.el.insertTo(div));
+    
+    this.assertEqual('<div>element</div>', div.innerHTML);
+    
+  },
+  
   testReplace: function() {
     this.el.innerHTML = '<p></p><div></div><span></span>';
     this.el.first('div').replace('<ul></ul><ul></ul><script>self["____test"]=4;</script>');
