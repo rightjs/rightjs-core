@@ -10,8 +10,8 @@ var Form = new Class(Element, {
    * @param Object form options
    */
   initialize: function(options) {
-    var options = options || {}, remote = options['remote'], options = Object.without(options, 'remote'),
-      form = this.$super('form', options);
+    var options = options || {}, remote = options['remote'],
+      form = this.$super('form', Object.without(options, 'remote'));
     
     if (remote) form.remotize();
     
