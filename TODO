@@ -1,3 +1,5 @@
+Implement Form unit onFocus onReset callbacks
+
 Make Observer#listeners return all the listeners if the event name was not specified.
 
 Think if it possible to check Observer#observes against a string method name
