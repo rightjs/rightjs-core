@@ -22,14 +22,6 @@ ElementDimensionsTest = TestCase.create({
   tearDown: function() {
     document.body.removeChild(this.div);
   },
-    
-  testTop: function() {
-    this.assert(this.div.top() > 0);
-  },
-  
-  testLeft: function() {
-    this.assert(this.div.left() > 0);
-  },
   
   testSize: function() {
     this.assertEqual({x: 400, y: 300}, this.div.sizes());

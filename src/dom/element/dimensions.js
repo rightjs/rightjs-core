@@ -6,20 +6,13 @@
  */
 Element.addMethods({
   
-  top: function() {
-    return this.dimensions().top;
-  },
-  
-  left: function() {
-    return this.dimensions().left;
-  },
-  
   sizes: function() {
     return { x: this.offsetWidth, y: this.offsetHeight };
   },
   
   position: function() {
-    return { x: this.left(), y: this.top() };
+    var dims = this.dimensions();
+    return { x: dims.left, y: dims.top };
   },
   
   scrolls: function() {
@@ -122,8 +115,8 @@ Element.addMethods({
     
     // FIXME make it for real
     this.setStyle({
-      marginLeft: (left - this.left()) + 'px',
-      marginTop: (top - this.top()) + 'px'
+      marginLeft: (left - this.position().x) + 'px',
+      marginTop: (top - this.position().y) + 'px'
     });
     return this;
   },
