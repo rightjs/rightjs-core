@@ -54,6 +54,34 @@ var ElementStylesTest = TestCase.create({
     this.assertNull(this.el.getOwnStyle('display'));
   },
   
+  testSetOpacityStyle: function() {
+    this.el.setStyle('opacity', 0.4);
+    
+    if (Browser.IE) {
+      this.assertEqual('alpha(opacity=40)', this.el.style['filter']);
+    } else {
+      this.assertEqual('0.4', this.el.style['opacity']);
+    }
+  },
+  
+  testGetOpacityStyle: function() {
+    this.el.setStyle('opacity', 0.4);
+    
+    this.assertEqual('0.4', this.el.getStyle('opacity'));
+  },
+  
+  testSetFloatStyle: function() {
+    this.el.setStyle('float', 'right');
+    
+    this.assertEqual('right', this.el.style[Browser.IE ? 'styleFloat' : 'cssFloat']);
+  },
+  
+  testGetFloatStyle: function() {
+    this.el.setStyle('float', 'right');
+    
+    this.assertEqual('right', this.el.getStyle('float'));
+  },
+  
   testHasClass: function() {
     this.assert(!this.el.hasClass('foo'));
     this.assert(!this.el.hasClass('boo'));

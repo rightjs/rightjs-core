@@ -1,10 +1,10 @@
+Create the Element#scrollTo method which will scroll the window to the element
+
 Implement Form unit onFocus onReset callbacks
 
 Make Observer#listeners return all the listeners if the event name was not specified.
 
 Think if it possible to check Observer#observes against a string method name
-
-Add the Element#insertTo method
 
 Create a workout to handle the IE's problems with attributes assignment for the newly created elements
 
@@ -24,8 +24,6 @@ Implement a Hash unit
 
 String#escapeHTML #truncate  ???
 
-handle the various css naming/values cases. Like opacity, filter, overflow etc.
-
 there's seems to be a memory leaking problem in IE6, each run makes the test go slower. Investigate what's the problem.
 
 see if you can shortify the Element static mirrors generation code.
@@ -33,6 +31,10 @@ see if you can shortify the Element static mirrors generation code.
 ---------
 Completed
 ---------
+
+handle the various css naming/values cases. Like opacity, filter, overflow etc.
+
+Add the Element#insertTo method
 
 Make the observer support #observes and #stopObserving check callbacks without event name
 

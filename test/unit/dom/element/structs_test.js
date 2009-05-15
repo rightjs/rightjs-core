@@ -283,7 +283,7 @@ var ElementStructsTest = TestCase.create({
     
     this.assertSame(this.el, this.el.insertTo(div));
     
-    this.assertEqual('<div>element</div>', div.innerHTML);
+    this.assertEqual([this.el], $A(div.childNodes));
     
   },
   

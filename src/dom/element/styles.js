@@ -16,7 +16,19 @@ Element.addMethods({
   setStyle: function(hash, value) {
     if (value) { var style = {}; style[hash] = value; hash = style; }
     
-    $ext(this.style, hash);
+    var c_key;
+    for (var key in hash) {
+      c_key = key.camelize();
+      
+      if (key == 'opacity' && Browser.IE) {
+        c_key = 'filter';
+        hash[key] = 'alpha(opacity='+ hash[key] * 100 +')';
+      } else if (key == 'float') {
+        c_key = Browser.IE ? 'styleFloat' : 'cssFloat';
+      }
+      
+      this.style[c_key] = hash[key];
+    }
     
     return this;
   },
@@ -35,19 +47,33 @@ Element.addMethods({
   
   // returns the element own style value
   getOwnStyle: function(key) {
-    return this._cleanStyle(this.style[key.camelize()]);
+    return this._getStyle(this.style, key);
   },
   
   // returns the view level computed style
   getViewStyle: function(key) {
-    return this._cleanStyle((document.defaultView ?
+    return this._getStyle((document.defaultView ?
       document.defaultView.getComputedStyle(this, null) : this.currentStyle || {}
-    )[key.camelize()]);
+    ), key);
   },
   
   // cleans up the style value
-  _cleanStyle: function(value) {
-    return (value && value != '') ? value : null;
+  _getStyle: function(style, key) {
+    var value, key = key.camelize();
+    
+    switch (key) {
+      case 'opacity':
+        value = !Browser.IE ? style[key] :
+          (((style['filter'] || '').match(/opacity=(\d+)/i) || ['', '100'])[1].toInt() / 100)+'';
+        break;
+        
+      case 'float':
+        key   = Browser.IE ? 'styleFloat' : 'cssFloat';
+      default:
+        value = style[key];
+    }
+    
+    return value ? value : null;
   },
   
   /**
