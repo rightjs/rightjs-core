@@ -141,7 +141,7 @@ old fashioned 'for' loop.
 == Description
   Checks if the array has no elements in it
 
-### clone
+### Array#clone
 
 == Semantic
   clone() -> new Array
@@ -332,7 +332,7 @@ old fashioned 'for' loop.
   [0,1,2,3].includes(2,4); // false
 
 
-### without
+### Array#without
 
 == Semantic
   without(mixed value[, mixed value, ...]) -> Array new
