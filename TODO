@@ -1,3 +1,17 @@
+add effects options to the resize methods
+
+fx to class
+
+lightup lightout fxs
+
+underscored and ruby aliases
+
+Add effect options to the resize methods
+
+Implement the xhrs stack to handle the common spinner properly
+
+Think about moving the scrolls control out of Element to window.
+
 Create the Element#scrollTo method which will scroll the window to the element
 
 Implement Form unit onFocus onReset callbacks
