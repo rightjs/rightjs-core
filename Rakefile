@@ -6,8 +6,9 @@ require 'rake'
 require 'fileutils'
 require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
 
-BUILD_DIR = 'build'
-BUILD_FILE = 'right.js'
+BUILD_DIR       = 'build'
+BUILD_FILE      = 'right.js'
+BUILD_FULL_FILE = 'right-full.js'
 
 JS_SOURCES = %w{
   core/util.js
@@ -73,6 +74,16 @@ task :build do
         File.open('src/'+file_name).read
       end.join("\n")
     ).create_self_build
+  end
+  
+  puts ' * Creating non-compressed version'
+  
+  File.open(BUILD_DIR + "/" + BUILD_FULL_FILE, "w") do |file|
+    file.write File.open('src/HEADER.js', 'r').read
+    
+    file.write JS_SOURCES.collect{ |file_name|
+      File.open('src/'+file_name).read
+    }.join("\n\n")
   end
 end
 
