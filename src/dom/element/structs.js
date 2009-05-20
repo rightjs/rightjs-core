@@ -124,7 +124,12 @@ Element.addMethods({
    * @return Element self
    */
   update: function(content) {
-    return this.clean().insert(content);
+    if (isString(content)) {
+      this.innerHTML = content;
+    } else {
+      this.clean().insert(content);
+    }
+    return this;
   },
   
   /**
