@@ -1,3 +1,8 @@
+Write documentation entry about the Element constructor
+
+remove getOwnStyle and getViewStyle out of the method, make the getStyle return the computed styles
+make also it return a hash if no params were specified. and remove the getOwn and getView styles out of the documentation
+
 add effects options to the resize methods
 
 fx to class
