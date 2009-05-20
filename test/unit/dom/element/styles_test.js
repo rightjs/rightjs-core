@@ -35,9 +35,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertEqual('12px', this.el.getStyle('font-size'));
     this.assertEqual('2px', this.el.getStyle('borderSize'));
-    
-    this.assertEqual('12px', this.el.getOwnStyle('font-size'));
-    this.assertEqual('2px', this.el.getOwnStyle('borderSize'));
   },
   
   testGetStyleWithCSSLevelStyles: function() {
@@ -46,12 +43,6 @@ var ElementStylesTest = TestCase.create({
     
     this.assertEqual('14px', this.el.getStyle('font-size'));
     this.assertEqual('none', this.el.getStyle('display'));
-    
-    this.assertEqual('14px', this.el.getViewStyle('fontSize'));
-    this.assertEqual('none', this.el.getViewStyle('display'));
-    
-    this.assertNull(this.el.getOwnStyle('font-size'));
-    this.assertNull(this.el.getOwnStyle('display'));
   },
   
   testSetOpacityStyle: function() {

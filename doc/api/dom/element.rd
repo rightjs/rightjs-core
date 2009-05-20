@@ -693,39 +693,12 @@ And sure RightJS provides the custom events handling.
   
   Supports both camelized and dasherized names.
   
-  NOTE: Will process both css and element own styles.
+  NOTE: Will process both element own and computed (css) level styles
 
 == Example
   $('element').hide();
   
   $('element').getStyle('dispaly'); // -> 'none'
-
-
-
-### Element#getOwnStyle
-
-== Semantic
-  getOwnStyle(String name) -> String value or null
-
-== Description
-  Returns the element own styles. Meant assigned by the 'style' attribute.
-
-== Example
-  $('element').getOwnStyle('font-size');
-
-
-
-### Element#getViewStyle
-
-== Semantic
-  getViewStyle(String name) -> String value or null
-
-== Description
-  Returns the computed style for the element, meant the current actual style
-  as the result of merging css and own styles.
-
-== Example
-  $('element').getOwnStyle('font-size');
 
 
 

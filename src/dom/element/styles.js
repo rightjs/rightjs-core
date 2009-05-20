@@ -42,17 +42,7 @@ Element.addMethods({
    * @return String style value or null if not set
    */
   getStyle: function(key) {
-    return this.getOwnStyle(key) || this.getViewStyle(key);
-  },
-  
-  // returns the element own style value
-  getOwnStyle: function(key) {
-    return this._getStyle(this.style, key);
-  },
-  
-  // returns the view level computed style
-  getViewStyle: function(key) {
-    return this._getStyle((document.defaultView ?
+    return this._getStyle(this.style, key) || this._getStyle((document.defaultView ?
       document.defaultView.getComputedStyle(this, null) : this.currentStyle || {}
     ), key);
   },
