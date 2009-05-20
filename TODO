@@ -1,8 +1,3 @@
-Write documentation entry about the Element constructor
-
-remove getOwnStyle and getViewStyle out of the method, make the getStyle return the computed styles
-make also it return a hash if no params were specified. and remove the getOwn and getView styles out of the documentation
-
 add effects options to the resize methods
 
 fx to class
@@ -50,6 +45,11 @@ see if you can shortify the Element static mirrors generation code.
 ---------
 Completed
 ---------
+
+Write documentation entry about the Element constructor
+
+remove getOwnStyle and getViewStyle out of the method, make the getStyle return the computed styles
+make also it return a hash if no params were specified. and remove the getOwn and getView styles out of the documentation
 
 handle the various css naming/values cases. Like opacity, filter, overflow etc.
 

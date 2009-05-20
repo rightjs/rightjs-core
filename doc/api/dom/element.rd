@@ -113,6 +113,34 @@ And sure RightJS provides the custom events handling.
 </code>
 
 
+### Element#initialize
+
+== Semantic
+  initialize(String tag_name[, Object options]) -> Element new
+
+== Description
+  Standard constructor, takes two arguments, the tag name and options. Options
+  are basically the element attributes, and additionally you can send the 
+  following keys to preset your element on instance.
+  
+  * 'html'    - source code to fill up the innerHTML property
+  * 'class'   - class name(s) for the element
+  * 'style'   - a hash of styles to be preset
+  * 'observe' - a hash of events to observe
+
+== Example
+  var element = new Element('div');
+  var element = new Element('p', {
+    id: 'some-paragraph',
+    'class': 'come class',
+    'style': {
+      padding: '10pt'
+    },
+    observe: {
+      mouseover: function() { ... }
+    }
+  });
+
 
 ### Element#set
 
