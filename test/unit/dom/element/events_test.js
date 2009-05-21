@@ -122,27 +122,5 @@ var ElementEventsTest = TestCase.create({
     
     this.assert(clicked);
     this.assert('click', event.eventName);
-  },
-  
-  testObserversShortcuts: function() {
-    this.assertNotNull(this.el.onClick);
-    this.assertNotNull(this.el.click);
-    
-    var first = false, second = false;
-    
-    this.assertSame(this.el, this.el.onClick(function() { first = true }));
-    this.assertSame(this.el, this.el.onClick(function() { second = true }));
-    
-    this.el.click();
-    
-    this.assert(first);
-    this.assert(second);
-  },
-  
-  testObserverShortcutsList: function() {
-    Event.Mouse.NAMES.concat(Event.Keyboard.NAMES).each(function(name) {
-      this.assertNotNull(this.el[name]);
-      this.assertNotNull(this.el['on'+name.capitalize()]);
-    }, this);
   }
 });

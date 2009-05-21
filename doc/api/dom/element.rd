@@ -69,32 +69,30 @@ extended so you can easily process them.
 
 == Observers
 
-Element has all the same methods as any Observer in the system and 
-additionally for the most common events, there are shortcuts to assign and 
-fire events.
+Element has all the same methods as any Observer in the system.
 
 <code>
   var element = $('some-element');
   
-  element.onClick(function() {
+  element.on('click', function() {
     this.toggleClass('clicked');
   });
   
-  element.click();
+  element.fire('click');
 </code>
 
 You can use all the advantages of the observers like assigning methods by 
 name, and specifying options for the fired events.
 
 <code>
-  element.onClick('addClass', 'clicked');
-  element.onKeypress('radioClass', 'typing');
+  element.on('click', 'addClass', 'clicked');
+  element.on('keypress', 'radioClass', 'typing');
   
-  element.click({
+  element.fire('click', {
     button: 3
   });
   
-  element.keypress({
+  element.on('keypress', {
     keyCode: 12
   });
 </code>

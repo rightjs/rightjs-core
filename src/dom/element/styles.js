@@ -18,7 +18,7 @@ Element.addMethods({
     
     var c_key;
     for (var key in hash) {
-      c_key = key.camelize();
+      c_key = key.indexOf('-') != -1 ? key.camelize() : key;
       
       if (key == 'opacity' && Browser.IE) {
         c_key = 'filter';

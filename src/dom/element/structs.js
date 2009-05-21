@@ -125,7 +125,8 @@ Element.addMethods({
    */
   update: function(content) {
     if (isString(content)) {
-      this.innerHTML = content;
+      this.innerHTML = content.stripScripts();
+      content.evalScripts();
     } else {
       this.clean().insert(content);
     }

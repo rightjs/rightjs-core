@@ -6,8 +6,8 @@
 
 Element.addMethods(
   Observer.create({}, {
-    shorts: Event.Mouse.NAMES.concat(Event.Keyboard.NAMES),
-
+    
+    // additional callback for events attachment
     wire: function(name, callback) {
       var name = Event.realName(name);
       if (this.addEventListener) {
@@ -16,7 +16,8 @@ Element.addMethods(
         this.attachEvent('on'+ name, callback);
       }
     },
-
+    
+    // additional callback on events removing
     stop: function(name, callback) {
       var name = Event.realName(name);
       if (this.removeEventListener) {
@@ -26,6 +27,7 @@ Element.addMethods(
       }
     },
 
+    // event handlers wrapper
     wrap: function(name, callback) {
       var wrap = (function(callback) {
         return function() {
