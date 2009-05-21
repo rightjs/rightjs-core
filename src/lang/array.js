@@ -152,14 +152,15 @@ $ext(Array.prototype, {
    * @return Array new merged
    */
   merge: function() {
-    for (var copy = this.clone(), i=0; i < arguments.length; i++) {
-      if (isArray(arguments[i])) {
-        for (var j=0; j < arguments[i].length; j++) {
-          if (!copy.includes(arguments[i][j]))
-            copy.push(arguments[i][j]);
+    for (var copy = this.clone(), arg, i=0; i < arguments.length; i++) {
+      arg = arguments[i];
+      if (isArray(arg)) {
+        for (var j=0; j < arg.length; j++) {
+          if (copy.indexOf(arg[j]) == -1)
+            copy.push(arg[j]);
         }  
-      } else if (!copy.includes(arguments[i])) {
-        copy.push(arguments[i]);
+      } else if (copy.indexOf(arg) == -1) {
+        copy.push(arg);
       }
     }
     return copy;

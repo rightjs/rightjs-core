@@ -72,14 +72,12 @@ Selector.Manual = new Class({
             // FIXME there gotta be a better way
             for (var j=0; j < sub_result.length; j++) {
               if ((index = founds.indexOf(sub_result[j])) != -1) {
-                sub_result = sub_result.slice(0, index+1).concat(
-                  this.select(founds[index], atoms.slice(1))).concat(
-                    sub_result.slice(index+1));
+                sub_result.splice.apply(sub_result, [index+1, 0].concat(this.select(founds[index], atoms.slice(1))));
               }
             }
           }
           
-          sub_founds = sub_founds.concat(sub_result);
+          sub_founds.splice.apply(sub_founds, [sub_founds.length, 0].concat(sub_result));
         }
         
         founds = sub_founds;
@@ -151,12 +149,16 @@ Selector.Manual = new Class({
      */
     ' ': function(element, atom) {
       var all = element.getElementsByTagName(atom.tag), matched = [];
-      for (var i=0; i < all.length; i++) {
-        if (atom.match(all[i])) {
-          matched.push(all[i]);
+      if (atom.match === atom.matchTag) {
+        matched = $A(all);
+      } else {
+        for (var i=0; i < all.length; i++) {
+          if (atom.match(all[i])) {
+            matched.push(all[i]);
+          }
         }
       }
-
+      
       return matched;
     },
 

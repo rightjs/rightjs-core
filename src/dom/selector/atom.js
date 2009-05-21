@@ -75,7 +75,9 @@ Selector.Atom = new Class({
     if (Object.keys(this.attrs).length) matchers.push('matchAttrs');
     if (this.pseudo)                    matchers.push('matchPseudo');
     
-    if (matchers.length) {
+    if (matchers.length == 1) {
+      this.match = this[matchers[0]];
+    } else if (matchers.length) {
       this.match = function(element) {
         for (var i=0; i < matchers.length; i++)
           if (!this[matchers[i]](element))
