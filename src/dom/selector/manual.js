@@ -15,12 +15,6 @@ Selector.Manual = new Class({
     var css_rule = css_rule.trim();
     this.cssRule = css_rule;
     
-    // if there's just a tag, use a quick search
-    if (css_rule.match(/^[a-z\*]$/)) {
-      this.select = function(element) { return $A(element.getElementsByTagName(css_rule)); };
-      return this;
-    }
-    
     this.atoms = [];
 
     var relation = null, match = null;
@@ -53,42 +47,34 @@ Selector.Manual = new Class({
    * @param Element base node
    * @return Array found nodes
    */
-  select: function(node, atoms) {
-    var founds = [], atoms = atoms || this.atoms, atom = atoms[0];
+  select: function(node) {
+    var founds, atom, index;
     
-    if (atom) {
-      founds = this.find[atom.rel](node, atom);
-      
-      // if there is more atoms go recoursively
-      if (atoms.length > 1) {
-        if (atoms[1].rel != ' ' && atoms[1].rel != '>') this._hsr = true; // checking if the rule has siblings relations
+    for (var i=0; i < this.atoms.length; i++) {
+      atom = this.atoms[i];
+      if (i == 0) {
+        founds =  this.find[atom.rel](node, atom);
         
-        var sub_founds = [], sub_result, index;
-        for (var i=0; i < founds.length; i++) {
-          sub_result = this.select(founds[i], atoms.slice(1));
+      } else {
+        var sub_founds;
+        
+        for (var j=0; j < founds.length; j++) {
+          sub_founds = this.find[atom.rel](founds[j], atom);
           
-          if (atoms[1].rel == '>') {
-            // injecting intersecting search results, so they were placed correctly
-            // FIXME there gotta be a better way
-            for (var j=0; j < sub_result.length; j++) {
-              if ((index = founds.indexOf(sub_result[j])) != -1) {
-                sub_result.splice.apply(sub_result, [index+1, 0].concat(this.select(founds[index], atoms.slice(1))));
-              }
-            }
+          if (atom.rel == '>' && (index = founds.indexOf(founds[j])) < j) {
+            // if element appeared on the list by some earlier search inject the reslut there
+            founds.splice.apply(founds, [index+1,0].concat(sub_founds));
+            j++;  
+          } else {
+            founds.splice.apply(founds, [j,1].concat(sub_founds));
           }
           
-          sub_founds.splice.apply(sub_founds, [sub_founds.length, 0].concat(sub_result));
+          j += sub_founds.length - 1;
         }
-        
-        founds = sub_founds;
       }
-      
-      // removing duplications and reorganizing the result in a case of siblings search
-      if (atoms.length == this.atoms.length && atoms.length > 1 && founds.length > 1)
-        founds = this._hsr ? this.sortFounds(founds.uniq(), node) : founds.uniq();
     }
     
-    return founds;
+    return this.atoms.length > 1 ? this.uniq(founds) : founds;
   },
 
   /**
@@ -108,7 +94,8 @@ Selector.Manual = new Class({
         } else {
           // putting the element in a temporary context so we could test it
           var parent = document.createElement('div'), parent_is_fake = true;
-          parent.id = '-----fake'; // <- this id is used in the manual 'match' method, to determine if the element originally had no parent node
+          parent.id = '-----fake'; // <- this id is used in the manual 'match' method,
+                                   // to determine if the element originally had no parent node
           parent.appendChild(element);
         }
 
@@ -123,24 +110,17 @@ Selector.Manual = new Class({
   },
   
 // protected
-  
-  // reorganising the search result in the original structure order
-  // so it was consitent with the native css-matching algorithm
-  //
-  // FIXME: there gotta be a better way
-  sortFounds: function(founds, node) {
-    var result = [], child = node.firstChild;
-    
-    while (child) {
-      if (founds.indexOf(child) != -1)
-        result.push(child);
-      else
-        result = result.concat(this.sortFounds(founds, child));
-        
-      child = child.nextSibling;
+  uniq: function(elements) {
+    var uniq = [], uids = {}, uid;
+    for (var i=0; i < elements.length; i++) {
+      uid = $uid(elements[i]);
+      if (!uids[uid]) {
+        uniq.push(elements[i]);
+        uids[uid] = true;
+      }
     }
     
-    return result;
+    return uniq;
   },
 
   find: {
@@ -148,18 +128,16 @@ Selector.Manual = new Class({
      * search for any descendant nodes
      */
     ' ': function(element, atom) {
-      var all = element.getElementsByTagName(atom.tag), matched = [];
-      if (atom.match === atom.matchTag) {
-        matched = $A(all);
-      } else {
-        for (var i=0; i < all.length; i++) {
-          if (atom.match(all[i])) {
-            matched.push(all[i]);
-          }
+      var founds = $A(element.getElementsByTagName(atom.tag));
+      if (atom.hasNonTagMatcher) {
+        var matching = [];
+        for (var i=0; i < founds.length; i++) {
+          if (atom.match(founds[i]))
+            matching.push(founds[i]);
         }
+        return matching;
       }
-      
-      return matched;
+      return founds;
     },
 
     /**
@@ -182,9 +160,7 @@ Selector.Manual = new Class({
     '+': function(element, atom) {
       while ((element = element.nextSibling)) {
         if (element.tagName) {
-          if (atom.match(element))
-            return [element];
-          break;
+          return atom.match(element) ? [element] : [];
         }
       }
       return [];
@@ -194,12 +170,12 @@ Selector.Manual = new Class({
      * search for late sibling nodes
      */
     '~': function(element, atom) {
-      var match = [];
+      var founds = [];
       while ((element = element.nextSibling)) {
         if (atom.match(element))
-          match.push(element);
+          founds.push(element);
       }
-      return match;
+      return founds;
     }
   } 
 

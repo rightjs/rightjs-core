@@ -31,6 +31,7 @@ Selector.Atom = new Class({
   initialize: function(css_rule, rel) {
     css_rule = css_rule.trim();
     this.rel = rel || ' ';
+    this.hasNonTagMatcher = !css_rule.match(/^[a-z\*]+$/);
     
     // NOTE! dont change the order of the atom parsing, there might be collisions
     this.attrs = {};
@@ -98,8 +99,19 @@ Selector.Atom = new Class({
   },
 
   matchClass: function(element) {
-    var names = element.className.split(' ');
-    return names.includes.apply(names, this.classes);
+    if (element.className) {
+      var names = element.className.split(' ');
+      if (names.length == 1) {
+        return this.classes.indexOf(names[0]) != -1;
+      } else {
+        for (var i=0; i < this.classes.length; i++)
+          if (names.indexOf(this.classes[i]) == -1)
+            return false;
+            
+        return true;
+      }
+    }
+    return false;
   },
 
   matchAttrs: function(element) {

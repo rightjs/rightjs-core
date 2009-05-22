@@ -185,8 +185,13 @@ function isNode(value) {
  * @return Array list
  */
 function $A(it) {
-  for (var a=[], i=0; i < it.length; i++)
-    a[i] = it[i];
+  if (it.item) {
+    for (var a=[], i=0, length = it.length; i < length; i++)
+      a[i] = it[i];
+  } else {
+    var a = Array.prototype.slice.call(it);
+  }
+  
   return a;
 };
 
@@ -231,3 +236,10 @@ function $$(css_rule) {
 function $w(string) {
   return string.trim().split(/\s+/);
 }
+
+var _UID = 1;
+var $uid = (Browser.IE) ? function(item){                                                                                                       
+        return (item.uid || (item.uid = [_UID++]))[0];                                                                                                
+} : function(item){                                                                                                                                         
+        return item.uid || (item.uid = _UID++);                                                                                                       
+};

@@ -107,7 +107,7 @@ Element.addMethods({
    * @return Element self
    */
   removeClass: function(name) {
-    this.className = this.className.replace(new RegExp("(^|\\s+)" + name + "(\\s+|$)"), ' ').trim();
+    this.className = this.className.replace(new RegExp('(^|\\s)' + name + '(?:\\s|$)'), '$1');
     return this;
   },
   

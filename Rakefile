@@ -11,8 +11,8 @@ BUILD_FILE      = 'right.js'
 BUILD_FULL_FILE = 'right-full.js'
 
 JS_SOURCES = %w{
-  core/util.js
   core/browser.js
+  core/util.js
   
   lang/object.js
   lang/math.js

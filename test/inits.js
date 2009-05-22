@@ -1,6 +1,6 @@
 var scripts = [
-  'core/util.js',
   'core/browser.js',
+  'core/util.js',
   'lang/object.js',
   'lang/math.js',
   'lang/array.js',
