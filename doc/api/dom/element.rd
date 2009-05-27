@@ -1104,4 +1104,26 @@ And sure RightJS provides the custom events handling.
   element.setScrolls({x: 100, y: 100});
 
 
+### Element#load
 
+== Semantic
+  load(String url[, Object options]) -> Element self
+
+== Description
+  This method loads the given url and updates the element innerHTML property 
+  with the reponse body.
+  
+  Takes all the standard Xhr class options as the second parameter.
+  
+  If there are javascript code in the response, by default it will be
+  automatically evaluated after the element body was updated.
+  
+  NOTE: will perform a GET request by default.
+  
+== Example
+  element.load('/something');
+  element.load('/something', {
+    method: 'post',
+    spinner: 'spinner-id'
+  });
+  

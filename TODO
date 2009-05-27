@@ -1,3 +1,5 @@
+check that Xhr hides related spinners if was canceled
+
 add effects options to the resize methods
 
 fx to class
