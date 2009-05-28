@@ -48,6 +48,8 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 Completed
 ---------
 
+implement the Options module
+
 Write documentation entry about the Element constructor
 
 remove getOwnStyle and getViewStyle out of the method, make the getStyle return the computed styles

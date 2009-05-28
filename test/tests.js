@@ -35,6 +35,7 @@ var tests = {
   FormTest:              'unit/dom/form_test.js',
   FormElementTest:       'unit/dom/form/element_test.js',
   
+  OptionsTest:           'unit/util/options_test.js',
   ObserverTest:          'unit/util/observer_test.js',
   CookieTest:            'unit/util/cookie_test.js',
   
