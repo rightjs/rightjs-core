@@ -1,3 +1,5 @@
+replace $super with 'parent'
+
 add the observer reference for the custom events
 
 check that Xhr hides related spinners if was canceled

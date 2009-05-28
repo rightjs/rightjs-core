@@ -1,6 +1,8 @@
 /**
  * Basic visual effects class
  *
+ * Credits: Mostly inspired by the MooTools project
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Fx = new Class(Observer, {
@@ -13,7 +15,7 @@ var Fx = new Class(Observer, {
     OPTIONS: {
       fps:        60,
       duration:   'normal',
-      transition: 'cos'
+      transition: 'Cos'
     },
 
     // named durations
@@ -23,17 +25,17 @@ var Fx = new Class(Observer, {
       long:   800
     },
 
-    // list of transitions
-    TRANSITIONS: {
-      cos: function(i) {
+    // list of basic transitions
+    Transitions: {
+      Cos: function(i) {
         return -(Math.cos(Math.PI * i) - 1) / 2;
       },
       
-      sin: function(i) {
+      Sin: function(i) {
         return 1 - Math.sin((1 - i) * Math.PI / 2);
       },
       
-      exp: function(i) {
+      Exp: function(i) {
         return Math.pow(2, 8 * (i - 1));
       }
     }
@@ -48,21 +50,16 @@ var Fx = new Class(Observer, {
     this.$super();
     this.setOptions(options);
     this.subject = this.subject || this;
+    this.transition = isString(this.options.transition) ? Fx.Transitions[this.options.transition] : this.options.transition;
+    this.options.duration = Fx.DURATIONS[this.options.duration] || this.options.duration;
   },
   
   /**
-   * starts transition from the start number to the end number
+   * starts the transition
    *
-   * @param number from
-   * @param number to
    * @return Fx this
    */
-  start: function(from, to) {
-    if (from <= to) return this.finish();
-    
-    this.from   = from;
-    this.to     = to;
-    
+  start: function() {
     this.steps  = (this.options.duration / 1000 / this.options.fps).ceil();
     this.number = 1;
     
@@ -114,9 +111,7 @@ var Fx = new Class(Observer, {
   // NOTE: called outside of the instance scope!
   step: function($this) {
     if ($this.steps > $this.number) {
-      var delta = $this.transition($this.number / $this.steps);
-      
-      $this.set(($this.to - $this.from) * delta + $this.from);
+      $this.set($this.transition($this.number / $this.steps));
       
       $this.number ++;
     } else {
