@@ -54,12 +54,12 @@ Class.Methods = {
               (function(name, func) {
                 this.prototype[name] = function() {
                   // sets the pointer to the superclass method each time you call the method
-                  this['super'] = this['$super'] = isFunction(this.constructor.parent.prototype[name]) ?
+                  this['$super'] = isFunction(this.constructor.parent.prototype[name]) ?
                     this.constructor.parent.prototype[name] : undefined;
                   
                   return func.apply(this, arguments);
                 };
-              }).apply(this, [key, arguments[i][key]]);
+              }).call(this, key, arguments[i][key]);
             } else {
               this.prototype[key] = arguments[i][key];
             }

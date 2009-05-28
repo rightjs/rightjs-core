@@ -1,3 +1,5 @@
+add the observer reference for the custom events
+
 check that Xhr hides related spinners if was canceled
 
 add effects options to the resize methods
@@ -41,8 +43,6 @@ Implement a Hash unit
 String#escapeHTML #truncate  ???
 
 there's seems to be a memory leaking problem in IE6, each run makes the test go slower. Investigate what's the problem.
-
-see if you can shortify the Element static mirrors generation code.
 
 ---------
 Completed
