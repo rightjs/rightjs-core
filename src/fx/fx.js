@@ -27,6 +27,14 @@ var Fx = new Class(Observer, {
     TRANSITIONS: {
       cos: function(i) {
         return -(Math.cos(Math.PI * i) - 1) / 2;
+      },
+      
+      sin: function(i) {
+        return 1 - Math.sin((1 - i) * Math.PI / 2);
+      },
+      
+      exp: function(i) {
+        return Math.pow(2, 8 * (i - 1));
       }
     }
   },

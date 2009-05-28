@@ -26,6 +26,7 @@ JS_SOURCES = %w{
   core/class/util.js
   core/class/methods.js
   
+  util/options.js
   util/observer.js
   util/cookie.js
   util/break.js

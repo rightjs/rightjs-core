@@ -46,7 +46,6 @@ var Xhr = new Class(Observer, {
   initialize: function(url, options) {
     // initializing observers
     this.$super({
-      shorts: Xhr.EVENTS,
       wrap:   (function(name, callback) {
         return (function() {
           return callback(this, this.xhr);
