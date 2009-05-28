@@ -12,7 +12,7 @@ Fx.Morph = new Class(Fx, {
    */
   initialize: function(element, options) {
     this.$super(options);
-    this.subject = $(element);
+    this.element = $(element);
   },
   
   /**
@@ -28,7 +28,7 @@ Fx.Morph = new Class(Fx, {
     this.endStyle   = css;
     
     for (var key in css) {
-      this.startStyle[key] = this.subject.getStyle(key);
+      this.startStyle[key] = this.element.getStyle(key);
     }
     
     this._cleanStyles(this.startStyle, this.endStyle);

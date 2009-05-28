@@ -49,20 +49,22 @@ Class.Methods = {
       if (isHash(arguments[i])) {
         for (var key in arguments[i]) {
           if (key != 'klass' && key != 'constructor') {
-            if (this.parent && isFunction(arguments[i][key])) {
-              // handling the parent class method call
-              (function(name, func) {
+            
+            // handling the super methods
+            var ancestor = this.ancestors.any(function(klass) { return isFunction(klass.prototype[key]); });
+            
+            if (ancestor) {
+              (function(name, method, $super) {
                 this.prototype[name] = function() {
-                  // sets the pointer to the superclass method each time you call the method
-                  this['$super'] = isFunction(this.constructor.parent.prototype[name]) ?
-                    this.constructor.parent.prototype[name] : undefined;
+                  this.$super = $super;
                   
-                  return func.apply(this, arguments);
+                  return method.apply(this, arguments);
                 };
-              }).call(this, key, arguments[i][key]);
+              }).call(this, key, arguments[i][key], ancestor.prototype[key]);
             } else {
               this.prototype[key] = arguments[i][key];
             }
+            
           }
         }
       }

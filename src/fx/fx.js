@@ -49,8 +49,7 @@ var Fx = new Class(Observer, {
   initialize: function(options) {
     this.$super();
     this.setOptions(options);
-    this.subject = this.subject || this;
-    this.transition = isString(this.options.transition) ? Fx.Transitions[this.options.transition] : this.options.transition;
+    this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
     this.options.duration = Fx.DURATIONS[this.options.duration] || this.options.duration;
   },
   
@@ -63,7 +62,7 @@ var Fx = new Class(Observer, {
     this.steps  = (this.options.duration / 1000 / this.options.fps).ceil();
     this.number = 1;
     
-    return this.startTimer().fire('start', this.subject);
+    return this.startTimer().fire('start', this.element);
   },
   
   /**
@@ -72,7 +71,7 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   finish: function() {
-    return this.stopTimer().fire('finish', this.subject);
+    return this.stopTimer().fire('finish', this.element);
   },
   
   /**
@@ -81,7 +80,7 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   cancel: function() {
-    return this.stopTimer().fire('cancel', this.subject);
+    return this.stopTimer().fire('cancel', this.element);
   },
   
   /**

@@ -14,16 +14,10 @@ var Options = {
    * @return Object current instance
    */
   setOptions: function(options) {
-    var OPTIONS = this.OPTIONS;
-    if (!OPTIONS) {
-      var klass = this.constructor;
-      while (klass) {
-        if (klass.OPTIONS) {
-          OPTIONS = klass.OPTIONS;
-          break;
-        }
-        klass = klass.parent;
-      }
+    var OPTIONS = this.OPTIONS || this.constructor.OPTIONS, ancestor;
+    
+    if (!OPTIONS && (ancestor = this.constructor.ancestors.any('OPTIONS'))) {
+      OPTIONS = ancestor.OPTIONS;
     }
     
     this.options = Object.merge({}, OPTIONS, options);

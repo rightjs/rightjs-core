@@ -6,7 +6,7 @@
 Fx.Highlight = new Class(Fx.Morph, {
   extend: {
     DEFAULT_COLOR: '#FEF'
-  }
+  },
   
   /**
    * starts the transition

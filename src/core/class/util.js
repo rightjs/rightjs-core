@@ -18,6 +18,12 @@ Class.Util = {
       s_klass.prototype = parent.prototype;
       klass.prototype = new s_klass;
     }
+    
+    klass.ancestors = [];
+    while (parent) {
+      klass.ancestors.push(parent);
+      parent = parent.parent;
+    }
   },
   
   /**

@@ -170,5 +170,27 @@ var ClassTest = TestCase.create({
       smth: function() { return 'overloaded '+this.$super(); }
     });
     this.assertEqual('overloaded s_klass something', new klass().smth());
+  },
+  
+  
+  testMultipleAncestors: function() {
+    var A = new Class({
+      say: function() { return 'A'; }
+    });
+    
+    var B = new Class(A, {
+      say: function() { return 'B' + this.$super(); }
+    });
+    
+    var C = new Class(B, {
+      say: function() { return 'C' + this.$super(); }
+    });
+    
+    this.assertEqual([], A.ancestors);
+    this.assertEqual([A], B.ancestors);
+    this.assertEqual([B, A], C.ancestors);
+    
+    this.assertEqual('BA', new B().say());
+    this.assertEqual('CBA', new C().say());
   }
 });

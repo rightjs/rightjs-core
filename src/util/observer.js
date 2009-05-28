@@ -12,20 +12,13 @@ var Observer = new Class({
    * @param Object options
    */
   initialize: function(options) {
-    var options = options || {};
+    var options = options || {}, ancestor;
     
     // catching up the event shortucts
     if (!options.shorts) {
-      options.shorts = this.EVENTS;
-      if (!options.shorts) {
-        var klass = this.constructor;
-        while (klass) {
-          if (klass.EVENTS) {
-            options.shorts = klass.EVENTS;
-            break;
-          }
-          klass = klass.parent;
-        }
+      options.shorts = this.EVENTS || this.constructor.EVENTS;
+      if (!options.shorts && (ancestor = this.constructor.ancestors.any('EVENTS'))) {
+        options.shorts = ancestor.EVENTS;
       }
     }
     
