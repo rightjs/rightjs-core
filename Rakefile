@@ -58,7 +58,7 @@ JS_SOURCES = %w{
   xhr/iframed.js
   
   fx/fx.js
-  fx/fx/style.js
+  fx/fx/morph.js
   fx/fx/highlight.js
   fx/element.js
 }
