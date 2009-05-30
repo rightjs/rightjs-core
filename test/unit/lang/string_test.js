@@ -125,5 +125,19 @@ var StringTest = TestCase.create({
     div.appendChild(fragment);
     
     this.assertEqual(string.toLowerCase(), div.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
+  },
+  
+  testToHex: function() {
+    this.assertEqual('#FFFFFF', '#FFF'.toHex());
+    this.assertEqual('#AABB88', '#AB8'.toHex());
+    this.assertEqual('#ffffff', 'rgb(255,255,255)'.toHex());
+    this.assertEqual('#000000', 'rgb(0, 0, 0)'.toHex());
+  },
+  
+  testToRgb: function() {
+    this.assertEqual('rgb(255,255,255)', '#FFF'.toRgb());
+    this.assertEqual('rgb(0,0,0)', '#000000'.toRgb());
+    
+    this.assertEqual([170, 187, 204], '#ABC'.toRgb(true));
   }
 });

@@ -252,6 +252,15 @@ $ext(Array.prototype, {
     return this._all(arguments, 'all');
   },
   
+  /**
+   * converts the array into a string rgb(R,G,B) definition
+   *
+   * @return String rgb(DDD, DDD, DDD) value
+   */
+  toRgb: function() {
+    return 'rgb('+this.map(Math.round)+')';
+  },
+  
 // private
   
   // recatching the original JS 1.6 method 
