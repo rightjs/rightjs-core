@@ -59,7 +59,7 @@ $ext(Function.prototype, {
     var args  = $A(arguments), timeout = args.shift();
     var timer = new Number(window.setTimeout(this.bind.apply(this, [this].concat(args)), timeout));
     
-    timer['cancel'] = function() { window.clearTimeout(this); }
+    timer['cancel'] = function() { window.clearTimeout(this); };
     
     return timer;
   },
@@ -76,7 +76,7 @@ $ext(Function.prototype, {
     var args  = $A(arguments), timeout = args.shift();
     var timer = new Number(window.setInterval(this.bind.apply(this, [this].concat(args)), timeout));
     
-    timer['stop'] = function() { window.clearInterval(this); }
+    timer['stop'] = function() { window.clearInterval(this); };
     
     return timer;
   }
