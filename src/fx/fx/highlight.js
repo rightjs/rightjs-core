@@ -5,7 +5,7 @@
  */
 Fx.Highlight = new Class(Fx.Morph, {
   extend: {
-    DEFAULT_COLOR: '#FEF'
+    DEFAULT_COLOR: 'yellow'
   },
   
   /**
@@ -16,13 +16,20 @@ Fx.Highlight = new Class(Fx.Morph, {
    * @return self
    */
   start: function(start, end) {
-    this.$super({backgroundColor: (start || Fx.Highlight.DEFAULT_COLOR)});
+    var end_color = end || this._getStyle(this.element, 'backgroundColor').backgroundColor;
+    if (end_color == 'transparent') {
+      this.onFinish(function() {
+        this.element.style.backgroundColor = 'transparent';
+      });
+      this.element.style.backgroundColor = end_color = '#FFF';
+    }
     
-    this.middleStyle = {backgroundColor: (end || this.subject.getStyle('background-color'))};
+    this.middleStyle = this._findStyle({backgroundColor: end_color});
+    this._cleanStyle(this.middleStyle);
     
-    this._cleanStyles(this.middleStyle);
+    this.swapped = false;
     
-    return this;
+    return this.$super({backgroundColor: (start || Fx.Highlight.DEFAULT_COLOR)});
   },
   
 // protected

@@ -37,6 +37,10 @@ var Fx = new Class(Observer, {
       
       Exp: function(i) {
         return Math.pow(2, 8 * (i - 1));
+      },
+      
+      Log: function(i) {
+        return Math.log(1 + (Math.E-1) * i);
       }
     }
   },
@@ -49,8 +53,14 @@ var Fx = new Class(Observer, {
   initialize: function(options) {
     this.$super();
     this.setOptions(options);
-    this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
-    this.options.duration = Fx.DURATIONS[this.options.duration] || this.options.duration;
+    
+    // grabbing callbacks from the options
+    Fx.EVENTS.each(function(name) {
+      var callback = this.options['on'+name.capitalize()];
+      if (callback) {
+        this.on(name, callback);
+      }
+    }, this);
   },
   
   /**
@@ -59,10 +69,13 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   start: function() {
-    this.steps  = (this.options.duration / 1000 / this.options.fps).ceil();
+    this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
+    var duration    = Fx.DURATIONS[this.options.duration]     || this.options.duration;
+    
+    this.steps  = (duration / 1000 * this.options.fps * (Browser.IE ? 0.5 : 1)).ceil();
     this.number = 1;
     
-    return this.startTimer().fire('start', this.element);
+    return this.fire('start', this.element).startTimer();
   },
   
   /**
@@ -104,13 +117,13 @@ var Fx = new Class(Observer, {
 // protected
 
   // dummy method, should implement the actual things happenning
-  set: function(value) {},
+  render: function(value) {},
   
   // the periodically called method
   // NOTE: called outside of the instance scope!
   step: function($this) {
-    if ($this.steps > $this.number) {
-      $this.set($this.transition($this.number / $this.steps));
+    if ($this.steps >= $this.number) {
+      $this.render($this.transition($this.number / $this.steps));
       
       $this.number ++;
     } else {
@@ -119,7 +132,7 @@ var Fx = new Class(Observer, {
   },
   
   startTimer: function() {
-    this.timer = this.step.periodical((1000 / this.options.fps).round());
+    this.timer = this.step.periodical((1000 / this.options.fps).round(), this);
     return this;
   },
   

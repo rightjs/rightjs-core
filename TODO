@@ -1,3 +1,5 @@
+write about function delay/periodical timers 'cancel'/'stop' methods
+
 add the observer reference for the custom events
 
 check that Xhr hides related spinners if was canceled

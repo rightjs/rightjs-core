@@ -20,9 +20,8 @@ Element.addMethods({
     for (var key in hash) {
       c_key = key.indexOf('-') != -1 ? key.camelize() : key;
       
-      if (key == 'opacity' && Browser.IE) {
-        c_key = 'filter';
-        hash[key] = 'alpha(opacity='+ hash[key] * 100 +')';
+      if (key == 'opacity') {
+        this.setOpacity(hash[key]);
       } else if (key == 'float') {
         c_key = Browser.IE ? 'styleFloat' : 'cssFloat';
       }
@@ -30,6 +29,22 @@ Element.addMethods({
       this.style[c_key] = hash[key];
     }
     
+    return this;
+  },
+  
+  /**
+   * handles the opacity setting
+   *
+   * @param Float opacity value between 0 and 1
+   * @return Element self
+   */
+  setOpacity: function(value) {
+    var key = 'opacity';
+    if (Browser.IE) {
+      key = 'filter';
+      value = 'alpha(opacity='+ value * 100 +')';
+    }
+    this.style[key] = value;
     return this;
   },
   
@@ -42,9 +57,16 @@ Element.addMethods({
    * @return String style value or null if not set
    */
   getStyle: function(key) {
-    return this._getStyle(this.style, key) || this._getStyle((document.defaultView ?
-      document.defaultView.getComputedStyle(this, null) : this.currentStyle || {}
-    ), key);
+    return this._getStyle(this.style, key) || this._getStyle(this.computedStyles(), key);
+  },
+  
+  /**
+   * returns the hash of computed styles for the element
+   *
+   * @return Object/CSSDefinition computed styles
+   */
+  computedStyles: function() {
+    return this.currentStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
   },
   
   // cleans up the style value
@@ -59,8 +81,22 @@ Element.addMethods({
         
       case 'float':
         key   = Browser.IE ? 'styleFloat' : 'cssFloat';
+        
       default:
-        value = style[key];
+        if (style[key]) {
+          value = style[key];
+        } else if (style[key+'Top']) {
+          var values = $w('Top Right Bottom Left').map(function(name) { return style[key+name] }).uniq();
+          if (values.length == 1) {
+            value = values[0];
+          }
+        }
+        
+        // Opera returns named colors with quotes
+        if (Browser.Opera && key.match(/color/i)) {
+          var match = value.match(/"(.+?)"/);
+          value = match ? match[1] : value;
+        }
     }
     
     return value ? value : null;

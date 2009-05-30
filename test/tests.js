@@ -40,7 +40,10 @@ var tests = {
   CookieTest:            'unit/util/cookie_test.js',
   
   XhrTest:               'unit/xhr/xhr_test.js',
-  XhrIFramedTest:        'unit/xhr/xhr_iframed_test.js'
+  XhrIFramedTest:        'unit/xhr/xhr_iframed_test.js',
+  
+  FxTest:                'unit/fx/fx_test.js',
+  FxMorphTest:           'unit/fx/fx/morph_test.js'
 };
 
 var test_names = [];

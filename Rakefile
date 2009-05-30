@@ -56,6 +56,11 @@ JS_SOURCES = %w{
   xhr/xhr.js
   xhr/element.js
   xhr/iframed.js
+  
+  fx/fx.js
+  fx/fx/style.js
+  fx/fx/highlight.js
+  fx/element.js
 }
 
 task :default => :build
