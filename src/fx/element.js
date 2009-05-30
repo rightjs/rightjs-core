@@ -23,14 +23,25 @@ Element.addMethods({
    * @param Object effect options
    * @return Element self
    */
-  highlight: function(start, end) {
+  highlight: function() {
     var args = $A(arguments), options = {};
-    
-    if (isHash(args.last())) {
-      options = args.pop();
-    }
+    if (isHash(args.last())) { options = args.pop(); }
     
     new Fx.Highlight(this, options).start(args[0], args[1]);
+    return this;
+  },
+  
+  /**
+   * runs the Fx.Fade effect on the element
+   *
+   * @param mixed fade direction 'in' 'out' or a float number
+   * @return Element self
+   */
+  fade: function() {
+    var args = $A(arguments), options = {};
+    if (isHash(args.last())) { options = args.pop(); }
+    
+    new Fx.Fade(this, options).start(args[0]);
     return this;
   }
   
