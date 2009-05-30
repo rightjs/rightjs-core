@@ -5,7 +5,10 @@
  */
 Fx.Highlight = new Class(Fx.Morph, {
   extend: {
-    DEFAULT_COLOR: 'yellow'
+    OPTIONS: Object.merge(Fx.OPTIONS, {
+      color:      '#FF8',
+      transition: 'Sin'
+    })
   },
   
   /**
@@ -16,29 +19,15 @@ Fx.Highlight = new Class(Fx.Morph, {
    * @return self
    */
   start: function(start, end) {
-    var end_color = end || this._getStyle(this.element, 'backgroundColor').backgroundColor;
-    if (end_color == 'transparent') {
-      this.onFinish(function() {
-        this.element.style.backgroundColor = 'transparent';
-      });
-      this.element.style.backgroundColor = end_color = '#FFF';
+    var end_color = end || this._getStyle(this.element, ['backgroundColor']).backgroundColor;
+    
+    if (end_color == 'transparent' || end_color == 'rgba(0, 0, 0, 0)') {
+      this.onFinish(function() { this.element.style.backgroundColor = 'transparent'; });
+      end_color = '#FFF';
     }
     
-    this.middleStyle = this._findStyle({backgroundColor: end_color});
-    this._cleanStyle(this.middleStyle);
+    this.element.style.backgroundColor = (start || this.options.color);
     
-    this.swapped = false;
-    
-    return this.$super({backgroundColor: (start || Fx.Highlight.DEFAULT_COLOR)});
-  },
-  
-// protected
-  set: function(delta) {
-    if (delta > 0.5 && !this.swapped) {
-      this.startStyle = this.endStyle;
-      this.endStyle   = this.middleStyle;
-      this.swapped    = true;
-    }
-    this.$super((delta > 0.5 ? delta - 0.5 : delta) * 2);
+    return this.$super({backgroundColor: end_color});
   }
 });

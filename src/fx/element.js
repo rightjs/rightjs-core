@@ -16,17 +16,17 @@ Element.addMethods({
   },
   
   /**
-   * hightlights the element
+   * highlights the element
    *
    * @param String start color
    * @param String optional end color
    * @param Object effect options
    * @return Element self
    */
-  hightlight: function(start, end) {
+  highlight: function(start, end) {
     var args = $A(arguments), options = {};
     
-    if (isObject(args.last())) {
+    if (isHash(args.last())) {
       options = args.pop();
     }
     
