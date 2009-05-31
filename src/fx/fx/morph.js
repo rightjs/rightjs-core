@@ -5,7 +5,7 @@
  */
 Fx.Morph = new Class(Fx, {
   extend: {
-    STYLES: $w('width height lineHeight opacity borderWidth borderColor padding margin color fontSize backgroundColor')
+    STYLES: $w('width height lineHeight opacity borderWidth borderColor padding margin color fontSize backgroundColor marginTop marginLeft marginRight marginBottom top left right bottom')
   },
   
   /**
@@ -95,7 +95,8 @@ Fx.Morph = new Class(Fx, {
   
   // grabs computed styles with the given keys out of the element
   _getStyle: function(element, keys) {
-    var style = {}, styles = element.computedStyles();
+    var style = {}, styles = element.computedStyles(), name;
+    if (isString(keys)) { name = keys, keys = [keys]; }
     
     keys.each(function(key) {
       key = key.camelize();
@@ -107,11 +108,18 @@ Fx.Morph = new Class(Fx, {
       }
     });
     
-    return style;
+    return name ? style[name] : style;
   },
   
   // prepares the style values to be processed correctly
   _cleanStyles: function() {
+    // filling up missing styles
+    for (var key in this.endStyle) {
+      if (this.startStyle[key] === '' && this.endStyle[key].match(/^[\d\.]+[a-z]+$/)) {
+        this.startStyle[key] = '0px';
+      }
+    }
+    
     $A(arguments).each(this._cleanStyle, this);
     
     // removing duplications between start and end styles

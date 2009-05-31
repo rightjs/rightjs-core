@@ -7,12 +7,12 @@ Element.addMethods({
   /**
    * runs the Fx.Morth effect to the given style
    *
-   * @param Object style or a String css-selector
+   * @param Object style or a String class names
+   * @param Object optional effect options
    * @return Element self
    */
   morph: function(style, options) {
-    new Fx.Morph(this, options).start(style);
-    return this;
+    return this.fx('morph', [style, options || {}]);
   },
   
   /**
@@ -24,11 +24,7 @@ Element.addMethods({
    * @return Element self
    */
   highlight: function() {
-    var args = $A(arguments), options = {};
-    if (isHash(args.last())) { options = args.pop(); }
-    
-    new Fx.Highlight(this, options).start(args[0], args[1]);
-    return this;
+    return this.fx('mighlight', arguments);
   },
   
   /**
@@ -38,10 +34,30 @@ Element.addMethods({
    * @return Element self
    */
   fade: function() {
-    var args = $A(arguments), options = {};
+    return this.fx('fade', arguments);
+  },
+  
+  /**
+   * runs the Fx.Slide effect on the element
+   *
+   * @param String 'in' or 'out'
+   * @param Object effect options
+   * @return Element self
+   */
+  slide: function() {
+    return this.fx('slide', arguments);
+  },
+  
+// protected
+
+  // runs an Fx on the element
+  fx: function(name, args) {
+    var args = $A(args), options = {};
     if (isHash(args.last())) { options = args.pop(); }
     
-    new Fx.Fade(this, options).start(args[0]);
+    var fx = new Fx[name.capitalize()](this, options);
+    fx.start.apply(fx, args);
+    
     return this;
   }
   

@@ -1,3 +1,7 @@
+wrap the show/hide/toggle/radio methods of Element to support the visual effects
+
+implement an automaticall effects queueing on an element
+
 write about function delay/periodical timers 'cancel'/'stop' methods
 
 add the observer reference for the custom events

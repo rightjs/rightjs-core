@@ -60,6 +60,8 @@ JS_SOURCES = %w{
   fx/fx.js
   fx/fx/morph.js
   fx/fx/highlight.js
+  fx/fx/tween.js
+  fx/fx/slide.js
   fx/fx/fade.js
   fx/element.js
 }
