@@ -1,8 +1,6 @@
 wrap the show/hide/toggle/radio methods of Element to support the visual effects
 
-implement an automaticall effects queueing on an element
-
-write about function delay/periodical timers 'cancel'/'stop' methods
+implement an automatic effects queueing on an element
 
 add the observer reference for the custom events
 
@@ -10,13 +8,7 @@ check that Xhr hides related spinners if was canceled
 
 add effects options to the resize methods
 
-fx to class
-
-lightup lightout fxs
-
 underscored and ruby aliases
-
-Add effect options to the resize methods
 
 Implement the xhrs stack to handle the common spinner properly
 
@@ -53,6 +45,10 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 ---------
 Completed
 ---------
+
+write about function delay/periodical timers 'cancel'/'stop' methods
+
+fx to class
 
 implement the Options module
 

@@ -80,6 +80,9 @@ timeouts etc.
 
 == Description
   Schedules a delayed execution for the function.
+  
+  Additionally the timeout pointer will have a method <tt>'cancel'</tt>
+  by calling which the timeout can be canceled.
 
 == Example
   var func = function() {
@@ -92,6 +95,9 @@ timeouts etc.
   // you can cancel the delayed execution
   
   window.clearTimeout(timeout);
+  
+  // or
+  timeout.cancel();
 
 
 
@@ -101,7 +107,10 @@ timeouts etc.
   periodical(Integer timeout) -> Integer timeout marker
 
 == Description
-  Makes the function be periodically executed with the given timeout
+  Makes the function be periodically executed with the given timeout.
+  
+  Additionally the timeout marker will have a method <tt>'stop'</tt> by
+  calling which you can stop the function being called periodically.
 
 == Example
   var func = function() {
@@ -111,8 +120,11 @@ timeouts etc.
   var marker = func.periodical(4000);
   
   // now the function will get executed every 4 seconds
-  // to stop it just pass it to the standard clearInterval method
   
+  // to stop it just pass it to the standard clearInterval method
   window.clearInterval(marker);
+  
+  // or call the 'stop' method
+  marker.stop();
 
 

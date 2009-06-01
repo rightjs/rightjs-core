@@ -14,11 +14,11 @@ var Options = {
    * @return Object current instance
    */
   setOptions: function(options) {
-    var OPTIONS = this.OPTIONS || this.constructor.OPTIONS, ancestor;
-    
-    if (!OPTIONS && (ancestor = this.constructor.ancestors.any('OPTIONS'))) {
-      OPTIONS = ancestor.OPTIONS;
-    }
+    var names = $w('OPTIONS Options options'),
+      objects = [this, this.constructor].concat(this.constructor.ancestors),
+      OPTIONS = objects.map(function(object) {
+        return names.map(function(name) { return object[name]; });
+      }).flatten().any();
     
     this.options = Object.merge({}, OPTIONS, options);
     
