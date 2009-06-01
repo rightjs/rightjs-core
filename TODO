@@ -1,3 +1,5 @@
+make the visual effect callbacks sent through the elements shortcuts are getting executed in the scope of the element, and by name calls work too. and then write a doc entry about that.
+
 wrap the show/hide/toggle/radio methods of Element to support the visual effects
 
 implement an automatic effects queueing on an element
