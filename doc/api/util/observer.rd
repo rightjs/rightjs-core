@@ -5,14 +5,14 @@ to implement the observer pattern. It is used in many places in the
 framework and defines the common interface for the observable units.
 
 == Usage
-Generally <tt>Observer</tt> is an usual class. You can use it by itself or as
-an ancestor for your classes in a usual way.
+Generally <tt>Observer</tt> is usual class. You can use it by itself or as
+an ancestor for your classes in usual way.
 
 <code>
   var observer = new Observer();
   observer.on('something', function() {....});
   //....
-  observer.fire();
+  observer.fire('something');
   
   var MyObserver = new Class(Observer, {
     // ....
@@ -86,7 +86,7 @@ of supported events and generate shortcuts automatically.
 <b>NOTE:</b> if your class has intersecting methods the shortcuts generator 
 will keep them alive and just skip the name.
 
-== Call by name
+== Call By Name
 The Observer class follows the general 'call by name' feature of RightJS. This
 means that instead of specifying a particular function to observer, you can
 specify a method name and some attributes which should be called on the event.
@@ -107,7 +107,7 @@ specify a method name and some attributes which should be called on the event.
   // now the 'callMommy' method of the kid instance will be called
 </code>
 
-== Callbacks preprocessing
+== Callbacks Preprocessing
 To handle various custom cases, you can specify several additional functions
 to preprocess callbacks in your classes. You can do so by sending the
 following keys with the options object you send to the Observer constructor or
