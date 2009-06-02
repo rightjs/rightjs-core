@@ -57,7 +57,10 @@ JS_SOURCES = %w{
   xhr/element.js
   xhr/iframed.js
   
+  
   fx/fx.js
+  fx/array.js
+  fx/string.js
   fx/fx/morph.js
   fx/fx/highlight.js
   fx/fx/tween.js

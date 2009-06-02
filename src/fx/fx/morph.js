@@ -31,7 +31,7 @@ Fx.Morph = new Class(Fx, {
 
     this._cleanStyles(this.startStyle, this.endStyle);
     
-    return this.$super();
+    return Object.keys(this.endStyle).length ? this.$super() : this.finish();
   },
   
 // protected
