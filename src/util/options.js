@@ -22,6 +22,17 @@ var Options = {
     
     this.options = Object.merge({}, OPTIONS, options);
     
+    // hooking up the observer options
+    if (isFunction(this.on)) {
+      var match;
+      for (var key in this.options) {
+        if (match = key.match(/on([a-z]+)/)) {
+          this.on(match[1].toLowerCase(), this.options[key]);
+          delete(this.options[key]);
+        }
+      }
+    }
+    
     return this;
   }
 };

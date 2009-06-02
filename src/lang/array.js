@@ -315,3 +315,5 @@ $ext(Array.prototype, {
     return [callback, scope];
   }
 });
+
+$alias(Array.prototype, {includes: 'include'});

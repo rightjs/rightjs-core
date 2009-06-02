@@ -40,7 +40,7 @@ Class.Util = {
         exts = [exts];
       
       klass.extend.apply(klass, exts);
-      properties = Object.without(properties, 'extend');
+      delete(properties['extend']);
     }
   },
   
@@ -58,7 +58,7 @@ Class.Util = {
         includes = [includes];
 
       klass.include.apply(klass, includes);
-      properties = Object.without(properties, 'include');
+      delete(properties['include']);
     }
   }
 };

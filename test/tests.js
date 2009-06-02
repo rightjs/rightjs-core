@@ -53,5 +53,15 @@ for (var key in tests) {
 }
 
 window.onload = function() {
+  /*
+  var Klass = new Class(Observer, {
+    include: Options,
+    boo: function() {}
+  });
+  
+  console.log(Observer.prototype);
+  console.log(Klass.prototype);
+  
+  */
   eval('new TestSuite('+test_names.join(',')+').run()');
 }

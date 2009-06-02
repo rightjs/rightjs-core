@@ -53,14 +53,6 @@ var Fx = new Class(Observer, {
   initialize: function(options) {
     this.$super();
     this.setOptions(options);
-    
-    // grabbing callbacks from the options
-    Fx.EVENTS.each(function(name) {
-      var callback = this.options['on'+name.capitalize()];
-      if (callback) {
-        this.on(name, callback);
-      }
-    }, this);
   },
   
   /**

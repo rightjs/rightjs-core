@@ -68,5 +68,23 @@ var OptionsTest = TestCase.create({
     
     this.assertEqual(Klass1.OPTIONS, new Klass().options);
     this.assertEqual({a: 1, b: 4}, new Klass({b:4}).options);
+  },
+  
+  testWithObserver: function() {
+    var Klass = new Class(Observer, {
+      include: Options,
+      
+      initialize: function(options) {
+        this.$super();
+        this.setOptions(options);
+      }
+    });
+    
+    var the_function = function() {};
+    var klass = new Klass({
+      onFinish: the_function
+    });
+    
+    this.assert(klass.observes('finish', the_function));
   }
 })

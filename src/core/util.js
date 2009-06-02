@@ -237,6 +237,12 @@ function $w(string) {
   return string.trim().split(/\s+/);
 }
 
+/**
+ * generates an unique id for an object
+ *
+ * @param Object object
+ * @return Integer uniq id
+ */
 var _UID = 1;
 var $uid = (Browser.IE) ? function(item){                                                                                                       
         return (item.uid || (item.uid = [_UID++]))[0];                                                                                                

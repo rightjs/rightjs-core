@@ -6,15 +6,6 @@
 var ObserverTest = TestCase.create({
   name: 'ObserverTest',
   
-  testInstance: function() {
-    var o = new Observer();
-    
-    this.assertNotNull(o.observe, "has 'observe' method");
-    this.assertNotNull(o.observes, "has 'observes' method");
-    this.assertNotNull(o.stopObserving, "has 'stopObserving' method");
-    this.assertNotNull(o.fire, "has 'fire' method");
-  },
-  
   testObserve: function() {
     var o = new Observer();
     var f1 = function() {};
@@ -43,13 +34,6 @@ var ObserverTest = TestCase.create({
     this.assert(o.observes('bar', f2));
   },
   
-  testObserveWithWeirdNames: function() {
-    var o = new Observer();
-    o.observe('onSomEthing', function() {});
-    
-    this.assert(o.observes('something'));
-  },
-  
   testObserves: function() {
     var o = new Observer();
     var f1 = function() {};
@@ -70,18 +54,7 @@ var ObserverTest = TestCase.create({
     this.assertFalse(o.observes('foo', f3));
     this.assertFalse(o.observes('bar', f1));
     this.assertFalse(o.observes('bar', f2));
-    
-    // testing the hash interface
-    this.assert(o.observes({foo: f1, bar: f3}));
-    this.assert(o.observes({foo: f2, bar: f3}));
-    
-    this.assertFalse(o.observes({foo: f1, bar: f2}));
-    this.assertFalse(o.observes({foo: f1, bar: f1}));
-    
-    // checking weird names support
-    this.assert(o.observes('FOO'));
-    this.assert(o.observes('onBar'));
-    
+        
     // testing direct by function check
     this.assert(o.observes(f1));
     this.assert(o.observes(f2));
@@ -109,17 +82,7 @@ var ObserverTest = TestCase.create({
     this.assertFalse(o.observes('foo'));
     this.assertFalse(o.observes('foo', f1))
     this.assertFalse(o.observes('foo', f2));
-    
-    // test weird names support
-    o.observe('foo', f1);
-    o.observe('bar', f2);
-    
-    o.stopObserving('FOO');
-    o.stopObserving('onBar');
-    
-    this.assertFalse(o.observes('foo'));
-    this.assertFalse(o.observes('bar'));
-    
+        
     // trying unsubscribe function just by the function call
     o.observe('foo', f1);
     this.assert(o.observes(f1));
@@ -137,10 +100,10 @@ var ObserverTest = TestCase.create({
     o.observe('foo', function(e) { e2 = e; o2 = this; });
     o.observe('bar', function(e) { e3 = e; o3 = this; });
     
-    this.assertSame(o, o.fire('foo'));
+    this.assertSame(o, o.fire('foo', 'e'));
     
-    this.assert(e1);
-    this.assert(e2);
+    this.assertEqual('e', e1);
+    this.assertEqual('e', e2);
     this.assertFalse(e3);
     
     // checking that the function were executed in the scope of the observer
@@ -149,25 +112,13 @@ var ObserverTest = TestCase.create({
     
     e1 = e2 = e3 = false;
     
-    this.assertSame(o, o.fire('bar'));
+    this.assertSame(o, o.fire('bar', 'e'));
     
-    this.assert(e3);
+    this.assertEqual('e', e3);
     this.assertFalse(e1);
     this.assertFalse(e2);
     
     this.assertSame(o, o3);
-    
-    this.assertInstanceOf(Event.Custom, e3, "the event should be an Event.Custom instance");
-    
-    // test weird names
-    e1 = e2 = e3 = false;
-    
-    this.assertSame(o, o.fire('FOO'));
-    this.assertSame(o, o.fire('onBar'));
-    
-    this.assert(e1);
-    this.assert(e2);
-    this.assert(e3);
   },
   
   testListeners: function() {
@@ -204,162 +155,14 @@ var ObserverTest = TestCase.create({
     this.assert(o.observes('foo'));
     this.assert(o.observes('bar'));
     
-    this.assertSame(o, o.foo());
-    this.assertSame(o, o.bar());
+    this.assertSame(o, o.foo('e1'));
+    this.assertSame(o, o.bar('e2'));
     
-    this.assert(foo);
-    this.assert(bar);
-    
-    this.assertInstanceOf(Event.Custom, foo);
-    this.assertInstanceOf(Event.Custom, bar);
+    this.assertEqual('e1', foo);
+    this.assertEqual('e2', bar);
     
     this.assertSame(o, o1);
     this.assertSame(o, o2);
-  },
-  
-  testCustomWiringCallback: function() {
-    var custom_name = custom_callback = custom_scope = null;
-    var o = new Observer({
-      wire: function(name, callback) {
-        custom_name     = name;
-        custom_callback = callback;
-        custom_scope    = this;
-      }
-    });
-    
-    var f1 = function() { called = true; scope = this;};
-    
-    o.observe('foo', f1);
-    
-    this.assertEqual('foo', custom_name);
-    this.assertSame(f1, custom_callback);
-    this.assertSame(o, custom_scope);
-    
-    this.assert(o.observes('foo', f1));
-    
-    // checking weird
-    o.observe('BAR', f1);
-    this.assertEqual('bar', custom_name);
-    o.observe('onBoo', f1);
-    this.assertEqual('boo', custom_name)
-  },
-  
-  testCustomStoppingCallback: function() {
-    var custom_name = custom_callback = custom_scope = null;
-    var o = new Observer({
-      stop: function(name, callback) {
-        custom_name     = name;
-        custom_callback = callback;
-        custom_scope    = this;
-      }
-    });
-    
-    var f1 = function() {};
-    o.observe('foo', f1);
-    o.stopObserving('foo', f1);
-    
-    this.assertEqual('foo', custom_name);
-    this.assertSame(f1, custom_callback);
-    this.assertSame(o, custom_scope);
-  },
-  
-  testCustomWrappingCallback: function() {
-    var custom_name = custom_callback = custom_scope = null;
-    var o = new Observer({
-      wrap: function(name, callback) {
-        custom_name     = name;
-        custom_callback = callback;
-        custom_scope    = this;
-        
-        return callback.bindAsEventListener(this, 'custom data');
-      }
-    });
-    
-    var e1 = scope = data = null;
-    var f1 = function(e, d) { e1 = e; scope = this; data = d; };
-    
-    o.observe('foo', f1);
-    
-    this.assertEqual('foo', custom_name);
-    this.assertSame(f1, custom_callback);
-    this.assertSame(o, custom_scope);
-    
-    this.assert(o.observes('foo', f1));
-    
-    o.fire('foo');
-    
-    this.assertInstanceOf(Event.Custom, e1);
-    this.assertSame(o, scope);
-    this.assertEqual('custom data', data);
-  },
-  
-  testCreate: function() {
-    var o = {};
-    
-    var wire_name, wire_call, wire_scope, stop_name, stop_call, stop_scope, wrap_name, wrap_call, wrap_scope;
-    
-    Observer.create(o, {
-      wire: function(name, callback) {
-        wire_name  = name;
-        wire_call  = callback;
-        wire_scope = this;
-      },
-      stop: function(name, callback) {
-        stop_name  = name;
-        stop_call  = callback;
-        stop_scope = this;
-      },
-      wrap: function(name, callback) {
-        wrap_name  = name;
-        wrap_call  = callback;
-        wrap_scope = this;
-        
-        return callback;
-      },
-      
-      shorts: ['bar']
-    });
-    
-    // checking the observer methods existance
-    this.assertNotNull(o.observe);
-    this.assertNotNull(o.observes);
-    this.assertNotNull(o.stopObserving);
-    this.assertNotNull(o.fire);
-    
-    // checking the shortcuts existance
-    this.assertNotNull(o.onBar);
-    this.assertNotNull(o.bar);
-    
-    // trying to wire some function
-    var fired = false, scope = null;
-    var f1 = function() { fired = true; scope = this; };
-    
-    this.assertSame(o, o.observe('foo', f1));
-    this.assert(o.observes('foo', f1));
-    
-    // trying to fire the event
-    this.assertSame(o, o.fire('foo'));
-    
-    this.assert(fired);
-    this.assertSame(o, scope);
-    
-    // trying to stop the event
-    this.assertSame(o, o.stopObserving('foo'));
-    
-    this.assertFalse(o.observes('foo'));
-    
-    // checking the callbacks values
-    this.assertEqual('foo', wire_name);
-    this.assertEqual('foo', wrap_name);
-    this.assertEqual('foo', stop_name);
-    
-    this.assertSame(f1, wire_call);
-    this.assertSame(f1, wrap_call);
-    this.assertSame(f1, stop_call);
-    
-    this.assertSame(o, wire_scope);
-    this.assertSame(o, wrap_scope);
-    this.assertSame(o, stop_scope);
   },
   
   testByNameObserving: function() {
@@ -378,5 +181,34 @@ var ObserverTest = TestCase.create({
     
     this.assertSame(o, o_this);
     this.assertEqual([1,2,3], args);
+  },
+  
+  testAutoShortcutsGeneration: function() {
+    var Klass = new Class(Observer, {
+      EVENTS: ['foo', 'bar']
+    });
+    
+    var klass = new Klass();
+    this.assert(klass.onFoo);
+    this.assert(klass.onBar);
+  },
+  
+  testAutoShortcutsGeneratorForClass: function() {
+    var Klass = new Class(Observer, {
+      extend: {
+        EVENTS: $w('foo bar')
+      }
+    });
+    
+    var klass = new Klass();
+    this.assert(klass.onFoo);
+    this.assert(klass.onBar);
+    
+    // checking inheritance support
+    var Klass2 = new Class(Klass, {});
+    
+    var klass = new Klass2();
+    this.assert(klass.onFoo);
+    this.assert(klass.onBar);
   }
 })

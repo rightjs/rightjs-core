@@ -4,8 +4,6 @@ wrap the show/hide/toggle/radio methods of Element to support the visual effects
 
 implement an automatic effects queueing on an element
 
-add the observer reference for the custom events
-
 check that Xhr hides related spinners if was canceled
 
 add effects options to the resize methods
@@ -20,19 +18,11 @@ Create the Element#scrollTo method which will scroll the window to the element
 
 Implement Form unit onFocus onReset callbacks
 
-Make Observer#listeners return all the listeners if the event name was not specified.
-
-Think if it possible to check Observer#observes against a string method name
-
 Create a workout to handle the IE's problems with attributes assignment for the newly created elements
-
-Rework the observers so that they keep a plain list of cache and see if it will be faster and more compact
 
 Implement the whitelist option for the String#stripTags method
 
 Implement the document object extensions, like 'ready' event
-
-Create alias #includes -> #include
 
 Write tests for the Cookie object
 
@@ -47,6 +37,12 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 ---------
 Completed
 ---------
+
+Rework the observers so that they keep a plain list of cache and see if it will be faster and more compact
+
+Make Observer#listeners return all the listeners if the event name was not specified.
+
+Create alias #includes -> #include
 
 write about function delay/periodical timers 'cancel'/'stop' methods
 
