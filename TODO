@@ -4,8 +4,6 @@ wrap the show/hide/toggle/radio methods of Element to support the visual effects
 
 implement an automatic effects queueing on an element
 
-check that Xhr hides related spinners if was canceled
-
 add effects options to the resize methods
 
 underscored and ruby aliases
@@ -37,6 +35,7 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 ---------
 Completed
 ---------
+check that Xhr hides related spinners if was canceled
 
 Rework the observers so that they keep a plain list of cache and see if it will be faster and more compact
 

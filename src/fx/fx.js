@@ -6,8 +6,6 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Fx = new Class(Observer, {
-  include: Options,
-  
   extend: {
     EVENTS: $w('start finish cancel'),
     
@@ -51,8 +49,7 @@ var Fx = new Class(Observer, {
    * @param Object options
    */
   initialize: function(options) {
-    this.$super();
-    this.setOptions(options);
+    this.$super(options);
   },
   
   /**

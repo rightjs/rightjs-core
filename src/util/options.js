@@ -26,7 +26,7 @@ var Options = {
     if (isFunction(this.on)) {
       var match;
       for (var key in this.options) {
-        if (match = key.match(/on([a-z]+)/)) {
+        if (match = key.match(/on([A-Z][a-z]+)/)) {
           this.on(match[1].toLowerCase(), this.options[key]);
           delete(this.options[key]);
         }

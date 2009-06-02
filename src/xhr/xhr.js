@@ -44,22 +44,14 @@ var Xhr = new Class(Observer, {
    * @param Object options
    */
   initialize: function(url, options) {
-    // initializing observers
-    this.$super({
-      wrap:   (function(name, callback) {
-        return (function() {
-          return callback(this, this.xhr);
-        }).bind(this);
-      }).bind(this)
-    });
-    
-    var options = Object.merge(Xhr.OPTIONS, options);
-    
     this.url = url;
-    this.initCallbacks(options);
+    this.$super(options);
     
+    // copying some options to the instance level attributes
     for (var key in Xhr.OPTIONS)
-      this[key] = options[key];
+      this[key] = this.options[key];
+      
+    this.initCallbacks();
   },
   
   /**
@@ -161,6 +153,11 @@ var Xhr = new Class(Observer, {
   },
   
 // protected
+  // wrapping the original method to send references to the xhr objects
+  fire: function(name) {
+    return this.$super(name, this, this.xhr);
+  },
+  
   // creates new request instance
   createXhr: function(params) {
     if (this.form && this.form.getElements().map('type').includes('file')) {
@@ -205,8 +202,7 @@ var Xhr = new Class(Observer, {
     this.text = this.responseText = this.xhr.responseText;
     this.xml  = this.responseXML  = this.xhr.responseXML;
     
-    this.fire('complete');
-    this.fire(this.successful() ? 'success' : 'failure');
+    this.fire('complete').fire(this.successful() ? 'success' : 'failure');
   },
   
   // called on success
@@ -221,35 +217,47 @@ var Xhr = new Class(Observer, {
   },
   
   // initializes the request callbacks
-  initCallbacks: function(options) {
-    // connecting optional callbacks
-    Xhr.EVENTS.each(function(name) {
-      name = 'on'+name.capitalize();
-      if (options[name])
-        this[name](options[name]);
-    }, this);
+  initCallbacks: function() {
+    // global spinners are handled separately
+    if (this.spinner == Xhr.OPTIONS.spinner) this.spinner = null;
+    
+    // creating an automatical spinner handling
+    this.onCreate('showSpinner').onComplete('hideSpinner').onCancel('hideSpinner');
     
     // wiring the global xhr callbacks
     Xhr.EVENTS.each(function(name) {
-      this['on'+name.capitalize()]((function() {
-        Xhr[name]([this, this.xhr]);
-      }).bind(this));
+      this.on(name, function() { Xhr.fire(name, this, this.xhr); });
     }, this);
     
-    // creating an automatical spinner handling
-    this.onCreate((function() { if (this.spinner) $(this.spinner).show(); }).bind(this));
-    this.onComplete((function() { if (this.spinner) $(this.spinner).hide(); }).bind(this));
-    
-    this.onSuccess(this.tryScripts.bind(this));
-  }
+    this.onSuccess('tryScripts');
+  },
+  
+  showSpinner: function() { if (this.spinner) $(this.spinner).show(); },
+  hideSpinner: function() { if (this.spinner) $(this.spinner).hide(); }
 });
 
 // creating the class level observer
-Observer.create(Xhr, {
-  shorts: Xhr.EVENTS,
-  wrap: function(name, callback) {
-    return (function(event) {
-      return callback(event.options[0], event.options[1]); // Xhr and XMLHttpRequest
-    });
+$ext(Xhr, Object.without(Observer.prototype, 'initialize'));
+Observer.createShortcuts(Xhr, Xhr.EVENTS);
+
+// attaching the common spinner handling
+$ext(Xhr, {
+  counter: 0,
+  showSpinner: function() {
+    if (this.OPTIONS.spinner) $(this.OPTIONS.spinner).show();
+  },
+  hideSpinner: function() {
+    if (this.OPTIONS.spinner) $(this.OPTIONS.spinner).hide();
   }
+});
+
+Xhr.on('create', function() {
+  this.counter++;
+  this.showSpinner();
+}).on('complete', function() {
+  this.counter--;
+  if (this.counter < 1) this.hideSpinner();
+}).on('cancel', function() {
+  this.counter--;
+  if (this.counter < 1) this.hideSpinner();
 });
