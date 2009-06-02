@@ -98,7 +98,14 @@ Fx.Morph = new Class(Fx, {
     var style = {}, styles = element.computedStyles(), name;
     if (isString(keys)) { name = keys, keys = [keys]; }
     
-    keys.each(function(key) {
+    // keys preprocessing
+    keys.map(function(key) {
+      switch (key) {
+        case 'background': return 'backgroundColor';
+        case 'border':     return ['borderWidth', 'borderColor'];
+        default:           return key;
+      }
+    }).flatten().each(function(key) {
       key = key.camelize();
       style[key] = element._getStyle(styles, key);
       

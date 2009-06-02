@@ -85,8 +85,12 @@ Element.addMethods({
       default:
         if (style[key]) {
           value = style[key];
-        } else if (style[key+'Top']) {
-          var values = $w('Top Right Bottom Left').map(function(name) { return style[key+name] }).uniq();
+        } else {
+          var values = $w('top right bottom left').map(function(name) {
+            var tokens = key.underscored().split('_'); tokens.splice(1, 0, name);
+            return style[tokens.join('_').camelize()];
+          }).uniq();
+
           if (values.length == 1) {
             value = values[0];
           }

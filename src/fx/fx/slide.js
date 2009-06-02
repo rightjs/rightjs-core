@@ -12,71 +12,54 @@ Fx.Slide = new Class(Fx.Tween, {
   
   start: function(how) {
     this.setHow(how);
-    
-    var width = this.element.offsetWidth+'px', height = this.element.offsetHeight+'px';
-    
-    // swopping the element with a processing frame
-    this._element = this.element;
-    this.element = $E('div').setStyle({overflow: 'hidden', width: width, height: height});
-    this._element.wrap(this.element);
-    
-    // swopping the element back on cancel
-    this.onCancel('_swapBack');
-    
-    return this.$super(this._endStyle(this.options.direction, width, height));
+
+    this.element.show();
+    this.sizes = this.element.sizes();
+    this.styles = this._getStyle(this.element, $w('overflow height width marginTop marginLeft'));
+
+    this.element.style.overflow = 'hidden';
+    this.onFinish('_getBack').onCancel('_getBack');
+
+    return this.$super(this._endStyle(this.options.direction));
   },
-  
-  finish: function() {
-    this._swapBack();
-    return this.$super();
-  },
-  
+
 // protected
-  
-  // swaps the element and working frame back
-  _swapBack: function() {
-    if (this._element) {
-      this.element.replace(this._element);
-      this.element = this._element;
-      this._element = null;
-    }
+  _getBack: function() {
+    this.element.setStyle(this.styles);
   },
-  
+
   // calculates the final style
-  _endStyle: function(direction, width, height) {
-    var style = {};
-    
+  _endStyle: function(direction) {
+    var style = {}, marginLeft = this.styles.marginLeft.toFloat(), marginTop = this.styles.marginTop.toFloat();
+
     if (this.how == 'out') {
       style[['top', 'bottom'].includes(direction) ? 'height' : 'width'] = '0px';
-      
+
       if (direction == 'right') {
-        style['marginLeft'] = width;
+        style['marginLeft'] = marginLeft + this.sizes.x+'px';
       } else if (direction == 'bottom') {
-        style['marginTop'] = height;
+        style['marginTop'] = marginTop + this.sizes.y +'px';
       }
-      
-    } else if (this.how == 'in') {
-      this._element.show();
-      width  = this._element.offsetWidth  + 'px';
-      height = this._element.offsetHeight + 'px';
-      
+
+    } else if (this.how == 'in') {      
       if (['top', 'bottom'].includes(direction)) {
-        style['height'] = height;
-        this.element.style.width = width;
+        style['height'] = this.sizes.y + 'px';
+        this.element.style.height = '0px';
       } else {
-        style['width'] = width;
-        this.element.style.height = height;
+        style['width'] = this.sizes.x + 'px';
+        this.element.style.width = '0px';
       }
-      
+
       if (direction == 'right') {
-        this.element.style.marginLeft = width;
-        style['marginLeft'] = '0px'
+        this.element.style.marginLeft = marginLeft + this.sizes.x + 'px';
+        style['marginLeft'] = marginLeft + 'px';
       } else if (direction == 'bottom') {
-        this.element.style.marginTop = height;
-        style['marginTop'] = '0px';
+        this.element.style.marginTop = marginTop + this.sizes.y + 'px';
+        style['marginTop'] = marginTop + 'px';
       }
     }
-    
+
     return style;
   }
+
 });
