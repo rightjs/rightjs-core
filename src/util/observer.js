@@ -44,11 +44,9 @@ var Observer = new Class({
       if (!isArray(events[name])) events[name] = [events[name]];
       callback = isString(events[name][0]) ? this[events[name][0]] : events[name][0];
       
-      if (!this.observes(name, callback)) {
-        hash = { e: name, f: callback, a: events[name].slice(1) };
-        this.$listeners.push(hash);
-        if (this.$o && this.$o.add) this.$o.add.call(this, hash);
-      }
+      hash = { e: name, f: callback, a: events[name].slice(1) };
+      this.$listeners.push(hash);
+      if (this.$o && this.$o.add) this.$o.add.call(this, hash);
     }
     
     return this;
