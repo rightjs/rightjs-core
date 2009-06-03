@@ -17,15 +17,11 @@ var Observer = new Class({
     this.setOptions(options);
     
     // catching up the event shortucts
-    if (!this.options.shorts) {
-      var ancestor;
-      this.options.shorts = this.EVENTS || this.constructor.EVENTS ||
+    var ancestor, shorts = this.EVENTS || this.constructor.EVENTS ||
         ((ancestor = this.constructor.ancestors.any('EVENTS')) ?
           ancestor.EVENTS : null);
-    }
-    
-    Observer.createShortcuts(this, this.options.shorts);
-    delete(this.options['shorts']);
+          
+    Observer.createShortcuts(this, shorts);
   },
   
   /**
@@ -49,7 +45,7 @@ var Observer = new Class({
       callback = isString(events[name][0]) ? this[events[name][0]] : events[name][0];
       
       if (!this.observes(name, callback)) {
-        hash = { e: name, f: callback, a: events[name].slice(1) }
+        hash = { e: name, f: callback, a: events[name].slice(1) };
         this.$listeners.push(hash);
         if (this.$o && this.$o.add) this.$o.add.call(this, hash);
       }

@@ -38,7 +38,7 @@ Element.addMethods((function() {
       var event = new Event(name, args.shift());
       hash.f.apply(this, [event].concat(hash.a).concat(args));
     }
-  }
+  };
   
   return observer;
 })());

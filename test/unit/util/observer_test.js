@@ -135,40 +135,9 @@ var ObserverTest = TestCase.create({
     this.assertEqual([f1, f2], o.listeners('foo'));
     this.assertEqual([f3], o.listeners('bar'));
   },
-  
-  testShortcutsGeneration: function() {
-    var o = new Observer({
-      shorts: ['foo', 'bar']
-    });
     
-    this.assert(o.foo);
-    this.assert(o.bar);
-    this.assert(o.onFoo);
-    this.assert(o.onBar);
-    
-    var foo = bar = false;
-    var o1  = o2  = null;
-    
-    this.assertSame(o, o.onFoo(function(e) { foo = e; o1 = this; }));
-    this.assertSame(o, o.onBar(function(e) { bar = e; o2 = this; }));
-    
-    this.assert(o.observes('foo'));
-    this.assert(o.observes('bar'));
-    
-    this.assertSame(o, o.foo('e1'));
-    this.assertSame(o, o.bar('e2'));
-    
-    this.assertEqual('e1', foo);
-    this.assertEqual('e2', bar);
-    
-    this.assertSame(o, o1);
-    this.assertSame(o, o2);
-  },
-  
   testByNameObserving: function() {
-    var o = new Observer({
-      shorts: ['bar']
-    });
+    var o = new Observer();
     
     var args = null, o_this = null;
     o.foo = function() {
@@ -176,8 +145,8 @@ var ObserverTest = TestCase.create({
       args   = $A(arguments);
     };
     
-    o.onBar('foo', 1, 2, 3);
-    o.bar();
+    o.on('bar', 'foo', 1, 2, 3);
+    o.fire('bar');
     
     this.assertSame(o, o_this);
     this.assertEqual([1,2,3], args);
