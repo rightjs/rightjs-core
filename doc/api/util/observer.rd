@@ -45,33 +45,9 @@ have an observer functionality/behavior.
 == Shortcuts
 The <tt>Observer</tt> unit provides you ability to generate nice looking
 shortcut methods to wire and fire events which your observer supposed to be
-handling. To do so, you need to specify the list of your events in the
-<tt>shorts</tt> key of options you send to the Observer constructor or with
-the {Observer.create} method.
-
-<code>
-  var observer = new Obsever({
-    shorts: $w('start stop');
-  });
-  
-  // now the observer object will have four methods
-  //
-  // * onStart
-  // * onStop
-  // * start
-  // * stop
-  //
-  // the first two will start observing the events
-  // the second two will fire the events
-  
-  observer.onStart(function() {.....});
-  // ...
-  observer.start(); // will call the function
-</code>
-
-If you inherit the Observer class and your sub-class has the <tt>EVENTS</tt>
-instance or class level attribute, this attribute will be considered as a list
-of supported events and generate shortcuts automatically.
+handling. To do so, you need to specify an instance or class level 
+attribute called <tt>EVENTS</tt> in your class. RightJS will watch the name
+and if found will try to generate shortcuts automatically.
 
 <code>
   var Klass = new Class(Observer, {
@@ -107,21 +83,6 @@ specify a method name and some attributes which should be called on the event.
   // now the 'callMommy' method of the kid instance will be called
 </code>
 
-== Callbacks Preprocessing
-To handle various custom cases, you can specify several additional functions
-to preprocess callbacks in your classes. You can do so by sending the
-following keys with the options object you send to the Observer constructor or
-to the {Observer.create} method.
-
- * wire - will be called when a callback getting registered
- * stop - will be called when a callback getting unregistered
- * wrap - will be called as a preprocessor for a callback function
-
-All the functions will take two arguments, a string event name and the
-callback function. The first two just getting called as is and you free to
-do in them whatever you need. The last one meant to change the callback
-function somehow and expects that you return the changed function back.
-
 
 ### Observer#initialize
 
@@ -129,23 +90,21 @@ function somehow and expects that you return the changed function back.
   initialize([Object options])
 
 == Description
-  The generic constructor. The options might has the following keys
-  
-    * shorts - the list of events which needs to have shortcuts
-    * wire   - called when a callback is registered
-    * stop   - called when a callback is unregistered
-    * wrap   - callbacks preprocessor
+  The generic constructor. If you send with options keys like
+  'onSomething' the observer will automatically wire the value
+  to the 'something' event.
 
 == Example
   var observer = new Observer();
   var observer = new Observer({
-    shorts: ['start', 'stop']
+    onStart: function() {},
+    onFinish: 'clear'
   });
   
 ### Observer.create
 
 == Semantic
-  Observer.create(Object object[, Object options]) -> Object observable
+  Observer.create(Object object[, Array events_list]) -> Object observable
 
 == Description
   The static observers builder, adds the observer functionality to any object.
@@ -178,8 +137,9 @@ function somehow and expects that you return the changed function back.
 ### Observer#observe
 
 == Semantic
-  observe(String name, Function callback) -> Observer self
+  observe(String name, Function callback[, arguments])  -> Observer self
   observe(String name, String method_name[, arguments]) -> Observer self
+  observe(Object hash)                                  -> Observer self
 
 == Description
   Makes the observer observe the event with the callback.
@@ -192,11 +152,17 @@ function somehow and expects that you return the changed function back.
   // or
   observer.observe('something', 'observer_method_name', arg1, arg2);
   
+  // or
+  observer.observe({
+    one: function() {},
+    two: 'something'
+  })
+  
 
 ### Observer#on
 
 == Semantic
-  on(String name, Function callback) -> Observer self
+  on(String name, Function callback[, arguments])  -> Observer self
   on(String name, String method_name[, arguments]) -> Observer self
 
 == Description
@@ -207,6 +173,10 @@ function somehow and expects that you return the changed function back.
   
   observer.on('something', function() {...});
   observer.on('something', 'observer_method_name', arg1, arg2);
+  observer.on({
+    one: function() {},
+    two: 'something'
+  })
   
 
 ### Observer#observes
@@ -260,7 +230,7 @@ function somehow and expects that you return the changed function back.
 ### Observer#fire
 
 == Semantic
-  fire(String name[, options]) -> Observer self
+  fire(String name[, arguments, ...]) -> Observer self
 
 == Description
   Initiates some event handling.
