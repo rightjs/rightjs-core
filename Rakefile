@@ -54,9 +54,9 @@ JS_SOURCES = %w{
   dom/form/element.js
   
   xhr/xhr.js
+  xhr/form.js
   xhr/element.js
   xhr/iframed.js
-  
   
   fx/fx.js
   fx/array.js

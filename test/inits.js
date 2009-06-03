@@ -42,6 +42,7 @@ var scripts = [
   'dom/form/element.js',
   
   'xhr/xhr.js',
+  'xhr/form.js',
   'xhr/element.js',
   'xhr/iframed.js',
   
