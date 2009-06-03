@@ -65,20 +65,6 @@ var ElementEventsTest = TestCase.create({
     this.assertFalse(this.el.observes('click', function() {}));
     
     this.el.observe('mouseover', function() {});
-    
-    this.assert(this.el.observes({
-      click: func
-    }));
-    
-    this.assert(this.el.observes({
-      click: func,
-      mouseover: null
-    }));
-    
-    this.assertFalse(this.el.observes({
-      click: func,
-      mousedown: null
-    }));
   },
   
   testStopObserving: function() {

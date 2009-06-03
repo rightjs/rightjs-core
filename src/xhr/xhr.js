@@ -237,8 +237,7 @@ var Xhr = new Class(Observer, {
 });
 
 // creating the class level observer
-$ext(Xhr, Object.without(Observer.prototype, 'initialize'));
-Observer.createShortcuts(Xhr, Xhr.EVENTS);
+Observer.create(Xhr);
 
 // attaching the common spinner handling
 $ext(Xhr, {

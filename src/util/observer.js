@@ -49,7 +49,9 @@ var Observer = new Class({
       callback = isString(events[name][0]) ? this[events[name][0]] : events[name][0];
       
       if (!this.observes(name, callback)) {
-        this.$listeners.push({ e: name, f: callback, a: events[name].slice(1) });
+        hash = { e: name, f: callback, a: events[name].slice(1) }
+        this.$listeners.push(hash);
+        if (this.$o && this.$o.add) this.$o.add.call(this, hash);
       }
     }
     
@@ -94,9 +96,13 @@ var Observer = new Class({
       if (!isString(event)) { callback = event; event = null; }
       
       this.$listeners = this.$listeners.filter(function(i) {
-        return (event && callback) ? (i.e != event || i.f != callback) :
+        var result = (event && callback) ? (i.e != event || i.f != callback) :
           (event ? i.e != event : i.f != callback);
-      });
+        
+        if (!result && this.$o && this.$o.remove) this.$o.remove.call(this, i);
+        
+        return result;
+      }, this);
     }
     
     return this;
@@ -129,14 +135,28 @@ var Observer = new Class({
     var args = $A(arguments), event = args.shift();
     
     (this.$listeners || []).each(function(i) {
-      if (i.e == event)
-        i.f.apply(this, i.a.concat(args));
+      if (i.e == event) {
+        (this.$o && this.$o.fire) ? this.$o.fire.call(this, event, args, i)  :
+          i.f.apply(this, i.a.concat(args));
+      }
     }, this);
     
     return this;
   },
   
-  extend: {    
+  extend: {
+    /**
+     * adds an observer functionality to any object
+     *
+     * @param Object object
+     * @param Array optional events list to build shortcuts
+     * @return Object extended object
+     */
+    create: function(object, events) {
+      $ext(object, Object.without(this.prototype, 'initialize', 'setOptions'), true);
+      return this.createShortcuts(object, events || object['EVENTS']);
+    },
+    
     /**
      * builds shortcut methods to wire/fire events on the object
      *

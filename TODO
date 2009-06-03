@@ -8,8 +8,6 @@ add effects options to the resize methods
 
 underscored and ruby aliases
 
-Implement the xhrs stack to handle the common spinner properly
-
 Think about moving the scrolls control out of Element to window.
 
 Create the Element#scrollTo method which will scroll the window to the element
@@ -35,6 +33,8 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 ---------
 Completed
 ---------
+Implement the xhrs stack to handle the common spinner properly
+
 check that Xhr hides related spinners if was canceled
 
 Rework the observers so that they keep a plain list of cache and see if it will be faster and more compact
