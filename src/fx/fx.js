@@ -58,13 +58,15 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   start: function() {
+    if (this.queue(arguments)) return this;
+    
     this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
     var duration    = Fx.DURATIONS[this.options.duration]     || this.options.duration;
     
     this.steps  = (duration / 1000 * this.options.fps * (Browser.IE ? 0.5 : 1)).ceil();
     this.number = 1;
     
-    return this.fire('start', this.element).startTimer();
+    return this.fire('start', this).startTimer();
   },
   
   /**
@@ -73,7 +75,7 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   finish: function() {
-    return this.stopTimer().fire('finish', this.element);
+    return this.stopTimer().fire('finish', this);
   },
   
   /**
@@ -82,7 +84,7 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   cancel: function() {
-    return this.stopTimer().fire('cancel', this.element);
+    return this.stopTimer().fire('cancel', this);
   },
   
   /**
@@ -130,6 +132,32 @@ var Fx = new Class(Observer, {
       this.timer.stop();
     }
     return this;
+  },
+
+  // handles effects queing
+  // should return false if there's no queue and true if there is a queue
+  queue: function(args) {
+    if (!this.element) return false;
+    if (this.$chained) {
+      delete(this['$chained']);
+      return false;
+    }
+
+    var uid = $uid(this.element), chain;
+    if (!this.constructor.$chains) this.constructor.$chains = {};
+    if (!this.constructor.$chains[uid]) this.constructor.$chains[uid] = [];
+    chain = this.constructor.$chains[uid];
+
+    chain.push([args, this]);
+    this.onFinish(function() {
+      var next = chain.shift(); next = chain[0];
+      if (next) {
+        next[1].$chained = true;
+        next[1].start.apply(next[1], next[0]);
+      }
+    });
+
+    return chain[0][1] !== this;
   }
   
   

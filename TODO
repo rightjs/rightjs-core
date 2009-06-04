@@ -1,10 +1,4 @@
-make the visual effect callbacks sent through the elements shortcuts are getting executed in the scope of the element, and by name calls work too. and then write a doc entry about that.
-
-wrap the show/hide/toggle/radio methods of Element to support the visual effects
-
-implement an automatic effects queueing on an element
-
-add effects options to the resize methods
+wrap the show/hide/toggle/radio/resize methods of Element to support the visual effects
 
 underscored and ruby aliases
 
@@ -33,6 +27,8 @@ there's seems to be a memory leaking problem in IE6, each run makes the test go 
 ---------
 Completed
 ---------
+implement an automatic effects queueing on an element
+
 Implement the xhrs stack to handle the common spinner properly
 
 check that Xhr hides related spinners if was canceled
