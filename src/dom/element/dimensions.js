@@ -91,7 +91,7 @@ Element.addMethods({
    * @param Integer height
    * @return Element self
    */
-  setSize: function(width, height) {
+  resize: function(width, height) {
     if (isHash(width)) {
       height = width.y;
       width  = width.x;
@@ -107,7 +107,7 @@ Element.addMethods({
    * @param Integer left position in pixels or an object like {x: 10, y: 20}
    * @return Element self
    */
-  setPosition: function(left, top) {
+  moveTo: function(left, top) {
     if (isHash(left)) {
       top  = left.y;
       left = left.x;
@@ -118,6 +118,7 @@ Element.addMethods({
       marginLeft: (left - this.position().x) + 'px',
       marginTop: (top - this.position().y) + 'px'
     });
+    
     return this;
   },
   
@@ -128,7 +129,7 @@ Element.addMethods({
    * @param Integer top scroll px
    * @return Element self
    */
-  setScrolls: function(left, top) {
+  scrollTo: function(left, top) {
     if (isHash(left)) {
       top  = left.y;
       left = left.x;
@@ -137,6 +138,16 @@ Element.addMethods({
     this.scrollLeft = left;
     this.scrollTop  = top;
     
+    return this;
+  },
+  
+  /**
+   * makes the window be scrolled to the element
+   *
+   * @return Element self
+   */
+  scrollThere: function() {
+    window.scrollTo(this);
     return this;
   }
 });

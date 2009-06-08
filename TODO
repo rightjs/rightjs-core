@@ -1,3 +1,7 @@
+implement the document/body/window sizes method, consider which better and where it should go
+
+test ajax and multipart forms submitting for real
+
 wrap the show/hide/toggle/radio/resize methods of Element to support the visual effects
 
 underscored and ruby aliases

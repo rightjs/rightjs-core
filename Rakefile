@@ -53,6 +53,9 @@ JS_SOURCES = %w{
   dom/form.js
   dom/form/element.js
   
+  dom/window.js
+  dom/ready.js
+  
   xhr/xhr.js
   xhr/form.js
   xhr/element.js

@@ -1090,18 +1090,31 @@ And sure RightJS provides the custom events handling.
 
 
 
-### Element#setScrolls
+### Element#scrollTo
 
 == Semantic
-  setScrolls(number left, number top) -> Element self
-  setScrolls({x: number, y: number})  -> Element self
+  scrollTo(number left, number top) -> Element self
+  scrollTo({x: number, y: number})  -> Element self
 
 == Description
   Sets the element scrolling position
 
 == Example
-  element.setScrolls(100, 100);
-  element.setScrolls({x: 100, y: 100});
+  element.scrollTo(100, 100);
+  element.scrollTo({x: 100, y: 100});
+
+
+
+### Element#scrollThere
+
+== Semantic
+  scrollThere() -> Element self
+
+== Description
+  Scrolls the window to the element
+
+== Example
+  element.scrollThere();
 
 
 ### Element#load

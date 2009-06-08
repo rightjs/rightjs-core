@@ -60,16 +60,16 @@ ElementDimensionsTest = TestCase.create({
     this.assertEqual(400, this.div.offsetWidth);
   },
   
-  testSetSize: function() {
-    this.assertSame(this.div, this.div.setSize(500, 600));
+  testResize: function() {
+    this.assertSame(this.div, this.div.resize(500, 600));
     this.assertEqual({x: 500, y: 600}, this.div.sizes());
     
-    this.assertSame(this.div, this.div.setSize({x: 444, y: 666}));
+    this.assertSame(this.div, this.div.resize({x: 444, y: 666}));
     this.assertEqual({x: 444, y: 666}, this.div.sizes());
   },
   
-  testSetPosition: function() {
-    this.assertSame(this.div, this.div.setPosition(40, 40));
+  testMoveTo: function() {
+    this.assertSame(this.div, this.div.moveTo(40, 40));
     this.assertEqual({x: 40, y: 40}, this.div.position());
   }
 });

@@ -35,6 +35,8 @@ var tests = {
   FormTest:              'unit/dom/form_test.js',
   FormElementTest:       'unit/dom/form/element_test.js',
   
+  DomReadyTest:          'unit/dom/ready_test.js',
+  
   OptionsTest:           'unit/util/options_test.js',
   ObserverTest:          'unit/util/observer_test.js',
   CookieTest:            'unit/util/cookie_test.js',
@@ -53,15 +55,5 @@ for (var key in tests) {
 }
 
 window.onload = function() {
-  /*
-  var Klass = new Class(Observer, {
-    include: Options,
-    boo: function() {}
-  });
-  
-  console.log(Observer.prototype);
-  console.log(Klass.prototype);
-  
-  */
   eval('new TestSuite('+test_names.join(',')+').run()');
 }
