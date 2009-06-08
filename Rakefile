@@ -111,9 +111,9 @@ task :build do
   build = ''
   source = ''
   
-  JS_SOURCES.each do |package, files|
+  %w(core cookie form xhr fx).each do |package|
     unless options.include?("no-#{package}")
-      files.each do |file|
+      JS_SOURCES[package.to_sym].each do |file|
         source += File.open("src/#{file}", "r").read + "\n\n"
       end
     end
