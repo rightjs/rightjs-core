@@ -24,7 +24,7 @@ Element.addMethods({
    * @return Element self
    */
   highlight: function() {
-    return this.fx('mighlight', arguments);
+    return this.fx('highlight', arguments);
   },
   
   /**

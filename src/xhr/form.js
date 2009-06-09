@@ -13,6 +13,7 @@ $ext(Form.Methods, {
   send: function(options) {
     this.disable();
     
+    options = options || {};
     options['method'] = options['method'] || this.get('method') || 'post';
     
     new Xhr(this.get('action') || document.location.href, options
