@@ -8,7 +8,14 @@
   var ready = object.ready.bind(object);
   
   if (Browser.IE) {
-    window.attachEvent('onload', ready);
+    var tmp = $E('div');
+    (function() {
+      try {
+        document.body.appendChild(tmp);
+        tmp.remove();
+        ready();
+      } catch(e) { arguments.callee.delay(50);}
+    })();
   } else if (document['readyState'] !== undefined) {
     (function() {
       $w('loaded complete').includes(document.readyState) ? ready() : arguments.callee.delay(50);
