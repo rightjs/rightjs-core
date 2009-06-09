@@ -128,6 +128,10 @@ task :build do
   puts ' * Writting files'
   header = File.open('src/HEADER.js', 'r').read
   
+  unless options.empty?
+    header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright"
+  end
+  
   File.open(BUILD_DIR + "/" + BUILD_FILE, "w") do |file|
     file.write header
     file.write build
