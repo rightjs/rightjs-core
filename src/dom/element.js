@@ -12,6 +12,10 @@ window.Element = new Class(window.Element, {
    * @return Element object
    */
   initialize: function(tag_name, options) {
+    if (Browser.IE && tag_name == 'input' && options && options.checked) {
+      tag_name = '<input checked="true"/>';
+    }
+    
     var element = $(document.createElement(tag_name)), options = options || {};
     
     if (options['html'])    { element.update(options['html']);     delete(options['html']);    }
