@@ -11,10 +11,8 @@ $ext(Form.Methods, {
    * @return Form this
    */
   send: function(options) {
-    this.disable();
-    
     options = options || {};
-    options['method'] = options['method'] || this.get('method') || 'post';
+    options['method'] = options['method'] || this.method || 'post';
     
     new Xhr(this.get('action') || document.location.href, options
       ).onRequest(this.disable.bind(this)
@@ -30,7 +28,7 @@ $ext(Form.Methods, {
    * @return Form this
    */
   remotize: function(options) {
-    this.onsubmit = function() { this.send(options); return false; };
+    this.onsubmit = function() { this.send.bind(this, options).delay(20); return false; };
     this.remote   = true;
     return this;
   },

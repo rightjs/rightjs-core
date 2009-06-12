@@ -119,7 +119,7 @@ var Form = new Class(Element, {
   }
 });
 
-Observer.createShortcuts(Form.Methods, $w('submit reset focus'));
+//Observer.createShortcuts(Form.Methods, $w('submit reset focus'));
 
 try { // extending the form element prototype
   $ext(HTMLFormElement.prototype, Form.Methods);

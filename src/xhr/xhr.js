@@ -106,7 +106,7 @@ var Xhr = new Class(Observer, {
       this.setHeader('Content-type', 'application/x-www-form-urlencoded; charset='+this.encoding);
     }
     
-    this.xhr = this.createXhr(params);
+    this.xhr = this.createXhr();
     this.fire('create');
     
     this.xhr.open(method, url, this.async);
@@ -159,9 +159,9 @@ var Xhr = new Class(Observer, {
   },
   
   // creates new request instance
-  createXhr: function(params) {
+  createXhr: function() {
     if (this.form && this.form.getElements().map('type').includes('file')) {
-      return Xhr.IFramed(this.form);
+      return new Xhr.IFramed(this.form);
     } else try {
       return new XMLHttpRequest();
     } catch(e) {

@@ -14,13 +14,11 @@ Xhr.IFramed = new Class({
   initialize: function(form) {
     this.form = form;
     
-    this.iframe = new Element('iframe', { src: 'about:blank', width: '0', height: '0' });
-    this.iframe.setAttribute('frameborder', 0);
-    this.iframe.id = this.iframe.name = 'xhr-frame-'+Math.random();
+    var id = 'xhr_frame_'+Math.random().toString().split('.').last();
+    $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+'" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
     
-    this.iframe.onload = this.onLoad.bind(this);
-    
-    document.body.appendChild(this.iframe);
+    this.iframe = $(id);
+    this.iframe.on('load', this.onLoad.bind(this));
   },
   
   send: function() {
