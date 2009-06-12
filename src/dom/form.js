@@ -58,7 +58,7 @@ var Form = new Class(Element, {
       focus: function() {
         var first = this.inputs().any(function(input) { return input.type != 'hidden'; });
         if (first) first.focus();
-        return this;
+        return this.fire('focus');
       },
       
       /**
@@ -68,7 +68,7 @@ var Form = new Class(Element, {
        */
       blur: function() {
         this.getElements().each('blur');
-        return this;
+        return this.fire('blur');
       },
       
       /**
@@ -78,7 +78,7 @@ var Form = new Class(Element, {
        */
       disable: function() {
         this.getElements().each('disable');
-        return this;
+        return this.fire('disable');
       },
       
       /**
@@ -88,7 +88,7 @@ var Form = new Class(Element, {
        */
       enable: function() {
         this.getElements().each('enable');
-        return this;
+        return this.fire('enable');
       },
       
       /**
