@@ -69,6 +69,7 @@ ElementDimensionsTest = TestCase.create({
   },
   
   testMoveTo: function() {
+    this.div.style.position = 'absolute';
     this.assertSame(this.div, this.div.moveTo(40, 40));
     this.assertEqual({x: 40, y: 40}, this.div.position());
   }

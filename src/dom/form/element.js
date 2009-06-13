@@ -81,7 +81,7 @@ Form.Element = {
      * @return Element this
      */
     focus: function() {
-      this._focus();
+      this._focus.apply(this);
       this.focused = true;
       this.fire('focus');
       return this;
@@ -94,7 +94,7 @@ Form.Element = {
      */
     select: function() {
       this.focus();
-      this._select();
+      this._select.apply(this);
       return this;
     },
     
@@ -104,7 +104,7 @@ Form.Element = {
      * @return Element this
      */
     blur: function() {
-      this._blur();
+      this._blur.apply(this);
       this.focused = false;
       this.fire('blur');
       return this;

@@ -76,7 +76,11 @@ window.Element = new Class(window.Element, {
       
       try { // busting up the basic element prototypes
         $ext(HTMLElement.prototype, methods, dont_overwrite);
-      } catch(e) {}
+      } catch(e) {
+        try { // IE8 native element extension
+          $ext(this.parent.prototype, methods, dont_overwrite);
+        } catch(e) {}
+      }
       
       return this;
     },

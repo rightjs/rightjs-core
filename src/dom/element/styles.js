@@ -66,7 +66,8 @@ Element.addMethods({
    * @return Object/CSSDefinition computed styles
    */
   computedStyles: function() {
-    return this.currentStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
+    //     ole IE,              IE8,                 W3C
+    return this.currentStyle || this.runtimeStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
   },
   
   // cleans up the style value
