@@ -59,6 +59,7 @@ var Fx = new Class(Observer, {
    */
   start: function() {
     if (this.queue(arguments)) return this;
+    this.prepare.apply(this, arguments);
     
     this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
     var duration    = Fx.Durations[this.options.duration]     || this.options.duration;
@@ -75,7 +76,7 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   finish: function() {
-    return this.stopTimer().fire('finish', this);
+    return this.stopTimer().fire('finish').next();
   },
   
   /**
@@ -84,7 +85,7 @@ var Fx = new Class(Observer, {
    * @return Fx this
    */
   cancel: function() {
-    return this.stopTimer().fire('cancel', this);
+    return this.stopTimer().fire('cancel').next();
   },
   
   /**
@@ -106,6 +107,8 @@ var Fx = new Class(Observer, {
   },
   
 // protected
+  // dummy method, should be implemented in a subclass
+  prepare: function() {},
 
   // dummy method, should implement the actual things happenning
   render: function(value) {},
@@ -149,15 +152,21 @@ var Fx = new Class(Observer, {
     chain = this.constructor.$chains[uid];
 
     chain.push([args, this]);
-    this.onFinish(function() {
+    
+    this.next = function() {
       var next = chain.shift(); next = chain[0];
       if (next) {
         next[1].$chained = true;
         next[1].start.apply(next[1], next[0]);
       }
-    });
+      return this;
+    };
 
     return chain[0][1] !== this;
+  },
+  
+  next: function() {
+    return this;
   }
   
   

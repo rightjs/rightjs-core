@@ -10,7 +10,8 @@ Fx.Slide = new Class(Fx.Tween, {
     })
   },
   
-  start: function(how) {
+// protected  
+  prepare: function(how) {
     this.setHow(how);
 
     this.element.show();
@@ -23,7 +24,6 @@ Fx.Slide = new Class(Fx.Tween, {
     return this.$super(this._endStyle(this.options.direction));
   },
 
-// protected
   _getBack: function() {
     this.element.setStyle(this.styles);
   },

@@ -18,6 +18,8 @@ Fx.Morph = new Class(Fx, {
     this.$super(options);
     this.element = $(element);
   },
+
+// protected
   
   /**
    * starts the effect
@@ -25,7 +27,7 @@ Fx.Morph = new Class(Fx, {
    * @param mixed an Object with an end style or a string with the end class-name(s)
    * @return Fx this
    */
-  start: function(style) {
+  prepare: function(style) {
     this.endStyle   = this._findStyle(style);
     this.startStyle = this._getStyle(this.element, Object.keys(this.endStyle));
 
@@ -34,7 +36,6 @@ Fx.Morph = new Class(Fx, {
     return Object.keys(this.endStyle).length ? this.$super() : this.finish();
   },
   
-// protected
   render: function(delta) {
     var style = {}, value;
     

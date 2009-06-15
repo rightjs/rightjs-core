@@ -11,6 +11,8 @@ Fx.Highlight = new Class(Fx.Morph, {
     })
   },
   
+// protected
+  
   /**
    * starts the transition
    *
@@ -18,7 +20,7 @@ Fx.Highlight = new Class(Fx.Morph, {
    * @param String optional fallback color
    * @return self
    */
-  start: function(start, end) {
+  prepare: function(start, end) {
     var end_color = end || this._getStyle(this.element, 'backgroundColor');
     
     if (end_color == 'transparent' || end_color == 'rgba(0, 0, 0, 0)') {

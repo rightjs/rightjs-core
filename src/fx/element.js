@@ -60,7 +60,7 @@ Element.addMethods({
    * @return Element self
    */
   morph: function(style, options) {
-    return this.fx('morph', [style, options]);
+    return this.fx('morph', [style, options || {}]); // <- don't replace with arguments
   },
   
   /**
