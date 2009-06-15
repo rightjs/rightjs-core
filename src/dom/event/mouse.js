@@ -38,7 +38,7 @@ Event.Mouse = new Class(Event.Base, {
   },
   
   // default mouse events related options
-  OPTIONS: {
+  Options: {
     pointerX: 0,
     pointerY: 0,
     button:   0

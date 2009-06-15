@@ -5,7 +5,7 @@
  */
 Fx.Highlight = new Class(Fx.Morph, {
   extend: {
-    OPTIONS: Object.merge(Fx.OPTIONS, {
+    Options: Object.merge(Fx.Options, {
       color:      '#FF8',
       transition: 'Sin'
     })

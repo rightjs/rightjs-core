@@ -6,7 +6,7 @@
 Event.Base = new Class(Event.NATIVE, {
   extend: {
     // basic default events options
-    OPTIONS: {
+    Options: {
       bubbles:    true,
       cancelable: true,
       altKey:     false,
@@ -90,7 +90,7 @@ Event.Base = new Class(Event.NATIVE, {
    * @return Object clean options
    */
   options: function(name, options) {
-    options = Object.merge({}, Event.Base.OPTIONS, this.OPTIONS, options);
+    options = Object.merge({}, Event.Base.Options, this.Options, options);
     options.name = name;
     
     return options;

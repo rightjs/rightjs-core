@@ -12,7 +12,7 @@ property of the instance.
   var Steake = new Class({
     include: Options,
     
-    OPTIONS: {
+    Options: {
       cooked: 'well done',
       sauce:  'pepper',
       wedges: 'salad',
@@ -26,7 +26,7 @@ property of the instance.
   
   // without options it will has all the defaults
   var stake = new Stake();
-  stake.options == OPTIONS;
+  stake.options == Stake.Options;
   
   // with some options it will merge the with the defaults
   var stake = new Stake({
@@ -52,14 +52,14 @@ them form the instance to the top class.
   var Klass = new Class({
     include: Options,
     
-    OPTIONS: {....}
+    Options: {....}
   });
   
   // or 
   var Klass = new Class({
     include: Options,
     extend: {
-      OPTIONS: {....}
+      Options: {....}
     }
   });
   
@@ -68,7 +68,7 @@ them form the instance to the top class.
     include: Options,
     
     extend: {
-      OPTIONS: {....}
+      Options: {....}
     }
   });
   

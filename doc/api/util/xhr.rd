@@ -19,13 +19,13 @@ up as global or an instance option.
 
 == Spinners
 Additionally RightJS offers you to take care of the spinner elements
-automatically. You can define one common spinner in the global {Xhr.OPTIONS}
+automatically. You can define one common spinner in the global {Xhr.Options}
 object, or you can specify custom spinners per-request.
 
 You can specify spinner as an element object instance or as an element-id
 
 <code>
-  Xhr.OPTIONS.spinner = 'spinner';
+  Xhr.Options.spinner = 'spinner';
   
   // now the spinner element will appear before the request
   // and automatically get hidden on complete or cancel
@@ -45,7 +45,7 @@ Then here are several levels, you can specify global params which will be sent
 with all the xhr request.
 
 <code>
-  Xhr.OPTIONS.params = 'myapp=true';
+  Xhr.Options.params = 'myapp=true';
   
   // will send 'myapp=true' params with any following requests.
   Xhr.load('/foo/bar');
@@ -116,10 +116,10 @@ to evaluate responses with json content-type by default and assign it to the
 </code>
 
 
-### Element.OPTIONS
+### Element.Options
 
 == Semantic
-  OPTIONS -> Object
+  Options -> Object
   
 == Description
   Default Xhr options. See the options chapter above for more details
@@ -127,7 +127,7 @@ to evaluate responses with json content-type by default and assign it to the
 == Example
   Xhr.load('/some/url'); // -> 'post' request
   
-  Xhr.OPTIONS.method = 'get';
+  Xhr.Options.method = 'get';
   
   Xhr.load('/some/url'); // -> 'get' request
 

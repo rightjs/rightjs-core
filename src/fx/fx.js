@@ -9,18 +9,18 @@ var Fx = new Class(Observer, {
   extend: {
     EVENTS: $w('start finish cancel'),
     
-    // default options
-    OPTIONS: {
-      fps:        60,
-      duration:   'normal',
-      transition: 'Cos'
-    },
-
     // named durations
-    DURATIONS: {
+    Durations: {
       short:  200,
       normal: 400,
       long:   800
+    },
+    
+    // default options
+    Options: {
+      fps:        60,
+      duration:   'normal',
+      transition: 'Cos'
     },
 
     // list of basic transitions
@@ -61,7 +61,7 @@ var Fx = new Class(Observer, {
     if (this.queue(arguments)) return this;
     
     this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
-    var duration    = Fx.DURATIONS[this.options.duration]     || this.options.duration;
+    var duration    = Fx.Durations[this.options.duration]     || this.options.duration;
     
     this.steps  = (duration / 1000 * this.options.fps * (Browser.IE ? 0.5 : 1)).ceil();
     this.number = 1;

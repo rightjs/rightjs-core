@@ -5,7 +5,7 @@
  */
 Fx.Slide = new Class(Fx.Tween, {
   extend: {
-    OPTIONS: Object.merge(Fx.OPTIONS, {
+    Options: Object.merge(Fx.Options, {
       direction: 'top'
     })
   },

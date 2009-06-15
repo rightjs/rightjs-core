@@ -38,7 +38,7 @@ Event.Keyboard = new Class(Event.Base, {
   },
   
   // default keyboard related events options
-  OPTIONS: {
+  Options: {
     keyCode:  0,
     charCode: 0
   },

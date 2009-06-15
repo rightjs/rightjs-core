@@ -9,7 +9,7 @@ var FxTest = TestCase.create({
   testInstanceDefaults: function() {
     var fx = new Fx();
     
-    this.assertEqual(Fx.OPTIONS.fps, fx.options.fps);
+    this.assertEqual(Fx.Options.fps, fx.options.fps);
     this.assertEqual('normal',       fx.options.duration);
     this.assertEqual('Cos',          fx.options.transition);
   },

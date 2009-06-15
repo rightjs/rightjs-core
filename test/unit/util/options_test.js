@@ -12,7 +12,7 @@ var OptionsTest = TestCase.create({
     var Klass = new Class({
       include: Options,
       
-      OPTIONS: {
+      Options: {
         a: 1,
         b: 2
       },
@@ -22,7 +22,7 @@ var OptionsTest = TestCase.create({
       }
     });
     
-    this.assertEqual(Klass.prototype.OPTIONS, new Klass().options);
+    this.assertEqual(Klass.prototype.Options, new Klass().options);
     this.assertEqual({a: 1, b: 4}, new Klass({b:4}).options);
   },
   
@@ -31,7 +31,7 @@ var OptionsTest = TestCase.create({
       include: Options,
       
       extend: {
-        OPTIONS: {
+        Options: {
           a: 1,
           b: 2
         }
@@ -42,7 +42,7 @@ var OptionsTest = TestCase.create({
       }
     });
     
-    this.assertEqual(Klass.OPTIONS, new Klass().options);
+    this.assertEqual(Klass.Options, new Klass().options);
     this.assertEqual({a: 1, b: 4}, new Klass({b:4}).options);
   },
   
@@ -51,7 +51,7 @@ var OptionsTest = TestCase.create({
       include: Options,
       
       extend: {
-        OPTIONS: {
+        Options: {
           a: 1,
           b: 2
         }
@@ -66,7 +66,7 @@ var OptionsTest = TestCase.create({
     var Klass3 = new Class(Klass2, {});
     var Klass  = new Class(Klass3, {});
     
-    this.assertEqual(Klass1.OPTIONS, new Klass().options);
+    this.assertEqual(Klass1.Options, new Klass().options);
     this.assertEqual({a: 1, b: 4}, new Klass({b:4}).options);
   },
   
@@ -87,4 +87,4 @@ var OptionsTest = TestCase.create({
     
     this.assert(klass.observes('finish', the_function));
   }
-})
+});

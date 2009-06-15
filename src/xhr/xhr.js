@@ -9,7 +9,7 @@ var Xhr = new Class(Observer, {
     EVENTS: $w('success failure complete request cancel create'),
     
     // default options
-    OPTIONS: {
+    Options: {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
@@ -48,7 +48,7 @@ var Xhr = new Class(Observer, {
     this.$super(options);
     
     // copying some options to the instance level attributes
-    for (var key in Xhr.OPTIONS)
+    for (var key in Xhr.Options)
       this[key] = this.options[key];
       
     this.initCallbacks();
@@ -219,7 +219,7 @@ var Xhr = new Class(Observer, {
   // initializes the request callbacks
   initCallbacks: function() {
     // global spinners are handled separately
-    if (this.spinner == Xhr.OPTIONS.spinner) this.spinner = null;
+    if (this.spinner == Xhr.Options.spinner) this.spinner = null;
     
     // creating an automatical spinner handling
     this.onCreate('showSpinner').onComplete('hideSpinner').onCancel('hideSpinner');
@@ -243,10 +243,10 @@ Observer.create(Xhr);
 $ext(Xhr, {
   counter: 0,
   showSpinner: function() {
-    if (this.OPTIONS.spinner) $(this.OPTIONS.spinner).show();
+    if (this.Options.spinner) $(this.Options.spinner).show();
   },
   hideSpinner: function() {
-    if (this.OPTIONS.spinner) $(this.OPTIONS.spinner).hide();
+    if (this.Options.spinner) $(this.Options.spinner).hide();
   }
 });
 

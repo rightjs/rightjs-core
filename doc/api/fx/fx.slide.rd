@@ -9,7 +9,7 @@ By default the effect will slide the element in/out from/to the top edge of
 the element. But the effect can work from any direction, you can specify the
 <tt>'direction'</tt> key along with the constructor options or you can
 define the default value for all the cases at the 
-<tt>Fx.Slide.OPTIONS.direction</tt> variable. It can be one of the following.
+<tt>Fx.Slide.Options.direction</tt> variable. It can be one of the following.
 
  * 'top' (default)
  * 'left'
