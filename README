@@ -1,32 +1,42 @@
-RightJS
+Welcome
 =======
 
-We gonna make it right this time.
+RightJS is a JavaScript framework which
 
-
-
-I Have a Dream
-==============
-
-A JavaScript framework which
-
- o) Compact by itself and allows others write a compact code
- o) Has a standard or at least predictable interface
+ o) Compact by itself and allows others to write compact code
+ o) Has standard and predictable API
  o) Offers excellent OOP abilities
  o) Contains only necessary stuff
- o) Works quickly and stable
+ o) Works fast and stable
 
 
+RightJS is a developers oriented framework, it's made to let them do the
+things right and effectively. It's specifically designed to make the
+developer's live and everyday work simple and comfortable.
 
-The Call of Rightness
-=====================
+And we have cookies too.
 
-The project is pretty much an experiment. I just have that feeling
-that I should write out some of my ideas, mix them up with ideas of
-another people, which I find excellent and see what get happened.
 
-This is just the call of rightness which leads us further.
-Don't take it close for a while.
+Contacts
+========
+
+For further information, please proceed to the official site of the project
+
+http://rightjs.org
+
+
+Build
+=====
+
+To create your own build out of the source code, you'll need to have Ruby and
+Rake tools. Once you have them, you need to initiate the FrontCompiller git
+submodule.
+
+git submodule init
+git submodule update
+
+Then just say 'rake build'
+
 
 The code released under terms of the MIT License
 Copyright (C) 2008 Nikolay V. Nemshilov aka St.
