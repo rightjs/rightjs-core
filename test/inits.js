@@ -1,4 +1,6 @@
 var scripts = [
+  'right.js',
+  
   'core/browser.js',
   'core/util.js',
   

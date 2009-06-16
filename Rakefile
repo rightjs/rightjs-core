@@ -15,6 +15,8 @@ require 'rake'
 require 'fileutils'
 require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
 
+RIGHTJS_VERSION = '1.0.0'
+
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right.js'
 SOURCE_FILE = 'right-src.js'
@@ -110,12 +112,14 @@ task :build do
   puts ' * Compiling the sources'
   build = ''
   source = ''
+  modules = []
   
   %w(core cookie form xhr fx).each do |package|
     unless options.include?("no-#{package}")
       JS_SOURCES[package.to_sym].each do |file|
         source += File.open("src/#{file}", "r").read + "\n\n"
       end
+      modules << package
     end
   end
   
@@ -127,10 +131,13 @@ task :build do
   
   puts ' * Writting files'
   header = File.open('src/HEADER.js', 'r').read
+  header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
   
-  unless options.empty?
-    header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright"
-  end
+  header += File.open('src/right.js', 'r').read
+  
+  header.gsub! '#{version}', RIGHTJS_VERSION
+  header.gsub! '#{modules}', modules.join('", "')
+  
   
   File.open(BUILD_DIR + "/" + BUILD_FILE, "w") do |file|
     file.write header
