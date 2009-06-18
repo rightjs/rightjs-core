@@ -123,6 +123,12 @@ task :build do
     end
   end
   
+  desc = File.open('src/right.js', 'r').read
+  desc.gsub! '#{version}', RIGHTJS_VERSION
+  desc.gsub! '#{modules}', modules.join('", "')
+  
+  source = desc + source
+  
   build = FrontCompiler.new.compact_js(source)
   build = build.create_self_build unless options.include?("no-build")
   
@@ -132,11 +138,6 @@ task :build do
   puts ' * Writting files'
   header = File.open('src/HEADER.js', 'r').read
   header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
-  
-  header += File.open('src/right.js', 'r').read
-  
-  header.gsub! '#{version}', RIGHTJS_VERSION
-  header.gsub! '#{modules}', modules.join('", "')
   
   
   File.open(BUILD_DIR + "/" + BUILD_FILE, "w") do |file|
