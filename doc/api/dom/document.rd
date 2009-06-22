@@ -13,7 +13,7 @@ standard way.
   
   document.on('ready', function() {...});
   
-  document.onserve('ready', function() {...});
+  document.observe('ready', function() {...});
 </code>
 
 All the same things work on the <tt>window</tt> object, you can use it you 

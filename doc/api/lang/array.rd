@@ -217,7 +217,7 @@ old fashioned 'for' loop.
   var strings = ['anny', 'manny', 'banny', 'bob'];
   
   strings.filter(function(string, i) {
-    return string.length < (i+1);
+    return string.length > (i+1);
   });
   // -> ['anny', 'manny', 'banny'];
   
