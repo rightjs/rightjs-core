@@ -119,7 +119,7 @@ var StringTest = TestCase.create({
   },
   
   testToFragment: function() {
-    var string = '<div><p></p></div>asdfasdf<div>bla</div>';
+    var string = '<div><b></b></div>asdfasdf<div>bla</div>';
     var fragment = string.toFragment();
     var div = document.createElement('div');
     div.appendChild(fragment);

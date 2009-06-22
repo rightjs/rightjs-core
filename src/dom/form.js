@@ -36,7 +36,7 @@ var Form = new Class(Element, {
        * @return Array of elements
        */
       getElements: function() {
-        return $A(this.elements).map($);
+        return Browser.Konqueror ? this.select('input,select,textarea,button') : $A(this.elements).map($);
       },
       
       /**
@@ -46,7 +46,7 @@ var Form = new Class(Element, {
        */
       inputs: function() {
         return this.getElements().filter(function(input) {
-          return !input.type || !['submit', 'button', 'reset'].includes(input.type);
+          return !['submit', 'button', 'reset', null].includes(input.type);
         });
       },
       

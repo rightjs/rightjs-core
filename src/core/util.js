@@ -112,10 +112,7 @@ function defined(value) {
  * @return boolean check result
  */
 function isHash(value) {
-  return typeof(value) == 'object' && value !== null && value.constructor &&
-    value.constructor.toString().includes('function Object()') && 
-    value.toString().indexOf('object HTML') == -1 && // <- Opera fix
-    value.toString().indexOf('object NodeList') == -1;
+  return typeof(value) == 'object' && value !== null && value.constructor == Object;
 };
 
 /**

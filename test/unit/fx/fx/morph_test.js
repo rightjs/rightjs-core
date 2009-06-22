@@ -62,18 +62,18 @@ var FxMorphTest = TestCase.create({
     this.fx.start('test---12345');
     
     // Gecko adds the lineHeight
-    this.assertEqual({"color": [0, 0, 0], "fontSize": [16, "px"]},      Object.without(this.fx.startStyle, 'lineHeight'));
-    this.assertEqual({"color": [255, 255, 0], "fontSize": [200, "px"]}, Object.without(this.fx.endStyle,   'lineHeight'));
+    this.assertEqual({"color": [0, 0, 0], "fontSize": [16, "px"]},      Object.without(this.fx.startStyle, 'lineHeight', 'width'));
+    this.assertEqual({"color": [255, 255, 0], "fontSize": [200, "px"]}, Object.without(this.fx.endStyle,   'lineHeight', 'width'));
     
     this.fx.start('test---12345 test---123456');
     
     this.assertEqual(
       {"height": [0, 'px'], "color": [0, 0, 0], "fontSize": [16, "px"]},
-      Object.without(this.fx.startStyle, 'lineHeight')
+      Object.without(this.fx.startStyle, 'lineHeight', 'width')
     );
     this.assertEqual(
       {"height": [200, 'px'], "color": [255, 255, 0], "fontSize": [200, "px"]},
-      Object.without(this.fx.endStyle,   'lineHeight')
+      Object.without(this.fx.endStyle,   'lineHeight', 'width')
     );
   }
 })

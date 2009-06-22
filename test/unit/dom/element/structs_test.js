@@ -254,24 +254,24 @@ var ElementStructsTest = TestCase.create({
     this.assertSame(this.el, this.el.insert(document.createElement('span'), 'bottom'));
     this.assertEqual('<div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    this.el.insert(new Element('p'), 'top');
-    this.assertEqual('<p></p><div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.el.insert(new Element('b'), 'top');
+    this.assertEqual('<b></b><div></div><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
     this.el.first('div').insert('<blockquote></blockquote><cite></cite>', 'before');
     this.assertEqual(
-      '<p></p><blockquote></blockquote><cite></cite><div></div><span></span>',
+      '<b></b><blockquote></blockquote><cite></cite><div></div><span></span>',
       this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<")
     );
     
-    this.el.first('blockquote').insert([new Element('b'), new Element('u')], 'after');
+    this.el.first('blockquote').insert([new Element('i'), new Element('u')], 'after');
     this.assertEqual(
-      '<p></p><blockquote></blockquote><b></b><u></u><cite></cite><div></div><span></span>',
+      '<b></b><blockquote></blockquote><i></i><u></u><cite></cite><div></div><span></span>',
       this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<")
     );
     
-    this.el.first('p').insert('some string', 'instead');
+    this.el.first('b').insert('some string', 'instead');
     this.assertEqual(
-      'some string<blockquote></blockquote><b></b><u></u><cite></cite><div></div><span></span>',
+      'some string<blockquote></blockquote><i></i><u></u><cite></cite><div></div><span></span>',
       this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<")
     );
   },
@@ -288,21 +288,21 @@ var ElementStructsTest = TestCase.create({
   },
   
   testReplace: function() {
-    this.el.innerHTML = '<p></p><div></div><span></span>';
+    this.el.innerHTML = '<b></b><div></div><span></span>';
     this.el.first('div').replace('<ul></ul><ul></ul><script>self["____test"]=4;</script>');
     
-    this.assertEqual('<p></p><ul></ul><ul></ul><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><ul></ul><ul></ul><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     this.assertEqual(4, self['____test']);
     self['____test'] = null;
     
     this.assertSame(this.el.first('ul'), this.el.first('ul').replace(document.createElement('cite')));
-    this.assertEqual('<p></p><cite></cite><ul></ul><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><cite></cite><ul></ul><span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    this.el.first('span').replace([$E('div'), $E('b')]);
-    this.assertEqual('<p></p><cite></cite><ul></ul><div></div><b></b>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.el.first('span').replace([$E('div'), $E('u')]);
+    this.assertEqual('<b></b><cite></cite><ul></ul><div></div><u></u>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
     this.el.first('div').replace('div string');
-    this.assertEqual('<p></p><cite></cite><ul></ul>div string<b></b>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><cite></cite><ul></ul>div string<u></u>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
   testUpdate: function() {
@@ -314,8 +314,8 @@ var ElementStructsTest = TestCase.create({
     this.assertSame(this.el, this.el.update(document.createElement('span')));
     this.assertEqual('<span></span>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
     
-    this.el.update([$E('p'), $E('b'), $E('u')]);
-    this.assertEqual('<p></p><b></b><u></u>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.el.update([$E('i'), $E('b'), $E('u')]);
+    this.assertEqual('<i></i><b></b><u></u>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
   testWrap: function() {

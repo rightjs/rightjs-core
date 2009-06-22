@@ -88,7 +88,7 @@ var ElementTest = TestCase.create({
   },
   
   testElement_createFragment: function() {
-    var string = '<div><p></p></div><span></span>';
+    var string = '<div><b></b></div><span></span>';
     
     
     var block  = document.createElement('div');
@@ -101,10 +101,10 @@ var ElementTest = TestCase.create({
     var block  = document.createElement('div');
     
     var div    = document.createElement('div');
-    var p      = document.createElement('p');
+    var b      = document.createElement('b');
     var span   = document.createElement('span');
     
-    div.appendChild(p);
+    div.appendChild(b);
     
     block.appendChild(Element.createFragment([div, span]));
     
@@ -115,6 +115,6 @@ var ElementTest = TestCase.create({
     
     block.appendChild(Element.createFragment(div));
     
-    this.assertEqual('<div><p></p></div>', block.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
+    this.assertEqual('<div><b></b></div>', block.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
   }
 });
