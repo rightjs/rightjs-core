@@ -4,7 +4,7 @@
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 [window, document].each(function(object) {
-  Observer.create(object, ['ready']);
+  Observer.createShortcuts(object, ['ready']);
   var ready = object.ready.bind(object);
   
   if (Browser.IE) {
