@@ -152,7 +152,8 @@ var Fx = new Class(Observer, {
     if (!Fx.$chains[uid]) Fx.$chains[uid] = [];
     chain = Fx.$chains[uid];
 
-    chain.push([args, this]);
+    if (this.options.queue)
+      chain.push([args, this]);
     
     this.next = function() {
       var next = chain.shift(); next = chain[0];
