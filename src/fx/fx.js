@@ -147,9 +147,9 @@ var Fx = new Class(Observer, {
     }
 
     var uid = $uid(this.element), chain;
-    if (!this.constructor.$chains) this.constructor.$chains = {};
-    if (!this.constructor.$chains[uid]) this.constructor.$chains[uid] = [];
-    chain = this.constructor.$chains[uid];
+    if (!Fx.$chains)      Fx.$chains = {};
+    if (!Fx.$chains[uid]) Fx.$chains[uid] = [];
+    chain = Fx.$chains[uid];
 
     chain.push([args, this]);
     
