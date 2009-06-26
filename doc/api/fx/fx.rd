@@ -20,6 +20,7 @@ There are common list of options which all the visual effects share
 
   * duration   - the effect duration in ms or a string predefined name
   * transition - the transition algorithm used for the effect
+  * queue      - boolean marker if the effect should be queued
   * onStart    - on-start callback
   * onFinish   - on-finish callback
   * onCancel   - on-cancel callback

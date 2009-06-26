@@ -20,7 +20,8 @@ var Fx = new Class(Observer, {
     Options: {
       fps:        60,
       duration:   'normal',
-      transition: 'Cos'
+      transition: 'Cos',
+      queue:      true
     },
 
     // list of basic transitions
@@ -162,7 +163,7 @@ var Fx = new Class(Observer, {
       return this;
     };
 
-    return chain[0][1] !== this;
+    return chain[0][1] !== this && this.options.queue;
   },
   
   next: function() {
