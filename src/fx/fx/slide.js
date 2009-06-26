@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Fx.Slide = new Class(Fx.Tween, {
+Fx.Slide = new Class(Fx.Twin, {
   extend: {
     Options: Object.merge(Fx.Options, {
       direction: 'top'

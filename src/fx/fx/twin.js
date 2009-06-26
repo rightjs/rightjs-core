@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Fx.Tween = new Class(Fx.Morph, {
+Fx.Twin = new Class(Fx.Morph, {
   
   /**
    * hides the element if it meant to be switched off

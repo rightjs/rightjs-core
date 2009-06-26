@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Fx.Fade = new Class(Fx.Tween, {
+Fx.Fade = new Class(Fx.Twin, {
   prepare: function(how) {
     this.setHow(how);
     
