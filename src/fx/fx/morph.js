@@ -89,6 +89,18 @@ Fx.Morph = new Class(Fx, {
       if (!height || height == 'auto') delete(result['height']);
     }
     
+    // assigning the border style if the end style has a border
+    var border_style = element.getStyle('borderTopStyle');
+    if (border_style != this.element.getStyle('borderTopStyle')) {
+      if (this.element.getStyle('borderTopStyle') == 'none') {
+        this.element.style.borderWidth =  '0px';
+      }
+      this.element.style.borderStyle = border_style;
+      if (this.element.getStyle('borderColor') == 'transparent') {
+        this.element.style.borderColor = this.element.getStyle('color');
+      }
+    }
+    
     element.remove();
     
     return result;

@@ -54,6 +54,13 @@ var FxMorphTest = TestCase.create({
     this.assertEqual({backgroundColor: [221, 221, 221]}, this.fx.endStyle);
   },
   
+  testBorderSettingUp: function() {
+    this.fx.start({border: '10px solid green'});
+    
+    this.assertEqual('0px', this.el.getStyle('borderTopWidth'));
+    this.assertEqual('solid', this.el.getStyle('borderTopStyle'));
+  },
+  
   testClassesHookingUp: function() {
     this.el.setStyle({
       fontSize: '16px',
