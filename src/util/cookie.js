@@ -57,7 +57,7 @@ var Cookie = new Class({
       value += '; expires=' + date.toGMTString();
     }
     if (this.options.secure) value += '; secure';
-    this.options.document.cookie = this.key + '=' + value;
+    this.options.document.cookie = this.name + '=' + value;
     return this;
   },
   
@@ -67,7 +67,7 @@ var Cookie = new Class({
    * @return mixed saved value or null if nothing found
    */
   get: function() {
-    var value = this.options.document.cookie.match('(?:^|;)\\s*' + this.key.escapeRegExp() + '=([^;]*)');
+    var value = this.options.document.cookie.match('(?:^|;)\\s*' + RegExp.escape(this.name) + '=([^;]*)');
     return (value) ? decodeURIComponent(value[1]) : null;
   },
   
