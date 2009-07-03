@@ -1,38 +1,30 @@
 /**
  * represents some additional functionality for the Event class
  *
+ * NOTE: there more additional functionality for the Event class in the rightjs-goods project
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Event = new Class(Event, {
   extend: {
     NATIVE:   Event,
     
-    // mouse button codes
-    BUTTONS: {
-      click:       0,
-      middleclick: 1,
-      rightclick:  2
+    Methods: {
+      stopPropagation: function() {
+        this.cancelBubble = true;
+      },
+      
+      preventDefault: function() {
+        this.returnValue = false;
+      },
+      
+      stop: function() {
+        this.stopPropagation();
+        this.preventDefault();
+        return this;
+      }
     },
-    
-    // key codes
-    KEYS: {
-      BACKSPACE:  8,
-      TAB:        9,
-      ENTER:     13,
-      ESCAPE:    27,
-      SPACE:     32,
-      PAGE_UP:   33,
-      PAGE_DOWN: 34,
-      END:       35,
-      HOME:      36,
-      LEFT:      37,
-      UP:        38,
-      RIGHT:     39,
-      DOWN:      40,
-      INSERT:    45,
-      DELETE:    46
-    },
-    
+        
     /**
      * extends a native object with additional functionality
      *
@@ -41,14 +33,8 @@ var Event = new Class(Event, {
      */
     ext: function(event) {
       if (!event.stop) {
-        Event.Base.ext(event);
-        
-        event.eventName = Event.cleanName(event.type || '');
-        if (Event.Mouse.NAMES.includes(event.eventName)) {
-          Event.Mouse.ext(event);
-        } else if (defined(event.keyCode)){
-          Event.Keyboard.ext(event);
-        }
+        $ext(event, this.Methods, true);
+        event.eventName = this.cleanName(event.type || '');
       }
       
       return event;
@@ -81,27 +67,13 @@ var Event = new Class(Event, {
   },
   
   /**
-   * constructor. pretty much plays a virtual factory, instances new events or extends
-   * existing ones and always returns an event instead of void as a normal constructor
+   * just initializes new custom event
    *
-   * @param mixed native Event instance or String event name
+   * @param String event name
    * @param Object options
-   * @return Event instance
+   * @return Event
    */
-  initialize: function() {
-    var args = $A(arguments), event = args.shift(), options = args.pop() || {};
-    
-    if (isString(event)) {
-      var name = Event.cleanName(event);
-      if (Event.Mouse.NAMES.includes(name)) {
-        event = new Event.Mouse(name, options);
-      } else if (Event.Keyboard.NAMES.includes(name)) {
-        event = new Event.Keyboard(name, options);
-      } else {
-        event = new Event.Custom(name, options);
-      }
-    }
-    
-    return Event.ext(event);
+  initialize: function(name, options) {
+    return new Event.Custom(Event.cleanName(name), options);
   }
 });

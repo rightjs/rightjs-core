@@ -40,7 +40,7 @@ Element.addMethods((function() {
     }
   };
   
-  $ext(window, observer);
+  $ext(window,   observer);
   $ext(document, observer);
   
   return observer;

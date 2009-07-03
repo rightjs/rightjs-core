@@ -12,7 +12,7 @@ Event.Custom = new Class({
    */
   initialize: function(name, options) {
     this.eventName = Event.cleanName(name);
-    this.options   = options;
+    $ext(this, options || {});
   },
   
   // just a dummy function to prevent the event extending

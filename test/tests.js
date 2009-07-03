@@ -16,9 +16,6 @@ var tests = {
   RegexpTest:            'unit/lang/regexp_test.js',
   
   EventTest:             'unit/dom/event_test.js',
-  EventBaseTest:         'unit/dom/event/base_test.js',
-  EventMouseTest:        'unit/dom/event/mouse_test.js',
-  EventKeyboardTest:     'unit/dom/event/keyboard_test.js',
   
   ElementTest:           'unit/dom/element_test.js',
   ElementStylesTest:     'unit/dom/element/styles_test.js',

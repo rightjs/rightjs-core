@@ -21,9 +21,6 @@ var scripts = [
   'util/break.js',
   
   'dom/event.js',
-  'dom/event/base.js',
-  'dom/event/mouse.js',
-  'dom/event/keyboard.js',
   'dom/event/custom.js',
   
   'dom/element.js',
