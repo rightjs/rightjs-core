@@ -1,7 +1,7 @@
 /**
  * The Element class styles related module functionality test
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 document.write('<st'+'yle>div.test---1234{font-size: 14px; display:none;}</st'+'yle>');
 var ElementStylesTest = TestCase.create({

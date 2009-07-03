@@ -1,7 +1,7 @@
 /**
  * The Array class extentions
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Array.prototype, {
   /**

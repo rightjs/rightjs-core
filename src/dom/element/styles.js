@@ -1,7 +1,7 @@
 /**
  * this module contains the element unit styles related methods
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Element.addMethods({
   /**
@@ -66,7 +66,7 @@ Element.addMethods({
    * @return Object/CSSDefinition computed styles
    */
   computedStyles: function() {
-    //     ole IE,              IE8,                 W3C
+    //     old IE,              IE8,                 W3C
     return this.currentStyle || this.runtimeStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
   },
   
@@ -114,7 +114,7 @@ Element.addMethods({
    * @return boolean check result
    */
   hasClass: function(name) {
-    return this.className.length && this.className.match(new RegExp('(^|\\s)'+ name + '(\\s|$)'));
+    return this.className && this.className.match(new RegExp('(^|\\s)'+ name + '(\\s|$)'));
   },
   
   /**
@@ -136,7 +136,7 @@ Element.addMethods({
    */
   addClass: function(name) {
     if (!this.hasClass(name)) {
-      this.className += (this.className.length ? ' ' : '') + name;
+      this.className += (this.className ? ' ' : '') + name;
     }
     return this;
   },

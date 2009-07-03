@@ -189,4 +189,4 @@ $ext(String.prototype, {
   
 });
 
-$alias(Array.prototype, {includes: 'include'});
+$alias(String.prototype, {includes: 'include'});
