@@ -214,6 +214,15 @@ var ArrayTest = TestCase.create({
     this.assertEqual(a.sort(), b.sort());
   },
   
+  testSortBy: function() {
+    var a = [{t:3}, {t:1}, {t:2}];
+    var b = a.sortBy(function(item) { return item.t; });
+    var c = a.sortBy('t');
+    
+    this.assertEqual([{t:1}, {t:2}, {t:3}], b);
+    this.assertEqual(b, c);
+  },
+  
   testAny: function() {
     this.assert([0,false,null,1].any());
     this.assertFalse([0,false,null].any());

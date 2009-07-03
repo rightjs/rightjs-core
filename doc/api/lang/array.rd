@@ -358,7 +358,28 @@ old fashioned 'for' loop.
   [0,1,2,3,4].shuffle();
   
   // -> [3, 4, 0, 1, 2]
+  
+### Array#sortBy
 
+== Semantic
+  sortBy(Function lambda[, scope])      -> Array new
+  sortBy(String attr_name[, arguments]) -> Array new
+
+== Description
+  Creates a new array by sorting the current one by the results of
+  calling the lambda function or attribute of each item
+
+== Example
+  [{t:3}, {t:2}, {t:1}].sortBy(function(item) {
+    return item.t;
+  });
+  
+  // -> [{t:1}, {t:2}, {t:3}]
+  
+  [{t:3}, {t:2}, {t:1}].sortBy('t');
+  
+  // -> [{t:1}, {t:2}, {t:3}]
+  
 
 ### Array#any
 

@@ -245,6 +245,25 @@ $ext(Array.prototype, {
   },
   
   /**
+   * sorts the array by running its items though a lambda or calling their attributes
+   *
+   * @param Function callback or attribute name
+   * @param Object scope or attribute argument
+   * @return Array sorted copy
+   */
+  sortBy: function() {
+    var pair = this._guessCallback(arguments);
+    return this.map(function(item, i) {
+      return {
+        item: item,
+        value: pair[0].call(pair[1], item, i, this)
+      }
+    }).sort(function(a, b) {
+      return a.value > b.value ? 1 : a.value < b.value ? -1 : 0;
+    }).map('item');
+  },
+  
+  /**
    * checks if any of the array elements is logically true
    *
    * @param Function optional callback for checks
