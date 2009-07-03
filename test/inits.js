@@ -18,7 +18,6 @@ var scripts = [
   
   'util/options.js',
   'util/observer.js',
-  'util/cookie.js',
   'util/break.js',
   
   'dom/event.js',

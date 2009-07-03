@@ -65,10 +65,6 @@ JS_SOURCES = {
     dom/ready.js
   },
   
-  :cookie => %w{
-    util/cookie.js
-  },
-  
   :form => %w{
     dom/form.js
     dom/form/element.js
@@ -114,7 +110,7 @@ task :build do
   source = ''
   modules = []
   
-  %w(core cookie form xhr fx).each do |package|
+  %w(core form xhr fx).each do |package|
     unless options.include?("no-#{package}")
       JS_SOURCES[package.to_sym].each do |file|
         source += File.open("src/#{file}", "r").read + "\n\n"
