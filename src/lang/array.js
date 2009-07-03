@@ -231,6 +231,20 @@ $ext(Array.prototype, {
   },
   
   /**
+   * Shuffles the array items in a random order
+   *
+   * @return Array shuffled version
+   */
+  shuffle: function() {
+    var shuff = this.clone();
+    
+    for (var j, x, i = shuff.length; i;
+       j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x);
+    
+    return shuff;
+  },
+  
+  /**
    * checks if any of the array elements is logically true
    *
    * @param Function optional callback for checks

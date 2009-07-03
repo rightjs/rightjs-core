@@ -345,6 +345,19 @@ old fashioned 'for' loop.
   
   // -> [0,2];
 
+### Array#shuffle
+
+== Semantic
+  shuffle() -> Array new
+
+== Description
+  Creates a new array which has all the same items as the original
+  but in a random order
+
+== Example
+  [0,1,2,3,4].shuffle();
+  
+  // -> [3, 4, 0, 1, 2]
 
 
 ### Array#any

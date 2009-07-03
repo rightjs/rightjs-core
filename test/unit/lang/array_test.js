@@ -205,6 +205,15 @@ var ArrayTest = TestCase.create({
     this.assertNotSame(b,a);
   },
   
+  testShuffle: function() {
+    var a = [1,2,3,4,5,6,7,8,9];
+    var b = a.shuffle();
+    
+    this.assertNotSame(a, b);
+    this.assertNotEqual(a, b);
+    this.assertEqual(a.sort(), b.sort());
+  },
+  
   testAny: function() {
     this.assert([0,false,null,1].any());
     this.assertFalse([0,false,null].any());
