@@ -73,6 +73,12 @@ var ElementStylesTest = TestCase.create({
     this.assertEqual('right', this.el.getStyle('float'));
   },
   
+  testAssignStyleAsString: function() {
+    this.el.setStyle('display: block; font-size: 12px');
+    this.assertEqual('block', this.el.style.display);
+    this.assertEqual('12px',  this.el.style.fontSize);
+  },
+  
   testHasClass: function() {
     this.assert(!this.el.hasClass('foo'));
     this.assert(!this.el.hasClass('boo'));

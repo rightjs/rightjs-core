@@ -15,6 +15,16 @@ Element.addMethods({
    */
   setStyle: function(hash, value) {
     if (value) { var style = {}; style[hash] = value; hash = style; }
+    else if(isString(hash)) {
+      var style = {};
+      hash.split(';').each(function(option) {
+        var els = option.split(':').map('trim');
+        if (els[0] && els[1]) {
+          style[els[0]] = els[1];
+        }
+      });
+      hash = style;
+    }
     
     var c_key;
     for (var key in hash) {
