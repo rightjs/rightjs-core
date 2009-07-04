@@ -1,3 +1,13 @@
+2009-07-04 Nikolay V. Nemshilov aka St.
+  o Version 1.1.0 Release
+    * Cookie object is moved to the rightjs-goods project
+    * Advanced dom-events handling is moved to the rightjs-goods project
+    * Dom element event observing shortcuts were added
+    * The visual effects library updates
+    * Xhr class json support fixes
+    * Object class extensions revision and documentation
+    * Array#shuffle and Array#sortBy methods
+
 2009-06-26 Nikolay V. Nemshilov aka St.
   o Version 1.0.4 Release
     * Visual Effects library fixes and updates
