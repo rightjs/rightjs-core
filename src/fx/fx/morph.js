@@ -33,7 +33,7 @@ Fx.Morph = new Class(Fx, {
 
     this._cleanStyles(this.startStyle, this.endStyle);
     
-    return Object.keys(this.endStyle).length ? this.$super() : this.finish();
+    return Object.empty(this.endStyle) ? this.finish() : this.$super();
   },
   
   render: function(delta) {

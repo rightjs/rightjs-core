@@ -1,7 +1,7 @@
 /**
  * The Object unit test-case
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var ObjectTest = TestCase.create({
   name: 'ObjectTest',
@@ -22,41 +22,12 @@ var ObjectTest = TestCase.create({
   testWithout: function() {
     this.assertEqual({b:2, c:3}, Object.without({a:1, b:2, c:3}, 'a'));
     this.assertEqual({c:3}, Object.without({a:1, b:2, c:3}, 'a', 'b'));
-    this.assertEqual({c:3}, Object.without({a:1, b:2, c:3}, ['a', 'b']));
   },
   
   testOnly: function() {
     this.assertEqual({b:2,d:4}, Object.only({a:1, b:2, c:3, d:4}, 'b', 'd'));
-    this.assertEqual({a:1,c:3}, Object.only({a:1, b:2, c:3, d:4}, ['a', 'c']));
   },
-  
-  testWalk: function() {
-    var o = {'1': '1', '2': '2'};
-    this.assertSame(o, Object.walk(o, function(key, value) {
-      return [key+'k', value+'v'];
-    }));
     
-    this.assertEqual({'1k': '1v', '2k': '2v'}, o);
-  },
-  
-  testWalkWithBreak: function() {
-    var o = {'1': '1', '2': '2'};
-    this.assertSame(o, Object.walk(o, function(key, value) {
-      $break();
-      return [key+'k', value+'v'];
-    }));
-    
-    this.assertEqual({'1': '1', '2': '2'}, o);
-  },
-  
-  testEachKey: function() {
-    var o = {'1': '1', '2': '2'};
-    this.assertSame(o, Object.eachKey(o, function(key){
-      return key + 'x';
-    }));
-    this.assertEqual({'1x':'1', '2x':'2'}, o);
-  },
-  
   testMerge: function() {
     var o1 = {1:1};
     var o2 = {2:2};

@@ -70,11 +70,11 @@ Selector.Atom = new Class({
   buildMatch: function() {
     var matchers = [];
     
-    if (this.id)                        matchers.push('matchId');
-    if (this.tag != '*')                matchers.push('matchTag');
-    if (this.classes.length)            matchers.push('matchClass');
-    if (Object.keys(this.attrs).length) matchers.push('matchAttrs');
-    if (this.pseudo)                    matchers.push('matchPseudo');
+    if (this.id)                   matchers.push('matchId');
+    if (this.tag != '*')           matchers.push('matchTag');
+    if (this.classes.length)       matchers.push('matchClass');
+    if (!Object.empty(this.attrs)) matchers.push('matchAttrs');
+    if (this.pseudo)               matchers.push('matchPseudo');
     
     if (matchers.length == 1) {
       this.match = this[matchers[0]];
