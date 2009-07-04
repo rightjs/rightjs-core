@@ -40,6 +40,7 @@ the names in the options or specify your own function if you need.
   * Sin - fast at the beginning and the end, and slow in the middle
   * Exp - slow at the beginning and rapidly throttles to the end
   * Log - fast at the beginning and rapidly slows down to the end
+  * Lin - constant speed transition
 
 By default it's the <tt>Cos</tt> transition which suits most of the cases.
 

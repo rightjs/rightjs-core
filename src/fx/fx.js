@@ -40,6 +40,10 @@ var Fx = new Class(Observer, {
       
       Log: function(i) {
         return Math.log(1 + (Math.E-1) * i);
+      },
+      
+      Lin: function(i) {
+        return i;
       }
     }
   },
