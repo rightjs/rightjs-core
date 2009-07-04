@@ -44,14 +44,14 @@ var Xhr = new Class(Observer, {
    * @param Object options
    */
   initialize: function(url, options) {
+    this.initCallbacks(); // system level callbacks should be initialized before the user callbacks
+    
     this.url = url;
     this.$super(options);
     
     // copying some options to the instance level attributes
     for (var key in Xhr.Options)
       this[key] = this.options[key];
-      
-    this.initCallbacks();
   },
   
   /**
@@ -222,14 +222,15 @@ var Xhr = new Class(Observer, {
     if (this.spinner == Xhr.Options.spinner) this.spinner = null;
     
     // creating an automatical spinner handling
-    this.onCreate('showSpinner').onComplete('hideSpinner').onCancel('hideSpinner');
+    this.on('create', 'showSpinner').on('complete', 'hideSpinner').on('cancel', 'hideSpinner');
+    
+    // response scripts evaluation, should be before the global xhr callbacks
+    this.on('success', 'tryScripts');
     
     // wiring the global xhr callbacks
     Xhr.EVENTS.each(function(name) {
       this.on(name, function() { Xhr.fire(name, this, this.xhr); });
     }, this);
-    
-    this.onSuccess('tryScripts');
   },
   
   showSpinner: function() { if (this.spinner) $(this.spinner).show(); },

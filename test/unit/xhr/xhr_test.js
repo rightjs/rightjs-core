@@ -310,6 +310,24 @@ var XhrTest = TestCase.create({
     this.assertEqual('{1:1, 2:2}', request.text);
   },
   
+  testJSONEvaluationWithConstructorLevelCallbacks: function() {
+    this.mockAjax({
+      text: '{1:1, 2:2}',
+      headers: {
+        'Content-type': 'text/x-json'
+      }
+    });
+    
+    var result = null;
+    new Xhr('/some.json', {
+      onSuccess: function() {
+        result = this.responseJSON;
+      }
+    }).send();
+    
+    this.assertEqual({1:1, 2:2}, result);
+  },
+  
   testLoadShortcut: function() {
     this.mockAjax({text: 'response text'});
     
