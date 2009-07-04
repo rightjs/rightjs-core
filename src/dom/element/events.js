@@ -4,7 +4,9 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 Element.addMethods((function() {
-  var observer = Observer.create({});
+  var observer = Observer.create({}, 
+    $w('click rightclick mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
+  );
   
   observer.$o = {
     add: function(hash) {

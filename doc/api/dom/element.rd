@@ -81,6 +81,12 @@ Element has all the same methods as any Observer in the system.
   element.fire('click');
 </code>
 
+<b>NOTE</b> the default build has a limited version of the dom element
+events firing. It will initiate a dummy event which will simply go through
+all the listeners. If you need real dom-events with bubbling and ability to
+stop them from propagation then you need to include the advanced events
+handling module from the rightjs-goods project.
+
 You can use all the advantages of the observers like assigning methods by 
 name, and specifying options for the fired events.
 
@@ -109,6 +115,29 @@ And sure RightJS provides the custom events handling.
   
   element.fire('something');
 </code>
+
+== Event shortcuts
+
+Additionally for the frequently used events there are shortcuts to connect
+listeners and fire the events.
+
+<code>
+element.onClick(function() { ... }).click();
+element.onKeydown(function() {...}).keydown();
+</code>
+
+The list of supported events is following
+
+ * click
+ * rightclick
+ * mousedown
+ * mouseup
+ * mouseover
+ * mouseout
+ * mousemove
+ * keypress
+ * keydown
+ * keyup
 
 
 ### Element#initialize

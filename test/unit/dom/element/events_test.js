@@ -108,5 +108,15 @@ var ElementEventsTest = TestCase.create({
     
     this.assert(clicked);
     this.assert('click', event.eventName);
+  },
+  
+  testShortcuts: function() {
+    $w('click rightclick mousedown mouseup mouseover mouseout mousemove keypress keydown keyup').each(function(event) {
+      var submitted = false;
+      
+      this.el['on'+event.capitalize()](function() { submitted = true; })[event]();
+      
+      this.assert(submitted);
+    }, this);
   }
 });
