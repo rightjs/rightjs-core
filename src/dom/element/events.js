@@ -34,13 +34,21 @@ Element.addMethods((function() {
       } else {
         this.detachEvent('on'+ hash.n, hash.w);
       }
-    },
-    
-    fire: function(name, args, hash) {
-      var event = new Event(name, args.shift());
-      hash.f.apply(this, [event].concat(hash.a).concat(args));
     }
   };
+  
+  observer.fire = function() {
+    var args = $A(arguments), event = new Event(args.shift(), args.shift());
+    
+    (this.$listeners || []).each(function(i) {
+      if (i.e == event.eventName) {
+        i.f.apply(this, [event].concat(i.a).concat(args));
+        if (event.stopped) $break();
+      }
+    }, this);
+    
+    return this;
+  }
   
   $ext(window,   observer);
   $ext(document, observer);

@@ -15,6 +15,7 @@ Event.Custom = new Class({
     $ext(this, options || {});
   },
   
-  // just a dummy function to prevent the event extending
-  stop: function() {}
+  stop: function() {
+    this.stopped = true;
+  }
 });

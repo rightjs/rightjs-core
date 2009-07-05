@@ -110,6 +110,28 @@ var ElementEventsTest = TestCase.create({
     this.assert('click', event.eventName);
   },
   
+  testFireWithStop: function() {
+    var e1 = e2 = false;
+    
+    this.el.observe('click', function(e) { e1 = e; e.stop(); });
+    this.el.observe('click', function(e) { e2 = e; });
+    
+    this.el.fire('click');
+    
+    this.assert(e1);
+    this.assert(!e2);
+  },
+  
+  testFireArgumentsByPassing: function() {
+    var args, event;
+    
+    this.el.observe('click', function(e) { event = e; args = arguments; }, 1, 2);
+    this.el.fire('click', {a:3, b:4}, 5, 6);
+    
+    this.assertSame(event, args[0]);
+    this.assertEqual([1,2,5,6], $A(args).slice(1));
+  },
+  
   testShortcuts: function() {
     $w('click rightclick mousedown mouseup mouseover mouseout mousemove keypress keydown keyup').each(function(event) {
       var submitted = false;
