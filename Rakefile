@@ -62,6 +62,10 @@ JS_SOURCES = {
     dom/ready.js
   },
   
+  :cookie => %w{
+    util/cookie.js
+  },
+  
   :form => %w{
     dom/form.js
     dom/form/element.js

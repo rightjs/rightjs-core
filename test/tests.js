@@ -37,6 +37,8 @@ var tests = {
   OptionsTest:           'unit/util/options_test.js',
   ObserverTest:          'unit/util/observer_test.js',
   
+  CookieTest:            'unit/util/cookie_test.js',
+  
   XhrTest:               'unit/xhr/xhr_test.js',
   XhrIFramedTest:        'unit/xhr/xhr_iframed_test.js',
   

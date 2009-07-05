@@ -48,7 +48,7 @@ Element.addMethods((function() {
     }, this);
     
     return this;
-  }
+  };
   
   $ext(window,   observer);
   $ext(document, observer);
