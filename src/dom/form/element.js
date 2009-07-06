@@ -81,7 +81,7 @@ Form.Element = {
      * @return Element this
      */
     focus: function() {
-      Browser.OLD ? this._focus() : this._focus.apply(this);
+      Browser.OLD ? this._focus() : this._focus.call(this);
       this.focused = true;
       this.fire('focus');
       return this;
@@ -94,7 +94,7 @@ Form.Element = {
      */
     select: function() {
       this.focus();
-      Browser.OLD ? this._select() : this._select.apply(this);
+      Browser.OLD ? this._select() : this._select.call(this);
       return this;
     },
     
@@ -104,7 +104,7 @@ Form.Element = {
      * @return Element this
      */
     blur: function() {
-      Browser.OLD ? this._blur() : this._blur.apply(this);
+      Browser.OLD ? this._blur() : this._blur.call(this);
       this.focused = false;
       this.fire('blur');
       return this;

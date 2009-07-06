@@ -36,10 +36,8 @@ Class.Util = {
   catchExtends: function(klass, properties) {
     if (properties['extend']) {
       var exts = properties['extend'];
-      if (!isArray(exts))
-        exts = [exts];
       
-      klass.extend.apply(klass, exts);
+      klass.extend.apply(klass, isArray(exts) ? exts : [exts]);
       delete(properties['extend']);
     }
   },
@@ -54,10 +52,8 @@ Class.Util = {
   catchIncludes: function(klass, properties) {
     if (properties['include']) {
       var includes = properties['include'];
-      if (!isArray(includes))
-        includes = [includes];
 
-      klass.include.apply(klass, includes);
+      klass.include.apply(klass, isArray(includes) ? includes : [includes]);
       delete(properties['include']);
     }
   }
