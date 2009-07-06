@@ -102,8 +102,14 @@ var Xhr = new Class(Observer, {
       method = 'POST';
     }
     
+    var data = this.prepareData(this.params, url_params, params, add_params);
+    
     if (this.urlEncoded && method == 'POST') {
       this.setHeader('Content-type', 'application/x-www-form-urlencoded; charset='+this.encoding);
+    }
+    
+    if (method == 'GET') {
+      url += '?' + data;
     }
     
     this.xhr = this.createXhr();
@@ -117,7 +123,7 @@ var Xhr = new Class(Observer, {
       this.xhr.setRequestHeader(key, this.headers[key]);
     }
     
-    this.xhr.send(this.prepareData(this.params, url_params, params, add_params));
+    this.xhr.send(data);
     this.fire('request');
     
     if (!this.async) this.stateChanged();
