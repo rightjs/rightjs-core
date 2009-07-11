@@ -48,7 +48,7 @@ By default it's the <tt>Cos</tt> transition which suits most of the cases.
 ### Fx#initialize
 
 == Semantic
-  initialize([Object options])
+  initialize([Element element[, Object options]])
 
 == Description
   The basic constructor
@@ -107,4 +107,23 @@ By default it's the <tt>Cos</tt> transition which suits most of the cases.
   happening. During the effect run it receives float numbers from 0 to 1 which
   represents the position of the effect from the beginning to the end.
 
+### Fx#calc
 
+== Semantic
+  calc(number start, number end, number delta) -> number value
+
+== Description
+  Calculates the current value over the iterations
+
+== Example
+  var MyFx = new Class(Fx, {
+    // ....
+    
+    render: function(delta) {
+      var current_value = this.calc(this.startValue, this.endValue, delta);
+      
+      // ....
+    }
+    
+    // ...
+  });
