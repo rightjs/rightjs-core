@@ -131,6 +131,11 @@ var Fx = new Class(Observer, {
     }
   },
   
+  // calculates the current value
+  calc: function(start, end, delata) {
+    return start + (end - start) * delta;
+  },
+  
   startTimer: function() {
     this.timer = this.step.periodical((1000 / this.options.fps).round(), this);
     return this;
