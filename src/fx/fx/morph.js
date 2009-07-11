@@ -73,13 +73,15 @@ Fx.Morph = new Class(Fx, {
 
   // finds the style definition by a css-selector string
   _findStyle: function(style) {
-    Fx.Morph._container = Fx.Morph._container || $E('div').insertTo(document.body
+    var a_class = isString(style);
+    
+    Fx.Morph.$c = Fx.Morph.$c || $E('div').insertTo(document.body
       ).setStyle({ overflow: 'hidden', display: 'none' });
     
-    var element = $E('div').insertTo(Fx.Morph._container)[isString(style) ? 'addClass' : 'setStyle'](style);
-    var result  = this._getStyle(element, isString(style) ? Fx.Morph.STYLES : Object.keys(style));
+    var element = $(this.element.cloneNode(false)).insertTo(Fx.Morph.$c)[a_class ? 'addClass' : 'setStyle'](style);
+    var result  = this._getStyle(element, a_class ? Fx.Morph.STYLES : Object.keys(style));
     
-    if (isString(style) && ('width' in result || 'height' in result) ) {
+    if (a_class && ('width' in result || 'height' in result) ) {
       // fixing the width and heights
       var styles = element.computedStyles();
       var width  = element._getStyle(styles, 'width');
@@ -91,8 +93,9 @@ Fx.Morph = new Class(Fx, {
     
     // assigning the border style if the end style has a border
     var border_style = element.getStyle('borderTopStyle');
-    if (border_style != this.element.getStyle('borderTopStyle')) {
-      if (this.element.getStyle('borderTopStyle') == 'none') {
+    var element_border_style = this.element.getStyle('borderTopStyle');
+    if (border_style != element_border_style) {
+      if (element_border_style  == 'none') {
         this.element.style.borderWidth =  '0px';
       }
       this.element.style.borderStyle = border_style;
@@ -122,13 +125,25 @@ Fx.Morph = new Class(Fx, {
       key = key.camelize();
       style[key] = element._getStyle(styles, key);
       
+      if (style[key] == 'transparent' || style[key] == 'rgba(0, 0, 0, 0)') {
+        style[key] = this._getBGColor(element);
+      }
+      
       if (!style[key] || style[key] == 'auto') {
         style[key] = key == 'width'  ? element.offsetWidth  + 'px' :
                      key == 'height' ? element.offsetHeight + 'px' : '';
       }
-    });
+    }, this);
     
     return name ? style[name] : style;
+  },
+  
+  // looking for the visible background color of the element
+  _getBGColor: function(element) {
+    return [element].concat(element.parents()).map(function(node) {
+      var bg = node.getStyle('backgroundColor');
+      return (bg && bg != 'transparent' && bg != 'rgba(0, 0, 0, 0)') ? bg : null; 
+    }).compact().first() || 'rgb(255,255,255)';
   },
   
   // prepares the style values to be processed correctly

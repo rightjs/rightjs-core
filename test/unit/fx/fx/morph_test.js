@@ -4,7 +4,7 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 document.write("<st"+"yle>"+
-  "div.test---12345  { font-size: 200px; color: yellow; border-color: yellow; }"+
+  "div.test---12345  { font-size: 200px !important; color: yellow; border-color: yellow; }"+
   "div.test---123456 { height: 200px; }"+
 "</st"+"yle>");
 
