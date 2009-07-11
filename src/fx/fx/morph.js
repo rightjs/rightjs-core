@@ -7,17 +7,6 @@ Fx.Morph = new Class(Fx, {
   extend: {
     STYLES: $w('width height lineHeight opacity borderWidth borderColor padding margin color fontSize backgroundColor marginTop marginLeft marginRight marginBottom top left right bottom')
   },
-  
-  /**
-   * basic constructor
-   *
-   * @param mixed element
-   * @param Object options
-   */
-  initialize: function(element, options) {
-    this.$super(options);
-    this.element = $(element);
-  },
 
 // protected
   

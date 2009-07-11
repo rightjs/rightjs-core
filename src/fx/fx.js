@@ -53,8 +53,9 @@ var Fx = new Class(Observer, {
    *
    * @param Object options
    */
-  initialize: function(options) {
+  initialize: function(element, options) {
     this.$super(options);
+    this.element = $(element);
   },
   
   /**

@@ -15,11 +15,14 @@ var FxTest = TestCase.create({
   },
   
   testInstanceWithOptions: function() {
-    var fx = new Fx({
+    var el = $E('div');
+    var fx = new Fx(el, {
       fps: 20,
       duration: 500,
       transition: 'Exp'
     });
+    
+    this.assertSame(el, fx.element);
     
     this.assertEqual(20, fx.options.fps);
     this.assertEqual(500, fx.options.duration);
