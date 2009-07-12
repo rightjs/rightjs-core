@@ -60,8 +60,8 @@ var Event = new Class(Event, {
      * @return String real name
      */
     realName: function(name) {
-      if (name == 'mousewheel' && Browser.Gecko) name = 'DOMMouseScroll';
-      if (name == 'rightclick' && Browser.IE)    name = 'contextmenu';
+      if (name == 'mousewheel' && Browser.Gecko)      name = 'DOMMouseScroll';
+      if (name == 'rightclick' && !Browser.Konqueror) name = 'contextmenu';
       return name;
     }
   },

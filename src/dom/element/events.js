@@ -5,7 +5,7 @@
  */
 Element.addMethods((function() {
   var observer = Observer.create({}, 
-    $w('click rightclick mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
+    $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
   );
   
   observer.$o = {
@@ -38,14 +38,20 @@ Element.addMethods((function() {
   };
   
   observer.fire = function() {
-    var args = $A(arguments), event = new Event(args.shift(), args.shift());
+    var args = $A(arguments), event = new Event(args.shift(), Object.merge(args.shift(), {element: this}));
     
-    (this.$listeners || []).each(function(i) {
-      if (i.e == event.eventName) {
-        i.f.apply(this, [event].concat(i.a).concat(args));
-        if (event.stopped) $break();
-      }
-    }, this);
+    if (event instanceof Event.Custom) {
+      (this.$listeners || []).each(function(i) {
+        if (i.e == event.eventName) {
+          i.f.apply(this, [event].concat(i.a).concat(args));
+          if (event.stopped) $break();
+        }
+      }, this);
+    } else if (this.dispatchEvent) {
+      this.dispatchEvent(event);
+    } else {
+      this.fireEvent(event.eventType, event);
+    }
     
     return this;
   };
