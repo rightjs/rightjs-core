@@ -33,6 +33,7 @@ var tests = {
   FormElementTest:       'unit/dom/form/element_test.js',
   
   DomReadyTest:          'unit/dom/ready_test.js',
+  WindowTest:            'unit/dom/window_test.js',
   
   OptionsTest:           'unit/util/options_test.js',
   ObserverTest:          'unit/util/observer_test.js',
