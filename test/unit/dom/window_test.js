@@ -40,18 +40,24 @@ var WindowTest = TestCase.create({
   },
   
   testScrollTo: function() {
+    if (Browser.Konqueror) return;
+    
     this.assertSame(window, window.scrollTo(0, 60));
     
     this.assertEqual(60, window.scrolls().y);
   },
   
   testScrollToWithHash: function() {
+    if (Browser.Konqueror) return;
+    
     this.assertSame(window, window.scrollTo({x: 0, y: 80}));
     
     this.assertEqual(80, window.scrolls().y);
   },
   
   testScrollToElement: function() {
+    if (Browser.Konqueror) return;
+    
     var el = $E('div').setStyle({
       position: 'absolute',
       left: '0px', top: '120px'
