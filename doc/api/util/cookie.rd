@@ -5,23 +5,23 @@
 You can work with the {Cookie} object at the class level
 
 <code>
-Cookie.set('name', 'value');
-Cookie.set('name', 'value', {duration: 10});
-
-Cookie.get('name');
-
-Cookie.remove('name');
+  Cookie.set('name', 'value');
+  Cookie.set('name', 'value', {duration: 10});
+  
+  Cookie.get('name');
+  
+  Cookie.remove('name');
 </code>
 
 Or you can use usual instances
 
 <code>
-var cookie = new Cookie('name');
-var cookie = new Cookie('name', {duration: 4});
-
-cookie.set('value');
-
-cookie.remove();
+  var cookie = new Cookie('name');
+  var cookie = new Cookie('name', {duration: 4});
+  
+  cookie.set('value');
+  
+  cookie.remove();
 </code>
 
 == Options
@@ -39,9 +39,9 @@ You can safely feed the API with any strings, all the values will be
 automatically encoded and decoded.
 
 <code>
-Cookie.set('name', '%"&=*"');
-
-Cookie.get('name'); // -> '%"&=*"'
+  Cookie.set('name', '%"&=*"');
+  
+  Cookie.get('name'); // -> '%"&=*"'
 </code>
 
 NOTE: You cannot throw objects and arrays into the method yet. The feature
