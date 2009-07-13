@@ -20,7 +20,7 @@ $ext(self, {
    * @return Object x: d+, y: d+
    */
   scrolls: function() {
-    return this.pageXOffset ? {x: this.pageXOffset, y: this.pageYOffset} :
+    return (this.pageXOffset || this.pageYOffset) ? {x: this.pageXOffset, y: this.pageYOffset} :
       (this.document.body.scrollLeft || this.document.body.scrollTop) ? 
       {x: this.document.body.scrollLeft, y: this.document.body.scrollTop} :
       {x: this.document.documentElement.scrollLeft, y: this.document.documentElement.scrollTop};

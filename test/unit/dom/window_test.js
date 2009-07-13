@@ -8,10 +8,15 @@ var WindowTest = TestCase.create({
   
   beforeAll: function() {
     this.__pos = window.scrolls();
+    
+    this.stretcher = $E('div').insertTo(document.body).setStyle({
+      width: '10px', height: '2000px'
+    });
   },
   
   afterAll: function() {
     window.scrollTo(this.__pos);
+    this.stretcher.remove();
   },
   
   testSizes: function() {
@@ -24,6 +29,8 @@ var WindowTest = TestCase.create({
   },
   
   testScrolls: function() {
+    if (Browser.Konqueror) return;
+    
     window.scrollTo(0, 40);
     
     var scrolls = window.scrolls();
