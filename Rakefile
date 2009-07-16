@@ -15,7 +15,7 @@ require 'rake'
 require 'fileutils'
 require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
 
-RIGHTJS_VERSION = '1.2.0'
+RIGHTJS_VERSION = '1.2.1'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right.js'
