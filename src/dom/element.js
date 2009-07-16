@@ -83,36 +83,6 @@ window.Element = new Class(window.Element, {
       }
       
       return this;
-    },
-    
-    /**
-     * creates a fragment out of the incomming data
-     *
-     * @param mixed a string of html, or a list of nodes or a single node
-     * @return DocumentFragment
-     */
-    createFragment: function(content) {
-      var fragment;
-      
-      if (isString(content)) {
-        fragment = content.toFragment();
-        
-      } else {
-        fragment = document.createDocumentFragment();
-        
-        if (isNode(content)) {
-          fragment.appendChild(content);
-        } else if (content && content.length) {
-          for (var i=0, length = content.length; i < length; i++) {
-            // in case of NodeList unit, the elements will be removed out of the list during the appends
-            // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
-            // then we always hit the first element of the stack
-            fragment.appendChild(content[content.length == length ? i : 0]);
-          }
-        }
-      }
-      
-      return fragment;
     }
   }
 });

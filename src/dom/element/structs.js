@@ -96,7 +96,7 @@ Element.addMethods({
         content = content.stripScripts(function(s, h) { scripts = s; });
       }
       
-      this.insertions[position].call(this, Element.createFragment(content));
+      Element.insertions[position].call(this, Element.insertions.createFragment.call(this, content));
       $eval(scripts);
     }
     return this;
@@ -186,37 +186,84 @@ Element.addMethods({
     }
     
     return nodes;
+  }
+});
+
+// list of insertions handling functions
+// NOTE: each of the methods will be called in the contects of the current element
+Element.insertions = {
+  bottom: function(element) {
+    this.appendChild(element);
   },
   
-// protected
+  top: function(element) {
+    this.firstChild ? this.insertBefore(element, this.firstChild) : this.appendChild(element);
+  },
   
-  // list of insertions handling functions
-  // NOTE: each of the methods will be called in the contects of the current element
-  insertions: {
-    bottom: function(element) {
-      this.appendChild(element);
-    },
+  after: function(element) {
+    if (this.parentNode) {
+      this.nextSibling ? this.parentNode.insertBefore(element, this.nextSibling) : this.parentNode.appendChild(element);
+    }
+  },
+  
+  before: function(element) {
+    if (this.parentNode) {
+      this.parentNode.insertBefore(element, this);
+    }
+  },
+  
+  instead: function(element) {
+    if (this.parentNode) {
+      this.parentNode.replaceChild(element, this);
+    }
+  },
+  
+  // converts any data into a html fragment unit
+  createFragment: function(content) {
+    var fragment;
     
-    top: function(element) {
-      this.firstChild ? this.insertBefore(element, this.firstChild) : this.appendChild(element);
-    },
-    
-    after: function(element) {
-      if (this.parentNode) {
-        this.nextSibling ? this.parentNode.insertBefore(element, this.nextSibling) : this.parentNode.appendChild(element);
+    if (isString(content)) {
+      var tmp = document.createElement('div'),
+          wrap = Element.insertions.wraps[this.tagName] || ['', '', 0],
+          depth = wrap[2];
+          
+      tmp.innerHTML = wrap[0] + content + wrap[1];
+      
+      while (depth > 0) {
+        tmp = tmp.firstChild;
+        depth--;
       }
-    },
-    
-    before: function(element) {
-      if (this.parentNode) {
-        this.parentNode.insertBefore(element, this);
-      }
-    },
-    
-    instead: function(element) {
-      if (this.parentNode) {
-        this.parentNode.replaceChild(element, this);
+      
+      fragment = arguments.callee.call(this, tmp.childNodes);
+      
+    } else {
+      fragment = document.createDocumentFragment();
+      
+      if (isNode(content)) {
+        fragment.appendChild(content);
+      } else if (content && content.length) {
+        for (var i=0, length = content.length; i < length; i++) {
+          // in case of NodeList unit, the elements will be removed out of the list during the appends
+          // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
+          // then we always hit the first element of the stack
+          fragment.appendChild(content[content.length == length ? i : 0]);
+        }
       }
     }
+    
+    return fragment;
+  },
+  
+  wraps: {
+    TABLE:  ['<table>',                '</table>',                   1],
+    TBODY:  ['<table><tbody>',         '</tbody></table>',           2],
+    TR:     ['<table><tbody><tr>',     '</tr></tbody></table>',      3],
+    TD:     ['<table><tbody><tr><td>', '</td></tr></tbody></table>', 4],
+    SELECT: ['<select>',               '</select>',                  1]
   }
+};
+$alias(Element.insertions.wraps, {
+  THEAD: 'TBODY',
+  TFOOT: 'TBODY',
+  TH:    'TD'
 });

@@ -276,6 +276,20 @@ var ElementStructsTest = TestCase.create({
     );
   },
   
+  testInsertTable: function() {
+    var el = $E('table').insert('<tr><td>test</td></tr>');
+    this.assertEqual('<tbody><tr><td>test</td></tr></tbody>',
+      el.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+    )
+  },
+  
+  testInsertOptions: function() {
+    var el = $E('select').insert('<option>test</option>');
+    this.assertEqual('<option>test</option>',
+      el.innerHTML.toLowerCase().replace(/\s+</mg, "<").replace(' selected', '') // <- IE fix
+    )
+  },
+  
   testInsertTo: function() {
     var div = document.createElement('div');
     

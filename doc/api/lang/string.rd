@@ -274,19 +274,3 @@ We are already use them in some strings processing, like for example
   '123,45'.toFloat(); // -> 123.45
   '123-45'.toFloat(); // -> 123.45
 
-
-
-### String#toFragment
-
-== Semantic
-  toFragment() -> DocumentFragment
-
-== Description
-  Processes the string as an html text and converts it into a DocumentFrament 
-  unit so you could work with it like with a single DOM unit. Used to bust up 
-  DOM manipulations on complex structures.
-
-== Example
-  var fragment = '<b>b</b><i>i</i><u>u</u>'.toFragment();
-  
-  fragment.childNodes; // [b, i, u]

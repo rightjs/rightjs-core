@@ -85,36 +85,5 @@ var ElementTest = TestCase.create({
     
     this.assertEqual('some-title', div.title);
     this.assertEqual('some-title-id', div.id);
-  },
-  
-  testElement_createFragment: function() {
-    var string = '<div><b></b></div><span></span>';
-    
-    
-    var block  = document.createElement('div');
-    
-    block.appendChild(Element.createFragment(string));
-    
-    this.assertEqual(string, block.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
-    
-    // trying with a list of elements
-    var block  = document.createElement('div');
-    
-    var div    = document.createElement('div');
-    var b      = document.createElement('b');
-    var span   = document.createElement('span');
-    
-    div.appendChild(b);
-    
-    block.appendChild(Element.createFragment([div, span]));
-    
-    this.assertEqual(string, block.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
-    
-    // trying a single unit
-    var block  = document.createElement('div');
-    
-    block.appendChild(Element.createFragment(div));
-    
-    this.assertEqual('<div><b></b></div>', block.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
   }
 });

@@ -118,15 +118,6 @@ var StringTest = TestCase.create({
     this.assert(isNaN('asdf'.toFloat()));
   },
   
-  testToFragment: function() {
-    var string = '<div><b></b></div>asdfasdf<div>bla</div>';
-    var fragment = string.toFragment();
-    var div = document.createElement('div');
-    div.appendChild(fragment);
-    
-    this.assertEqual(string.toLowerCase(), div.innerHTML.toLowerCase().replace(/\s+/mg, "")); // IE tries to wrap the elements
-  },
-  
   testToHex: function() {
     this.assertEqual('#FFFFFF', '#FFF'.toHex());
     this.assertEqual('#AABB88', '#AB8'.toHex());
