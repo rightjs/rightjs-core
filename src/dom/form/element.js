@@ -117,9 +117,9 @@ Observer.createShortcuts(Form.Element.Methods, $w('disable enable focus blur'));
 try { // extending the input element prototypes
   [HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement, HTMLButtonElement].each(function(klass) {
     $alias(klass.prototype, {
-      blur:   '_blur',
-      focus:  '_focus',
-      select: '_select'
+      _blur:   'blur',
+      _focus:  'focus',
+      _select: 'select'
     });
     $ext(klass.prototype, Form.Element.Methods);
   });

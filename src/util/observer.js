@@ -175,4 +175,4 @@ var Observer = new Class({
   }
 });
 
-$alias(Observer.prototype, { observe: 'on' });
+$alias(Observer.prototype, { on: 'observe' });

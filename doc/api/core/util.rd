@@ -147,7 +147,7 @@ with everyday coding operations, checks etc.
   };
   
   $alias(o, {
-    foo: 'bar'
+    bar: 'foo'
   });
   
   // now 'foo' and 'bar' refer to the same function

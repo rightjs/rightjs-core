@@ -174,19 +174,8 @@ $ext(String.prototype, {
    */
   toFloat: function(strict) {
     return parseFloat(strict ? this : this.replace(',', '.').replace(/(\d)-(\d)/g, '$1.$2'));
-  },
-  
-  /**
-   * converts the string into an insertable DocumentFramgent unit
-   *
-   * @return DocumentFragment node
-   */
-  toFragment: function() {
-    var tmp = document.createElement('div');
-    tmp.innerHTML = this;
-    return Element.createFragment(tmp.childNodes);
   }
   
 });
 
-$alias(String.prototype, {includes: 'include'});
+$alias(String.prototype, {include: 'includes'});

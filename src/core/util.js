@@ -78,8 +78,8 @@ function $break() {
  * @return Object the extended objects
  */
 function $alias(object, names) {
-  for (var old_name in names) {
-    object[names[old_name]] = object[old_name];
+  for (var new_name in names) {
+    object[new_name] = object[names[new_name]];
   }
   return object;
 };

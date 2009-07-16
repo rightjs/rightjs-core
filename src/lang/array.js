@@ -349,4 +349,4 @@ $ext(Array.prototype, {
   }
 });
 
-$alias(Array.prototype, {includes: 'include'});
+$alias(Array.prototype, {include: 'includes'});
