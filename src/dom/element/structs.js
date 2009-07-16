@@ -96,7 +96,12 @@ Element.addMethods({
         content = content.stripScripts(function(s, h) { scripts = s; });
       }
       
-      Element.insertions[position].call(this, Element.insertions.createFragment.call(this, content));
+      Element.insertions[position](this,
+        Element.insertions.createFragment.call(
+          (position == 'bottom' || position == 'top' || !this.parentNode) ?
+            this : this.parentNode, content
+        )
+      );
       $eval(scripts);
     }
     return this;
@@ -192,29 +197,29 @@ Element.addMethods({
 // list of insertions handling functions
 // NOTE: each of the methods will be called in the contects of the current element
 Element.insertions = {
-  bottom: function(element) {
-    this.appendChild(element);
+  bottom: function(target, content) {
+    target.appendChild(content);
   },
   
-  top: function(element) {
-    this.firstChild ? this.insertBefore(element, this.firstChild) : this.appendChild(element);
+  top: function(target, content) {
+    target.firstChild ? target.insertBefore(content, target.firstChild) : target.appendChild(content);
   },
   
-  after: function(element) {
-    if (this.parentNode) {
-      this.nextSibling ? this.parentNode.insertBefore(element, this.nextSibling) : this.parentNode.appendChild(element);
+  after: function(target, content) {
+    if (target.parentNode) {
+      target.nextSibling ? target.parentNode.insertBefore(content, target.nextSibling) : target.parentNode.appendChild(content);
     }
   },
   
-  before: function(element) {
-    if (this.parentNode) {
-      this.parentNode.insertBefore(element, this);
+  before: function(target, content) {
+    if (target.parentNode) {
+      target.parentNode.insertBefore(content, target);
     }
   },
   
-  instead: function(element) {
-    if (this.parentNode) {
-      this.parentNode.replaceChild(element, this);
+  instead: function(target, content) {
+    if (target.parentNode) {
+      target.parentNode.replaceChild(content, target);
     }
   },
   

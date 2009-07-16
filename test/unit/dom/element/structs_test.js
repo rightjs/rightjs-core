@@ -280,7 +280,17 @@ var ElementStructsTest = TestCase.create({
     var el = $E('table').insert('<tr><td>test</td></tr>');
     this.assertEqual('<tbody><tr><td>test</td></tr></tbody>',
       el.innerHTML.toLowerCase().replace(/\s+</mg, "<")
-    )
+    );
+    
+    el.first('tr').insert('<tr><td>another</td></tr>', 'after');
+    this.assertEqual('<tbody><tr><td>test</td></tr><tr><td>another</td></tr></tbody>',
+      el.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+    );
+    
+    el.first('tr').insert('<tr><td>more</td></tr>', 'before');
+    this.assertEqual('<tbody><tr><td>more</td></tr><tr><td>test</td></tr><tr><td>another</td></tr></tbody>',
+      el.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+    );
   },
   
   testInsertOptions: function() {
