@@ -7,8 +7,6 @@
  */
 var Event = new Class(Event, {
   extend: {
-    NATIVE:   Event,
-    
     Methods: {
       stopPropagation: function() {
         this.cancelBubble = true;
