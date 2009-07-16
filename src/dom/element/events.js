@@ -34,26 +34,12 @@ Element.addMethods((function() {
       } else {
         this.detachEvent('on'+ hash.n, hash.w);
       }
-    }
-  };
-  
-  observer.fire = function() {
-    var args = $A(arguments), event = new Event(args.shift(), Object.merge(args.shift(), {element: this}));
+    },
     
-    if (event instanceof Event.Custom) {
-      (this.$listeners || []).each(function(i) {
-        if (i.e == event.eventName) {
-          i.f.apply(this, [event].concat(i.a).concat(args));
-          if (event.stopped) $break();
-        }
-      }, this);
-    } else if (this.dispatchEvent) {
-      this.dispatchEvent(event);
-    } else {
-      this.fireEvent(event.eventType, event);
+    fire: function(name, args, hash) {
+      var event = new Event(name, args.shift());
+      hash.f.apply(this, [event].concat(hash.a).concat(args));
     }
-    
-    return this;
   };
   
   $ext(window,   observer);

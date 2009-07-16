@@ -119,7 +119,7 @@ var ElementEventsTest = TestCase.create({
     this.el.fire('click');
     
     this.assert(e1);
-    this.assert(!e2);
+    this.assert(e2);
   },
   
   testFireArgumentsByPassing: function() {
