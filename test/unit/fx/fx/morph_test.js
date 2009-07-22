@@ -34,6 +34,13 @@ var FxMorphTest = TestCase.create({
     
     this.assertEqual({height: [100, 'px'], color: [255,255,255]}, this.fx.endStyle);
     this.assertEqual({height: [0,   'px'], color: [0,0,0]}, this.fx.startStyle);
+    
+    this.fx.start({
+      left: '-100px'
+    });
+    
+    this.assertEqual({left: [0, 'px']}, this.fx.startStyle);
+    this.assertEqual({left: [-100, 'px']}, this.fx.endStyle);
   },
   
   testNamedColorsRecognition: function() {

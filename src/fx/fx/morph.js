@@ -139,7 +139,7 @@ Fx.Morph = new Class(Fx, {
   _cleanStyles: function() {
     // filling up missing styles
     for (var key in this.endStyle) {
-      if (this.startStyle[key] === '' && this.endStyle[key].match(/^[\d\.]+[a-z]+$/)) {
+      if (this.startStyle[key] === '' && this.endStyle[key].match(/^[\d\.\-]+[a-z]+$/)) {
         this.startStyle[key] = '0px';
       }
     }
@@ -171,7 +171,7 @@ Fx.Morph = new Class(Fx, {
         } else if (style[key].match(/^[\d\.]+$/)) {
           // preparing numberic values
           style[key] = style[key].toFloat();
-        } else if (match = style[key].match(/^([\d\.]+)([a-z]+)$/i)) {
+        } else if (match = style[key].match(/^([\d\.\-]+)([a-z]+)$/i)) {
           // preparing values with dimensions
           style[key] = [match[1].toFloat(), match[2]];
         }
