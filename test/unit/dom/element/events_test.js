@@ -107,7 +107,7 @@ var ElementEventsTest = TestCase.create({
     this.assertSame(this.el, this.el.fire('click'));
     
     this.assert(clicked);
-    this.assert('click', event.eventName);
+    this.assert('click', event.type);
   },
   
   testFireWithStop: function() {
@@ -133,12 +133,12 @@ var ElementEventsTest = TestCase.create({
   },
   
   testShortcuts: function() {
-    $w('click rightclick mousedown mouseup mouseover mouseout mousemove keypress keydown keyup').each(function(event) {
+    $w('click contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup').each(function(event) {
       var submitted = false;
       
       this.el['on'+event.capitalize()](function() { submitted = true; })[event]();
       
-      this.assert(submitted);
+      this.assert(submitted, "testing event: "+event);
     }, this);
   }
 });

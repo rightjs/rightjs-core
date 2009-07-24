@@ -23,8 +23,19 @@ var EventTest = TestCase.create({
     });
     
     this.assertInstanceOf(Event.Custom, event);
-    this.assertEqual('custom', event.eventName);
+    this.assertEqual('custom', event.type);
     this.assertEqual('foo', event.foo);
     this.assertEqual('bar', event.bar);
+  },
+  
+  testMouseEventW3CExtending: function() {
+    var ev = null;
+    var element = $E('div').insertTo(document.body).onClick(function(e) { ev = e; });
+    this.fireClick(element);
+    
+    this.assertEqual(1, ev.which);
+    this.assertSame(element, ev.target);
+    this.assert(ev.pageX !== undefined);
+    this.assert(ev.pageY !== undefined);
   }
 });

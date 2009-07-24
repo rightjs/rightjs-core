@@ -11,11 +11,9 @@ Event.Custom = new Class({
    * @param Object options
    */
   initialize: function(name, options) {
-    this.eventName = Event.cleanName(name);
+    this.type = name;
     $ext(this, options || {});
   },
   
-  stop: function() {
-    this.stopped = true;
-  }
+  stop: function() {}
 });

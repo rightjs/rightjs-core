@@ -20,6 +20,10 @@ var Event = new Class(Event, {
         this.stopPropagation();
         this.preventDefault();
         return this;
+      },
+      
+      position: function() {
+        return {x: this.pageX, y: this.pageY};
       }
     },
         
@@ -32,8 +36,36 @@ var Event = new Class(Event, {
     ext: function(event) {
       if (!event.stop) {
         $ext(event, this.Methods, true);
-        event.eventName = this.cleanName(event.type || '');
+        
+        if (Browser.IE) {
+          // faking the which button
+          if (event.type == 'click' || event.type == 'dblclick') {
+            event.which = 1;
+          } else if (event.type == 'contextmenu') {
+            event.which = 3;
+          } else {
+            event.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
+          }
+          
+          // faking the mouse position
+          var scrolls = window.scrolls();
+
+          event.pageX = event.clientX + scrolls.x;
+          event.pageY = event.clientY + scrolls.y;
+
+
+          // faking the relatedElement
+          event.relatedElement = event.type == 'mouseover' ? event.fromEvent :
+            event.type == 'mouseout' ? event.toEvent : null;
+
+          // faking the target property  
+          event.target = event.srcElement;
+        }
       }
+      
+      // Safari bug fix
+      if (event.target && event.target.nodeType == 3)
+        event.target = event.target.parentNode;
       
       return event;
     },
@@ -47,7 +79,7 @@ var Event = new Class(Event, {
     cleanName: function(name) {
       name = name.toLowerCase();
       name = name.startsWith('on') ? name.slice(2) : name;
-      name = name == 'contextmenu' ? 'rightclick'  : name;
+      name = name == 'rightclick'  ? 'contextmenu' : name;
       return name;
     },
     
@@ -58,8 +90,8 @@ var Event = new Class(Event, {
      * @return String real name
      */
     realName: function(name) {
-      if (name == 'mousewheel' && Browser.Gecko)      name = 'DOMMouseScroll';
-      if (name == 'rightclick' && !Browser.Konqueror) name = 'contextmenu';
+      if (Browser.Gecko     && name == 'mousewheel')  name = 'DOMMouseScroll';
+      if (Browser.Konqueror && name == 'contextmenu') name = 'rightclick';
       return name;
     }
   },
@@ -75,3 +107,8 @@ var Event = new Class(Event, {
     return new Event.Custom(Event.cleanName(name), options);
   }
 });
+
+try {
+  // boosting up the native events by preextending the prototype if available
+  $ext(Event.parent.prototype, Event.Methods, true);
+} catch(e) {};
