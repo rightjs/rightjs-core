@@ -3,28 +3,26 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-$ext(String, {
-  COLORS: {
-    maroon:  '#800000',
-    red:     '#ff0000',
-    orange:  '#ffA500',
-    yellow:  '#ffff00',
-    olive:   '#808000',
-    purple:  '#800080',
-    fuchsia: '#ff00ff',
-    white:   '#ffffff',
-    lime:    '#00ff00',
-    green:   '#008000',
-    navy:    '#000080',
-    blue:    '#0000ff',
-    aqua:    '#00ffff',
-    teal:    '#008080',
-    black:   '#000000',
-    silver:  '#c0c0c0',
-    gray:    '#808080',
-    brown:   '#a52a2a'
-  }
-});
+String.COLORS = {
+  maroon:  '#800000',
+  red:     '#ff0000',
+  orange:  '#ffA500',
+  yellow:  '#ffff00',
+  olive:   '#808000',
+  purple:  '#800080',
+  fuchsia: '#ff00ff',
+  white:   '#ffffff',
+  lime:    '#00ff00',
+  green:   '#008000',
+  navy:    '#000080',
+  blue:    '#0000ff',
+  aqua:    '#00ffff',
+  teal:    '#008080',
+  black:   '#000000',
+  silver:  '#c0c0c0',
+  gray:    '#808080',
+  brown:   '#a52a2a'
+};
 
 $ext(String.prototype, {
   /**
