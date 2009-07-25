@@ -64,8 +64,8 @@ Fx.Morph = new Class(Fx, {
   _findStyle: function(style) {
     var a_class = isString(style);
     
-    Fx.Morph.$c = Fx.Morph.$c || $E('div').insertTo(document.body
-      ).setStyle({ overflow: 'hidden', display: 'none' });
+    Fx.Morph.$c = Fx.Morph.$c || $E('div', {style: "visibility:hidden;overflow:hidden;height:0;width:0"})
+    Fx.Morph.$c.insertTo(this.element, 'after');
     
     var element = $(this.element.cloneNode(false)).insertTo(Fx.Morph.$c)[a_class ? 'addClass' : 'setStyle'](style);
     var result  = this._getStyle(element, a_class ? Fx.Morph.STYLES : Object.keys(style));
