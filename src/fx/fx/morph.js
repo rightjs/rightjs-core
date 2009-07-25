@@ -19,14 +19,14 @@ Fx.Morph = new Class(Fx, {
   prepare: function(style) {
     this.endStyle   = this._findStyle(style);
     this.startStyle = this._getStyle(this.element, Object.keys(this.endStyle));
-
-    this._cleanStyles(this.startStyle, this.endStyle);
     
-    return Object.empty(this.endStyle) ? this.finish() : this.$super();
+    this._cleanStyles();
+    
+    return this.$super();
   },
   
   render: function(delta) {
-    var style = {}, value;
+    var value;
     
     for (var key in this.endStyle) {
       value = this._calcStyle(key, delta);
@@ -64,43 +64,39 @@ Fx.Morph = new Class(Fx, {
   _findStyle: function(style) {
     var a_class = isString(style);
     
-    Fx.Morph.$c = Fx.Morph.$c || $E('div', {style: "visibility:hidden;overflow:hidden;height:0;width:0"})
-    Fx.Morph.$c.insertTo(this.element, 'after');
+    // a container for the styles extraction element
+    Fx.Morph.$c = (Fx.Morph.$c || $E('div', {style: "visibility:hidden;float:left;height:0;width:0"})).insertTo(this.element, 'after');
     
+    // a dummy node to calculate the end styles
     var element = $(this.element.cloneNode(false)).insertTo(Fx.Morph.$c)[a_class ? 'addClass' : 'setStyle'](style);
-    var result  = this._getStyle(element, a_class ? Fx.Morph.STYLES : Object.keys(style));
     
-    if (a_class && ('width' in result || 'height' in result) ) {
-      // fixing the width and heights
-      var styles = element.computedStyles();
-      var width  = element._getStyle(styles, 'width');
-      var height = element._getStyle(styles, 'height');
-      
-      if (!width  || width == 'auto')  delete(result['width']);
-      if (!height || height == 'auto') delete(result['height']);
-    }
+    // grabbing the computed styles
+    var element_styles      = element.computedStyles();
+    var this_element_styles = this.element.computedStyles();
+    
+    // grabbing the element style
+    var end_style = this._getStyle(element, a_class ? Fx.Morph.STYLES : Object.keys(style), element_styles);
     
     // assigning the border style if the end style has a border
-    var border_style = element.getStyle('borderTopStyle');
-    var element_border_style = this.element.getStyle('borderTopStyle');
+    var border_style = element_styles.borderTopStyle, element_border_style = this_element_styles.borderTopStyle;
     if (border_style != element_border_style) {
       if (element_border_style  == 'none') {
         this.element.style.borderWidth =  '0px';
       }
       this.element.style.borderStyle = border_style;
-      if (this.element.getStyle('borderColor') == 'transparent') {
-        this.element.style.borderColor = this.element.getStyle('color');
+      if (this._transp(this_element_styles.borderTopColor)) {
+        this.element.style.borderColor = this_element_styles.color;
       }
     }
     
     element.remove();
     
-    return result;
+    return end_style;
   },
   
   // grabs computed styles with the given keys out of the element
-  _getStyle: function(element, keys) {
-    var style = {}, styles = element.computedStyles(), name;
+  _getStyle: function(element, keys, styles) {
+    var style = {}, styles = styles || element.computedStyles(), name;
     if (isString(keys)) { name = keys, keys = [keys]; }
     
     // keys preprocessing
@@ -114,7 +110,7 @@ Fx.Morph = new Class(Fx, {
       key = key.camelize();
       style[key] = element._getStyle(styles, key);
       
-      if (style[key] == 'transparent' || style[key] == 'rgba(0, 0, 0, 0)') {
+      if (this._transp(style[key])) {
         style[key] = this._getBGColor(element);
       }
       
@@ -131,28 +127,28 @@ Fx.Morph = new Class(Fx, {
   _getBGColor: function(element) {
     return [element].concat(element.parents()).map(function(node) {
       var bg = node.getStyle('backgroundColor');
-      return (bg && bg != 'transparent' && bg != 'rgba(0, 0, 0, 0)') ? bg : null; 
-    }).compact().first() || 'rgb(255,255,255)';
+      return (bg && !this._transp(bg)) ? bg : null; 
+    }, this).compact().first() || 'rgb(255,255,255)';
   },
   
   // prepares the style values to be processed correctly
   _cleanStyles: function() {
+    var end = this.endStyle, start = this.startStyle;
+    
     // filling up missing styles
-    for (var key in this.endStyle) {
-      if (this.startStyle[key] === '' && this.endStyle[key].match(/^[\d\.\-]+[a-z]+$/)) {
-        this.startStyle[key] = '0px';
+    for (var key in end) {
+      if (start[key] === '' && end[key].match(/^[\d\.\-]+[a-z]+$/)) {
+        start[key] = '0px';
       }
     }
     
-    $A(arguments).each(this._cleanStyle, this);
+    [end, start].each(this._cleanStyle, this);
     
     // removing duplications between start and end styles
-    for (var key in this.endStyle) {
-      if (this.endStyle[key] instanceof Array ?
-         this.endStyle[key].join() === this.startStyle[key].join() :
-         this.endStyle[key] === this.startStyle[key]) {
-        delete(this.endStyle[key]);
-        delete(this.startStyle[key]);
+    for (var key in end) {
+      if (!defined(start[key]) || (end[key] instanceof Array ? end[key].join() === start[key].join() : end[key] === start[key])) {
+        delete(end[key]);
+        delete(start[key]);
       }
     }
   },
@@ -180,5 +176,10 @@ Fx.Morph = new Class(Fx, {
         delete(style[key]);
       }
     }
+  },
+  
+  // checks if the color is transparent
+  _transp: function(color) {
+    return color == 'transparent' || color == 'rgba(0, 0, 0, 0)';
   }
 });

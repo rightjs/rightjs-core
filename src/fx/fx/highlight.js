@@ -21,9 +21,9 @@ Fx.Highlight = new Class(Fx.Morph, {
    * @return self
    */
   prepare: function(start, end) {
-    var end_color = end || this._getStyle(this.element, 'backgroundColor');
+    var end_color = end || this.element.getStyle('backgroundColor');
     
-    if (end_color == 'transparent' || end_color == 'rgba(0, 0, 0, 0)') {
+    if (this._transp(end_color)) {
       this.onFinish(function() { this.element.style.backgroundColor = 'transparent'; });
       end_color = this._getBGColor(this.element);
     }
