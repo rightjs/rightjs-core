@@ -112,8 +112,14 @@ function defined(value) {
  * @return boolean check result
  */
 function isHash(value) {
-  return typeof(value) == 'object' && value !== null && value.constructor === Object && !(value instanceof window['HTMLElement']);
+  return typeof(value) == 'object' && value !== null && value.constructor === Object;
 };
+
+// Konqueror 3 patch
+if (navigator.userAgent.indexOf('Konqueror/3') != -1) {
+  eval(isHash.toString().replace(';', '&&!(value instanceof HTMLElement);'));
+}
+
 
 /**
  * checks if the given value is a function
@@ -241,8 +247,8 @@ function $w(string) {
  * @return Integer uniq id
  */
 var _UID = 1;
-var $uid = (Browser.IE) ? function(item){                                                                                                       
-        return (item.uid || (item.uid = [_UID++]))[0];                                                                                                
-} : function(item){                                                                                                                                         
-        return item.uid || (item.uid = _UID++);                                                                                                       
+var $uid = (Browser.IE) ? function(item) {
+  return (item.uid || (item.uid = [_UID++]))[0];
+} : function(item) {
+  return item.uid || (item.uid = _UID++);
 };
