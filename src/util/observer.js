@@ -35,18 +35,39 @@ var Observer = new Class({
    * @return Observer self
    */
   observe: function() {
-    var args = $A(arguments), events = args.shift(), callback;
-    if (!isHash(events)) { var hash = {}; hash[events] = args; events = hash; }
+    var args = $A(arguments), event = args.shift();
+    
+    if (!isString(event)) {
+      for (var name in event) {
+        this.observe.apply(this, [name].concat(
+          isArray(event[name]) ? event[name] : [event[name]]
+        ).concat(args));
+      }
+    }
     
     if (!this.$listeners) this.$listeners = [];
     
-    for (var name in events) {
-      if (!isArray(events[name])) events[name] = [events[name]];
-      callback = isString(events[name][0]) ? this[events[name][0]] : events[name][0];
-      
-      hash = { e: name, f: callback, a: events[name].slice(1) };
-      this.$listeners.push(hash);
-      if (this.$o && this.$o.add) this.$o.add.call(this, hash);
+    var callback = args.shift();
+    switch (typeof callback) {
+      case "string":
+        callback = this[callback];
+        
+      case "function":
+        hash = { e: event, f: callback, a: args };
+        this.$listeners.push(hash);
+        
+        if (this.$o && this.$o.add) this.$o.add.call(this, hash);
+        
+        break;
+        
+      default:
+        if (isArray(callback)) {
+          callback.each(function(params) {
+            this.observe.apply(this, [event].concat(
+              isArray(params) ? params : [params]
+            ).concat(args));
+          }, this);
+        }
     }
     
     return this;

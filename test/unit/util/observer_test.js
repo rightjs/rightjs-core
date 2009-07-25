@@ -34,6 +34,51 @@ var ObserverTest = TestCase.create({
     this.assert(o.observes('bar', f2));
   },
   
+  testObserveHashWithSharedArgs: function() {
+    var o = new Observer();
+    var a1, a2, b1, b2;
+    var f1 = function(a, b) { a1 = a; b1 = b; };
+    var f2 = function(a, b) { a2 = a; b2 = b; };
+    
+    o.observe({
+      foo: f1, bar: f2
+    }, 'a', 'b');
+    
+    o.fire('foo').fire('bar');
+    
+    this.assertEqual('a', a1);
+    this.assertEqual('a', a2);
+    
+    this.assertEqual('b', b1);
+    this.assertEqual('b', b2)
+  },
+  
+  testObserveArray: function() {
+    var o = new Observer();
+    var f1 = function() {};
+    var f2 = function() {};
+    
+    o.observe('foo', [f1, f2]);
+    
+    this.assert(o.observes('foo', f1));
+    this.assert(o.observes('foo', f2))
+  },
+  
+  testObserveArrayByName: function() {
+    var a1, a2, b1, b2;
+    
+    var o = new Observer();
+    o.foo = function(a, b) { a1 = a; b1 = b; };
+    o.bar = function(a, b) { a2 = a; b2 = b; };
+    
+    o.observe('some', ['foo', ['bar', 'a']], 'b').fire('some');
+    
+    this.assertEqual('b', a1);
+    this.assertEqual(undefined, b1);
+    this.assertEqual('a', a2);
+    this.assertEqual('b', b2);
+  },
+  
   testObserves: function() {
     var o = new Observer();
     var f1 = function() {};
