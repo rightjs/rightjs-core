@@ -117,7 +117,7 @@ function isHash(value) {
 
 // Konqueror 3 patch
 if (navigator.userAgent.indexOf('Konqueror/3') != -1) {
-  eval(isHash.toString().replace(';', '&&!(value instanceof HTMLElement);'));
+  eval(isHash.toString().replace(';', '&&!(arguments[0] instanceof HTMLElement);'));
 }
 
 
