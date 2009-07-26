@@ -19,11 +19,10 @@ Element.addMethods((function() {
         return callback.apply(this, $A(arguments).concat(args));
       };
       
-      if (Browser.IE) hash.w = hash.w.bind(this);
-      
       if (this.addEventListener) {
         this.addEventListener(hash.n, hash.w, false);
       } else {
+        hash.w = hash.w.bind(this);
         this.attachEvent('on'+ hash.n, hash.w);
       }
     },

@@ -37,7 +37,7 @@ var Observer = new Class({
   observe: function() {
     var args = $A(arguments), event = args.shift();
     
-    if (!isString(event)) {
+    if (!event.trim) { // <- not a string
       for (var name in event) {
         this.observe.apply(this, [name].concat(
           isArray(event[name]) ? event[name] : [event[name]]
@@ -53,7 +53,7 @@ var Observer = new Class({
         callback = this[callback];
         
       case "function":
-        hash = { e: event, f: callback, a: args };
+        var hash = { e: event, f: callback, a: args };
         this.$listeners.push(hash);
         
         if (this.$o && this.$o.add) this.$o.add.call(this, hash);
