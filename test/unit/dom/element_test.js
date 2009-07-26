@@ -12,13 +12,13 @@ var ElementTest = TestCase.create({
   },
   
   testInstanceWithClass: function() {
-    this.assertEqual(new Element('div', {
+    this.assertEqual('foo bla', new Element('div', {
       'class': 'foo bla'
-    }).className, 'foo bla');
+    }).className);
     
-    this.assertEqual(new Element('div', {
+    this.assertEqual('foo bla', new Element('div', {
       className: 'foo bla'
-    }).className, 'foo bla');
+    }).className);
   },
   
   testInstanceWithStyle: function() {
@@ -56,11 +56,10 @@ var ElementTest = TestCase.create({
   
   testInstanceWithHtml: function() {
     var el = new Element('div', {
-      html: "inner html<script>self['__test'] = 1;</script>"
+      html: "inner html"
     });
     
     this.assertEqual('inner html', el.innerHTML);
-    this.assertEqual(1, self['__test']);
   },
   
   testAddMethods: function() {

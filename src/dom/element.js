@@ -18,10 +18,10 @@ window.Element = new Class(window.Element, {
     
     var element = $(document.createElement(tag_name)), options = options || {};
     
-    if (options['html'])    { element.update(options['html']);     delete(options['html']);    }
-    if (options['class'])   { element.setClass(options['class']);  delete(options['class']);   }
-    if (options['style'])   { element.setStyle(options['style']);  delete(options['style']);   }
-    if (options['observe']) { element.observe(options['observe']); delete(options['observe']); }
+    if (options['html'])    { element.innerHTML = options['html'];  delete(options['html']);    }
+    if (options['class'])   { element.className = options['class']; delete(options['class']);   }
+    if (options['style'])   { element.setStyle(options['style']);   delete(options['style']);   }
+    if (options['observe']) { element.observe(options['observe']);  delete(options['observe']); }
     
     return element.set(options);
   },

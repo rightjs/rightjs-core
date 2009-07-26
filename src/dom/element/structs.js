@@ -96,7 +96,7 @@ Element.addMethods({
         content = content.stripScripts(function(s, h) { scripts = s; });
       }
       
-      Element.insertions[position](this,
+      Element.insertions[position](this, content.tagName ? content :
         Element.insertions.createFragment.call(
           (position == 'bottom' || position == 'top' || !this.parentNode) ?
             this : this.parentNode, content
