@@ -221,5 +221,24 @@ var UtilTest = TestCase.create({
   
   test_$w: function() {
     this.assertEqual(['any', 'beny', 'crubs'], $w("any    beny  \n\n\t crubs "));
+  },
+  
+  test_$uid: function() {
+    var obj1 = {};
+    var obj2 = {};
+    var uid1 = $uid(obj1);
+    var uid2 = $uid(obj2);
+    var uid3 = $uid(obj1);
+    var uid4 = $uid(obj2);
+    
+    this.assertTypeOf("number", uid1);
+    this.assertTypeOf("number", uid2);
+    this.assertTypeOf("number", uid3);
+    this.assertTypeOf("number", uid4);
+    
+    this.assertEqual(uid1, uid3);
+    this.assertEqual(uid2, uid4);
+    
+    this.assertNotEqual(uid1, uid2);
   }
 });

@@ -246,9 +246,10 @@ function $w(string) {
  * @param Object object
  * @return Integer uniq id
  */
-var _UID = 1;
-var $uid = (Browser.IE) ? function(item) {
-  return (item.uid || (item.uid = [_UID++]))[0];
-} : function(item) {
-  return item.uid || (item.uid = _UID++);
-};
+var $uid = (function() {
+  var _UID = 1;
+  
+  return function(item) {
+    return item.uid || (item.uid = _UID++);
+  };
+})();
