@@ -104,7 +104,7 @@ var Xhr = new Class(Observer, {
     
     var data = this.prepareData(this.params, url_params, params, add_params);
     
-    if (this.urlEncoded && method == 'POST') {
+    if (this.urlEncoded && method == 'POST' && !this.headers['Content-type']) {
       this.setHeader('Content-type', 'application/x-www-form-urlencoded; charset='+this.encoding);
     }
     
