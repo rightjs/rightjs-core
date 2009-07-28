@@ -1,6 +1,10 @@
 /**
  * there is the form-elements additional methods container
  *
+ * Credits:
+ *   The basic ideas are taken from
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Form.Element = {

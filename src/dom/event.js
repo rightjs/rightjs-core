@@ -3,6 +3,10 @@
  *
  * NOTE: there more additional functionality for the Event class in the rightjs-goods project
  *
+ * Credits:
+ *   The additional method names are inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Event = new Class(Event, {

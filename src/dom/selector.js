@@ -1,6 +1,10 @@
 /**
  * The DOM elements selection handling class
  *
+ * Credits:
+ *   The naming principles of the unit are inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Selector = new Class({

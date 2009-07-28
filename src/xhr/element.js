@@ -1,6 +1,9 @@
 /**
  * this module contains the Element unit XHR related extensions
  *
+ * Credits:
+ *   - jQuery    (http://jquery.com)        Copyright (C) John Resig
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 Element.addMethods({

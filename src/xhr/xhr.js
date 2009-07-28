@@ -1,6 +1,12 @@
 /**
  * XMLHttpRequest wrapper
  *
+ * Credits:
+ *   Some of the functionality inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *     - jQuery    (http://jquery.com)        Copyright (C) John Resig
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var Xhr = new Class(Observer, {

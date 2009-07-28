@@ -1,6 +1,10 @@
 /**
  * The String class extentions
  *
+ * Credits:
+ *   Some of the functionality inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(String, {

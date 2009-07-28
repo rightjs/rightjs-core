@@ -1,6 +1,10 @@
 /**
  * The form unit class and extensions
  *
+ * Credits:
+ *   The basic principles of the module are inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Form = new Class(Element, {

@@ -1,6 +1,10 @@
 /**
  * The dom-ready event handling code
  *
+ * Credits:
+ *   The basic principles of the module are originated from
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 [window, document].each(function(object) {

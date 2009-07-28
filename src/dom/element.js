@@ -1,6 +1,10 @@
 /**
  * The DOM Element unit handling
  *
+ * Credits:
+ *   The basic principles of the elements extending are originated from
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 window.Element = new Class(window.Element, {

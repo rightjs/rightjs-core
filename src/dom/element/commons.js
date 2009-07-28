@@ -1,6 +1,10 @@
 /**
  * Common DOM Element unit methods
  *
+ * Credits:
+ *   Most of the naming system in the module inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 Element.addMethods({

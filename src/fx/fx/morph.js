@@ -1,6 +1,10 @@
 /**
  * This class provides the basic effect for styles manipulation
  *
+ * Credits:
+ *   The idea is inspired by the Morph effect from
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Fx.Morph = new Class(Fx, {

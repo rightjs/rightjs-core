@@ -1,6 +1,10 @@
 /**
  * here are the starndard Math object extends
  *
+ * Credits:
+ *   The idea of random mehtod is taken from
+ *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
+ *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Math, {

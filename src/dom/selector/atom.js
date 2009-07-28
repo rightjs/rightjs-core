@@ -3,6 +3,10 @@
  *
  * the main purpose is to organize the simpliest case of css-rule match for the manual matcher.
  *
+ * Credits:
+ *   Some functionality and principles are inspired by css-selectors in
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Selector.Atom = new Class({

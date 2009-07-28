@@ -1,6 +1,10 @@
 /**
  * The Object class extentions
  *
+ * Credits:
+ *   Some functionality is inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Object, {

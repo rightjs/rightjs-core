@@ -1,6 +1,11 @@
 /**
  * this module contains the element unit styles related methods
  *
+ * Credits:
+ *   Some of the functionality is inspired by 
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Element.addMethods({

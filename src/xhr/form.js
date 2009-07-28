@@ -1,6 +1,11 @@
 /**
  * Here are the Form unit Xhr extensions
  *
+ * Credits:
+ *   Some of the functionality inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *     - jQuery    (http://jquery.com)        Copyright (C) John Resig
+ *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 $ext(Form.Methods, {

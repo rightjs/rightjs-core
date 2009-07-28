@@ -9,6 +9,12 @@
  *
  *       the css-rule might be a string or a Selector instance
  *
+ * Credits:
+ *   The naming principle and most of the names are taken from
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *   The insertions system implementation is inspired by
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Element.addMethods({

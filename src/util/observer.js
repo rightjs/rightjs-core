@@ -3,6 +3,10 @@
  *
  * Might be used as a usual class or as a builder over another objects
  *
+ * Credits:
+ *   The naming principle is inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var Observer = new Class({

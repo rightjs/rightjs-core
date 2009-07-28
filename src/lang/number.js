@@ -1,6 +1,10 @@
 /**
  * The Number class extentions
  *
+ * Credits:
+ *   Some methods inspired by
+ *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
+ *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Number.prototype, {

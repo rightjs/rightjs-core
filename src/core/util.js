@@ -1,20 +1,25 @@
 /**
  * There are some util methods
  *
+ * Credits:
+ *   Some of the functionality and names are inspired or copied from
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
  
- /**
-  * extends the first object with the keys and values of the second one
-  *
-  * NOTE: the third optional argument tells if the existing values
-  *       of the first object should _NOT_ get updated by the values of the second object
-  *
-  * @param Object destintation object
-  * @param Object source object
-  * @param Boolean flag if the function should not overwrite intersecting values
-  * @return Objecte extended destination object
-  */
+/**
+ * extends the first object with the keys and values of the second one
+ *
+ * NOTE: the third optional argument tells if the existing values
+ *       of the first object should _NOT_ get updated by the values of the second object
+ *
+ * @param Object destintation object
+ * @param Object source object
+ * @param Boolean flag if the function should not overwrite intersecting values
+ * @return Objecte extended destination object
+ */
 function $ext(dest, src, dont_overwrite) { 
   var src = src || {};
 

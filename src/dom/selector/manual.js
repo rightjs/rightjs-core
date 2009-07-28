@@ -1,6 +1,11 @@
 /**
  * represents a manual (virtual) selector strategy
  *
+ * Credits:
+ *   Some principles were inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Selector.Manual = new Class({

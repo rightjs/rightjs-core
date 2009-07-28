@@ -1,6 +1,11 @@
 /**
  * The Array class extentions
  *
+ * Credits:
+ *   Some of the functionality is inspired by
+ *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Array.prototype, {

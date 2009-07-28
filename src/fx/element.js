@@ -1,6 +1,10 @@
 /**
  * This block contains additional Element shortcuts for effects easy handling
  *
+ * Credits:
+ *   Some ideas are inspired by 
+ *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Element.addMethods({
