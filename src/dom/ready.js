@@ -14,11 +14,13 @@
   if (Browser.IE) {
     var tmp = $E('div');
     (function() {
+      var loaded = false;
       try {
         document.body.appendChild(tmp);
         tmp.remove();
-        ready();
+        loaded = true;
       } catch(e) { arguments.callee.delay(50);}
+      if (loaded) ready();
     })();
   } else if (document['readyState'] !== undefined) {
     (function() {
