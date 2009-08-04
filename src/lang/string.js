@@ -4,6 +4,8 @@
  * Credits:
  *   Some of the functionality inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ *   The trim function taken from work of Steven Levithan
+ *     - http://blog.stevenlevithan.com/archives/faster-trim-javascript
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
@@ -33,12 +35,15 @@ $ext(String.prototype, {
   },
   
   /**
-   * removes trailing whitespaces
+   * removes trailing whitespaces   
    *
    * @return String trimmed version
    */
   trim: function() {
-    return this.replace(/^\s+|\s+$/g, '');
+    var str = this.replace(/^\s\s*/, ''),
+        ws = /\s/, i = str.length;
+    while (ws.test(str.charAt(--i)));
+    return str.slice(0, i + 1);
   },
   
   /**
