@@ -90,5 +90,9 @@ var FxMorphTest = TestCase.create({
       {"height": [200, 'px'], "color": [255, 255, 0], "fontSize": [200, "px"]},
       Object.without(this.fx.endStyle,   'lineHeight', 'width')
     );
+    
+    this.fx.finish();
+    this.assertHasClassName(this.el, 'test---12345');
+    this.assertHasClassName(this.el, 'test---123456');
   }
 })

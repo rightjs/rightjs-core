@@ -95,6 +95,11 @@ Fx.Morph = new Class(Fx, {
     
     element.remove();
     
+    // assign the class on the end
+    if (a_class) {
+      this.onFinish(this.element.addClass.bind(this.element, style));
+    }
+    
     return end_style;
   },
   
