@@ -133,7 +133,6 @@ Selector.Atom = new Class({
       case '*=': return attr.includes(value);
       case '^=': return attr.startsWith(value);
       case '$=': return attr.endsWith(value);
-      case '!=': return attr != value;
       case '~=': return attr.split(' ').includes(value);
       case '|=': return attr.split('-').includes(value);
       default:   return attr != '';
@@ -161,14 +160,6 @@ Selector.Atom = new Class({
 
     empty: function() {
       return !(this.innerText || this.innerHTML || this.textContent || '').length;
-    },
-
-    not: function(css_rule) {
-      return !new Selector(css_rule).match(this);
-    },
-
-    contains: function(text) {
-      return (this.innerText || this.innerHTML || this.textContent || '').includes(text);
     },
 
     'first-child': function(tag_name) {

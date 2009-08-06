@@ -61,7 +61,6 @@ var SelectorAtomTest = TestCase.create({
     this.assertEqual({some: {op: '*=', value: 'value'}}, this.atom('div[some*="value"]').attrs);
     this.assertEqual({some: {op: '^=', value: 'value'}}, this.atom('div[some^="value"]').attrs);
     this.assertEqual({some: {op: '$=', value: 'value'}}, this.atom('div[some$=\'value\']').attrs);
-    this.assertEqual({some: {op: '!=', value: 'value'}}, this.atom('div[some!=value]').attrs);
     this.assertEqual({some: {op: '~=', value: 'value'}}, this.atom('div[some~=value]').attrs);
     this.assertEqual({some: {op: '|=', value: 'value'}}, this.atom('div[some|=value]').attrs);
     
@@ -152,9 +151,6 @@ var SelectorAtomTest = TestCase.create({
     this.assertMatchAtom('input[value$="value"]', element);
     this.assertNotMatchAtom('input[value$="some"]', element);
     
-    this.assertMatchAtom('input[value!="another"]', element);
-    this.assertNotMatchAtom('input[value!="somevalue"]', element);
-    
     this.assertNotMatchAtom('input[value~="some"]', element);
     element.value = "some value";
     this.assertMatchAtom('input[value~="some"]', element);
@@ -178,17 +174,10 @@ var SelectorAtomTest = TestCase.create({
     element.disabled = true;
     this.assertMatchAtom('input:disabled', element);
     
-    this.assertMatchAtom('input:not(*.class)', element);
-    element.className = 'class';
-    this.assertNotMatchAtom('input:not(*.class)', element);
-    
     var div = document.createElement('div');
     this.assertMatchAtom('*:empty', div);
     div.innerHTML = 'something';
     this.assertNotMatchAtom('*:empty', div);
-    
-    this.assertMatchAtom('*:contains(some)', div);
-    this.assertNotMatchAtom('*:contains(another)', div);
     
     var element2 = document.createElement('input');
     div.appendChild(element);

@@ -239,25 +239,15 @@ var SelectorTest = TestCase.create({
     
     this.assertMatchRule('input[title$="value"]', element);
     this.assertNotMatchRule('input[title$="some"]', element);
-    
-    // FIXME WebKit seems to be has some problems with the case
-    if (navigator.userAgent.indexOf('WebKit') == -1 && !Browser.IE8) {
-      this.assertMatchRule('input[title!="another"]', element);
-      this.assertNotMatchRule('input[title!="somevalue"]', element);
-    }
-    
+        
     this.assertNotMatchRule('input[title~="some"]', element);
     element.title = "some value";
     this.assertMatchRule('input[title~="some"]', element);
     this.assertMatchRule('input[title~="value"]', element);
     
-    this.assertNotMatchRule('input[title|="some"]', element);
-    element.title = "some-value";
-    this.assertMatchRule('input[title|="some"]', element);
-    // FIXME WebKit seems to be has some problems with the case
-    if (navigator.userAgent.indexOf('WebKit') == -1 && !Browser.IE8) {
-      this.assertMatchRule('input[title|="value"]', element);
-    }
+    element.setAttribute('lang', "en-EN");
+    this.assertMatchRule('input[lang|="en"]', element);
+    this.assertNotMatchRule('input[lang|="ru"]', element);
   },
   
   testPseudoMatch: function() {
@@ -274,20 +264,10 @@ var SelectorTest = TestCase.create({
     element.disabled = true;
     this.assertMatchRule('input:disabled', element);
     
-    this.assertMatchRule('input:not(*.class)', element);
-    element.className = 'class';
-    this.assertNotMatchRule('input:not(*.class)', element);
-    
     var div = document.createElement('div');
     this.assertMatchRule('*:empty', div);
     div.innerHTML = 'something';
     this.assertNotMatchRule('*:empty', div);
-    
-    // FIXME WebKit seems to be has some problems with the case
-    if (navigator.userAgent.indexOf('WebKit') == -1) {
-      this.assertMatchRule('*:contains(some)', div);
-      this.assertNotMatchRule('*:contains(another)', div);
-    }
     
     var element2 = document.createElement('input');
     div.appendChild(element);
