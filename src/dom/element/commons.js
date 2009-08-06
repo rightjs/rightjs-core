@@ -84,7 +84,7 @@ Element.addMethods({
    * @return Element self
    */
   hide: function(effect, options) {
-    this.__prevDisplay = this.getStyle('display');
+    this.$pd = this.getStyle('display');
     this.style.display = 'none';
     return this;
   },
@@ -97,7 +97,7 @@ Element.addMethods({
    * @return Element self
    */
   show: function(effect, options) {
-    this.style.display = this.__prevDisplay == 'none' ? 'block' : this.__prevDisplay || 'block';
+    this.style.display = this.$pd == 'none' ? 'block' : this.$pd || 'block';
     return this;
   },
   

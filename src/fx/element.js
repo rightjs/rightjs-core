@@ -7,7 +7,13 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Element.addMethods({
+Element.addMethods((function(methods) {
+  var old_hide   = methods.hide,
+      old_show   = methods.show,
+      old_resize = methods.resize;
+
+return {
+
   /**
    * hides the element with given visual effect
    *
@@ -15,9 +21,8 @@ Element.addMethods({
    * @param Object fx options
    */
   hide: function(fx, options) {
-    return fx ? this.fx(fx, ['out', options], this._hide) : this._hide();
+    return fx ? this.fx(fx, ['out', options], old_hide) : old_hide.call(this);
   },
-  _hide: Element.Methods.hide,
   
   /**
    * shows the element with the given visual effect
@@ -26,9 +31,8 @@ Element.addMethods({
    * @param Object fx options
    */
   show: function(fx, options) {
-    return fx ? this.fx(fx, ['in', options], this._show) : this._show();
+    return fx ? this.fx(fx, ['in', options], old_show) : old_show.call(this);
   },
-  _show: Element.Methods.show,
   
   /**
    * resizes the element using the Morph visual effect
@@ -51,10 +55,9 @@ Element.addMethods({
       
       return this.fx('morph', [style, options]);
     } else {
-      return this._resize(width, height);
+      return old_resize.call(this, width, height);
     }
   },
-  _resize: Element.Methods.resize,
   
   /**
    * runs the Fx.Morth effect to the given style
@@ -114,4 +117,4 @@ Element.addMethods({
     return this;
   }
   
-});
+}})(Element.Methods));
