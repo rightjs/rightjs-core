@@ -64,7 +64,7 @@ var ArrayTest = TestCase.create({
       list[i] = value * 2;
     }));
   },
-  
+  /*
   testEachWithBreak: function() {
     this.assertEqual([2,2,3,4], [1,2,3,4].each(function(value, i, list) {
       list[i] = value * 2;
@@ -96,7 +96,7 @@ var ArrayTest = TestCase.create({
       this.assertEqual([1,2,3], dummy.args);
       this.assertSame(dummy, dummy.context);
     }, this);
-  },
+  },*/
   
   testMap: function() {
     var a = [1,2,3,4];
@@ -127,6 +127,28 @@ var ArrayTest = TestCase.create({
     
     var a = $w('banana orange lime apple');
     this.assertEqual($w('banana orange apple'), a.filter('includes', 'a'));
+  },
+  
+  testSome: function() {
+    this.assert([0,false,null,1].some());
+    this.assertFalse([0,false,null].some());
+    
+    this.assert($w('1 12 123 1234').some(function(string) { return string.length > 3;}));
+    this.assertFalse($w('1 12 123 1234').some(function(string) { return string.length > 4;}));
+    
+    this.assert($w('anny manny poop').some('match', /oo/));
+    this.assertFalse($w('anny manny poop').some('match', /robot/));
+  },
+  
+  testEvery: function() {
+    this.assert([1, true, ' '].every());
+    this.assertFalse([true, ' ', 0].every());
+    
+    this.assert($w('1 12 123 1234').every(function(string) { return string.length > 0; }));
+    this.assertFalse($w('1 12 123 1234').every(function(string) { return string.length > 1; }));
+    
+    this.assert($w('anny manny banny').every('match', /a/));
+    this.assertFalse($w('anny manny banny').every('match', /m/));
   },
   
   testWalk: function() {
@@ -221,27 +243,5 @@ var ArrayTest = TestCase.create({
     
     this.assertEqual([{t:1}, {t:2}, {t:3}], b);
     this.assertEqual(b, c);
-  },
-  
-  testAny: function() {
-    this.assert([0,false,null,1].any());
-    this.assertFalse([0,false,null].any());
-    
-    this.assert($w('1 12 123 1234').any(function(string) { return string.length > 3;}));
-    this.assertFalse($w('1 12 123 1234').any(function(string) { return string.length > 4;}));
-    
-    this.assert($w('anny manny poop').any('match', /oo/));
-    this.assertFalse($w('anny manny poop').any('match', /robot/));
-  },
-  
-  testAll: function() {
-    this.assert([1, true, ' '].all());
-    this.assertFalse([true, ' ', 0].all());
-    
-    this.assert($w('1 12 123 1234').all(function(string) { return string.length > 0; }));
-    this.assertFalse($w('1 12 123 1234').all(function(string) { return string.length > 1; }));
-    
-    this.assert($w('anny manny banny').all('match', /a/));
-    this.assertFalse($w('anny manny banny').all('match', /m/));
   }
 });

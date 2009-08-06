@@ -8,7 +8,76 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-$ext(Array.prototype, {
+$ext(Array.prototype, (function(A_proto) {
+  
+  // JavaScript 1.6 methods recatching up or faking
+  var for_each = A_proto.forEach || function(callback, scope) {
+    for (var i=0; i < this.length; i++)
+      callback.call(scope, this[i], i, this);
+  };
+  
+  var filter = A_proto.filter || function(callback, scope) {
+    for (var result=[], i=0; i < this.length; i++) {
+      if (callback.call(scope, this[i], i, this))
+        result.push(this[i]);
+    }
+    return result;
+  };
+  
+  var map = A_proto.map || function(callback, scope) {
+    for (var result=[], i=0; i < this.length; i++) {
+      result.push(callback.call(scope, this[i], i, this));
+    }
+    return result;
+  };
+  
+  var some = A_proto.some || function(callback, scope) {
+    for (var i=0; i < this.length; i++) {
+      if (callback.call(scope, this[i], i, this))
+        return true;
+    }
+    return false;
+  };
+  
+  var every = A_proto.every || function(callback, scope) {
+    for (var i=0; i < this.length; i++) {
+      if (!callback.call(scope, this[i], i, this))
+        return false;
+    }
+    return true;
+  };
+  
+  
+  //
+  // RightJS callbacks magick preprocessing
+  //
+  
+  // prepares a correct callback function
+  var guess_callback = function(args, array) {
+    var callback = args[0], args = A_proto.slice.call(args, 1), scope = array;
+    
+    if (isString(callback)) {
+      var attr = callback;
+      if (array.length && isFunction(array[0][attr])) {
+        callback = function(object) { return object[attr].apply(object, args); };
+      } else {
+        callback = function(object) { return object[attr]; };
+      }
+    } else {
+      scope = args[0];
+    }
+    
+    return [callback, scope];
+  };
+  
+  // calls the given method with preprocessing the arguments
+  var call_method = function(func, scope, args) {
+    try {
+      return func.apply(scope, guess_callback(args, scope));
+    } catch(e) { if (!(e instanceof Break)) throw(e); }
+  };
+  
+return {
   /**
    * IE fix
    * returns the index of the value in the array
@@ -17,7 +86,7 @@ $ext(Array.prototype, {
    * @param Integer optional offset
    * @return Integer index or -1 if not found
    */
-  indexOf: Array.prototype.indexOf || function(value, from) {
+  indexOf: A_proto.indexOf || function(value, from) {
     for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0; i < this.length; i++)
       if (this[i] === value)
         return i;
@@ -31,7 +100,7 @@ $ext(Array.prototype, {
    * @param mixed value
    * @return Integer index or -1 if not found
    */
-  lastIndexOf: Array.prototype.lastIndexOf || function(value) {
+  lastIndexOf: A_proto.lastIndexOf || function(value) {
     for (var i=this.length-1; i >=0; i--)
       if (this[i] === value)
         return i;
@@ -109,9 +178,10 @@ $ext(Array.prototype, {
    * @return Array this
    */
   each: function() {
-    this._call(arguments, 'forEach');
+    call_method(for_each, this, arguments);
     return this;
   },
+  forEach: for_each,
   
   /**
    * creates a list of the array items converted in the given callback function
@@ -121,7 +191,7 @@ $ext(Array.prototype, {
    * @return Array collected
    */
   map: function() {
-    return this._call(arguments, '_map');
+    return call_method(map, this, arguments);
   },
   
   /**
@@ -132,7 +202,29 @@ $ext(Array.prototype, {
    * @return Array filtered copy
    */
   filter: function() {
-    return this._call(arguments, '_filter');
+    return call_method(filter, this, arguments);
+  },
+  
+  /**
+   * checks if any of the array elements is logically true
+   *
+   * @param Function optional callback for checks
+   * @param Object optional scope for the callback
+   * @return boolean check result
+   */
+  some: function() {
+    return call_method(some, this, arguments.length ? arguments : [function(i) { return !!i; }]);
+  },
+  
+  /**
+   * checks if all the array elements are logically true
+   *
+   * @param Function optional callback for checks
+   * @param Object optional scope for the callback
+   * @return Boolean check result
+   */
+  every: function() {
+    return call_method(every, this, arguments.length ? arguments : [function(i) { return !!i; }]);
   },
   
   /**
@@ -257,7 +349,7 @@ $ext(Array.prototype, {
    * @return Array sorted copy
    */
   sortBy: function() {
-    var pair = this._guessCallback(arguments);
+    var pair = guess_callback(arguments, this);
     return this.map(function(item, i) {
       return {
         item: item,
@@ -266,92 +358,11 @@ $ext(Array.prototype, {
     }).sort(function(a, b) {
       return a.value > b.value ? 1 : a.value < b.value ? -1 : 0;
     }).map('item');
-  },
-  
-  /**
-   * checks if any of the array elements is logically true
-   *
-   * @param Function optional callback for checks
-   * @param Object optional scope for the callback
-   * @return mixed the first non-false item or false if nothing found
-   */
-  any: function() {
-    return this._all(arguments, 'any');
-  },
-  
-  /**
-   * checks if all the array elements are logically true
-   *
-   * @param Function optional callback for checks
-   * @param Object optional scope for the callback
-   * @return Boolean check result
-   */
-  all: function() {
-    return this._all(arguments, 'all');
-  },
-  
-// private
-  
-  // recatching the original JS 1.6 method 
-  forEach: Array.prototype.forEach || function(callback, scope) {
-    for (var i=0; i < this.length; i++)
-      callback.call(scope, this[i], i, this);
-  },
-  
-  _filter: Array.prototype.filter || function(callback, scope) {
-    for (var result=[], i=0; i < this.length; i++) {
-      if (callback.call(scope, this[i], i, this))
-        result.push(this[i]);
-    }
-    return result;
-  },
-  
-  _map: Array.prototype.map || function(callback, scope) {
-    for (var result=[], i=0; i < this.length; i++) {
-      result.push(callback.call(scope, this[i], i, this));
-    }
-    return result;
-  },
-
-  // handles the each/map/filter methods wrapups
-  _call: function(args, name) {
-    try {
-      return this[name].apply(this, this._guessCallback(args));
-    } catch(e) { if (!(e instanceof Break)) throw(e); }
-  },
-  
-  // processes the all and any methods
-  _all: function(args, name) {
-    var pair = this._guessCallback(args), callback = pair[0], scope = pair[1], break_value = name != 'all', result = null;
-    if (!callback) callback = function(value) { return value; };
-    
-    for (var i=0; i < this.length; i++) {
-      if (!!(callback.call(scope, this[i], i, this)) == break_value) {
-        result = name == 'all' ? false : this[i];
-        break;
-      }
-    }
-    
-    return result === null ? !break_value : result;
-  },
-  
-  // guesses the callback/scope pair out of the arguments list
-  _guessCallback: function(args) {
-    var args = $A(args), callback = args.shift(), scope = this;
-    
-    if (isString(callback)) {
-      var attr = callback;
-      if (this.length && isFunction(this[0][attr])) {
-        callback = function(object) { return object[attr].apply(object, args); };
-      } else {
-        callback = function(object) { return object[attr]; };
-      }
-    } else {
-      scope = args.shift();
-    }
-    
-    return [callback, scope];
   }
-});
+}})(Array.prototype));
 
-$alias(Array.prototype, {include: 'includes'});
+$alias(Array.prototype, {
+  include: 'includes',
+  all: 'every',
+  any: 'some'
+});
