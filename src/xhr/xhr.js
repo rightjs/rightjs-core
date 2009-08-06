@@ -245,8 +245,8 @@ var Xhr = new Class(Observer, {
     }, this);
   },
   
-  showSpinner: function() { if (this.spinner) $(this.spinner).show(); },
-  hideSpinner: function() { if (this.spinner) $(this.spinner).hide(); }
+  showSpinner: function() { if (this.spinner) $(this.spinner).show('fade', {duration: 100}); },
+  hideSpinner: function() { if (this.spinner) $(this.spinner).hide('fade', {duration: 100}); }
 });
 
 // creating the class level observer
@@ -256,10 +256,10 @@ Observer.create(Xhr);
 $ext(Xhr, {
   counter: 0,
   showSpinner: function() {
-    if (this.Options.spinner) $(this.Options.spinner).show();
+    if (this.Options.spinner) $(this.Options.spinner).show('fade', {duration: 100});
   },
   hideSpinner: function() {
-    if (this.Options.spinner) $(this.Options.spinner).hide();
+    if (this.Options.spinner) $(this.Options.spinner).hide('fade', {duration: 100});
   }
 });
 
