@@ -51,7 +51,7 @@ Class.Methods = {
           if (key != 'klass' && key != 'constructor') {
             
             // handling the super methods
-            var ancestor = this.ancestors.any(function(klass) { return isFunction(klass.prototype[key]); });
+            var ancestor = this.ancestors.first(function(klass) { return isFunction(klass.prototype[key]); });
             
             if (ancestor) {
               (function(name, method, $super) {

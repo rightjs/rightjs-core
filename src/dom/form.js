@@ -60,7 +60,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       focus: function() {
-        var first = this.inputs().any(function(input) { return input.type != 'hidden'; });
+        var first = this.inputs().first(function(input) { return input.type != 'hidden'; });
         if (first) first.focus();
         return this.fire('focus');
       },

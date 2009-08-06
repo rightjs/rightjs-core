@@ -47,6 +47,22 @@ $ext(Array.prototype, (function(A_proto) {
     return true;
   };
   
+  var first = function(callback, scope) {
+    for (var i=0; i < this.length; i++) {
+      if (callback.call(scope, this[i], i, this))
+        return this[i];
+    }
+    return undefined;
+  };
+  
+  var last = function(callback, scope) {
+    for (var i=this.length-1; i > -1; i--) {
+      if (callback.call(scope, this[i], i, this))
+        return this[i];
+    }
+    return undefined;
+  };
+  
   
   //
   // RightJS callbacks magick preprocessing
@@ -101,7 +117,7 @@ return {
    * @return Integer index or -1 if not found
    */
   lastIndexOf: A_proto.lastIndexOf || function(value) {
-    for (var i=this.length-1; i >=0; i--)
+    for (var i=this.length-1; i > -1; i--)
       if (this[i] === value)
         return i;
     return -1;
@@ -113,7 +129,7 @@ return {
    * @return mixed first element of the array
    */
   first: function() {
-    return this[0];
+    return arguments.length ? call_method(first, this, arguments) : this[0];
   },
   
   /**
@@ -122,7 +138,7 @@ return {
    * @return mixed last element of the array
    */
   last: function() {
-    return this[this.length-1];
+    return arguments.length ? call_method(last, this, arguments) : this[this.length-1];
   },
   
   /**

@@ -22,7 +22,7 @@ var Options = {
       objects = [this, this.constructor].concat(this.constructor.ancestors),
       OPTIONS = objects.map(function(object) {
         return names.map(function(name) { return object[name]; });
-      }).flatten().any();
+      }).flatten().first(function(i) { return !!i; });
     
     this.options = Object.merge({}, OPTIONS, options);
     

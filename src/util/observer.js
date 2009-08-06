@@ -22,7 +22,7 @@ var Observer = new Class({
     
     // catching up the event shortucts
     var ancestor, shorts = this.EVENTS || this.constructor.EVENTS ||
-        ((ancestor = this.constructor.ancestors.any('EVENTS')) ?
+        ((ancestor = this.constructor.ancestors.first('EVENTS')) ?
           ancestor.EVENTS : null);
           
     Observer.createShortcuts(this, shorts);
@@ -91,7 +91,7 @@ var Observer = new Class({
     if (this.$listeners) {
       if (!isString(event)) { callback = event; event = null; }
       
-      return !!this.$listeners.any(function(i) {
+      return this.$listeners.some(function(i) {
         return (event && callback) ? i.e == event && i.f == callback :
           event ? i.e == event : i.f == callback;
       });

@@ -23,9 +23,19 @@ var ArrayTest = TestCase.create({
     this.assert([].first() === undefined);
   },
   
+  testFirstWithCallback: function() {
+    this.assertEqual(2, [1,2,3].first(function(i) { return i > 1; }));
+    this.assertEqual({a:1}, [{a:0}, {a:1}, {a:2}].first('a'));
+  },
+  
   testLast: function() {
     this.assertEqual(4, [1,2,3,4].last());
     this.assert([].last() === undefined);
+  },
+  
+  testLastWithCallback: function() {
+    this.assertEqual(2, [3,2,1].last(function(i) { return i > 1; }));
+    this.assertEqual({a:1}, [{a:2}, {a:1}, {a:0}].last('a'));
   },
   
   testRandom: function() {

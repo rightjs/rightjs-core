@@ -24,7 +24,7 @@ Selector.Multiple  = new Class({
    * @return Element matching element or null if nothing found
    */
   first: function(node) {
-    return this.selectors.map('first', node).any();
+    return this.selectors.map('first', node).first(function(i) { return !!i;});
   },
 
   /**
@@ -44,6 +44,6 @@ Selector.Multiple  = new Class({
    * @return boolean check result
    */
   match: function(node) {
-    return !!this.selectors.any('match', node) || !this.selectors.length;
+    return this.selectors.some('match', node) || !this.selectors.length;
   }
 });
