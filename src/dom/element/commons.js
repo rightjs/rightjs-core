@@ -97,7 +97,7 @@ Element.addMethods({
    * @return Element self
    */
   show: function(effect, options) {
-    this.style.display = this.__prevDisplay == 'none' ? '' : this.__prevDisplay || '';
+    this.style.display = this.__prevDisplay == 'none' ? 'block' : this.__prevDisplay || 'block';
     return this;
   },
   
