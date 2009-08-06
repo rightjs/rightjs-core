@@ -39,7 +39,7 @@ $ext(String.prototype, {
    *
    * @return String trimmed version
    */
-  trim: function() {
+  trim: String.prototype.trim || function() {
     var str = this.replace(/^\s\s*/, ''),
         ws = /\s/, i = str.length;
     while (ws.test(str.charAt(--i)));
