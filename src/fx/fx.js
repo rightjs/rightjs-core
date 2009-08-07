@@ -22,18 +22,18 @@ var Fx = new Class(Observer, {
     Options: {
       fps:        60,
       duration:   'normal',
-      transition: 'Cos',
+      transition: 'Sin',
       queue:      true
     },
 
     // list of basic transitions
     Transitions: {
-      Cos: function(i) {
+      Sin: function(i)  {
         return -(Math.cos(Math.PI * i) - 1) / 2;
       },
       
-      Sin: function(i) {
-        return 1 - Math.sin((1 - i) * Math.PI / 2);
+      Cos: function(i) {
+        return Math.asin((i-0.5) * 2)/Math.PI + 0.5;
       },
       
       Exp: function(i) {
@@ -41,7 +41,7 @@ var Fx = new Class(Observer, {
       },
       
       Log: function(i) {
-        return Math.log(1 + (Math.E-1) * i);
+        return 1 - Math.pow(2, - 8 * i);
       },
       
       Lin: function(i) {

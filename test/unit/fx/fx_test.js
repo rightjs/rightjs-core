@@ -11,7 +11,7 @@ var FxTest = TestCase.create({
     
     this.assertEqual(Fx.Options.fps, fx.options.fps);
     this.assertEqual('normal',       fx.options.duration);
-    this.assertEqual('Cos',          fx.options.transition);
+    this.assertEqual('Sin',          fx.options.transition);
   },
   
   testInstanceWithOptions: function() {
