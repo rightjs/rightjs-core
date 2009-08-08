@@ -99,8 +99,7 @@ var Xhr = new Class(Observer, {
    * @return Xhr self
    */
   send: function(params) {
-    var add_params = {}, url = this.url.split('?'), url_params = url.length > 1 ? url[1] : '',
-      url = url[0], params = this.prepareParams(params);
+    var add_params = {}, url = this.url;
     
     var method = this.method.toUpperCase();
     if (['PUT', 'DELETE'].includes(method)) {
@@ -108,14 +107,15 @@ var Xhr = new Class(Observer, {
       method = 'POST';
     }
     
-    var data = this.prepareData(this.params, url_params, params, add_params);
+    var data = this.prepareData(this.params, this.prepareParams(params), add_params);
     
     if (this.urlEncoded && method == 'POST' && !this.headers['Content-type']) {
       this.setHeader('Content-type', 'application/x-www-form-urlencoded; charset='+this.encoding);
     }
     
     if (method == 'GET') {
-      url += '?' + data;
+      url += (url.includes('?') ? '&' : '?') + data;
+      data = null;
     }
     
     this.xhr = this.createXhr();
@@ -192,16 +192,12 @@ var Xhr = new Class(Observer, {
   
   // converts all the params into a url params string
   prepareData: function() {
-    params = [];
-    $A(arguments).each(function(param) {
+    return $A(arguments).map(function(param) {
       if (!isString(param)) {
         param = Object.toQueryString(param);
       }
-      if (!param.blank()) {
-        params.push(param);
-      }
-    });
-    return params.join('&');
+      return param.blank() ? null : param;
+    }).compact().join('&');
   },
 
   // handles the state change

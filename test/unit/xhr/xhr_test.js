@@ -116,14 +116,14 @@ var XhrTest = TestCase.create({
       params: 'another=one'
     }).send('some=more');
     
-    this.assertEqual('another=one&foo=bar&some=more', request.xhr.sentData);
+    this.assertEqual('another=one&some=more', request.xhr.sentData);
     
     // trying the same with params as hashes
     var request = new Xhr('foo/bar?foo=bar', {
       params: {another: 'one'}
     }).send({some: 'more'});
     
-    this.assertEqual('another=one&foo=bar&some=more', request.xhr.sentData);
+    this.assertEqual('another=one&some=more', request.xhr.sentData);
   },
   
   testCallbacksInvolvement: function() {
