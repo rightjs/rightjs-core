@@ -10,7 +10,7 @@
 
 // checking, monkeying and hooking the native css-selectors interface
 //          IE8               W3C
-[document, (Element.parent || self['HTMLElement'] || {}).prototype].each(function(object, i) {
+[document, (Element.parent || self['HTMLElement'] || {}.constructor).prototype].each(function(object, i) {
   var old_selector     = object.querySelector;
   var old_selector_all = object.querySelectorAll;
   
@@ -40,7 +40,7 @@
   
   return i ? Element.addMethods(selectors) : $ext(object, selectors);
 });
- 
+
 
 var Selector = new Class({
   extend: {
