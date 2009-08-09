@@ -183,7 +183,6 @@ var ElementStructsTest = TestCase.create({
     el3.appendChild(el4);
     
     el4.className = 'our-guy';
-
     this.assertEqual(el1, this.el.first());
     this.assert(el1['first']);
     

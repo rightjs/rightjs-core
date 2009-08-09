@@ -232,7 +232,7 @@ function $(element) {
  * @return Array matching elements list
  */
 function $$(css_rule) {
-  return new Selector(css_rule).select(document);
+  return $A(document.querySelectorAll(css_rule));
 };
 
 /**

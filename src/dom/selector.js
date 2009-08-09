@@ -7,6 +7,41 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
+
+// checking, monkeying and hooking the native css-selectors interface
+//          IE8               W3C
+[document, (Element.parent || self['HTMLElement'] || {}).prototype].each(function(object, i) {
+  var old_selector     = object.querySelector;
+  var old_selector_all = object.querySelectorAll;
+  
+  // the native selectors checking/monkeying
+  var selectors = {
+    querySelector: old_selector ? old_selector : function(css_rule) {
+      return new Selector(css_rule).first(this);
+    },
+    
+    querySelectorAll: old_selector_all ? old_selector_all : function(css_rule) {
+      return new Selector(css_rule).select(this);
+    }
+  };
+  
+  // RightJS version of the selectors
+  selectors.first = old_selector ? i ? function(css_rule) {
+    return old_selector.call(this, this.tagName + ' ' + (css_rule || '*'));
+  } : function(css_rule) {
+    return old_selector.call(this, css_rule || '*');
+  } : selectors.querySelector;
+  
+  selectors.select = old_selector_all ? i ? function(css_rule) {
+    return $A(old_selector_all.call(this, this.tagName + ' ' + (css_rule || '*')));
+  } : function(css_rule) {
+    return $A(old_selector_all.call(this, css_rule || '*'));
+  } : selectors.querySelectorAll;
+  
+  return i ? Element.addMethods(selectors) : $ext(object, selectors);
+});
+ 
+
 var Selector = new Class({
   extend: {
     cache: {}
@@ -23,12 +58,10 @@ var Selector = new Class({
     if (cached) return cached;
     Selector.cache[css_rule] = this;
     
-    this.setCssRule(css_rule);
+    this.cssRule = css_rule || '*';
     
     var strategy = 'Manual';
-    if (document.querySelector) {
-      strategy = 'Native';
-    } else if (this.cssRule.includes(',')) {
+    if (this.cssRule.includes(',')) {
       strategy = 'Multiple';
     }
     
@@ -42,9 +75,11 @@ var Selector = new Class({
    * @param Element element
    * @return Element matching element or null if nothing found
    */
-  first: function(element) {
+  first: Browser.OLD ? function(element) {
     var element = this.strategy.first(element);
     return  element ? $(element) : null;
+  } : function(element) {
+    return this.strategy.first(element);
   },
   
   /**
@@ -53,9 +88,10 @@ var Selector = new Class({
    * @param Element element
    * @return Array list of found nodes
    */
-  select: function(element) {
-    var elements = this.strategy.select(element);
-    return Browser.OLD ? elements.map(Element.prepare) : elements;
+  select: Browser.OLD ? function(element) {
+    return this.strategy.select(element).map(Element.prepare);
+  } : function(element) {
+    return this.strategy.select(element);
   },
   
   /**
@@ -66,30 +102,5 @@ var Selector = new Class({
    */
   match: function(element) {
     return this.strategy.match(element);
-  },
-  
-  /**
-   * sets up the selector's css-rule
-   *
-   * @param String css-rule
-   * @return Selector self
-   */
-  setCssRule: function(css_rule) {
-    this.cssRule = css_rule || '*';
-    
-    // converting virtual selectors into real ones
-    [
-      [/:last(?!-)/g, ':last-child'],
-      [/:only(?!-)/g, ':only-child'],
-      [/:odd/g,  ':nth-child(2n+1)'],
-      [/:even/g, ':nth-child(2n)'],
-      [/:nth-child\(odd\)/g,  ':nth-child(2n+1)'],
-      [/:nth-child\(even\)/g, ':nth-child(2n)'],
-      [/:index\(\s*\d+\s*\)/g, function(m) {return ":nth-child("+(m.match(/\d+/).first().toInt() + 1)+")"}]
-    ].each(function(pair) {
-      this.cssRule = this.cssRule.replace(pair[0], pair[1]);
-    }, this);
-    
-    return this;
   }
 });

@@ -13,12 +13,7 @@ Selector.Native = new Class({
   },
   
   select: function(element) {
-    try {
-      return $A(element.querySelectorAll(this.fixedCssRule(element)));
-    } catch(e) {
-      alert(this.fixedCssRule(element))
-    }
-    
+    return $A(element.querySelectorAll(this.fixedCssRule(element)));
   },
   
   // reusing the manual method, case it's the same

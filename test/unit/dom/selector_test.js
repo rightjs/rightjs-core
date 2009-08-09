@@ -336,28 +336,7 @@ var SelectorTest = TestCase.create({
     this.assertNotMatchRule('*:nth-child(3n-1)', element);
     this.assertMatchRule('*:nth-child(3n-1)', element2);
     this.assertNotMatchRule('*:nth-child(3n-1)', element3);
-    
-    // trying the virtual pseudos
-    this.assertMatchRule('*:index(0)', element);
-    this.assertMatchRule('*:index(1)', element2);
-    this.assertMatchRule('*:index(2)', element3);
-    
-    this.assertMatchRule('*:nth-child(odd)', element);
-    this.assertNotMatchRule('*:nth-child(odd)', element2);
-    this.assertMatchRule('*:nth-child(odd)', element3);
-    
-    this.assertNotMatchRule('*:nth-child(even)', element);
-    this.assertMatchRule('*:nth-child(even)', element2);
-    this.assertNotMatchRule('*:nth-child(even)', element3);
-    
-    this.assertMatchRule('*:odd', element);
-    this.assertNotMatchRule('*:odd', element2);
-    this.assertMatchRule('*:odd', element3);
-    
-    this.assertNotMatchRule('*:even', element);
-    this.assertMatchRule('*:even', element2);
-    this.assertNotMatchRule('*:even', element3);
-    
+        
     // testing pseudo selectors with types
     var element4 = document.createElement('div');
     div.appendChild(element4);

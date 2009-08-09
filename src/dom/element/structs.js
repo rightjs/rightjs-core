@@ -51,13 +51,9 @@ Element.addMethods({
     return this.prevSiblings(css_rule).first();
   },
   
-  first: function(css_rule) {
-    return new Selector(css_rule).first(this);
-  },
-  
-  select: function(css_rule) {
-    return new Selector(css_rule).select(this);
-  },
+// those two are moved to the Selector unit definition
+//  first:  Element.Methods.querySelector,
+//  select: Element.Methods.querySelectorAll,
   
   match: function(css_rule) {
     return new Selector(css_rule).match(this);
