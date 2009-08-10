@@ -5,6 +5,7 @@
  *   Some of the functionality is inspired by 
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *     - Dojo      (www.dojotoolkit.org)      Copyright (C) The Dojo Foundation
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
@@ -129,6 +130,8 @@ Element.addMethods({
    * @return boolean check result
    */
   hasClass: function(name) {
+    return (' '+this.className+' ').indexOf(' '+name+' ') != -1;
+    
     return this.className && this.className.match(new RegExp('(^|\\s)'+ name + '(\\s|$)'));
   },
   
@@ -150,7 +153,7 @@ Element.addMethods({
    * @return Element self
    */
   addClass: function(name) {
-    if (!this.hasClass(name)) {
+    if ((' '+this.className+' ').indexOf(' '+name+' ') == -1) {
       this.className += (this.className ? ' ' : '') + name;
     }
     return this;
@@ -163,7 +166,8 @@ Element.addMethods({
    * @return Element self
    */
   removeClass: function(name) {
-    this.className = this.className.replace(new RegExp('(^|\\s)' + name + '(?:\\s|$)'), '$1');
+    this.className = (' '+this.className+' ').replace(' '+name+' ', ' ').trim();
+    //this.className = this.className.replace(new RegExp('(^|\\s)' + name + '(?:\\s|$)'), '$1');
     return this;
   },
   
