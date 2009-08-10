@@ -1,5 +1,10 @@
 = Intro
 
+NOTE: The selectors interface is deprecated since RightJS v 1.4.0 and will be
+removed in one of the next versions. Please use the {Element} unit methods to
+find and select your elements.
+
+
 Selectors are abstract, object oriented interface to deal with the css-based 
 elements selections on you page. In most of the cases you don't need to have a 
 deal with them, but sometimes it might be useful to instance and keep 

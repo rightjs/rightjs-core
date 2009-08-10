@@ -66,10 +66,6 @@ For the obsolete browsers, RightJS generates the missing methods in pure
 JavaScript, it certainly gives its own overhead, but it is still fairly fast 
 for most of the cases.
 
-And yes, don't take it in a wrong way, if you really, really need to process 
-some huge amount of data as quickly as possible, don't be ashamed and use the 
-old fashioned 'for' loop.
-
 
 ### Array#indexOf
 
@@ -94,19 +90,43 @@ old fashioned 'for' loop.
 ### Array#first
 
 == Semantic
-  first() -> mixed
+  first()                                  -> mixed
+  first([Function lambda[, Object scope]]) -> mixed
+  first([String name[, argument, ...]])    -> mixed
 
 == Description
   Returns the first item in the array or undefined if the array is empty
+  
+  If a function is provided then the method will return the first item
+  that passes the check in the function
+  
+== Example
+  [1,2,3,4].first() // -> 1
+  
+  [1,2,3,4].first(function(i) { return i > 1; }) // -> 2
+  
+  ['bar', 'foo', 'moo'].first('match', 'oo') // -> 'foo'
 
 
 ### Array#last
 
 == Semantic
-  last() -> mixed
+  last()                                  -> mixed
+  last([Function lambda[, Object scope]]) -> mixed
+  last([String name[, argument, ...]])    -> mixed
   
 == Description
   Returns the last item in the array or undefined if the array is empty
+  
+  If a function is provided then the method will return the last item
+  that passes the check in the function
+  
+== Example
+  [1,2,3,4].last() // -> 4
+  
+  [1,2,3,4].last(function(i) { return i < 4; }) // -> 3
+  
+  ['foo', 'moo', 'bar'].first('match', 'oo') // -> 'moo'
 
 
 ### Array#random
@@ -380,6 +400,53 @@ old fashioned 'for' loop.
   
   // -> [{t:1}, {t:2}, {t:3}]
   
+### Array#every
+
+== Semantic
+  every()                                -> boolean
+  every(Function lambda[, Object scope]) -> boolean
+  every(String name[, argument, ...])    -> boolean
+
+== Description
+  Checks if every item in the array matches the given check function
+  
+  If no function provided then every element will be checked as a
+  boolean value
+
+== Example
+  [1,2,3,4].every() // -> true
+  [0,1,2,3].every() // -> false
+  
+  [1,2,3].every(function(i) { return i > 0}) // -> true
+  [0,1,2].every(function(i) { return i > 0}) // -> false
+  
+  ['moo', 'foo', 'boo'].every('match', 'oo') // -> true
+  ['moo', 'foo', 'bar'].every('match', 'oo') // -> false
+  
+
+### Array#some
+
+== Semantic
+  some()                                -> boolean
+  some(Function lambda[, Object scope]) -> boolean
+  some(String name[, argument, ...])    -> boolean
+  
+== Description
+  Checks if some of the items in the array passes the check function
+  
+  If no function provided, then every element will be checked as a
+  boolean value
+  
+== Example
+  [0,false,1].some()    // -> true
+  [0,false,null].some() // -> false
+  
+  [0,1,2].some(function(i) { return i == 0; }) // -> true
+  [1,2,3].some(function(i) { return i == 0; }) // -> false
+  
+  ['foo', 'bar'].some('match', 'bar') // -> true
+  ['foo', 'boo'].some('match', 'bar') // -> false
+
 
 ### Array#any
 
@@ -389,6 +456,8 @@ old fashioned 'for' loop.
   any(String name[, argument, ...])    -> mixed item or false
   
 == Description
+  DEPRECATED: Please use the {Array#some} method
+  
   Returns the first non-false item or false if nothing found.
   
 == Example
@@ -417,6 +486,8 @@ old fashioned 'for' loop.
   all(String name[, argument, ...])    -> boolean
   
 == Description
+  DEPRECATED: Please use the {Array#every} method
+  
   Checks if all the items on the array are non-false or return non-false value 
   by passing them
   into the lambda function
