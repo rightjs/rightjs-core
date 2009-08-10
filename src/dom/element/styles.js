@@ -131,8 +131,6 @@ Element.addMethods({
    */
   hasClass: function(name) {
     return (' '+this.className+' ').indexOf(' '+name+' ') != -1;
-    
-    return this.className && this.className.match(new RegExp('(^|\\s)'+ name + '(\\s|$)'));
   },
   
   /**
@@ -167,7 +165,6 @@ Element.addMethods({
    */
   removeClass: function(name) {
     this.className = (' '+this.className+' ').replace(' '+name+' ', ' ').trim();
-    //this.className = this.className.replace(new RegExp('(^|\\s)' + name + '(?:\\s|$)'), '$1');
     return this;
   },
   
