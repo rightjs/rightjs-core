@@ -84,7 +84,7 @@ Element.addMethods({
    * @return Element self
    */
   hide: function(effect, options) {
-    this.$pd = this.getStyle('display');
+    this._$pd = this.getStyle('display');
     this.style.display = 'none';
     return this;
   },
@@ -97,7 +97,9 @@ Element.addMethods({
    * @return Element self
    */
   show: function(effect, options) {
-    this.style.display = this.$pd == 'none' ? 'block' : this.$pd || 'block';
+    // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
+    var value = this.tagName == 'DIV' ? 'block' : 'inline';
+    this.style.display = this._$pd == 'none' ? value : this._$pd || value;
     return this;
   },
   
