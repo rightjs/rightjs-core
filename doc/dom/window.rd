@@ -1,6 +1,6 @@
 = Intro
 The <tt>window</tt> in RightJS has it's own portion of extensions which help
-you to deal with sizes and scrolls in a crossbrowsing way.
+you to deal with sizes and scrolls in a cross browsing way.
 
 == Ready Status
 The <tt>window</tt> object has all the same methods and functionality to

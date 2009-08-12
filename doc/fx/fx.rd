@@ -1,7 +1,7 @@
 = Intro
 
 By default RightJS comes with some basic visual effects package and Fx is the
-basic unit of the package. You won't need to instance the class manually but
+basic unit of the package. You won't need to instance the class manually, but
 it defines the common visual effects interface.
 
 == Events
@@ -36,13 +36,13 @@ There are three named durations which you can use as the fx options.
 There are several predefined transitions for the visual effects. You can use
 the names in the options or specify your own function if you need.
 
-  * Cos - slow at the beginning and the end, and fast in the middle
-  * Sin - fast at the beginning and the end, and slow in the middle
+  * Sin - slow at the beginning and the end, and fast in the middle
+  * Cos - fast at the beginning and the end, and slow in the middle
   * Exp - slow at the beginning and rapidly throttles to the end
   * Log - fast at the beginning and rapidly slows down to the end
   * Lin - constant speed transition
 
-By default it's the <tt>Cos</tt> transition which suits most of the cases.
+By default it's the <tt>Sin</tt> transition that suits most of the cases.
 
 
 ### Fx#initialize
@@ -104,7 +104,7 @@ By default it's the <tt>Cos</tt> transition which suits most of the cases.
 
 == Description
   Abstract protected method where the actual effect rendering supposed to be
-  happening. During the effect run it receives float numbers from 0 to 1 which
+  happening. During the effect run it receives float numbers from 0 to 1 that
   represents the position of the effect from the beginning to the end.
 
 ### Fx#calc

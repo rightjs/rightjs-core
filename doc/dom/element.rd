@@ -1,6 +1,6 @@
 = Intro
 
-Element unit is a wrapper for the HTMLElement units. It provides all the nice 
+The Element unit is a wrapper for the HTMLElement units. It provides all the nice 
 features to work with elements easily.
 
 == Instantiation
@@ -45,7 +45,7 @@ elements under Internet Explorer to make all the fancy methods appear.
 == Selectors
 
 All the selector methods like, {#parents}, {#siblings}, etc. Takes an optional 
-css rule or a selector object as an argument. If such a thing was specified, 
+css rule or a selector object as an argument. If such a thing were specified, 
 then the result will be filtered against the rule.
 
 <code>
@@ -147,7 +147,7 @@ The list of supported events is following
 
 == Description
   Standard constructor, takes two arguments, the tag name and options. Options
-  are basically the element attributes, and additionally you can send the 
+  are generally the element attributes, and additionally you can send the 
   following keys to preset your element on instance.
   
   * 'html'    - source code to fill up the innerHTML property
@@ -275,8 +275,8 @@ The list of supported events is following
   hide([String effect[, Object options]]) -> Element self
 
 == Description
-  Hides out the element. If a valid effect name was specified, the effect
-  will be used to process the hidding.
+  Hides out the element. If a valid effect name were specified, the effect
+  will be used to process the hiding.
 
 == Example
   $('some-element').hide();
@@ -291,7 +291,7 @@ The list of supported events is following
   show([String effect[, Object options]]) -> Element self
 
 == Description
-  Shows up the element. If a valid effect name was specified, the effect will
+  Shows up the element. If a valid effect name were specified, the effect will
   be used to process the showing
 
 == Example
@@ -308,7 +308,7 @@ The list of supported events is following
   toggle([String effect[, Object options]]) -> Element self
 
 == Description
-  Toggles the element visibility status. If a valid effect name was specified,
+  Toggles the element visibility status. If a valid effect name were specified,
   the effect will be used to process the toggle.
 
 == Example
@@ -365,8 +365,8 @@ The list of supported events is following
   parents([mixed css_rule]) -> Array of elements
 
 == Description
-  Returns the list of the element parent nodes, from down to up. If a css-rule
-  was specified, the list will be filtered out by the rule
+  Returns the list of the element parent nodes, from down to up.  If a css-rule
+ were specified, the list will be filtered out by the rule
 
 == Example
   /*
@@ -905,7 +905,7 @@ The list of supported events is following
 
 == Description
   Checks if the given listener observers the element events. You can make a 
-  check in general or against some event name.
+  check generally or against some event name.
 
 == Example
   var func = function() {};
@@ -1157,7 +1157,7 @@ The list of supported events is following
   
   Takes all the standard Xhr class options as the second parameter.
   
-  If there are javascript code in the response, by default it will be
+  If there is javascript code in the response, by default it will be
   automatically evaluated after the element body was updated.
   
   NOTE: will perform a GET request by default.
@@ -1168,4 +1168,3 @@ The list of supported events is following
     method: 'post',
     spinner: 'spinner-id'
   });
-  

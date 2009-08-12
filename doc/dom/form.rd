@@ -2,7 +2,7 @@
 
 RightJS inherits forms from the general Element unit, which means you can do
 everything the same that you can do with any other element in the system, plus
-there are several additional goods which makes work with forms an easiest
+there are several additional goods which make work with forms an easiest
 thing.
 
 == Ajax handling
@@ -157,7 +157,7 @@ And you can specify all the common Xhr options to be handled.
   serialize() -> String
 
 == Description
-  Collects all the values on the form and serializes them in an single
+  Collects all the values on the form and serializes them in a single
   url-query string.
 
 == Example
@@ -171,7 +171,7 @@ And you can specify all the common Xhr options to be handled.
   send([Object options]) -> Form self
 
 == Description
-  Remotely submits the form via an XHR request. As an attribute might receive
+  Remotely submits the form via an XHR request. The attribute might contain
   any standard Xhr object options.
   
   NOTE: works with multi-part forms with files uploading too!

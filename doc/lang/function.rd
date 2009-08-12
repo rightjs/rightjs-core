@@ -81,7 +81,7 @@ timeouts etc.
 == Description
   Schedules a delayed execution for the function.
   
-  Additionally the timeout pointer will have a method <tt>'cancel'</tt>
+  Additionally, the timeout pointer will have a method <tt>'cancel'</tt>
   by calling which the timeout can be canceled.
 
 == Example
@@ -109,7 +109,7 @@ timeouts etc.
 == Description
   Makes the function be periodically executed with the given timeout.
   
-  Additionally the timeout marker will have a method <tt>'stop'</tt> by
+  Additionally, the timeout marker will have a method <tt>'stop'</tt> by
   calling which you can stop the function being called periodically.
 
 == Example

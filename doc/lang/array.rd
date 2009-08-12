@@ -1,15 +1,15 @@
 = Intro
 
 RightJS extends the native Array class with several additional useful methods, 
-which makes arrays pretty powerful tool in your projects. Some methods are new 
-for JavaScript, some already exists in later specifications of JavaScript. 
+which make arrays pretty powerful tool in your projects. Some methods are new 
+for JavaScript, some already exist in the later specifications of JavaScript. 
 RightJS tries to be most effective, so if your browser supports some of the 
 methods it will use the browser's native method, if not, it will provide some 
 manual method with the same API.
 
 Additionally RightJS provides some new features borrowed from the RubyOnRails 
-framework. Methods which takes a function as an argument, meant {#each}, 
-{#map}, {#filter}, etc, in case when you need simultaneously call same method 
+framework. Methods which take a function as an argument, meant {#each}, 
+{#map}, {#filter}, etc, in the case when you need simultaneously call same method 
 on every item in the array, you can just pass the method name as a string, and 
 optionally pass some arguments.
 
@@ -29,8 +29,8 @@ For example
   var marked_eleemnts  = elements.filter('hasClass', 'marked');
 </code>
 
-As you can see it's pretty nifty tool and it has almost no overhead. On most 
-of the modern browsers it will work almost as fast as you would do it in a 
+As you can see it's pretty nifty tool, and it has almost no overhead. On most 
+of the modern browsers, it will work almost as fast as you would do it in a 
 normal for loop.
 
 === Iterators Handling
@@ -44,9 +44,9 @@ If you send a function, on every call it will receive three arguments.
  * The item index in the array
  * And the instance of the array by itself
 
-If you send a method name as a string for the first argument. Then on every 
+If you send a method name as a string for the first argument, Then on every 
 call each item's property will be called with the additional arguments which 
-you pass with the call. For example
+you pass with the call. For example:
 
 <code>
   [...].each('foo', 1, 2, 3);
@@ -58,12 +58,12 @@ Every item on the array will get call for their 'foo' method with arguments 1,2,
 === Performance Notes
 
 Most of the modern browsers support the JavaScript 1.6 specification and 
-provides a number of fast native methods to work with iterations. RightJS will 
-reuse them internally in all possible cases, and that makes it work almost as 
+provide several fast native methods to work with iterations. RightJS will 
+reuse them internally in all possible cases, and that make it work almost as 
 fast as a pure DOM version would do in similar cases.
 
 For the obsolete browsers, RightJS generates the missing methods in pure 
-JavaScript, it certainly gives its own overhead, but it is still fairly fast 
+JavaScript, it surely gives its own overhead, but it is still fairly fast 
 for most of the cases.
 
 
@@ -97,7 +97,7 @@ for most of the cases.
 == Description
   Returns the first item in the array or undefined if the array is empty
   
-  If a function is provided then the method will return the first item
+  If a function is provided, then the method will return the first item
   that passes the check in the function
   
 == Example
@@ -282,7 +282,7 @@ for most of the cases.
   merge(Array list[, Array list, ...]) -> Array new
   
 == Description
-  Picks up items from the given arrays which does not exists in the current 
+  Picks up items from the given arrays which do not exist in the current 
   array, combine them with the items from the current array and returns the 
   result as a new array.
   
@@ -298,7 +298,7 @@ for most of the cases.
   flatten() -> Array new
   
 == Description
-  Converts a multi-dimensional array in a single dimensioned one.
+  Converts a multi-dimensional array in a single dimensional one.
   
 == Example
   [0,1,[2,3,[4,5,[6,7],8],9]].flatten();

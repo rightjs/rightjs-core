@@ -75,7 +75,7 @@ NOTE: when you specify params on several levels, they will be merged with the
 
 == Events
 RightJS Xhr class is inherited from the standard Observer class which means
-that Xhr objects follows all the standard observer rules. You can add, list
+that Xhr objects follow all the standard observer rules. You can add, list
 and remove event handlers in the usual way.
 
 Xhr class supports the following events
@@ -197,7 +197,7 @@ to evaluate responses with json content-type by default and assign it to the
   successful() -> boolean
 
 == Description
-  Checks if the request was completed with a successful status.
+  Checks if the request were completed with a successful status.
 
 == Example
   var xhr = new Xhr('/foo/bar', {

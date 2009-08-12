@@ -1,9 +1,9 @@
 = Intro
 
 <tt>Options</tt> is a shared module which can be used with the classes which
-needs an options attribute support.
+need an option attribute support.
 
-Generally it provides the <tt>setOptions</tt> method where it merges any
+Generally, it provides the <tt>setOptions</tt> method where it merges any
 default options with given ones and assigns the result to the <tt>options</tt>
 property of the instance.
 

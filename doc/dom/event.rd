@@ -5,7 +5,7 @@ RightJS as many other JavaScript frameworks provides some extensions over the
 events system.
 
 If you attach your event listeners via the RightJS interfaces, then all the
-events your listeners receive will be automatically extended, otherwise you
+events your listeners receive will be automatically extended, otherwise, you
 might need to call the {Event.ext} method on your events.
 
 == Internet Explorer Fixes

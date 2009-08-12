@@ -2,7 +2,7 @@
 
 <tt>Observer</tt> is a shared drop in base-class for the cases when you need
 to implement the observer pattern. It is used in many places in the 
-framework and defines the common interface for the observable units.
+framework and defined the common interface for the observable units.
 
 == Usage
 Generally <tt>Observer</tt> is usual class. You can use it by itself or as
@@ -64,8 +64,8 @@ will keep them alive and just skip the name.
 
 == Call By Name
 The Observer class follows the general 'call by name' feature of RightJS. This
-means that instead of specifying a particular function to observer, you can
-specify a method name and some attributes which should be called on the event.
+means that instead of specifying a particular function to observe, you can
+specify a method name and some attributes, which should be called on the event.
 
 <code>
   var Kid = new Class(Observer, {

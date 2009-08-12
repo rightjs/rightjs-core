@@ -1,12 +1,12 @@
 = Intro
 
-Fx.Highlight is a pretty much standard elements highlighting visual effect.
+Fx.Highlight is a pretty much standard element highlighting visual effect.
 
 No magic it just blinks the element with yellow or any provided colors.
 
 == Default Color
 
-By default the highlighting color is yellow but you can specify your own
+By default the highlighting color is yellow, but you can specify your own
 default color by assigning the <tt>Fx.Highlight.Options.color</tt> variable.
 
 ### Fx.Highlight#start

@@ -1,12 +1,12 @@
 = Intro
 
-Instead of feeding the developer with a number of predefined effects RightJS
-provides a generic elements morphing interface where he can do whatever he
-needs. You just provide a element and the end style or css-class, RightJS
+Instead of feeding the developer with some predefined effects RightJS
+provides a generic element morphing interface where he can do whatever he
+needs. You just provide an element and the end style or css-class, RightJS
 does all the rest.
 
 You can specify several keys in your end style as long as you can specify
-several css-classes, all of the values will be processed at the same time
+several css-classes, all the values will be processed simultaneous
 providing excellent user experience.
 
 NOTE: There's no need to preset the element styles manually before run the
