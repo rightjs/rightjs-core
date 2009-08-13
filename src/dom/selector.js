@@ -15,27 +15,25 @@
   var old_selector_all = object.querySelectorAll;
   
   // the native selectors checking/monkeying
-  var selectors = {
-    querySelector: old_selector ? old_selector : function(css_rule) {
-      return new Selector(css_rule).first(this);
-    },
-    
-    querySelectorAll: old_selector_all ? old_selector_all : function(css_rule) {
-      return new Selector(css_rule).select(this);
-    }
+  var selectors = {};
+  if (!old_selector) selectors.querySelector = function(css_rule) {
+    return new Selector(css_rule).first(this);
+  };
+  if (!old_selector_all) selectors.querySelectorAll = function(css_rule) {
+    return new Selector(css_rule).select(this);
   };
   
   // RightJS version of the selectors
   selectors.first = old_selector ? i ? function(css_rule) {
-    return old_selector.call(this, this.tagName + ' ' + (css_rule || '*'));
+    return this.querySelector(this.tagName + ' ' + (css_rule || '*'));
   } : function(css_rule) {
-    return old_selector.call(this, css_rule || '*');
+    return this.querySelector(css_rule || '*');
   } : selectors.querySelector;
   
   selectors.select = old_selector_all ? i ? function(css_rule) {
-    return $A(old_selector_all.call(this, this.tagName + ' ' + (css_rule || '*')));
+    return $A(this.querySelectorAll(this.tagName + ' ' + (css_rule || '*')));
   } : function(css_rule) {
-    return $A(old_selector_all.call(this, css_rule || '*'));
+    return $A(this.querySelectorAll(css_rule || '*'));
   } : selectors.querySelectorAll;
   
   return i ? Element.addMethods(selectors) : $ext(object, selectors);

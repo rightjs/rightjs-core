@@ -72,7 +72,7 @@ var Fx = new Class(Observer, {
     this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
     var duration    = Fx.Durations[this.options.duration]     || this.options.duration;
     
-    this.steps  = (duration / 1000 * this.options.fps * (Browser.IE ? 0.5 : 1)).ceil();
+    this.steps  = (duration / 1000 * this.options.fps * (Browser.OLD ? 0.5 : 1)).ceil();
     this.number = 1;
     
     return this.fire('start', this).startTimer();
