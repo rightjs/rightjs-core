@@ -1,3 +1,18 @@
+2009-08-14 Nikolay V. Nemshilov aka St.
+  o Version 1.4.0 Release
+    * Better native css-selectors support
+    * Array#every and Array#some methods support
+    * Faster String#trim implementation
+    * Xhr user-defined content-types fix
+    * Xhr url-attributes preserving fix
+    * Fx.Morph onFinish class assignment
+    * Fx transitions update
+    * Faster add/remove/has Class methods
+    * Element#show now works with the css-styles
+    * Documentation cleaning up
+    * The building script update
+
+
 2009-07-26 Nikolay V. Nemshilov aka St.
   o Version 1.3.0 Release
     * The dom-event extensions feature
