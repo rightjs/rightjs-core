@@ -40,10 +40,10 @@ shortcuts are in place, you can wire and run the event in the usual way.
   Unified value setter for the form elements
 
 == Example
-  $('input').getValue('text');
-  $('select').getValue(1);
-  $('textarea').getValue('text');
-  $('multi-select').getValue([1,2,3]);
+  $('input').setValue('text');
+  $('select').setValue(1);
+  $('textarea').setValue('text');
+  $('multi-select').setValue([1,2,3]);
 
 
 
