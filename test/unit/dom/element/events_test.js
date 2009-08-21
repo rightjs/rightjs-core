@@ -140,5 +140,9 @@ var ElementEventsTest = TestCase.create({
       
       this.assert(submitted, "testing event: "+event);
     }, this);
+  },
+  
+  testStopEvent: function() {
+    this.assertEqual(function(e) { e.stop(); }, this.el.stopEvent);
   }
 });

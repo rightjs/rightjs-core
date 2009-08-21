@@ -41,6 +41,10 @@ Element.addMethods((function() {
     }
   };
   
+  // a simple events terminator method to be hooked like
+  // this.onClick('stopEvent');
+  observer.stopEvent = function(e) { e.stop(); };
+  
   $ext(window,   observer);
   $ext(document, observer);
   
