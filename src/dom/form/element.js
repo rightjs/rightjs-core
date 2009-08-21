@@ -112,6 +112,15 @@ Form.Element = {
       this.focused = false;
       this.fire('blur');
       return this;
+    },
+    
+    /**
+     * Shortcut for 'observe("change", ...)
+     */
+    onChange: function() {
+      var args = $A(arguments);
+      args.unshift('change');
+      return this.on.apply(this, args);
     }
   }
 };

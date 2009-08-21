@@ -138,5 +138,13 @@ var FormElementTest = TestCase.create({
     
     this.assertFalse(input.focused);
     this.assert(on_blur_called);
+  },
+  
+  testOnChangeShortcut: function() {
+    var input = new Element('input');
+    var f = function() {};
+    input.onChange(f);
+    
+    this.assert(input.observes('change', f));
   }
-})
+});
