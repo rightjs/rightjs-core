@@ -143,6 +143,6 @@ var ElementEventsTest = TestCase.create({
   },
   
   testStopEvent: function() {
-    this.assertEqual(function(e) { e.stop(); }, this.el.stopEvent);
+    this.assert(typeof(this.el.stopEvent) == 'function');
   }
 });
