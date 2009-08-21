@@ -1086,7 +1086,7 @@ The list of supported events
   element.style.height; // 80px
 
 
-### Element#setPosition
+### Element#moveTo
 
 == Semantic
   moveTo(number left, number top) -> Element self
