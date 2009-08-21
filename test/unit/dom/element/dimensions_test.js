@@ -6,6 +6,15 @@
 ElementDimensionsTest = TestCase.create({
   name: 'ElementDimensionsTest',
   
+  beforeAll: function() {
+    // makes the window scroll down
+    this.spoof = new Element('div', {
+      style: 'height: 2000px'
+    }).insertTo(document.body);
+    
+    window.scrollTo(0, 100);
+  },
+  
   setUp: function() {
     this.div = new Element('div', {
       style: {
@@ -15,21 +24,17 @@ ElementDimensionsTest = TestCase.create({
         padding: '50px',
         border:  '50px solid transparent'
       }
-    }).insertTo(document.body);
+    }).insertTo(this.spoof, 'before');
     
     // screws with the manual position calculation
-    this.p = new Element('p').insertTo(document.body).insert(this.div);
-    
-    // makes the window scroll down
-    this.spoof = new Element('div', {
-      style: 'height: 2000px'
-    }).insertTo(document.body);
-    
-    window.scrollTo(0, 100);
+    this.p = new Element('p').insertTo(this.spoof, 'before').insert(this.div);
   },
   
   tearDown: function() {
     this.p.remove();
+  },
+  
+  afterAll: function() {
     this.spoof.remove();
     window.scrollTo(0,0);
   },
