@@ -207,6 +207,19 @@ var ObserverTest = TestCase.create({
     this.assert(klass.onBar);
   },
   
+  testCamelacedShortcutsGeneration: function() {
+    var Klass = new Class(Observer, {
+      EVENTS: $w('some_event anotherEvent')
+    });
+    
+    var klass = new Klass();
+    
+    this.assert(klass.onSomeEvent);
+    this.assert(klass.onAnotherEvent);
+    this.assert(klass.someEvent);
+    this.assert(klass.anotherEvent);
+  },
+  
   testAutoShortcutsGeneratorForClass: function() {
     var Klass = new Class(Observer, {
       extend: {

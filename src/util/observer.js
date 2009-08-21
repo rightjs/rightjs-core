@@ -185,7 +185,7 @@ var Observer = new Class({
      */
     createShortcuts: function(object, names) {
       (names || []).each(function(name) {
-        var shortcuts = {}, name = name.replace(/:/g, '_').toLowerCase().camelize();
+        var shortcuts = {}, name = name.replace(/:/g, '_').camelize();
         shortcuts[name] = function() {
           return this.fire.apply(this, [name].concat($A(arguments)));
         };
