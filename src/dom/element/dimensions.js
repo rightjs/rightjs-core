@@ -28,16 +28,19 @@ Element.addMethods({
     var left = 0, top = 0;
     
     if (this.getBoundingClientRect) {
-      var rect = this.getBoundingClientRect(), doc = this.ownerDocument.documentElement;
-      left = rect.left + doc.scrollLeft - doc.clientLeft;
-      top  = rect.top  + doc.scrollTop  - doc.clientTop;
+      var rect = this.getBoundingClientRect(), doc = this.ownerDocument.documentElement, scrolls = window.scrolls();
+      
+      left = rect.left + scrolls.x - doc.clientLeft;
+      top  = rect.top  + scrolls.y - doc.clientTop;
     } else {
       // Manual version
       var element = this;
       while (element && element.tagName) {
         left += element.offsetLeft;
         top  += element.offsetTop;
-        element = element.parentNode;
+        do 
+          element = element.parentNode;
+        while (element.tagName == 'P') // P tags screw the position calculation
       }
     }
     

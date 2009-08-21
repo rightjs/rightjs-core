@@ -11,16 +11,27 @@ ElementDimensionsTest = TestCase.create({
       style: {
         width:   '200px',
         height:  '100px',
+        margin:  '50px',
         padding: '50px',
         border:  '50px solid transparent'
       }
-    });
+    }).insertTo(document.body);
     
-    document.body.appendChild(this.div);
+    // screws with the manual position calculation
+    this.p = new Element('p').insertTo(document.body).insert(this.div);
+    
+    // makes the window scroll down
+    this.spoof = new Element('div', {
+      style: 'height: 2000px'
+    }).insertTo(document.body);
+    
+    window.scrollTo(0, 100);
   },
   
   tearDown: function() {
-    document.body.removeChild(this.div);
+    this.p.remove();
+    this.spoof.remove();
+    window.scrollTo(0,0);
   },
   
   testSize: function() {
@@ -29,7 +40,7 @@ ElementDimensionsTest = TestCase.create({
   
   testPosition: function() {
     var pos = this.div.position();
-    this.assert(pos.x > 0 && pos.y > 0);
+    this.assert(pos.x > 50 && pos.x < 70 && pos.y > 50 && pos.y < 100);
   },
   
   testScrolls: function() {
@@ -42,8 +53,8 @@ ElementDimensionsTest = TestCase.create({
     this.assertEqual(300, dims.height);
     this.assertEqual(0, dims.scrollLeft);
     this.assertEqual(0, dims.scrollTop);
-    this.assert(dims.top > 0);
-    this.assert(dims.left > 0);
+    this.assert(dims.top > 50);
+    this.assert(dims.left > 50);
   },
   
   testSetWidth: function() {
@@ -69,7 +80,7 @@ ElementDimensionsTest = TestCase.create({
   },
   
   testMoveTo: function() {
-    this.div.style.position = 'absolute';
+    this.div.setStyle('position: absolute; margin: 0');
     this.assertSame(this.div, this.div.moveTo(40, 40));
     this.assertEqual({x: 40, y: 40}, this.div.position());
   }
