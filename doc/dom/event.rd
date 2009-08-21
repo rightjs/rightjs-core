@@ -1,7 +1,7 @@
 = Intro
 
 To provide an ability of working with the DOM-events in a cross-browser way,
-RightJS as many other JavaScript frameworks provides some extensions over the
+RightJS as many other JavaScript frameworks provides some extensions for the
 events system.
 
 If you attach your event listeners via the RightJS interfaces, then all the

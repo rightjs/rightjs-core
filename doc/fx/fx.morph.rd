@@ -1,13 +1,11 @@
 = Intro
 
-Instead of feeding the developer with some predefined effects RightJS
-provides a generic element morphing interface where he can do whatever he
-needs. You just provide an element and the end style or css-class, RightJS
-does all the rest.
+Fx.Morph is the basic dom-elements morphing visual effect. It can morph
+an element from its current state to any end style or a css-class.
 
-You can specify several keys in your end style as long as you can specify
-several css-classes, all the values will be processed simultaneous
-providing excellent user experience.
+You can specify several keys in your end style as much as you can specify
+several css-classes, all the values will be processed simultaneously
+providing an excellent user experience.
 
 NOTE: There's no need to preset the element styles manually before run the
 effect, in most of the cases RightJS is smart enough to figure out the initial

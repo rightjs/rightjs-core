@@ -5,13 +5,13 @@ which make arrays pretty powerful tool in your projects. Some methods are new
 for JavaScript, some already exist in the later specifications of JavaScript. 
 RightJS tries to be most effective, so if your browser supports some of the 
 methods it will use the browser's native method, if not, it will provide some 
-manual method with the same API.
+JavaScript based method with the same API.
 
-Additionally RightJS provides some new features borrowed from the RubyOnRails 
-framework. Methods which take a function as an argument, meant {#each}, 
+Additionally, RightJS provides some new features borrowed from the RubyOnRails 
+framework. Methods that take a function as an argument, meant {#each}, 
 {#map}, {#filter}, etc, in the case when you need simultaneously call same method 
 on every item in the array, you can just pass the method name as a string, and 
-optionally pass some arguments.
+optionally pass some arguments too.
 
 For example
 
@@ -29,23 +29,21 @@ For example
   var marked_eleemnts  = elements.filter('hasClass', 'marked');
 </code>
 
-As you can see it's pretty nifty tool, and it has almost no overhead. On most 
+As you can see it's a pretty nifty tool, and it has almost no overhead. On most 
 of the modern browsers, it will work almost as fast as you would do it in a 
 normal for loop.
 
 === Iterators Handling
 
-Every time you call an Array method which receives a lambda function as an 
-argument, all the cases are handled simultaneously.
-
-If you send a function, on every call it will receive three arguments.
+Every time you call an Array method with a lambda function as an 
+argument, on every call it will receive three arguments.
 
  * The current item
  * The item index in the array
  * And the instance of the array by itself
 
-If you send a method name as a string for the first argument, Then on every 
-call each item's property will be called with the additional arguments which 
+If you send a method name as a string for the first argument, then on every 
+call each item's property will be called with the additional arguments you
 you pass with the call. For example:
 
 <code>
@@ -55,17 +53,6 @@ you pass with the call. For example:
 Every item on the array will get call for their 'foo' method with arguments 1,2,3
  
 
-=== Performance Notes
-
-Most of the modern browsers support the JavaScript 1.6 specification and 
-provide several fast native methods to work with iterations. RightJS will 
-reuse them internally in all possible cases, and that make it work almost as 
-fast as a pure DOM version would do in similar cases.
-
-For the obsolete browsers, RightJS generates the missing methods in pure 
-JavaScript, it surely gives its own overhead, but it is still fairly fast 
-for most of the cases.
-
 
 ### Array#indexOf
 
@@ -73,7 +60,7 @@ for most of the cases.
   indexOf(smth) -> Integer
 
 == Description
-  Returns the integer index of an element in the array or -1 if the item not 
+  Returns the integer index of an element in the array or -1 if the item is not 
   on the list.
 
 
@@ -84,7 +71,7 @@ for most of the cases.
   
 == Description
   Returns the index of the last appearance of the item in the array or -1 if 
-  the item not on the list.
+  the item is not on the list.
 
 
 ### Array#first
@@ -135,7 +122,7 @@ for most of the cases.
   random() -> mixed
   
 == Description
-  Returns a random item from the array or undefined if the array is empty
+  Returns a random item from the array or <tt>undefined</tt> if the array is empty
 
 ### Array#size
 
@@ -167,7 +154,7 @@ for most of the cases.
   clone() -> new Array
   
 == Description
-  Creates a new array which contains all the same items as the original one
+  Creates a new array that contains all the same items as the original one
 
 ### Array#each
 
@@ -230,8 +217,8 @@ for most of the cases.
   filter(String name[, argument, ...])    -> Array new
   
 == Description
-  Creates a new array which contains all the items from the original array 
-  which being passed to the lambda function returns true.
+  Creates a new array that contains all the items from the original array 
+  that passes the check in the lambda function
   
 == Example
   var strings = ['anny', 'manny', 'banny', 'bob'];
@@ -282,7 +269,7 @@ for most of the cases.
   merge(Array list[, Array list, ...]) -> Array new
   
 == Description
-  Picks up items from the given arrays which do not exist in the current 
+  Picks up items from the given arrays that do not exist in the current 
   array, combine them with the items from the current array and returns the 
   result as a new array.
   
@@ -298,7 +285,7 @@ for most of the cases.
   flatten() -> Array new
   
 == Description
-  Converts a multi-dimensional array in a single dimensional one.
+  Converts a multi-dimensional array in a flat list.
   
 == Example
   [0,1,[2,3,[4,5,[6,7],8],9]].flatten();
@@ -312,8 +299,8 @@ for most of the cases.
   compact() -> Array new
   
 == Description
-  Creates a new array which contains all the non-null and non-undefined values 
-  from the original array
+  Creates a new array that contains all the non-null and non-undefined values 
+  from the original one
   
 == Example
   [null, 0, undefined, 1, 2, 3, null].compact();
@@ -371,7 +358,7 @@ for most of the cases.
   shuffle() -> Array new
 
 == Description
-  Creates a new array which has all the same items as the original
+  Creates a new array that has all the same items as the original
   but in a random order
 
 == Example
@@ -447,59 +434,3 @@ for most of the cases.
   ['foo', 'bar'].some('match', 'bar') // -> true
   ['foo', 'boo'].some('match', 'bar') // -> false
 
-
-### Array#any
-
-== Semantic
-  any();                               -> mixed item or false
-  any(Function lambda[, Object scope]) -> mixed item or false
-  any(String name[, argument, ...])    -> mixed item or false
-  
-== Description
-  DEPRECATED: Please use the {Array#some} method
-  
-  Returns the first non-false item or false if nothing found.
-  
-== Example
-  [0,null,undefined].any(); // false
-  [0,null,null,1].any();    // 1
-  
-  [0,2,4].any(function(value) {
-    return value % 2 != 0;
-  }); 
-  // false
-  
-  [0,1,2,3].any(function(value) {
-    return value > 1;
-  });
-  // 2
-  
-  ['a', 'b', 'c'].any('blank');      // false
-  ['a', 'b', 'c'].any('match', 'b'); // 'b'
-
-
-### Array#all
-
-== Semantic
-  all();                               -> boolean
-  all(Function lambda[, Object scope]) -> boolean
-  all(String name[, argument, ...])    -> boolean
-  
-== Description
-  DEPRECATED: Please use the {Array#every} method
-  
-  Checks if all the items on the array are non-false or return non-false value 
-  by passing them
-  into the lambda function
-  
-== Example
-  [0,1,2,3].all(); // false
-  [1,2,3,4].all(); // true
-  
-  [0,1,2,3].all(function(value, i) {
-    return value == i;
-  });
-  // -> true
-  
-  ['', ' ', '  '].all('blank'); // true
-  ['', ' ', ' a'].all('blank'); // false

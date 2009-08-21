@@ -1,19 +1,18 @@
 = Intro
 
-As RightJS claims to be an object-oriented framework, it surely provides
-the Class unit. Our Class unit pretty much starts with the Prototype framework
-classes, extends the ideas from the MooTools framework, spices it with ideas
-from the Ruby language etc. If you already have experience with those things,
-it should be quite natural.
+RightJS is an object-oriented framework, and it provides the <tt>Class</tt> unit.
+The <tt>Class</tt> unit in RightJS is a mix of the later Prototype <tt>Class</tt>
+implementation and the Ruby language features like <tt>include</tt> and 
+<tt>extend</tt> methods.
 
 == Definition
 
-Definitions of classes in RightJS is pretty standard and simple
+The classes definition is pretty simple and standard
 
 <code>
   var Animal = new Class({
-    initialize: function() {
-      // constructor code
+    initialize: function(size) {
+      // constructor code is here
     },
     
     eat:   function() {},
@@ -24,60 +23,35 @@ Definitions of classes in RightJS is pretty standard and simple
 
 == Inheritance
 
-Inheritance is a pretty natural thing in RightJS. To make one class be inherited
-from another, you just pass the superclass as the first argument to the Class
-call. And then inside your sub-class methods, you can refer to the superclass
-methods by calling the <tt>this.$super</tt> method.
+The classes inheritance is organized in the standard way. If there are two arguments
+passed to the <tt>Class</tt> constructor, the first object is considered to be the
+parent class.
+
+It is also available to call the super-class methods by calling the <tt>this.$super</tt> method.
 
 <code>
-  var Animal = new Class({
-    initialize: function(size) {
-      this.size = size;
-    },
-    
-    eat: function(animal) {
-      if (this.size < animal.size)
-        throw "You can't eat animals bigger than you";
-    },
-    
-    mate: function(animal) {
-      if (animal.constructor != this.constructor)
-        throw "You should not mate animals of different kind";
-    },
-    
-    sleep: function(time) {
-      
+  var Boy = new Class({
+    sayIt: function() {
+      return "Hello Mister!";
     }
   });
   
-  var Cat = new Class(Animal, {
-    initialize: function() {
-      this.$super(1);
+  var AngryBoy = new Class({
+    sayIt: function() {
+      return "Angry Boy Says: "+this.$super();
     }
   });
   
-  var Dog = new Class(Animal, {
-    initialize: function() {
-      this.$super(2);
-    }
-  });
-  
-  var Wolf = new Class(Dog, {
-    eat: function(animal) {
-      // wolf can eat up any animal
-    }
-  });
+  new Boy().sayIt();      // -> "Hello Mister!"
+  new AngryBoy().sayIt(); // -> "Angry Boy Says: Hello Mister!"
 </code>
+
 
 == Extending And Mixing
 
-Additionally, we brought the Ruby extending and including principles into our 
-classes. That a pretty powerful tool which lets you share modules between 
-classes and take advantages of multiple inheritance.
-
-The principles are simple. You use <tt>.extend()</tt> method to extend 
-the class level structure and <tt>.include()</tt> to extend the class 
-prototype level. For example:
+There are two methods that let you extend your classes with shared modules:
+<tt>.extend()</tt> method extends the class level and <tt>.include()</tt>
+extends the class prototype level.
 
 <code>
   var mixin = {
@@ -95,7 +69,7 @@ prototype level. For example:
   Klass1.foo === Klass2.prototype.foo;
 </code>
 
-Sure you can feed your classes with multiple mixins, easily
+You can feed your classes with multiple mixins
 
 <code>
   var Klass = new Class({
@@ -104,7 +78,7 @@ Sure you can feed your classes with multiple mixins, easily
   });
 </code>
 
-You even can extend your classes after definition.
+And you can extend your classes after definition.
 
 <code>
   var Klass = new Class();
@@ -112,10 +86,10 @@ You even can extend your classes after definition.
   Klass.include(mixin1, mixin2, mixin3);
 </code>
 
-But note, if you put extensions inline with the class definition, then rest of 
-your methods will have a priority over the mixed in methods, and if you extend 
-your class later, then the mixed in methods will have priority over the 
-defined in the class. For example:
+But keep in mind, if you put extensions inline with the class definition,
+then the rest of your class methods will have a priority over the mixed in
+methods, but if you extend the class after definition, then the mixed in
+methods will have priority over the defined in the class.
 
 <code>
   var mixin = {
@@ -135,8 +109,8 @@ defined in the class. For example:
   Klass.foo == 'bar';
 </code>
 
-And eventually you can use the <tt>extend</tt> attribute to create inline 
-class level definitions right in your class. Similar to that.
+And eventually, you can use the <tt>extend</tt> attribute to create inline 
+class level definitions right in your class. Similar to that:
 
 <code>
   var Klass = new Class({
@@ -153,6 +127,6 @@ class level definitions right in your class. Similar to that.
       
     },
     
-    // ... rest of the instance level functions
+    // ... the rest of the instance level functions
   })
 </code>

@@ -1,6 +1,6 @@
 = Intro
 
-RightJS provides the global object called <tt>Browser</tt> which become more
+RightJS provides the global object called <tt>Browser</tt> that becomes more
 or less standard among JavaScript frameworks.
 
 There are the keys

@@ -1,10 +1,7 @@
 =Intro
 
 The {Object} unit in RightJS has some pretty much standard additional methods
-which provides frequently used functionality for the objects processing
-
-If you need more functional Hash class you can take it at the rightjs-goods
-project.
+that provide frequently used functionality for the objects processing
 
 ### Object.keys
 
@@ -52,7 +49,7 @@ project.
   Object.without(Object object, String key[, keys..]) -> Object new
 
 == Description
-  Creates a new object which contains all the same key - value pairs as the
+  Creates a new object that contains all the same key - value pairs as the
   original but without the given keys
 
 == Example
@@ -67,7 +64,7 @@ project.
   Object.only(Object object, String key[, keys...]) -> Object new
 
 == Description
-  Creates a new object which contains the specified key-value pairs of the
+  Creates a new object that contains only the specified key-value pairs of the
   original object.
 
 == Example
@@ -82,7 +79,7 @@ project.
   Object.merge(Object o1, Object o2[, objects..]) -> Object new
 
 == Description
-  Creates a new object which contains all the key-value pairs of the given
+  Creates a new object that contains all the key-value pairs of the given
   objects
 
 == Example
@@ -96,7 +93,7 @@ project.
   Object.toQueryString(Object object) -> String
 
 == Description
-  Converts an object into an url options string
+  Converts the object into an url options string
 
 == Example
   Object.toQueryString({a:'a', b:'b', c:'%#?'}));

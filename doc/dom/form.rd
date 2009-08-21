@@ -2,32 +2,30 @@
 
 RightJS inherits forms from the general Element unit, which means you can do
 everything the same that you can do with any other element in the system, plus
-there are several additional goods which make work with forms an easiest
-thing.
+there are several additional goods that might make the work with forms much easier.
 
 == Ajax handling
 
-Work with ajax submitting of the forms in RightJS is a really easy thing. You
-just find your form and call the <tt>.send()</tt> method. All the rest of the
-things will be handled automatically.
+To submit your form via an {Xhr} request you just need to call the <tt>.send()</tt>
+method.
 
 <code>
   $('some-form').send();
 </code>
 
 This will handle everything automatically, grab the request method, url,
-options, etc. And yes, if your form contains files to upload, it will be
+options, etc. And, if your the form contains files to upload, it will be
 nicely handled by an iframed request in just the same way. You don't need
 to worry about anything.
 
-You can mark the form as a remote one and then whenever, however someone 
-submits the form it will go via xhr request automatically.
+You can also mark the form as a remote one and then when it gets submitted
+the form it will go via a xhr request automatically.
 
 <code>
   $('some-form').remotize();
 </code>
 
-And you can specify all the common Xhr options to be handled.
+And you can specify any the standard {Xhr} options too.
 
 <code>
   $('some-form').send({
@@ -90,8 +88,8 @@ And you can specify all the common Xhr options to be handled.
   focus() -> Form self
 
 == Description
-  Tries to put a focus on the first input element on the form which the user
-  can change.
+  Tries to put the focus on the first input element on the form that
+  is visible and not disabled.
 
 == Example
   $('form').focus();
@@ -118,7 +116,7 @@ And you can specify all the common Xhr options to be handled.
   disable() -> Form self
 
 == Description
-  Disables every possible element on the form
+  Disables every visible element on the form
 
 == Example
   $('form').disable();
@@ -144,7 +142,7 @@ And you can specify all the common Xhr options to be handled.
   values() -> Object
 
 == Description
-  Returns a name->value hash of all values on the form
+  Returns a name->value hash of all the form values
 
 == Example
   $('form').values();
@@ -171,10 +169,10 @@ And you can specify all the common Xhr options to be handled.
   send([Object options]) -> Form self
 
 == Description
-  Remotely submits the form via an XHR request. The attribute might contain
-  any standard Xhr object options.
+  Remotely submits the form via an XHR request. The argument might contain
+  any standard {Xhr} object options.
   
-  NOTE: works with multi-part forms with files uploading too!
+  NOTE: works with files uploading too!
 
 == Example
   $('form').send();
@@ -192,8 +190,8 @@ And you can specify all the common Xhr options to be handled.
   remotize([Object options]) -> Form self
 
 == Description
-  Mark the form to be automatically send via an Xhr request when submitted.
-  Optionally might preset any standard Xhr object options.
+  Mark the form to be automatically send via an {Xhr} request when submitted.
+  Optionally might preset any standard {Xhr} object options.
 
 == Example
   $('form').remotize({spinner: $('some-image')});

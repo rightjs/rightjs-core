@@ -1,7 +1,7 @@
 = Intro
 
-RightJS comes with some collection of small handy methods which will help you 
-with everyday coding operations, checks etc.
+RightJS comes with collection of system level functions that will help
+in the routine operations. Most of the are pretty much conventional
 
 ### $
 
@@ -10,7 +10,7 @@ with everyday coding operations, checks etc.
   $(Element element)   -> Element
 
 == Description
-  Finds element by id or extends an existing element
+  Finds an element by its id or extends an existing element
 
 == Example
   $('some-id');
@@ -23,7 +23,7 @@ with everyday coding operations, checks etc.
   $$(String css_rule) -> Array of elements
 
 == Description
-  Finds all the elements in the document which matches the given css-rule
+  Finds all the elements in the document that match the given css-rule
 
 == Example
   $$('div')
@@ -35,7 +35,7 @@ with everyday coding operations, checks etc.
   $w(String string) -> Array of strings
 
 == Description
-  Splits the given string to list of words
+  Splits the given string into a list of words
 
 == Example
   $w('one two    three'); // ['one', 'two', 'three']
@@ -47,7 +47,7 @@ with everyday coding operations, checks etc.
   $A(Iterable it) -> Array
 
 == Description
-  Converts any iterable unit into an Array instance
+  Converts any iterable object into an Array instance
 
 == Example
   function() {
@@ -74,8 +74,9 @@ with everyday coding operations, checks etc.
   $ext(Object first, Object second[, boolean dont_overwrite]) -> Object first
 
 == Description
-  Extends the first object with data from the second object. Skips all the 
-  intersecting keys if the third argument is true
+  Extends the first object with data from the second object.
+  
+  If the third argument is true, then it skips all the overlapping keys
 
 == Example
   var o = {1:1};
@@ -90,7 +91,7 @@ with everyday coding operations, checks etc.
 
 == Description
   Evaluates the arguments functions one by one, and returns the result of the 
-  first one which does not raises any exception
+  first that does not raises any exception
 
 == Example
   var result = $try(
@@ -122,7 +123,7 @@ with everyday coding operations, checks etc.
   $break()
 
 == Description
-  Initiates a manual break on the callback based iterators
+  Initiates the manual break in case of the callback based iterations
 
 == Example
   [1,2,3,4].walk(function(value, i) {
@@ -139,7 +140,7 @@ with everyday coding operations, checks etc.
   $alias(Object object, Object aliases) -> Object the first
 
 == Description
-  Creates the object properties aliases
+  Creates the object property aliases
 
 == Example
   var o = {

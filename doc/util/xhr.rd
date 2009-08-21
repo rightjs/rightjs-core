@@ -1,11 +1,9 @@
 = Intro
 
-Xhr is the standard xml http requests handler for RightJS. It's pretty much
-standard, with standard methods/options and behavior.
+Xhr is the standard xml http requests handler for RightJS.
 
 == Options
-Xhr object supports the following list of options. Any of them might be set
-up as global or an instance option.
+Xhr object supports the following list of options.
 
 * method        'post'  - request method
 * encoding      'utf-8' - encoding
@@ -17,10 +15,14 @@ up as global or an instance option.
 * spinner       null    - common spinner element
 * params        null    - default parameters
 
+Any of the options might be changed globally by altering the {Xhr.Options}
+object.
+
+
 == Spinners
-Additionally RightJS offers you to take care of the spinner elements
-automatically. You can define one common spinner in the global {Xhr.Options}
-object, or you can specify custom spinners per-request.
+The {Xhr} class in RightJS handles the spinners automatically. If a spinner
+element was specified it will get shown before the request starts and get
+hidden when it's over.
 
 You can specify spinner as an element object instance or as an element-id
 
@@ -74,8 +76,8 @@ NOTE: when you specify params on several levels, they will be merged with the
 
 
 == Events
-RightJS Xhr class is inherited from the standard Observer class which means
-that Xhr objects follow all the standard observer rules. You can add, list
+RightJS Xhr class is inherited from the standard {Observer} class, which means
+that Xhr instances follow all the standard observer rules. You can add, list
 and remove event handlers in the usual way.
 
 Xhr class supports the following events

@@ -1,7 +1,7 @@
 = Intro
 
-Along with the other basic native units, RightJS extends the Function unit to 
-provide some pretty much standard functionality like binding, working with 
+There are several conventional extensions over the <tt>Function</tt> class
+that provides the standard functionality like binding, working with 
 timeouts etc.
 
 ### Function#bind
@@ -10,7 +10,7 @@ timeouts etc.
   bind(Object scope[, argument,...]) -> Function new
 
 == Description
-  Binds the function to be executed in a different context. Additionally can 
+  Binds the function to be executed in the specified context. Additionally can 
   take optional curry arguments
 
 == Example
@@ -81,7 +81,7 @@ timeouts etc.
 == Description
   Schedules a delayed execution for the function.
   
-  Additionally, the timeout pointer will have a method <tt>'cancel'</tt>
+  Additionally, the timeout pointer will have the <tt>'cancel'</tt> method
   by calling which the timeout can be canceled.
 
 == Example
@@ -109,7 +109,7 @@ timeouts etc.
 == Description
   Makes the function be periodically executed with the given timeout.
   
-  Additionally, the timeout marker will have a method <tt>'stop'</tt> by
+  Additionally, the timeout marker will have the <tt>'stop'</tt> method by
   calling which you can stop the function being called periodically.
 
 == Example

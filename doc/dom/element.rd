@@ -1,30 +1,6 @@
 = Intro
 
-The Element unit is a wrapper for the HTMLElement units. It provides all the nice 
-features to work with elements easily.
-
-== Instantiation
-
-Constructor of the Element class is fairly simple, it just takes two 
-arguments, the tag name and a hash of options
-
-<code>
-  var div = new Element('div');
-  
-  var div = new Element('div', {
-    id: 'my-div',
-    'class': 'my div',
-    html: 'my div internal text',
-    style: {
-      border: '1px solid #EEE'
-    },
-    observe: {
-      click:     function() {},
-      mouseover: function() {}
-    }
-  });
-</code>
-
+The Element unit contains all the dom-element extensions.
 
 == Methods
 
@@ -45,18 +21,14 @@ elements under Internet Explorer to make all the fancy methods appear.
 == Selectors
 
 All the selector methods like, {#parents}, {#siblings}, etc. Takes an optional 
-css rule or a selector object as an argument. If such a thing were specified, 
-then the result will be filtered against the rule.
+css rule as an argument. If it was specified, then the result will be filtered
+against the rule.
 
 <code>
   var element = $('some-element');
   
   element.siblings();      // all the siblings
   element.siblings('div'); // all the siblings with tag 'div'
-  
-  var selector = new Selector('...');
-  
-  element.siblings(selector); // all the siblings which match the selector
 </code>
 
 All the elements you select with the selection methods, will be automatically 
@@ -81,12 +53,6 @@ Element has all the same methods as any Observer in the system.
   element.fire('click');
 </code>
 
-<b>NOTE</b> the default build has a limited version of the dom element
-events firing. It will initiate a dummy event which will simply go through
-all the listeners. If you need real dom-events with bubbling and ability to
-stop them from propagation then you need to include the advanced events
-handling module from the rightjs-goods project.
-
 You can use all the advantages of the observers like assigning methods by 
 name, and specifying options for the fired events.
 
@@ -103,10 +69,7 @@ name, and specifying options for the fired events.
   });
 </code>
 
-All the events which your listeners receive will be automatically extended so
-you don't need to worry about that.
-
-And sure RightJS provides the custom events handling.
+You can specify any of your own events too.
 
 <code>
   element.on('something', function() {...});
@@ -116,9 +79,10 @@ And sure RightJS provides the custom events handling.
   element.fire('something');
 </code>
 
+
 == Event shortcuts
 
-Additionally for the frequently used events there are shortcuts to connect
+Additionally, for the most frequently used events there are shortcuts to connect
 listeners and fire the events.
 
 <code>
@@ -126,10 +90,10 @@ element.onClick(function() { ... }).click();
 element.onKeydown(function() {...}).keydown();
 </code>
 
-The list of supported events is following
+The list of supported events
 
  * click
- * rightclick
+ * contextmenu
  * mousedown
  * mouseup
  * mouseover
@@ -202,7 +166,7 @@ The list of supported events is following
   has(String name) -> boolean
 
 == Description
-  Checks if the element has non-empty attribute with such a name
+  Checks if the element has non-empty attribute with that name
 
 == Example
   // <div id="div" title="some title"></div>
@@ -275,8 +239,8 @@ The list of supported events is following
   hide([String effect[, Object options]]) -> Element self
 
 == Description
-  Hides out the element. If a valid effect name were specified, the effect
-  will be used to process the hiding.
+  Hides out the element. If a valid effect name were specified and the Fx
+  library is available, the the effect will be used to process the hiding.
 
 == Example
   $('some-element').hide();
@@ -291,8 +255,8 @@ The list of supported events is following
   show([String effect[, Object options]]) -> Element self
 
 == Description
-  Shows up the element. If a valid effect name were specified, the effect will
-  be used to process the showing
+  Shows up the element. If a valid effect name were specified and the Fx
+  library is available, then the effect will be used to process the showing
 
 == Example
   $('some-element').show();
@@ -365,8 +329,8 @@ The list of supported events is following
   parents([mixed css_rule]) -> Array of elements
 
 == Description
-  Returns the list of the element parent nodes, from down to up.  If a css-rule
- were specified, the list will be filtered out by the rule
+  Returns the list of the element parent nodes, from down to up. If a css-rule
+  was specified, the list will be filtered out by the rule
 
 == Example
   /*
@@ -479,7 +443,7 @@ The list of supported events is following
 
 == Description
   Returns the next sibling of the element, or if the css-rule specified the
-  next sibling which matches the css-rule.
+  next sibling that matches the css-rule.
 
 == Example
   /**
@@ -501,7 +465,7 @@ The list of supported events is following
 
 == Description
   Returns the previous sibling of the element, or if the css-rule specified 
-  the previous sibling which matches the css-rule.
+  the previous sibling that matches the css-rule.
 
 == Example
   /**
@@ -522,7 +486,7 @@ The list of supported events is following
   first(mixed css_rule) -> Element or null
 
 == Description
-  Returns the first node in the internal structure which matches the given
+  Returns the first node in the internal structure that matches the given
   css-rule.
 
 == Example
@@ -595,7 +559,7 @@ The list of supported events is following
   insert(mixed content[, String position]) -> Element self
 
 == Description
-  Insert the given content into the element in the given position.
+  Inserts the given content into the element at the given position.
   
   The content might be one of the following
   
@@ -604,10 +568,10 @@ The list of supported events is following
   * A list of elements (array, or NodeList or something iterable)
   * A hash like {position: content}
   
-  Positions might be the one of the following
+  Position might be the one of the following
     top/bottom/before/after/instead
     
-  If no position was given, then 'bottom' will be used
+  The <tt>bottom</tt> value is used by default.
 
 == Example
   var element = $('some-element');
@@ -682,7 +646,7 @@ The list of supported events is following
   wrap(Element wrapper) -> Element self
 
 == Description
-  Wraps current element with the given one
+  Wraps the current element with the given one
 
 == Example
   // <div id="one"><div id="two"></div></div>
@@ -724,6 +688,7 @@ The list of supported events is following
 == Semantic
   setStyle(String key, String value) -> Element self
   setStyle(Object styles)            -> Element self
+  setStyle(String styles_def)        -> Element self
   
 == Description
   Assigns the element style
@@ -735,6 +700,8 @@ The list of supported events is following
     display: 'block',
     border:  '1px solid gray'
   });
+  
+  $('element').setStyle('display:block;color:red');
 
 
 
@@ -763,7 +730,7 @@ The list of supported events is following
   hasClass(String class) -> boolean
 
 == Description
-  Checks if the element has the class
+  Checks if the element has the class name
 
 == Example
   var element = $('element');
@@ -782,7 +749,7 @@ The list of supported events is following
   setClass(String name) -> Element self
 
 == Description
-  Replaces all the element classes with the given one
+  Replaces all the element class names with the given one
 
 == Example
   element.className = 'foo bar';
@@ -799,7 +766,7 @@ The list of supported events is following
   addClass(String name) -> Element self
 
 == Description
-  Adds the class to the element classes list
+  Adds the class name to the element class names list
 
 == Example
   element.className = 'foo';
@@ -816,7 +783,7 @@ The list of supported events is following
   removeClass(String name) -> Element self
 
 == Description
-  Removes the class out of the element classes list
+  Removes the class name out of the element class names list
 
 == Example
   element.className = 'foo bar';
@@ -833,7 +800,7 @@ The list of supported events is following
   toggleClass(String name) -> Element self
 
 == Description
-  Toggles the class presence on the element classes list
+  Toggles the class name presence on the element class names list
 
 == Example
   element.className = 'foo';
@@ -852,7 +819,8 @@ The list of supported events is following
   radioClass(String name) -> Element self
 
 == Description
-  Removes the class out of all the element siblings and adds it to the element
+  Removes the class name out of all the element siblings and adds it to
+  the current element
 
 == Example
   $('element').radioClass('boo');
@@ -864,11 +832,11 @@ The list of supported events is following
 == Semantic
   observe(String eventName, Function listener)             -> Element self
   observe(String eventName, String method[, argument,...]) -> Element self
+  observe(String eventName, Array list_list_of_callbacks)  -> Element self
+  observe(Object event_listeners_hash)                     -> Element self
 
 == Description
-  Wires an event listener to the element. Following the general Observer rules
-  the listener might be just a function or a string method name which will be
-  called on the event.
+  Wires an event listener to the element.
 
 == Example
   $('element').observe('click', function() {
@@ -876,7 +844,13 @@ The list of supported events is following
   });
   
   $('element').observe('click', 'addClass', 'clicked');
-
+  
+  $('element').observe('click', [function1, function2]);
+  
+  $('element').observe({
+    click: function1,
+    dblclick: function2
+  });
 
 
 ### Element#on
@@ -884,6 +858,8 @@ The list of supported events is following
 == Semantic
   on(String eventName, Function listener)             -> Element self
   on(String eventName, String method[, argument,...]) -> Element self
+  on(String eventName, Array list_list_of_callbacks)  -> Element self
+  on(Object event_listeners_hash)                     -> Element self
 
 == Description
   Short alias for the {#observe} method.
@@ -895,6 +871,12 @@ The list of supported events is following
   
   $('element').on('click', 'addClass', 'clicked');
 
+  $('element').on('click', [function1, function2]);
+  
+  $('element').on({
+    click: function1,
+    dblclick: function2
+  });
 
 
 ### Element#observes
@@ -904,7 +886,7 @@ The list of supported events is following
   observes(String name, Function listener) -> boolean
 
 == Description
-  Checks if the given listener observers the element events. You can make a 
+  Checks if the given listener observers the element events. You can have a 
   check generally or against some event name.
 
 == Example
@@ -966,42 +948,42 @@ The list of supported events is following
 ### Element#sizes
 
 == Semantic
-  sizes() -> Object {width: ... , height: ...}
+  sizes() -> Object {x: ... , y: ...}
 
 == Description
   Returns the element sizes hash.
 
 == Example
-  var width  = $('element').sizes().width;
-  var height = $('element').sizes().height;
+  var width  = $('element').sizes().x;
+  var height = $('element').sizes().y;
 
 
 
 ### Element#position
 
 == Semantic
-  position() -> Object {top: ... , left: ...}
+  position() -> Object {x: ... , y: ...}
 
 == Description
   Returns the element absolute position on the page
 
 == Example
-  var top  = $('element').position().top;
-  var left = $('element').position().left;
+  var top  = $('element').position().y;
+  var left = $('element').position().x;
 
 
 
 ### Element#scrolls
 
 == Semantic
-  scrolls() -> Object {top: ... , left: ...}
+  scrolls() -> Object {x: ... , y: ...}
 
 == Description
   Returns the element scrolls
 
 == Example
-  var top  = $('element').scrolls().top;
-  var left = $('element').scrolls().left;
+  var top  = $('element').scrolls().y;
+  var left = $('element').scrolls().x;
 
 
 
@@ -1029,7 +1011,7 @@ The list of supported events is following
   
   NOTE: the method will automatically adjust the actual style.width to
   existing paddings and borders so the end result was exactly the same as 
-  asked.
+  was asked.
 
 == Example
   var element = new Element('div', {
@@ -1057,7 +1039,7 @@ The list of supported events is following
   
   NOTE: the method will automatically adjust the actual style.height to
   existing paddings and borders so the end result was exactly the same as 
-  asked.
+  was asked.
 
 == Example
   var element = new Element('div', {
@@ -1075,11 +1057,11 @@ The list of supported events is following
   
   
 
-### Element#setSize
+### Element#resize
 
 == Semantic
-  setSize(number width, number height) -> Element self
-  setSize({x: number, y: number})      -> Element self
+  resize(number width, number height) -> Element self
+  resize({x: number, y: number})      -> Element self
 
 == Description
   Sets the element size.
@@ -1096,7 +1078,7 @@ The list of supported events is following
     }
   });
   
-  element.setSize(100, 100);
+  element.resize(100, 100);
   
   element.offsetHeight; // 100
   element.offsetWidth;  // 100
@@ -1107,15 +1089,15 @@ The list of supported events is following
 ### Element#setPosition
 
 == Semantic
-  setPosition(number left, number top) -> Element self
-  setPosition({x: number, y: number})  -> Element self
+  moveTo(number left, number top) -> Element self
+  moveTo({x: number, y: number})  -> Element self
 
 == Description
-  Sets the element position
+  Move the element to the given position
 
 == Example
-  element.setPosition(100, 100);
-  element.setPosition({x: 100, y: 100});
+  element.moveTo(100, 100);
+  element.moveTo({x: 100, y: 100});
 
 
 
@@ -1153,9 +1135,9 @@ The list of supported events is following
 
 == Description
   This method loads the given url and updates the element innerHTML property 
-  with the reponse body.
+  with the response body.
   
-  Takes all the standard Xhr class options as the second parameter.
+  Takes all the standard {Xhr} class options as the second parameter.
   
   If there is javascript code in the response, by default it will be
   automatically evaluated after the element body was updated.

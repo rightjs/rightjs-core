@@ -4,7 +4,7 @@ The <tt>document</tt> object in RightJS has some additional functionality.
 
 == Document Ready
 
-The <tt>document</tt> object has all the standard Observer functionality and 
+The <tt>document</tt> object has all the standard {Observer} functionality and 
 handles the <tt>'ready'</tt> event. You can attach your listeners in any 
 standard way.
 
@@ -16,8 +16,8 @@ standard way.
   document.observe('ready', function() {...});
 </code>
 
-All the same things work on the <tt>window</tt> object, you can use it you 
-like it better.
+All the same things work on the <tt>window</tt> object, you can use it
+if you like it better.
 
 
 
@@ -27,7 +27,7 @@ like it better.
   on(String name, Function callback[, arguments, ...]) -> document self
 
 == Description
-  Short name for the <tt>observe</tt> method
+  Short name for the {#observe} method
 
 == Example
   document.on('ready', function() {....});

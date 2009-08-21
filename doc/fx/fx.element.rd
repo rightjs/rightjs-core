@@ -1,7 +1,8 @@
 = Intro
 
-RightJS along with the visual effects package provides some handy shortcuts
-to run the effects directly from the html-element instances.
+There are several shortcuts to initiate the visual effects right out
+of the dom-elements.
+
 
 ### morph
 

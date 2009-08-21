@@ -1,12 +1,12 @@
 = Intro
 
 <tt>Observer</tt> is a shared drop in base-class for the cases when you need
-to implement the observer pattern. It is used in many places in the 
-framework and defined the common interface for the observable units.
+to implement the observer pattern. It is used in many places all over the 
+framework and defines the common interface for the observable units.
 
 == Usage
-Generally <tt>Observer</tt> is usual class. You can use it by itself or as
-an ancestor for your classes in usual way.
+Generally <tt>Observer</tt> is a usual class. You can use it by itself or as
+an ancestor for your own classes.
 
 <code>
   var observer = new Observer();
@@ -20,9 +20,9 @@ an ancestor for your classes in usual way.
   var my_observer = new MyObserver();
 </code>
 
-Or if you don't have ability to inherit the class directly you can use its
+Or if you don't have an ability to inherit the class directly you can use its
 static method called {Observer.create} to make practically any object to
-have an observer functionality/behavior.
+behave like an observer.
 
 <code>
   var Klass = new Class(AnotherKlass, {
@@ -43,11 +43,11 @@ have an observer functionality/behavior.
 </code>
 
 == Shortcuts
-The <tt>Observer</tt> unit provides you ability to generate nice looking
-shortcut methods to wire and fire events which your observer supposed to be
-handling. To do so, you need to specify an instance or class level 
-attribute called <tt>EVENTS</tt> in your class. RightJS will watch the name
-and if found will try to generate shortcuts automatically.
+The <tt>Observer</tt> unit provides an ability to generate nice looking
+shortcut methods to wire and fire events that your observer supposed to
+handle. To do so, you need to specify in your class an instance or class
+level attribute called <tt>EVENTS</tt>. RightJS will watch the name
+and if found, will try to generate shortcuts automatically.
 
 <code>
   var Klass = new Class(Observer, {

@@ -1,11 +1,7 @@
 = Intro
-The <tt>window</tt> in RightJS has it's own portion of extensions which help
-you to deal with sizes and scrolls in a cross browsing way.
 
-== Ready Status
-The <tt>window</tt> object has all the same methods and functionality to
-watch the ready-status as the <tt>document</tt> object. Please take a look
-at the <tt>document</tt> documentation for more details.
+The <tt>window</tt> object in RightJS has it's own portion of extensions that
+might help you to deal with sizes and scrolls in a cross browsing way.
 
 
 ### sizes

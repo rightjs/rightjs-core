@@ -49,7 +49,7 @@ We are already use them in some strings processing, like for example
   blank() -> boolean
 
 == Description
-  Checks if the string contains only spices and equivalent chars
+  Checks if the string is empty or contains only spaces
 
 == Example
   ''.blank();   // true
@@ -162,7 +162,7 @@ We are already use them in some strings processing, like for example
   camelize() -> String new
 
 == Description
-  Converts a string from underscored/dashed version into a camelized one
+  Converts a string from an underscored/dashed version into a camel cased one
 
 == Example
   'foo-bar'.camelize(); // 'fooBar'
@@ -176,7 +176,7 @@ We are already use them in some strings processing, like for example
   underscored() -> String new
 
 == Description
-  Converts camelcased or dashed string into underscored one
+  Converts a camel cased or dashed string into an underscored one
 
 == Example
   'fooBar'.underscored(); // 'foo_bar'
@@ -204,7 +204,7 @@ We are already use them in some strings processing, like for example
   includes(String token) -> boolean
 
 == Description
-  Checks if the string contains given substring
+  Checks if the string contains the given substring
 
 == Example
   'foo'.includes('bar'); // false
@@ -251,7 +251,7 @@ We are already use them in some strings processing, like for example
   toInt([Integer base]) -> Integer
 
 == Description
-  Converts the string into an Integer number
+  Converts the string to an Integer number
 
 == Example
   '123'.toInt(); // -> 123
@@ -264,7 +264,7 @@ We are already use them in some strings processing, like for example
   toFloat() -> Float
 
 == Description
-  Converts the string into a float number.
+  Converts the string to a float number.
   
   NOTE: processes dashes and comas as decimal pinter unless you pass true as 
   the parameter

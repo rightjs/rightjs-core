@@ -12,7 +12,7 @@ Number class with some additional handy methods.
   abs() -> number absolute value
 
 == Description
-  Returns an absolute value of the number
+  Returns the absolute value of the number
 
 == Example
   (-1).abs(); // 1
