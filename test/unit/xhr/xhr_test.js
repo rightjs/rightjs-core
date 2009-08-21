@@ -328,6 +328,35 @@ var XhrTest = TestCase.create({
     this.assertEqual({1:1, 2:2}, result);
   },
   
+  testJSONResponseValidation: function() {
+    this.mockAjax({
+      text: 'NOT JSON',
+      headers: {
+        'Content-type': 'text/x-json'
+      }
+    });
+    
+    this.assertThrows(function() {
+      Xhr.load('/some.json');
+    });
+  },
+  
+  testJSONResponseSilentValidation: function() {
+    this.mockAjax({
+      text: 'NOT JSON',
+      headers: {
+        'Content-type': 'text/x-json'
+      }
+    });
+    
+    var xhr;
+    this.assertNothingThrown(function() {
+      xhr = Xhr.load('/some.json', {secureJSON: false});
+    });
+    
+    this.assertNull(xhr.responseJSON);
+  },
+  
   testLoadShortcut: function() {
     this.mockAjax({text: 'response text'});
     

@@ -26,6 +26,7 @@ var Xhr = new Class(Observer, {
       evalScripts:  false,
       evalResponse: false,
       evalJSON:     true,
+      secureJSON:   true,
       urlEncoded:   true,
       spinner:      null,
       params:       null
@@ -218,10 +219,24 @@ var Xhr = new Class(Observer, {
     if (this.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) {
       $eval(this.text);
     } else if ((/json/).test(this.getHeader('Content-type')) && this.evalJSON) {
-      eval("this.json = this.responseJSON = "+this.text);
+      this.json = this.responseJSON = this.sanitizedJSON();
     } else if (this.evalScripts) {
       this.text.evalScripts();
     }
+  },
+  
+  // sanitizes the json-response texts
+  sanitizedJSON: function() {
+    // checking the JSON response formatting
+    if (!(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
+      if (this.secureJSON) {
+        throw "JSON parse error: "+this.text;
+      } else {
+        return null;
+      }
+    }
+    
+    return eval("("+this.text+")");
   },
   
   // initializes the request callbacks
