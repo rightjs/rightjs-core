@@ -95,6 +95,10 @@ if (TestCaseUtil.Cookie.enabled()) {
       this.assertEqual('rjs_test', cook.name);
       
       this.assert(document.cookie.indexOf('rjs_test=test_value') == -1);
+    },
+    
+    testEnabled: function() {
+      this.assert(Cookie.enabled());
     }
   });
 }

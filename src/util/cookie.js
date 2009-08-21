@@ -24,6 +24,12 @@ var Cookie = new Class({
       return new this(name).remove();
     },
     
+    // checks if the cookies are enabled
+    enabled: function() {
+      document.cookie = "__t=1";
+      return document.cookie.indexOf("__t=1")!=-1;
+    },
+    
     // some basic options
     Options: {
       secure:   false,
