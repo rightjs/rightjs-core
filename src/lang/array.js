@@ -12,12 +12,12 @@ $ext(Array.prototype, (function(A_proto) {
   
   // JavaScript 1.6 methods recatching up or faking
   var for_each = A_proto.forEach || function(callback, scope) {
-    for (var i=0; i < this.length; i++)
+    for (var i=0, length = this.length; i < length; i++)
       callback.call(scope, this[i], i, this);
   };
   
   var filter = A_proto.filter || function(callback, scope) {
-    for (var result=[], i=0; i < this.length; i++) {
+    for (var result=[], i=0, length = this.length; i < length; i++) {
       if (callback.call(scope, this[i], i, this))
         result.push(this[i]);
     }
@@ -25,14 +25,14 @@ $ext(Array.prototype, (function(A_proto) {
   };
   
   var map = A_proto.map || function(callback, scope) {
-    for (var result=[], i=0; i < this.length; i++) {
+    for (var result=[], i=0, length = this.length; i < length; i++) {
       result.push(callback.call(scope, this[i], i, this));
     }
     return result;
   };
   
   var some = A_proto.some || function(callback, scope) {
-    for (var i=0; i < this.length; i++) {
+    for (var i=0, length = this.length; i < length; i++) {
       if (callback.call(scope, this[i], i, this))
         return true;
     }
@@ -40,7 +40,7 @@ $ext(Array.prototype, (function(A_proto) {
   };
   
   var every = A_proto.every || function(callback, scope) {
-    for (var i=0; i < this.length; i++) {
+    for (var i=0, length = this.length; i < length; i++) {
       if (!callback.call(scope, this[i], i, this))
         return false;
     }
@@ -48,7 +48,7 @@ $ext(Array.prototype, (function(A_proto) {
   };
   
   var first = function(callback, scope) {
-    for (var i=0; i < this.length; i++) {
+    for (var i=0, length = this.length; i < length; i++) {
       if (callback.call(scope, this[i], i, this))
         return this[i];
     }
@@ -265,7 +265,7 @@ return {
    * @return Array new merged
    */
   merge: function() {
-    for (var copy = this.clone(), arg, i=0; i < arguments.length; i++) {
+    for (var copy = this.clone(), arg, i=0, length = arguments.length; i < length; i++) {
       arg = arguments[i];
       if (isArray(arg)) {
         for (var j=0; j < arg.length; j++) {
@@ -323,7 +323,7 @@ return {
    * @return boolean check result
    */
   includes: function() {
-    for (var i=0; i < arguments.length; i++)
+    for (var i=0, length = arguments.length; i < length; i++)
       if (this.indexOf(arguments[i]) == -1)
         return false;
     return true;

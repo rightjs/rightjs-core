@@ -55,7 +55,7 @@ Selector.Manual = new Class({
   select: function(node) {
     var founds, atom, index, sub_founds;
     
-    for (var i=0; i < this.atoms.length; i++) {
+    for (var i=0, i_length = this.atoms.length; i < i_length; i++) {
       atom = this.atoms[i];
       if (i == 0) {
         founds =  this.find[atom.rel](node, atom);
@@ -114,7 +114,7 @@ Selector.Manual = new Class({
 // protected
   uniq: function(elements) {
     var uniq = [], uids = [], uid;
-    for (var i=0; i < elements.length; i++) {
+    for (var i=0, length = elements.length; i < length; i++) {
       uid = $uid(elements[i]);
       if (!uids[uid]) {
         uniq.push(elements[i]);
@@ -133,7 +133,7 @@ Selector.Manual = new Class({
       var founds = $A(element.getElementsByTagName(atom.tag));
       if (atom.hasNonTagMatcher) {
         var matching = [];
-        for (var i=0; i < founds.length; i++) {
+        for (var i=0, length = founds.length; i < length; i++) {
           if (atom.match(founds[i]))
             matching.push(founds[i]);
         }

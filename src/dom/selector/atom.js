@@ -83,8 +83,9 @@ Selector.Atom = new Class({
     if (matchers.length == 1) {
       this.match = this[matchers[0]];
     } else if (matchers.length) {
+      var length = matchers.length;
       this.match = function(element) {
-        for (var i=0; i < matchers.length; i++)
+        for (var i=0; i < length; i++)
           if (!this[matchers[i]](element))
             return false;
         return true;
@@ -108,7 +109,7 @@ Selector.Atom = new Class({
       if (names.length == 1) {
         return this.classes.indexOf(names[0]) != -1;
       } else {
-        for (var i=0; i < this.classes.length; i++)
+        for (var i=0, length = this.classes.length; i < length; i++)
           if (names.indexOf(this.classes[i]) == -1)
             return false;
             

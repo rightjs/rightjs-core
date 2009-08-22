@@ -79,7 +79,7 @@ $ext(Object, {
   only: function() {
     var filter = $A(arguments), object = filter.shift(), copy = {};
     
-    for (var i=0; i < filter.length; i++) {
+    for (var i=0, length = filter.length; i < length; i++) {
       if (defined(object[filter[i]]))
         copy[filter[i]] = object[filter[i]];
     }
@@ -101,10 +101,10 @@ $ext(Object, {
    * @return Object merged object
    */
   merge: function() {
-    var args = $A(arguments), object = {};
-    for (var i=0; i < args.length; i++) {
-      if (isHash(args[i])) {
-        $ext(object, args[i]);
+    var object = {};
+    for (var i=0, length = arguments.length; i < length; i++) {
+      if (isHash(arguments[i])) {
+        $ext(object, arguments[i]);
       }
     }
     return object;
