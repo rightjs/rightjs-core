@@ -55,7 +55,6 @@ JS_SOURCES = {
     dom/selector.js
     dom/selector/atom.js
     dom/selector/manual.js
-    dom/selector/native.js
     dom/selector/multiple.js
     
     dom/window.js

@@ -140,7 +140,7 @@ var SelectorAtomTest = TestCase.create({
     this.assertNotMatchAtom('input[title="some-title"][value="something"]', element);
     this.assertNotMatchAtom('input[name="some-name"][value="something"]', element);
     
-    element.value = 'somevalue';
+    element.setAttribute('value', 'somevalue');
     this.assertMatchAtom('input[value*="some"]', element);
     this.assertMatchAtom('input[value*="value"]', element);
     this.assertNotMatchAtom('input[value*="another"]', element);
@@ -152,12 +152,12 @@ var SelectorAtomTest = TestCase.create({
     this.assertNotMatchAtom('input[value$="some"]', element);
     
     this.assertNotMatchAtom('input[value~="some"]', element);
-    element.value = "some value";
+    element.setAttribute('value', "some value");
     this.assertMatchAtom('input[value~="some"]', element);
     this.assertMatchAtom('input[value~="value"]', element);
     
     this.assertNotMatchAtom('input[value|="some"]', element);
-    element.value = "some-value";
+    element.setAttribute('value', "some-value");
     this.assertMatchAtom('input[value|="some"]', element);
     this.assertMatchAtom('input[value|="value"]', element);
   },

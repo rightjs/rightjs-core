@@ -53,7 +53,7 @@ Selector.Manual = new Class({
    * @return Array found nodes
    */
   select: function(node) {
-    var founds, atom, index;
+    var founds, atom, index, sub_founds;
     
     for (var i=0; i < this.atoms.length; i++) {
       atom = this.atoms[i];
@@ -61,20 +61,17 @@ Selector.Manual = new Class({
         founds =  this.find[atom.rel](node, atom);
         
       } else {
-        var sub_founds;
+        if (i > 1) founds = this.uniq(founds);
         
         for (var j=0; j < founds.length; j++) {
           sub_founds = this.find[atom.rel](founds[j], atom);
           
-          if (atom.rel == '>' && (index = founds.indexOf(founds[j])) < j) {
-            // if element appeared on the list by some earlier search inject the reslut there
-            founds.splice.apply(founds, [index+1,0].concat(sub_founds));
-            j++;  
-          } else {
-            founds.splice.apply(founds, [j,1].concat(sub_founds));
-          }
+          sub_founds.unshift(1); // <- nuke the parent node out of the list
+          sub_founds.unshift(j); // <- position to insert the subresult
+
+          founds.splice.apply(founds, sub_founds);
           
-          j += sub_founds.length - 1;
+          j += sub_founds.length - 3;
         }
       }
     }
@@ -116,7 +113,7 @@ Selector.Manual = new Class({
   
 // protected
   uniq: function(elements) {
-    var uniq = [], uids = {}, uid;
+    var uniq = [], uids = [], uid;
     for (var i=0; i < elements.length; i++) {
       uid = $uid(elements[i]);
       if (!uids[uid]) {

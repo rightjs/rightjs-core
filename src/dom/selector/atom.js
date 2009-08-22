@@ -127,7 +127,7 @@ Selector.Atom = new Class({
   },
   
   matchAttr: function(element, name, operator, value) {
-    var attr = element.getAttribute(name) || element[name] || '';
+    var attr = element.getAttribute(name) || '';
     switch(operator) {
       case '=':  return attr == value;
       case '*=': return attr.includes(value);
