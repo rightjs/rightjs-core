@@ -13,9 +13,9 @@ var Fx = new Class(Observer, {
     
     // named durations
     Durations: {
-      short:  200,
-      normal: 400,
-      long:   800
+      'short':  200,
+      'normal': 400,
+      'long':   800
     },
     
     // default options
