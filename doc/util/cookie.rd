@@ -110,7 +110,7 @@ will appear on the list later with the JSON functionality implementation.
   Sets the cookie value
 
 == Example
-  var cookie = new Cooke('name');
+  var cookie = new Cookie('name');
   
   cookie.set('value');
   
@@ -126,7 +126,7 @@ will appear on the list later with the JSON functionality implementation.
   reads the cookie value
 
 == Example
-  var cookie = new Cooke('name');
+  var cookie = new Cookie('name');
   
   cookie.set('value');
   
@@ -141,7 +141,7 @@ will appear on the list later with the JSON functionality implementation.
   Erases the cookie out of the browser's memory
   
 == Example
-  var cookie = new Cooke('name');
+  var cookie = new Cookie('name');
   cookie.set('value');
   cookie.get(); // -> 'value'
 
