@@ -105,7 +105,7 @@ var FormTest = TestCase.create({
     
     this.assertSame(form, form.disable());
     
-    form.getElements().each(function(element) {
+    form.inputs().each(function(element) {
       this.assert(element.disabled);
     }, this);
   },

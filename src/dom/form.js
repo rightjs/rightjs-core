@@ -50,7 +50,7 @@ var Form = new Class(Element, {
        */
       inputs: function() {
         return this.getElements().filter(function(input) {
-          return !['submit', 'button', 'reset', null].includes(input.type);
+          return !['submit', 'button', 'reset', null].includes(input.type) && input.tagName != 'FIELDSET'
         });
       },
       
@@ -71,7 +71,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       blur: function() {
-        this.getElements().each('blur');
+        this.inputs().each('blur');
         return this.fire('blur');
       },
       
@@ -81,7 +81,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       disable: function() {
-        this.getElements().each('disable');
+        this.inputs().each('disable');
         return this.fire('disable');
       },
       
@@ -91,7 +91,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       enable: function() {
-        this.getElements().each('enable');
+        this.inputs().each('enable');
         return this.fire('enable');
       },
       
