@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-self.Browser = (function(agent) {
+var Browser = (function(agent) {
   return   {
     IE:           !!(window.attachEvent && !window.opera),
     Opera:        !!window.opera,
