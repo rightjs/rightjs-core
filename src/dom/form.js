@@ -40,7 +40,7 @@ var Form = new Class(Element, {
        * @return Array of elements
        */
       getElements: function() {
-        return Browser.Konqueror ? this.select('input,select,textarea,button') : $A(this.elements).map($);
+        return this.select('input,select,textarea,button');
       },
       
       /**
@@ -50,7 +50,7 @@ var Form = new Class(Element, {
        */
       inputs: function() {
         return this.getElements().filter(function(input) {
-          return !['submit', 'button', 'reset', null].includes(input.type) && input.tagName != 'FIELDSET'
+          return !['submit', 'button', 'reset', 'image', null].includes(input.type);
         });
       },
       
@@ -71,7 +71,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       blur: function() {
-        this.inputs().each('blur');
+        this.getElements().each('blur');
         return this.fire('blur');
       },
       
@@ -81,7 +81,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       disable: function() {
-        this.inputs().each('disable');
+        this.getElements().each('disable');
         return this.fire('disable');
       },
       
@@ -91,7 +91,7 @@ var Form = new Class(Element, {
        * @return Form this
        */
       enable: function() {
-        this.inputs().each('enable');
+        this.getElements().each('enable');
         return this.fire('enable');
       },
       
