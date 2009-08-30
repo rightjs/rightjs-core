@@ -82,11 +82,12 @@ and remove event handlers in the usual way.
 
 Xhr class supports the following events
 
- * create
- * request
- * complete
- * success
- * cancel
+ * create   - after the XmlHTTPRequest object was instanced
+ * request  - after the request was sent
+ * complete - when the request was completed (either successfully or not)
+ * success  - when the request was _successfully_ completed
+ * failure  - when the request was _failed_ 
+ * cancel   - when the request was _manually_ canceled
  
 Sure you can handle your own custom events if you need so.
 
