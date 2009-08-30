@@ -7,7 +7,8 @@
 Element.addMethods({
   
   sizes: function() {
-    return { x: this.offsetWidth, y: this.offsetHeight };
+    var dims = this.dimensions();
+    return { x: dims.width, y: dims.height };
   },
   
   position: function() {
@@ -25,13 +26,15 @@ Element.addMethods({
    * @return Object dimensions (top, left, width, height, scrollLeft, scrollTop)
    */
   dimensions: function() {
-    var left = 0, top = 0;
+    var left = 0, top = 0, width = this.offsetWidth, height = this.offsetHeight;
     
     if (this.getBoundingClientRect) {
       var rect = this.getBoundingClientRect(), doc = this.ownerDocument.documentElement, scrolls = window.scrolls();
       
-      left = rect.left + scrolls.x - doc.clientLeft;
-      top  = rect.top  + scrolls.y - doc.clientTop;
+      left   = rect.left + scrolls.x - doc.clientLeft;
+      top    = rect.top  + scrolls.y - doc.clientTop;
+      width  = rect.width;
+      height = rect.height;
     } else {
       // Manual version
       var element = this;
@@ -47,8 +50,8 @@ Element.addMethods({
     return {
       top:        top,
       left:       left,
-      width:      this.sizes().x,
-      height:     this.sizes().y,
+      width:      width,
+      height:     height,
       scrollLeft: this.scrolls().x,
       scrollTop:  this.scrolls().y
     };
