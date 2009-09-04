@@ -8,9 +8,6 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Fx.Morph = new Class(Fx, {
-  extend: {
-    STYLES: $w('width height lineHeight opacity borderWidth borderColor padding margin color fontSize backgroundColor marginTop marginLeft marginRight marginBottom top left right bottom')
-  },
 
 // protected
   
@@ -30,10 +27,27 @@ Fx.Morph = new Class(Fx, {
   },
   
   render: function(delta) {
-    var value;
+    var value, start, end;
     
     for (var key in this.endStyle) {
-      value = this._calcStyle(key, delta);
+      start = this.startStyle[key];
+      end   = this.endStyle[key];
+
+      if (typeof(start) == 'number') {
+        // handling floats like opacity
+        value = start + (end - start) * delta;
+        
+      } else if(start.length == 2) {
+        // handling usual sizes with dimensions
+        value = (start[0] + (end[0] - start[0]) * delta) + end[1];
+
+      } else if(start.length == 3) {
+        // calculating colors
+        value = end.map(function(value, i) {
+          return start[i] + (value - start[i]) * delta;
+        }).toRgb();
+      }
+      
       if (key == 'opacity') {
         this.element.setOpacity(value);
       } else {
@@ -44,42 +58,23 @@ Fx.Morph = new Class(Fx, {
   
 // private
 
-  // calculates the current style value
-  _calcStyle: function(key, delta) {
-    var start = this.startStyle[key], end = this.endStyle[key];
-    
-    if (typeof(start) == 'number') {
-      // handling floats like opacity
-      return start + (end - start) * delta;
-      
-    } else if(start.length == 2) {
-      // handling usual sizes with dimensions
-      return (start[0] + (end[0] - start[0]) * delta) + end[1];
-      
-    } else if(start.length == 3) {
-      // calculating colors
-      return end.map(function(value, i) {
-        return start[i] + (value - start[i]) * delta;
-      }).toRgb();
-    }
-  },
-
   // finds the style definition by a css-selector string
   _findStyle: function(style) {
     var a_class = isString(style);
     
     // a container for the styles extraction element
-    Fx.Morph.$c = (Fx.Morph.$c || $E('div', {style: "visibility:hidden;float:left;height:0;width:0"})).insertTo(this.element, 'after');
+    var container = Fx.Morph.$c = (Fx.Morph.$c || $E('div', {style: "visibility:hidden;float:left;height:0;width:0"}));
+    if (this.element.parentNode) this.element.parentNode.insertBefore(container, this.element);
     
     // a dummy node to calculate the end styles
-    var element = $(this.element.cloneNode(false)).insertTo(Fx.Morph.$c)[a_class ? 'addClass' : 'setStyle'](style);
+    var element = $(this.element.cloneNode(false)).insertTo(container).setStyle(style);
     
     // grabbing the computed styles
     var element_styles      = element.computedStyles();
     var this_element_styles = this.element.computedStyles();
     
     // grabbing the element style
-    var end_style = this._getStyle(element, a_class ? Fx.Morph.STYLES : Object.keys(style), element_styles);
+    var end_style = this._getStyle(element, Object.keys(style), element_styles);
     
     // assigning the border style if the end style has a border
     var border_style = element_styles.borderTopStyle, element_border_style = this_element_styles.borderTopStyle;
@@ -94,9 +89,6 @@ Fx.Morph = new Class(Fx, {
     }
     
     element.remove();
-    
-    // assign the class or style on the end
-    if (a_class) this.onFinish(this.element.addClass.bind(this.element, style));
     
     return end_style;
   },
@@ -144,7 +136,7 @@ Fx.Morph = new Class(Fx, {
     
     // filling up missing styles
     for (var key in end) {
-      if (start[key] === '' && end[key].match(/^[\d\.\-]+[a-z]+$/)) {
+      if (start[key] === '' && /^[\d\.\-]+[a-z]+$/.test(end[key])) {
         start[key] = '0px';
       }
     }
@@ -164,20 +156,18 @@ Fx.Morph = new Class(Fx, {
   _cleanStyle: function(style) {
     var match;
     for (var key in style) {
-      if (Fx.Morph.STYLES.includes(key) && style[key] !== '') {
-        style[key] = String(style[key]);
+      style[key] = String(style[key]);
         
-        if (key.match(/color/i)) {
-          // preparing the colors
-          style[key] = style[key].toRgb(true);
-          if (!style[key]) delete(style[key]);
-        } else if (style[key].match(/^[\d\.]+$/)) {
-          // preparing numberic values
-          style[key] = style[key].toFloat();
-        } else if (match = style[key].match(/^([\d\.\-]+)([a-z]+)$/i)) {
-          // preparing values with dimensions
-          style[key] = [match[1].toFloat(), match[2]];
-        }
+      if (/color/i.test(key)) {
+        // preparing the colors
+        style[key] = style[key].toRgb(true);
+        if (!style[key]) delete(style[key]);
+      } else if (/^[\d\.]+$/.test(style[key])) {
+        // preparing numberic values
+        style[key] = style[key].toFloat();
+      } else if (match = style[key].match(/^([\d\.\-]+)([a-z]+)$/i)) {
+        // preparing values with dimensions
+        style[key] = [match[1].toFloat(), match[2]];
         
       } else {
         delete(style[key]);

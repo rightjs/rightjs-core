@@ -3,11 +3,6 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-document.write("<st"+"yle>"+
-  "div.test---12345  { font-size: 200px !important; color: yellow; border-color: yellow; }"+
-  "div.test---123456 { height: 200px; }"+
-"</st"+"yle>");
-
 var FxMorphTest = TestCase.create({
   name: 'FxMorphTest',
   
@@ -67,32 +62,5 @@ var FxMorphTest = TestCase.create({
     
     this.assertEqual('0px', this.el.getStyle('borderTopWidth'));
     this.assertEqual('solid', this.el.getStyle('borderTopStyle'));
-  },
-  
-  testClassesHookingUp: function() {
-    this.el.setStyle({
-      fontSize: '16px',
-      borderColor: 'yellow'
-    });
-    this.fx.start('test---12345');
-    
-    // Gecko adds the lineHeight
-    this.assertEqual({"color": [0, 0, 0], "fontSize": [16, "px"]},      Object.without(this.fx.startStyle, 'lineHeight', 'width'));
-    this.assertEqual({"color": [255, 255, 0], "fontSize": [200, "px"]}, Object.without(this.fx.endStyle,   'lineHeight', 'width'));
-    
-    this.fx.start('test---12345 test---123456');
-    
-    this.assertEqual(
-      {"height": [0, 'px'], "color": [0, 0, 0], "fontSize": [16, "px"]},
-      Object.without(this.fx.startStyle, 'lineHeight', 'width')
-    );
-    this.assertEqual(
-      {"height": [200, 'px'], "color": [255, 255, 0], "fontSize": [200, "px"]},
-      Object.without(this.fx.endStyle,   'lineHeight', 'width')
-    );
-    
-    this.fx.finish();
-    this.assertHasClassName(this.el, 'test---12345');
-    this.assertHasClassName(this.el, 'test---123456');
   }
 })
