@@ -40,6 +40,8 @@ var Xhr = new Class(Observer, {
      * @return Xhr request
      */
     load: function(url, options) {
+      options = options || {};
+      options.method = options.method || 'get';
       return new this(url, options).send();
     }
   },
