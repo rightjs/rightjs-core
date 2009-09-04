@@ -73,7 +73,7 @@ var XhrTest = TestCase.create({
     this.assertEqual(false,     request.async);
     this.assertEqual(false,     request.evalScripts);
     this.assertEqual(false,     request.urlEncoded);
-    this.assertEqual('spinner', request.spinner);
+    this.assertEqual(null,      request.spinner, 'xhr instance should skip global spinners');
     this.assertEqual('bla=bla', request.params);
   },
   
@@ -235,6 +235,15 @@ var XhrTest = TestCase.create({
       [spinner, 'hide']
     ], function() {
       request.send();
+    });
+    
+    // trying the global spinner
+    Xhr.Options.spinner = spinner;
+    this.assertCalled([
+      [spinner, 'show'],
+      [spinner, 'hide']
+    ], function() {
+      Xhr.load('/boo');
     });
   },
   

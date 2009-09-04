@@ -61,6 +61,8 @@ var Xhr = new Class(Observer, {
     // copying some options to the instance level attributes
     for (var key in Xhr.Options)
       this[key] = this.options[key];
+      
+    this.initSpinner();
   },
   
   /**
@@ -243,9 +245,6 @@ var Xhr = new Class(Observer, {
   
   // initializes the request callbacks
   initCallbacks: function() {
-    // global spinners are handled separately
-    if (this.spinner == Xhr.Options.spinner) this.spinner = null;
-    
     // creating an automatical spinner handling
     this.on('create', 'showSpinner').on('complete', 'hideSpinner').on('cancel', 'hideSpinner');
     
@@ -258,8 +257,17 @@ var Xhr = new Class(Observer, {
     }, this);
   },
   
-  showSpinner: function() { if (this.spinner) $(this.spinner).show('fade', {duration: 100}); },
-  hideSpinner: function() { if (this.spinner) $(this.spinner).hide('fade', {duration: 100}); }
+  // inits the spinner
+  initSpinner: function() {
+    if (this.spinner)
+      this.spinner = $(this.spinner);
+      
+      if (Xhr.Options.spinner && this.spinner === $(Xhr.Options.spinner))
+        this.spinner = null;
+  },
+  
+  showSpinner: function() { if (this.spinner) this.spinner.show('fade', {duration: 100}); },
+  hideSpinner: function() { if (this.spinner) this.spinner.hide('fade', {duration: 100}); }
 });
 
 // creating the class level observer
