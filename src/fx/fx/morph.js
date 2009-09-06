@@ -60,8 +60,6 @@ Fx.Morph = new Class(Fx, {
 
   // finds the style definition by a css-selector string
   _findStyle: function(style) {
-    var a_class = isString(style);
-    
     // a container for the styles extraction element
     var container = Fx.Morph.$c = (Fx.Morph.$c || $E('div', {style: "visibility:hidden;float:left;height:0;width:0"}));
     if (this.element.parentNode) this.element.parentNode.insertBefore(container, this.element);
@@ -98,26 +96,28 @@ Fx.Morph = new Class(Fx, {
     var style = {}, styles = styles || element.computedStyles(), name;
     if (isString(keys)) { name = keys, keys = [keys]; }
     
-    // keys preprocessing
-    keys.map(function(key) {
-      switch (key) {
-        case 'background': return 'backgroundColor';
-        case 'border':     return ['borderWidth', 'borderColor'];
-        default:           return key;
+    for (var i=0; i < keys.length; i++) {
+      var key = keys[i].camelize();
+      
+      // keys preprocessing
+      if (key == 'background') key = 'backgroundColor';
+      else if (key == 'border') {
+        key = 'borderWidth';
+        keys.splice(i+1, 0, 'borderColor'); // inserting the border color as the next unit
       }
-    }).flatten().each(function(key) {
-      key = key.camelize();
+      
+      // getting the actual style
       style[key] = element._getStyle(styles, key);
       
-      if (this._transp(style[key])) {
-        style[key] = this._getBGColor(element);
-      }
+      // getting the real color if it's a transparent
+      if (this._transp(style[key])) style[key] = this._getBGColor(element);
       
+      // getting the real width and height if they not set or set as 'auto'
       if (!style[key] || style[key] == 'auto') {
         style[key] = key == 'width'  ? element.offsetWidth  + 'px' :
                      key == 'height' ? element.offsetHeight + 'px' : '';
       }
-    }, this);
+    }
     
     return name ? style[name] : style;
   },
