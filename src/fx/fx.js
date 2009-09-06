@@ -20,7 +20,7 @@ var Fx = new Class(Observer, {
     
     // default options
     Options: {
-      fps:        60,
+      fps:        Browser.IE ? 40 : 60,
       duration:   'normal',
       transition: 'Sin',
       queue:      true
@@ -72,7 +72,7 @@ var Fx = new Class(Observer, {
     this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
     var duration    = Fx.Durations[this.options.duration]     || this.options.duration;
     
-    this.steps  = (duration / 1000 * this.options.fps * (Browser.OLD ? 0.5 : 1)).ceil();
+    this.steps  = (duration / 1000 * this.options.fps).ceil();
     this.number = 1;
     
     return this.fire('start', this).startTimer();
