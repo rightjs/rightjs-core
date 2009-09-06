@@ -35,7 +35,7 @@ Selector.Atom = new Class({
   initialize: function(css_rule, rel) {
     css_rule = css_rule.trim();
     this.rel = rel || ' ';
-    this.hasNonTagMatcher = !css_rule.match(/^[a-z\*]+$/);
+    this.hasNonTagMatcher = !/^[a-z\*]+$/.test(css_rule);
     
     // NOTE! dont change the order of the atom parsing, there might be collisions
     this.attrs = {};

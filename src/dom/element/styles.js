@@ -114,7 +114,7 @@ Element.addMethods({
         }
         
         // Opera returns named colors with quotes
-        if (value && Browser.Opera && key.match(/color/i)) {
+        if (value && Browser.Opera && /color/.test(key)) {
           var match = value.match(/"(.+?)"/);
           value = match ? match[1] : value;
         }
