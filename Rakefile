@@ -4,11 +4,9 @@
 #
 #  You can pass options with the building script to exclude some blocks, like that
 #
-#  rake build OPTIONS=no-form,no-fx,no-xhr
+#  rake build OPTIONS=no-form,no-fx,no-xhr,no-cookie
 #
 #  See the JS_SOURCES list keys for the options
-#
-#  to create simply compressed non-self build script pass 'no-build' with the options
 #
 
 require 'rake'
@@ -18,8 +16,7 @@ require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
 RIGHTJS_VERSION = '1.4.1' 
 
 BUILD_DIR   = 'build'
-BUILD_FILE  = 'right.js'
-SOURCE_FILE = 'right-src.js'
+BUILD_FILE  = 'right'
 
 JS_SOURCES = {
   :core => %w{
@@ -125,8 +122,7 @@ task :build do
   
   source = desc + source
   
-  build = FrontCompiler.new.compact_js(source)
-  build = build.create_self_build unless options.include?("no-build")
+  minified = FrontCompiler.new.compact_js(source)
   
   
   ### writting the files
@@ -135,14 +131,20 @@ task :build do
   header = File.open('src/HEADER.js', 'r').read
   header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
   
-  
-  File.open(BUILD_DIR + "/" + BUILD_FILE, "w") do |file|
-    file.write header
-    file.write build
-  end
-  
-  File.open(BUILD_DIR + "/" + SOURCE_FILE, "w") do |file|
+  File.open("#{BUILD_DIR}/#{BUILD_FILE}-src.js", "w") do |file|
     file.write header
     file.write source
   end
+  
+  File.open("#{BUILD_DIR}/#{BUILD_FILE}-min.js", "w") do |file|
+    file.write header
+    file.write minified
+  end
+  
+  File.open("#{BUILD_DIR}/#{BUILD_FILE}.js", "w") do |file|
+    file.write header
+    file.write minified.create_self_build
+  end
+  
+  
 end
