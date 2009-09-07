@@ -29,6 +29,7 @@ var Xhr = new Class(Observer, {
       secureJSON:   true,
       urlEncoded:   true,
       spinner:      null,
+      spinnerFx:    'fade',
       params:       null
     },
     
@@ -266,8 +267,8 @@ var Xhr = new Class(Observer, {
         this.spinner = null;
   },
   
-  showSpinner: function() { if (this.spinner) this.spinner.show('fade', {duration: 100}); },
-  hideSpinner: function() { if (this.spinner) this.spinner.hide('fade', {duration: 100}); }
+  showSpinner: function() { if (this.spinner) this.spinner.show(this.spinnerFx, {duration: 100}); },
+  hideSpinner: function() { if (this.spinner) this.spinner.hide(this.spinnerFx, {duration: 100}); }
 });
 
 // creating the class level observer
@@ -277,10 +278,10 @@ Observer.create(Xhr);
 $ext(Xhr, {
   counter: 0,
   showSpinner: function() {
-    if (this.Options.spinner) $(this.Options.spinner).show('fade', {duration: 100});
+    if (this.Options.spinner) $(this.Options.spinner).show(this.Options.spinnerFx, {duration: 100});
   },
   hideSpinner: function() {
-    if (this.Options.spinner) $(this.Options.spinner).hide('fade', {duration: 100});
+    if (this.Options.spinner) $(this.Options.spinner).hide(this.Options.spinnerFx, {duration: 100});
   }
 });
 
