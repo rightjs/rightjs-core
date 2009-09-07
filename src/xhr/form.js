@@ -60,3 +60,8 @@ $ext(Form.Methods, {
 try { // extending the form element prototype
   $ext(HTMLFormElement.prototype, Form.Methods);
 } catch(e) {}
+
+// remote forms auto discovery
+document.onReady(function() {
+  $$('form[rel="remote"]').each('remotize');
+});
