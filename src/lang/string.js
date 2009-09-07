@@ -9,24 +9,7 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-$ext(String.prototype, (function() {
-  
-  // predefining the regular expressions to speed the things up
-  
-  var SPACES_ONLY_RE         = /^\s*$/,
-      START_SPACES_RE        = /^\s\s*/,
-      SOME_SPACE_RE          = /\s/,
-      STRIP_TAGS_RE          = /<\/?[^>]+>/ig,
-      STRIP_SCRIPTS_RE       = /<script[^>]*>([\s\S]*?)<\/script>/img,
-      START_DASHES_RE        = /^(\-|_)+?/g,
-      SOME_DASH_RE           = /\-|_/,
-      ALL_DASHES_RE          = /\-/g,
-      DASH_PLUS_UPCASE_RE    = /(\-|_)+?(\D)/g,
-      CASE_CHANGE_RE         = /([a-z0-9])([A-Z]+)/g,
-      LOWCASED_WORD_START_RE = /(^|\s|\-|_)[a-z\u00e0-\u00fe\u0430-\u045f]/g,
-      FLOAT_DIGIT_RE         = /(\d)-(\d)/g;
-  
-return {
+$ext(String.prototype, {
   /**
    * checks if the string is an empty string
    *
@@ -42,7 +25,7 @@ return {
    * @return boolean check result
    */
   blank: function() {
-    return SPACES_ONLY_RE.test(this);
+    return /^\s*$/.test(this);
   },
   
   /**
@@ -51,8 +34,8 @@ return {
    * @return String trimmed version
    */
   trim: String.prototype.trim || function() {
-    var str = this.replace(START_SPACES_RE, ''), i = str.length;
-    while (SOME_SPACE_RE.test(str.charAt(--i)));
+    var str = this.replace(/^\s\s*/, ''), i = str.length;
+    while (/\s/.test(str.charAt(--i)));
     return str.slice(0, i + 1);
   },
   
@@ -61,7 +44,7 @@ return {
    * @return String without tags
    */
   stripTags: function() {
-    return this.replace(STRIP_TAGS_RE, '');
+    return this.replace(/<\/?[^>]+>/ig, '');
   },
   
   /**
@@ -72,7 +55,7 @@ return {
    */
   stripScripts: function(option) {
     var scripts = '';
-    var text = this.replace(STRIP_SCRIPTS_RE, function(match, source) {
+    var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/img, function(match, source) {
       scripts += source.trim() + "\n";
       return '';
     });
@@ -113,10 +96,10 @@ return {
    * @returns String camelized version
    */
   camelize: function() {
-    var prefix = this.match(START_DASHES_RE) || ''; // <- keeps start dashes alive
+    var prefix = this.match(/^(\-|_)+?/g) || ''; // <- keeps start dashes alive
     return prefix + this.substr(prefix.length, this.length).replace(
-       DASH_PLUS_UPCASE_RE, function(match) {
-         return match.replace(SOME_DASH_RE, '').toUpperCase();
+       /(\-|_)+?(\D)/g, function(match) {
+         return match.replace(/\-|_/, '').toUpperCase();
       });
   },
   
@@ -125,9 +108,9 @@ return {
    * @return String underscored version
    */
   underscored: function() {
-    return this.replace(CASE_CHANGE_RE, function(match, first, second) {
+    return this.replace(/([a-z0-9])([A-Z]+)/g, function(match, first, second) {
       return first+"_"+(second.length > 1 ? second : second.toLowerCase());
-    }).replace(ALL_DASHES_RE, '_');
+    }).replace(/\-/g, '_');
   },
 
   /**
@@ -136,7 +119,7 @@ return {
    * @return String captialised version
    */
   capitalize: function() {
-    return this.replace(LOWCASED_WORD_START_RE, function(match) {
+    return this.replace(/(^|\s|\-|_)[a-z\u00e0-\u00fe\u0430-\u045f]/g, function(match) {
       return match.toUpperCase();
     });
   },
@@ -192,9 +175,9 @@ return {
    * @return Float or NaN
    */
   toFloat: function(strict) {
-    return parseFloat(strict ? this : this.replace(',', '.').replace(FLOAT_DIGIT_RE, '$1.$2'));
+    return parseFloat(strict ? this : this.replace(',', '.').replace(/(\d)-(\d)/g, '$1.$2'));
   }
   
-};})());
+});
 
 $alias(String.prototype, {include: 'includes'});
