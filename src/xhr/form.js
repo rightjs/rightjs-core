@@ -33,6 +33,11 @@ $ext(Form.Methods, {
    * @return Form this
    */
   remotize: function(options) {
+    options = options || {};
+    
+    // form spinner autohook
+    if (!defined(options.spinner)) options.spinner = this.first('.spinner');
+    
     this.onsubmit = function() { this.send.bind(this, options).delay(20); return false; };
     this.remote   = true;
     return this;
