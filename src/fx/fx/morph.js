@@ -60,12 +60,8 @@ Fx.Morph = new Class(Fx, {
 
   // finds the style definition by a css-selector string
   _findStyle: function(style) {
-    // a container for the styles extraction element
-    var container = Fx.Morph.$c = (Fx.Morph.$c || $E('div', {style: "visibility:hidden;float:left;height:0;width:0"}));
-    if (this.element.parentNode) this.element.parentNode.insertBefore(container, this.element);
-    
     // a dummy node to calculate the end styles
-    var element = $(this.element.cloneNode(false)).insertTo(container).setStyle(style);
+    var element = this._dummy().setStyle(style);
     
     // grabbing the computed styles
     var element_styles      = element.computedStyles();
@@ -89,6 +85,15 @@ Fx.Morph = new Class(Fx, {
     element.remove();
     
     return end_style;
+  },
+  
+  // creates a dummy element to work with
+  _dummy: function() {
+    // a container for the styles extraction element
+    var container = Fx.Morph.$c = (Fx.Morph.$c || $E('div', {style: "visibility:hidden;float:left;height:0;width:0"}));
+    if (this.element.parentNode) this.element.parentNode.insertBefore(container, this.element);
+    
+    return $(this.element.cloneNode(false)).insertTo(container);
   },
   
   // grabs computed styles with the given keys out of the element
