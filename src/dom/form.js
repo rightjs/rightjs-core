@@ -39,16 +39,14 @@ var Form = new Class(Element, {
      * Extends the form functionality
      *
      * @param Object methods hash
-     * @return Form self
+     * @return void
      */
-    addMethods: function(methods) {
-      $ext(Form.Methods, methods);
+    addMethods: function(methods, dont_overwrite) {
+      $ext(Form.Methods, methods, dont_overwrite);
       
       try { // trying to extend the form element prototype
-        $ext(HTMLFormElement.prototype, methods);
+        $ext(HTMLFormElement.prototype, methods, dont_overwrite);
       } catch(e) {}
-      
-      return Form;
     }
   }
 });
@@ -141,5 +139,6 @@ Form.addMethods({
   }
 });
 
-//Observer.createShortcuts(Form.Methods, $w('submit reset focus'));
+// creating the shortcuts
+Form.addMethods(Observer.createShortcuts({}, $w('submit reset focus')), true);
 
