@@ -43,17 +43,19 @@ window.Element = new Class(window.Element, {
       if (element && element.tagName && !element.set) {
         $ext(element, Element.Methods, true);
         
-        switch(element.tagName) {
-          case 'FORM':
-            Form.ext(element);
-            break;
+        if (self['Form']) {
+          switch(element.tagName) {
+            case 'FORM':
+              Form.ext(element);
+              break;
 
-          case 'INPUT':
-          case 'SELECT':
-          case 'BUTTON':
-          case 'TEXTAREA':
-            Form.Element.ext(element);
-            break;
+            case 'INPUT':
+            case 'SELECT':
+            case 'BUTTON':
+            case 'TEXTAREA':
+              Form.Element.ext(element);
+              break;
+          }
         }
       }
       return element;
