@@ -8,7 +8,7 @@
  *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-$ext(Form.Methods, {
+Form.addMethods({
   /**
    * sends the form via xhr request
    *
@@ -55,13 +55,4 @@ $ext(Form.Methods, {
     this.remote   = false;
     return this;
   }
-});
-
-try { // extending the form element prototype
-  $ext(HTMLFormElement.prototype, Form.Methods);
-} catch(e) {}
-
-// remote forms auto discovery
-document.onReady(function() {
-  $$('form[rel="remote"]').each('remotize');
 });

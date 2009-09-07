@@ -33,98 +33,113 @@ var Form = new Class(Element, {
       return $ext(element, this.Methods);
     },
     
-    Methods: {
-      /**
-       * returns the form elements as an array of extended units
-       *
-       * @return Array of elements
-       */
-      getElements: function() {
-        return this.select('input,select,textarea,button');
-      },
+    Methods: {},
+    
+    /**
+     * Extends the form functionality
+     *
+     * @param Object methods hash
+     * @return Form self
+     */
+    addMethods: function(methods) {
+      $ext(Form.Methods, methods);
       
-      /**
-       * returns the list of all the input elements on the form
-       *
-       * @return Array of elements
-       */
-      inputs: function() {
-        return this.getElements().filter(function(input) {
-          return !['submit', 'button', 'reset', 'image', null].includes(input.type);
-        });
-      },
+      try { // trying to extend the form element prototype
+        $ext(HTMLFormElement.prototype, methods);
+      } catch(e) {}
       
-      /**
-       * focuses on the first input element on the form
-       *
-       * @return Form this
-       */
-      focus: function() {
-        var first = this.inputs().first(function(input) { return input.type != 'hidden'; });
-        if (first) first.focus();
-        return this.fire('focus');
-      },
-      
-      /**
-       * removes focus out of all the form elements
-       *
-       * @return Form this
-       */
-      blur: function() {
-        this.getElements().each('blur');
-        return this.fire('blur');
-      },
-      
-      /**
-       * disables all the elements on the form
-       *
-       * @return Form this
-       */
-      disable: function() {
-        this.getElements().each('disable');
-        return this.fire('disable');
-      },
-      
-      /**
-       * enables all the elements on the form
-       *
-       * @return Form this
-       */
-      enable: function() {
-        this.getElements().each('enable');
-        return this.fire('enable');
-      },
-      
-      /**
-       * returns the list of the form values
-       *
-       * @return Object values
-       */
-      values: function() {
-        var values = {};
-        
-        this.inputs().each(function(input) {
-          if (!input.disabled && input.name && (!['checkbox', 'radio'].includes(input.type) || input.checked))
-            values[input.name] = input.getValue();
-        });
-        
-        return values;
-      },
-      
-      /**
-       * returns the key/values organized ready to be sent via a get request
-       *
-       * @return String serialized values
-       */
-      serialize: function() {
-        return Object.toQueryString(this.values());
-      }
+      return Form;
     }
+  }
+});
+
+Form.addMethods({
+  /**
+   * returns the form elements as an array of extended units
+   *
+   * @return Array of elements
+   */
+  getElements: function() {
+    return this.select('input,select,textarea,button');
+  },
+  
+  /**
+   * returns the list of all the input elements on the form
+   *
+   * @return Array of elements
+   */
+  inputs: function() {
+    return this.getElements().filter(function(input) {
+      return !['submit', 'button', 'reset', 'image', null].includes(input.type);
+    });
+  },
+  
+  /**
+   * focuses on the first input element on the form
+   *
+   * @return Form this
+   */
+  focus: function() {
+    var first = this.inputs().first(function(input) { return input.type != 'hidden'; });
+    if (first) first.focus();
+    return this.fire('focus');
+  },
+  
+  /**
+   * removes focus out of all the form elements
+   *
+   * @return Form this
+   */
+  blur: function() {
+    this.getElements().each('blur');
+    return this.fire('blur');
+  },
+  
+  /**
+   * disables all the elements on the form
+   *
+   * @return Form this
+   */
+  disable: function() {
+    this.getElements().each('disable');
+    return this.fire('disable');
+  },
+  
+  /**
+   * enables all the elements on the form
+   *
+   * @return Form this
+   */
+  enable: function() {
+    this.getElements().each('enable');
+    return this.fire('enable');
+  },
+  
+  /**
+   * returns the list of the form values
+   *
+   * @return Object values
+   */
+  values: function() {
+    var values = {};
+    
+    this.inputs().each(function(input) {
+      if (!input.disabled && input.name && (!['checkbox', 'radio'].includes(input.type) || input.checked))
+        values[input.name] = input.getValue();
+    });
+    
+    return values;
+  },
+  
+  /**
+   * returns the key/values organized ready to be sent via a get request
+   *
+   * @return String serialized values
+   */
+  serialize: function() {
+    return Object.toQueryString(this.values());
   }
 });
 
 //Observer.createShortcuts(Form.Methods, $w('submit reset focus'));
 
-try { // extending the form element prototype
-  $ext(HTMLFormElement.prototype, Form.Methods);
-} catch(e) {}
