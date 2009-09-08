@@ -11,26 +11,6 @@
  */
 var Event = new Class(Event, {
   extend: {
-    Methods: {
-      stopPropagation: function() {
-        this.cancelBubble = true;
-      },
-      
-      preventDefault: function() {
-        this.returnValue = false;
-      },
-      
-      stop: function() {
-        this.stopPropagation();
-        this.preventDefault();
-        return this;
-      },
-      
-      position: function() {
-        return {x: this.pageX, y: this.pageY};
-      }
-    },
-        
     /**
      * extends a native object with additional functionality
      *
@@ -97,7 +77,24 @@ var Event = new Class(Event, {
       if (Browser.Gecko     && name == 'mousewheel')  name = 'DOMMouseScroll';
       if (Browser.Konqueror && name == 'contextmenu') name = 'rightclick';
       return name;
-    }
+    },
+    
+    /**
+     * Registers some additional event extendsions
+     *
+     * @param Object methods
+     * @return void
+     */
+    addMethods: function(methods) {
+      $ext(this.Methods, methods);
+      
+      try { // extending the events prototype
+        $ext(Event.parent.prototype, methods, true);
+      } catch(e) {};
+    },
+    
+    // the additional methods registry
+    Methods: {}
   },
   
   /**
@@ -112,7 +109,25 @@ var Event = new Class(Event, {
   }
 });
 
-try {
-  // boosting up the native events by preextending the prototype if available
-  $ext(Event.parent.prototype, Event.Methods, true);
-} catch(e) {};
+// hooking up the standard extendsions
+Event.addMethods({
+  stopPropagation: function() {
+    this.cancelBubble = true;
+  },
+  
+  preventDefault: function() {
+    this.returnValue = false;
+  },
+  
+  stop: function() {
+    this.stopPropagation();
+    this.preventDefault();
+    return this;
+  },
+  
+  position: function() {
+    return {x: this.pageX, y: this.pageY};
+  }
+});
+
+
