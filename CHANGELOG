@@ -1,3 +1,19 @@
+2009-09-09 Nikolay V. Nemshilov aka St.
+  o Version 1.4.2 Release
+    * Form unit fixes
+    * Form#remotize spinners autodiscovery feature
+    * Form.addMethods feature
+    * Form.Element.addMethods feature
+    * Event.addMethods feature
+    * Xhr.IFramed response reading fixes
+    * Xhr.load now uses 'get' method by default
+    * Xhr global spinners handling fix
+    * Xhr.Options.spinnerFx option
+    * Fx.Morph faster styles calculations
+    * Fx.options.fps fix for IE
+    * Fx.Morph to css-class functionality moved for goods
+    * String regexps usage optimization
+
 2009-08-22 Nikolay V. Nemshilov aka St.
   o Version 1.4.1 Release
     * Manual CSS Selectors performance update
