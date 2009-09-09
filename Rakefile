@@ -107,11 +107,20 @@ task :build do
   source = ''
   modules = []
   
+  # filtering the modules
   %w(core form cookie xhr fx).each do |package|
     unless options.include?("no-#{package}")
       JS_SOURCES[package.to_sym].each do |file|
         source += File.open("src/#{file}", "r").read + "\n\n"
       end
+      modules << package
+    end
+  end
+  
+  # RightJS Goods modules
+  %w(json effects events).each do |package|
+    if options.include?(package)
+      source += File.open("lib/rightjs_goods/build/right-#{package}-src.js").read + "\n\n"
       modules << package
     end
   end
