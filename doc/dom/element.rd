@@ -1150,3 +1150,19 @@ The list of supported events
     method: 'post',
     spinner: 'spinner-id'
   });
+
+
+### Element.addMethods
+
+== Semantic
+  Element.addMethods(Object methods[, boolean dont_rewrite])
+
+== Description
+  Registers additional methods for the dom-elements on the page
+
+== Example
+  Element.addMethods({
+    myMethod: function() {....}
+  });
+
+  $('my_element').myMethod();

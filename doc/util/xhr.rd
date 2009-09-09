@@ -119,10 +119,10 @@ to evaluate responses with json content-type by default and assign it to the
 </code>
 
 
-### Element.Options
+### Xhr.Options
 
 == Semantic
-  Options -> Object
+  Xhr.Options -> Object
   
 == Description
   Default Xhr options. See the options chapter above for more details
@@ -135,7 +135,7 @@ to evaluate responses with json content-type by default and assign it to the
   Xhr.load('/some/url'); // -> 'get' request
 
 
-### Element.load
+### Xhr.load
 
 == Semantic
   Xhr.load(String url[, Object options]) -> Xhr new
@@ -143,16 +143,17 @@ to evaluate responses with json content-type by default and assign it to the
 == Description
   Shortcut for <tt>new Xhr(url, options).send();</tt>. Just creates a new xhr
   request instance and sends it.
+  
+  NOTE: will perform <tt>GET</tt> request by default
 
 == Example
   Xhr.load('/some/url', {
-    method: 'get',
     onSuccess: function(request) {
       // do something about it
     }
   });
   
-### Element#initialize
+### Xhr#initialize
 
 == Semantic
   initialize(String url[, Object options]) -> Xhr new
@@ -168,7 +169,7 @@ to evaluate responses with json content-type by default and assign it to the
     onSuccess: some_success_handler
   });
 
-### Element#setHeader
+### Xhr#setHeader
 
 == Semantic
   setHeader(String name, String value) -> Xhr self
@@ -180,7 +181,7 @@ to evaluate responses with json content-type by default and assign it to the
   var xhr = new Xhr('/some/url');
   xhr.setHeader(''Content-type', 'application/x-www-form-urlencoded');
 
-### Element#getHeader
+### Xhr#getHeader
 
 == Semantic
   getHeader(String name) -> String value
@@ -194,7 +195,7 @@ to evaluate responses with json content-type by default and assign it to the
   // ...
   xhr.getHeader('Content-type');
 
-### Element#successful
+### Xhr#successful
 
 == Semantic
   successful() -> boolean
@@ -212,7 +213,7 @@ to evaluate responses with json content-type by default and assign it to the
   }).send();
 
 
-### Element#send
+### Xhr#send
 
 == Semantic
   send([String params]) -> Xhr self
@@ -234,7 +235,7 @@ to evaluate responses with json content-type by default and assign it to the
   xhr.send({foo: 'bar'});
 
 
-### Element#update
+### Xhr#update
 
 == Semantic
   update(Element element[, mixed params])   -> Xhr self
@@ -252,7 +253,7 @@ to evaluate responses with json content-type by default and assign it to the
   xhr.udpate(element, {foo: 'bar'});
   
 
-### Element#cancel
+### Xhr#cancel
 
 == Semantic
   cancel() -> Xhr self

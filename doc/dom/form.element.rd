@@ -112,3 +112,18 @@ shortcuts are in place, you can wire and run the event in the usual way.
   $('input').blur();
 
 
+### Form.Element.addMethods
+
+== Semantic
+  Form.Element.addMethods(Object methods[, boolean dont_rewrite])
+
+== Description
+  Registers additional methods for the form input element units,
+  like INPUT, SELECT, TEXTAREA
+
+== Example
+  Form.Element.addMethods({
+    myMethod: function() {....}
+  });
+
+  $('my_input').myMethod();

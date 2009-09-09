@@ -215,3 +215,17 @@ And you can specify any the standard {Xhr} options too.
   $('form').submit(); // the form goes via usual HTTP request
 
 
+### Form.addMethods
+
+== Semantic
+  Form.addMethods(Object methods[, boolean dont_rewrite])
+  
+== Description
+  Registers additional methods for the Form units
+
+== Example
+  Form.addMethods({
+    myMethod: function() {....}
+  });
+  
+  $('my_form').myMethod();

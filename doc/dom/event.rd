@@ -83,3 +83,20 @@ The list of faked attributes is following:
     $('nice-looking-title').show().moveTo(event.position());
   });
   
+
+### Event.addMethods
+
+== Semantic
+  Event.addMethods(Object methods[, boolean dont_rewrite])
+
+== Description
+  Registers additional methods for the dom events
+
+== Example
+  Event.addMethods({
+    myMethod: function() {....}
+  });
+
+  $('my_element').onClick(function(event) {
+    event.myMethod()
+  });
