@@ -36,7 +36,7 @@ It is also available to call the super-class methods by calling the <tt>this.$su
     }
   });
   
-  var AngryBoy = new Class({
+  var AngryBoy = new Class(Boy, {
     sayIt: function() {
       return "Angry Boy Says: "+this.$super();
     }
