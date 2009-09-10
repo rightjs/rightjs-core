@@ -114,6 +114,9 @@ Fx.Morph = new Class(Fx, {
       // getting the actual style
       style[key] = element._getStyle(styles, key);
       
+      // Opera returns named colors as quoted strings
+      if (Browser.Opera && /color/i.test(key)) style[key] = style[key].replace(/'|"/g, '');
+      
       // getting the real color if it's a transparent
       if (this._transp(style[key])) style[key] = this._getBGColor(element);
       
