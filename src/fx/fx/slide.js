@@ -31,8 +31,8 @@ Fx.Slide = new Class(Fx.Twin, {
   // calculates the final style
   _endStyle: function(direction) {
     var style = {}, sizes = this.sizes,
-      margin_left = this.styles.marginLeft.toFloat(),
-      margin_top = this.styles.marginTop.toFloat();
+      margin_left = (this.styles.marginLeft || '0').toFloat(),
+      margin_top  = (this.styles.marginTop  || '0').toFloat();
 
     if (this.how == 'out') {
       style[['top', 'bottom'].includes(direction) ? 'height' : 'width'] = '0px';
