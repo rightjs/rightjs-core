@@ -1,11 +1,10 @@
 = Intro
 
 Fx.Morph is the basic dom-elements morphing visual effect. It can morph
-an element from its current state to any end style or a css-class.
+an element from its current state to any end style.
 
-You can specify several keys in your end style as much as you can specify
-several css-classes, all the values will be processed simultaneously
-providing an excellent user experience.
+You can specify several keys in your end style, all of them will be processed
+simultaneously providing an excellent user experience.
 
 NOTE: There's no need to preset the element styles manually before run the
 effect, in most of the cases RightJS is smart enough to figure out the initial
@@ -38,7 +37,6 @@ styles.
 
 == Semantic
   start(Object end_style)   -> Fx.Morph self
-  start(String css_classes) -> Fx.Morph self
 
 == Description
-  Starts the effect towards the given style or css-class(es)
+  Starts the effect towards the given style

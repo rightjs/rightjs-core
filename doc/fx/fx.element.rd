@@ -10,16 +10,13 @@ of the dom-elements.
   morph(Object style[, Object fx_options]) -> Element self
 
 == Description
-  Runs the Fx.Morph effect on the element
+  Runs the {Fx.Morph} effect on the element
 
 == Example
   $(element).morph({
     width: '200px',
     height: '400px'
   });
-  
-  $(element).morph('class-name');
-  $(element).morph('class1 class2', {onFinish: function() {}});
 
 ### highlight
 
@@ -29,7 +26,7 @@ of the dom-elements.
   highlight([Object fx_options])                 -> Element self
 
 == Description
-  Runs the Fx.Highlight effect on the element
+  Runs the {Fx.Highlight} effect on the element
 
 == Example
   $(element).highlight();
@@ -44,7 +41,7 @@ of the dom-elements.
   fade([Object options])               -> Element self
 
 == Description
-  Runs the Fx.Fade effect on the element
+  Runs the {Fx.Fade} effect on the element
 
 == Example
   $(element).fade();
@@ -59,7 +56,7 @@ of the dom-elements.
   slide([Object fx_options])               -> Element self
 
 == Description
-  Runs the Fx.Slide effect on the element
+  Runs the {Fx.Slide} effect on the element
 
 == Example
   $(element).slide();
