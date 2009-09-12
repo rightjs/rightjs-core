@@ -185,11 +185,11 @@ var Observer = new Class({
      */
     createShortcuts: function(object, names) {
       (names || []).each(function(name) {
-        var shortcuts = {}, name = name.replace(/:/g, '_').camelize();
-        shortcuts[name] = function() {
+        var shortcuts = {}, method_name = name.replace(/:/g, '_').camelize();
+        shortcuts[method_name] = function() {
           return this.fire.apply(this, [name].concat($A(arguments)));
         };
-        shortcuts['on'+name.capitalize()] = function() {
+        shortcuts['on'+method_name.capitalize()] = function() {
           return this.on.apply(this, [name].concat($A(arguments)));
         };
         $ext(object, shortcuts, true);
