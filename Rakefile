@@ -118,7 +118,7 @@ task :build do
   end
   
   # RightJS Goods modules
-  %w(json effects events).each do |package|
+  %w(json effects events behavior).each do |package|
     if options.include?(package)
       source += File.open("lib/rightjs_goods/build/right-#{package}-src.js").read + "\n\n"
       modules << package
