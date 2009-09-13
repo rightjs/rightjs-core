@@ -90,6 +90,7 @@ var Observer = new Class({
   observes: function(event, callback) {
     if (this.$listeners) {
       if (!isString(event)) { callback = event; event = null; }
+      if (isString(callback)) callback = this[callback];
       
       return this.$listeners.some(function(i) {
         return (event && callback) ? i.e == event && i.f == callback :
@@ -113,6 +114,7 @@ var Observer = new Class({
   stopObserving: function(event, callback) {
     if (this.$listeners) {
       if (!isString(event)) { callback = event; event = null; }
+      if (isString(callback)) callback = this[callback];
       
       this.$listeners = this.$listeners.filter(function(i) {
         var result = (event && callback) ? (i.e != event || i.f != callback) :

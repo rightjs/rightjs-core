@@ -106,6 +106,21 @@ var ObserverTest = TestCase.create({
     this.assertFalse(o.observes(new Function()));
   },
   
+  testObservesByName: function() {
+    var o = new Observer();
+    o.method1 = function() {};
+    o.method2 = function() {};
+    
+    o.observe('foo', 'method1');
+    o.observe('bar', 'method2');
+    
+    this.assert(o.observes('foo', 'method1'));
+    this.assert(o.observes('bar', 'method2'));
+    
+    this.assertFalse(o.observes('foo', 'method2'));
+    this.assertFalse(o.observes('bar', 'method1'));
+  },
+  
   testStopObserving: function() {
     var o = new Observer();
     var f1 = function() {};
@@ -133,6 +148,28 @@ var ObserverTest = TestCase.create({
     this.assert(o.observes(f1));
     this.assertSame(o, o.stopObserving(f1));
     this.assertFalse(o.observes(f1));
+  },
+  
+  testStopObservingByName: function() {
+    var o = new Observer();
+    o.method1 = function() {};
+    o.method2 = function() {};
+    
+    o.observe('foo', 'method1');
+    o.observe('bar', 'method2');
+    
+    this.assert(o.observes('foo', 'method1'));
+    this.assert(o.observes('bar', 'method2'));
+    
+    o.stopObserving('foo', 'method1');
+    
+    this.assertFalse(o.observes('foo', 'method1'));
+    this.assert(o.observes('bar', 'method2'));
+    
+    o.stopObserving('bar', 'method2');
+    
+    this.assertFalse(o.observes('foo', 'method1'));
+    this.assertFalse(o.observes('bar', 'method2'));
   },
   
   testFire: function() {
