@@ -16,7 +16,11 @@ Fx.Slide = new Class(Fx.Twin, {
 
     this.element.show();
     this.sizes = this.element.sizes();
-    this.styles = this._getStyle(this.element, $w('overflow height width marginTop marginLeft'));
+    
+    this.styles = {};
+    $w('overflow height width marginTop marginLeft').each(function(key) {
+      this.styles[key] = this.element.style[key];
+    }, this);
 
     this.element.style.overflow = 'hidden';
     this.onFinish('_getBack').onCancel('_getBack');
