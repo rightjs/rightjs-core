@@ -192,19 +192,17 @@ function isNode(value) {
  * @param Object iterable
  * @return Array list
  */
-var $A = (function() {
-  return Browser.IE ? function (it) {
-    if (it.item) {
-      for (var a=[], i=0, length = it.length; i < length; i++)
-        a[i] = it[i];
-    } else {
-      var a = Array.prototype.slice.call(it);
-    }
-    return a;
-  } : function (it) {
-    return Array.prototype.slice.call(it);
-  };
-})();
+var $A = Browser.IE ? function (it) {
+  if (it.item) {
+    for (var a=[], i=0, length = it.length; i < length; i++)
+      a[i] = it[i];
+  } else {
+    var a = Array.prototype.slice.call(it);
+  }
+  return a;
+} : function (it) {
+  return Array.prototype.slice.call(it);
+};
 
 /**
  * shortcut to instance new elements
