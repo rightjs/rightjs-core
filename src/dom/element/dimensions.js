@@ -108,7 +108,8 @@ Element.addMethods({
   /**
    * sets the element position (against the window corner)
    *
-   * @param Integer left position in pixels or an object like {x: 10, y: 20}
+   * @param Number left position in pixels or an object like {x: 10, y: 20}
+   * @param Number top position in pixels
    * @return Element self
    */
   moveTo: function(left, top) {
@@ -117,13 +118,10 @@ Element.addMethods({
       left = left.x;
     }
     
-    // FIXME make it for real
-    this.setStyle({
-      marginLeft: (left - this.position().x) + 'px',
-      marginTop: (top - this.position().y) + 'px'
+    return this.setStyle({
+      left: left + 'px',
+      top:  top  + 'px'
     });
-    
-    return this;
   },
   
   /**
