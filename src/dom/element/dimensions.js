@@ -34,13 +34,14 @@ Element.addMethods({
       top  = rect.top  + scrolls.y - doc.clientTop;
     } else {
       // Manual version
-      var element = this;
-      while (element && element.tagName) {
-        left += element.offsetLeft;
-        top  += element.offsetTop;
-        do 
-          element = element.parentNode;
-        while (element.tagName == 'P') // P tags screw the position calculation
+      left = this.offsetLeft;
+      top  = this.offsetTop;
+      
+      if (this.getStyle('position') != 'absolute') {
+        var body = this.ownerDocument.body, html = body.parentNode;
+        
+        left += body.offsetLeft + html.offsetLeft;
+        top  += body.offsetTop  + html.offsetTop;
       }
     }
     
