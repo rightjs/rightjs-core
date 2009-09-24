@@ -34,13 +34,13 @@ var FxTest = TestCase.create({
     fx.startTimer = function() { return this; };
     fx.start();
     
-    this.assertEqual(Browser.OLD ? 16 : 24, fx.steps);
+    this.assertEqual(Browser.IE ? 16 : 24, fx.steps);
     this.assertEqual(1,  fx.number);
     
     fx.options.duration = 800;
     fx.start();
     
-    this.assertEqual(Browser.OLD ? 32 : 48, fx.steps);
+    this.assertEqual(Browser.IE ? 32 : 48, fx.steps);
     this.assertEqual(1,  fx.number);
   },
   

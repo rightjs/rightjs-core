@@ -45,8 +45,8 @@ return {
         top  = left.y;
         left = left.x;
       }
-
-      old_scroll.call(this, left, top);
+      
+      old_scroll(left, top);
 
       return this;
     }
