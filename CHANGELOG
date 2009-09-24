@@ -1,3 +1,13 @@
+2009-09-24 Nikolay V. Nemshilov aka St.
+  o Version 1.4.3 Release
+    * Element#position in Konqueror fix
+    * Element#moveTo fix
+    * Fx.Slide the end sizes returning back fix
+    * Observer#stopObserve fix for methods attached by name
+    * Observer camelized event-names support fix
+    * Faster $A implementation
+    * Cleaning up
+
 2009-09-09 Nikolay V. Nemshilov aka St.
   o Version 1.4.2 Release
     * Form unit fixes
