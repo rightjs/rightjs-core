@@ -86,5 +86,33 @@ var OptionsTest = TestCase.create({
     });
     
     this.assert(klass.observes('finish', the_function));
+  },
+  
+  testCutOptions: function() {
+    var args = null;
+    
+    var Klass = new Class({
+      include: Options,
+      
+      initialize: function() {
+        args = this.cutOptions(arguments);
+      }
+    });
+    
+    var k = new Klass(1,2,3);
+    this.assertEqual([1,2,3], args);
+    this.assertEqual({}, k.options);
+    
+    var k = new Klass(1, {a:1});
+    this.assertEqual([1], args);
+    this.assertEqual({a:1}, k.options);
+    
+    var k = new Klass(1, 2, {b:2});
+    this.assertEqual([1,2], args);
+    this.assertEqual({b:2}, k.options);
+    
+    var k = new Klass({c:3});
+    this.assertEqual([], args);
+    this.assertEqual({c:3}, k.options);
   }
 });

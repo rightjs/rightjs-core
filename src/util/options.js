@@ -38,5 +38,19 @@ var Options = {
     }
     
     return this;
+  },
+  
+  /**
+   * Cuts of an options hash from the end of the arguments list
+   * assigns them using the #setOptions method and then
+   * returns the list of other arguments as an Array instance
+   *
+   * @param mixed iterable
+   * @return Array of the arguments
+   */
+  cutOptions: function(args) {
+    var args = $A(args);
+    this.setOptions(isHash(args.last()) ? args.pop() : {});
+    return args;
   }
 };
