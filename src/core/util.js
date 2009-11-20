@@ -133,7 +133,7 @@ if (navigator.userAgent.indexOf('Konqueror/3') != -1) {
  * @return boolean check result
  */
 function isFunction(value) {
-  return typeof(value) == 'function';
+  return typeof(value) === 'function';
 };
 
 /**
@@ -143,7 +143,7 @@ function isFunction(value) {
  * @return boolean check result
  */
 function isString(value) {
-  return typeof(value) == 'string';
+  return typeof(value) === 'string';
 };
 
 /**
@@ -163,7 +163,7 @@ function isArray(value) {
  * @return boolean check result
  */
 function isNumber(value) {
-  return typeof(value) == 'number';
+  return typeof(value) === 'number';
 };
 
 /**
@@ -222,7 +222,7 @@ function $E(tag_name, options) {
  * @return Element or null
  */
 function $(element) {
-  var element = typeof(element) == 'string' ? document.getElementById(element) : element;
+  var element = typeof(element) === 'string' ? document.getElementById(element) : element;
   return Browser.OLD ? Element.prepare(element) : element;
 };
 
@@ -252,10 +252,8 @@ function $w(string) {
  * @param Object object
  * @return Integer uniq id
  */
-var $uid = (function() {
-  var _UID = 1;
-  
+var $uid = (function(UID) {
   return function(item) {
-    return item.uid || (item.uid = _UID++);
+    return item.uid || (item.uid = UID++);
   };
-})();
+})(1);
