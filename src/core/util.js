@@ -117,7 +117,7 @@ function defined(value) {
  * @return boolean check result
  */
 function isHash(value) {
-  return typeof(value) == 'object' && value !== null && value.constructor === Object;
+  return typeof(value) === 'object' && value !== null && value.constructor === Object;
 };
 
 // Konqueror 3 patch
