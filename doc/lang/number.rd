@@ -50,14 +50,19 @@ Number class with some additional handy methods.
 ### Number#round
 
 == Semantic
-  round() -> number
+  round([Integer base]) -> number
 
 == Description
-  Returns the closest integer number fro the current number
+  Returns the closest integer number from the current number. You also
+  can specify how many numbers after the decimal pointer should be left
 
 == Example
-  (2.2).round(); // 2
-  (8.8).round(); // 8
+  2.2.round();    // -> 2
+  8.8.round();    // -> 8
+  
+  4.444.round(1); // -> 4.4
+  4.444.round(2); // -> 4.44
+  4.444.round(3); // -> 4.444
 
 
 

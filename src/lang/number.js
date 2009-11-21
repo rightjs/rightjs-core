@@ -37,8 +37,13 @@ $ext(Number.prototype, {
     return Math.abs(this);
   },
   
-  round: function() {
-    return Math.round(this);
+  round: function(base) {
+    if (base) {
+      var base = Math.pow(10, base);
+      return Math.round(this * base) / base;
+    } else {
+      return Math.round(this);
+    }
   },
   
   ceil: function() {

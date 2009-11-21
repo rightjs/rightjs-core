@@ -52,6 +52,12 @@ var NumberTest = TestCase.create({
     this.assert((4.6).round() == 5);
   },
   
+  testRoundWithOption: function() {
+    this.assert(4.444.round(1) == 4.4);
+    this.assert(4.444.round(2) == 4.44);
+    this.assert(4.444.round(3) == 4.444);
+  },
+  
   testCeil: function() {
     this.assert((4.4).ceil() == 5);
   },
