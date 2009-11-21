@@ -78,5 +78,25 @@ var FunctionTest = TestCase.create({
     }).periodical(5000, 'some text');
     
     this.assertNotNull(interval);
+  },
+  
+  testChain: function() {
+    var f1 = function(a,num) { a.push(num); return a; };
+    var f2 = function(a,num) { a.push(num) };
+    var f3 = function(a,num) { a.push(num) };
+    var f4 = function(a,num) { a.push(num) };
+    
+    var a = [];
+    
+    var f = f1.chain(f2, a, 2).chain(f3, a, 3).chain(f4, a, 4);
+    
+    this.assertNotSame(f, f1);
+    this.assertNotSame(f, f2);
+    this.assertNotSame(f, f3);
+    this.assertNotSame(f, f4);
+    
+    var r = f(a, 1);
+    this.assertSame(r, a, "checking it had returned the original result");
+    this.assertEqual([1,2,3,4], a, "checking the chain works properly");
   }
 });

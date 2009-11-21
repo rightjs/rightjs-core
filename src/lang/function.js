@@ -87,5 +87,22 @@ return {
     timer['stop'] = function() { window.clearInterval(this); };
 
     return timer;
+  },
+  
+  /**
+   * Chains the given function after the current one
+   *
+   * @param Function the next function
+   * @param mixed optional value to curry
+   * ......
+   * @return Function chained function
+   */
+  chain: function() {
+    var args = _A.call(arguments), func = args.shift(), current = this;
+    return function() {
+      var result = current.apply(current, arguments);
+      func.apply(func, args);
+      return result;
+    };
   }
 }})());

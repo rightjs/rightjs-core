@@ -128,3 +128,23 @@ timeouts etc.
   marker.stop();
 
 
+### Function#chain
+== Semantic
+  chain(Function func[, value, ...]) -> Function new
+  
+== Description
+  Schedules the argument function to be called immediately after
+  the main function. Optionally with some prebinded arguments
+  
+== Example
+  var f1 = function(list, num) { list.push(num); };
+  var f2 = function(list, num) { list.push(num); };
+  var f3 = function(list, num) { list.push(num); };
+  
+  var list = []; // <- will track the calls
+  
+  var f = f1.chain(f2, list, 2).chain(f3, list, 3);
+  
+  f(list, 1); // calls the first function
+  
+  list // -> [1, 2, 3]
