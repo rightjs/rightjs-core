@@ -18,11 +18,11 @@ var ElementCommonsTest = TestCase.create({
   testSetHash: function() {
     this.assertSame(this.el, this.el.set({
       id: 'another-id',
-      className: 'foo bar'
+      'title': 'foo bar'
     }));
     
     this.assertEqual('another-id', this.el.id);
-    this.assertEqual('foo bar', this.el.className);
+    this.assertEqual('foo bar', this.el.title);
   },
   
   testGet: function() {

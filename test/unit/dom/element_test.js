@@ -17,7 +17,7 @@ var ElementTest = TestCase.create({
     }).className);
     
     this.assertEqual('foo bla', new Element('div', {
-      className: 'foo bla'
+      'class': 'foo bla'
     }).className);
   },
   
@@ -35,12 +35,10 @@ var ElementTest = TestCase.create({
   testInstanceWithAttributes: function() {
     var el = new Element('div', {
       id: 'el-id',
-      name: 'el-name',
       title: 'el-title'
     });
     
     this.assertEqual('el-id', el.id);
-    this.assertEqual('el-name', el.name);
     this.assertEqual('el-title', el.title);
   },
   

@@ -17,9 +17,15 @@ Element.addMethods({
    */
   set: function(hash, value) {
     if (value) { var val = {}; val[hash] = value; hash = val; }
-
+    
+    // textarea units cannot be assigned with the value as an attribute
+    if (this.tagName === 'TEXTAREA' && hash.value) {
+      this.value = hash.value;
+      delete(hash.value);
+    }
+    
     for (var key in hash)
-      this[key] = hash[key];
+      this.setAttribute(key, hash[key]);
       
     return this;
   },
@@ -31,7 +37,7 @@ Element.addMethods({
    * @return mixed value
    */
   get: function(name) {
-    var value = this.getAttribute(name) || this[name];
+    var value = this[name] || this.getAttribute(name);
     return value == '' ? null : value;
   },
   
