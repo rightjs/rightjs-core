@@ -55,7 +55,13 @@ var scripts = [
   'fx/fx/twin.js',
   'fx/fx/slide.js',
   'fx/fx/fade.js',
-  'fx/element.js'
+  'fx/element.js',
+  
+  
+  // olds
+  'olds/core/util.js',
+  'olds/dom/element.js',
+  'olds/dom/document.js'
 ];
 
 for (var i=0; i < scripts.length; i++) {

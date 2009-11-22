@@ -222,8 +222,7 @@ function $E(tag_name, options) {
  * @return Element or null
  */
 function $(element) {
-  var element = typeof(element) === 'string' ? document.getElementById(element) : element;
-  return Browser.OLD ? Element.prepare(element) : element;
+  return typeof(element) === 'string' ? document.getElementById(element) : element;
 };
 
 /**

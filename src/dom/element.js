@@ -20,47 +20,19 @@ window.Element = new Class(window.Element, {
       tag_name = '<input checked="true"/>';
     }
     
-    var element = $(document.createElement(tag_name)), options = options || {};
+    var element = document.createElement(tag_name), options = options || {};
     
     if (options['html'])    { element.innerHTML = options['html'];  delete(options['html']);    }
     if (options['class'])   { element.className = options['class']; delete(options['class']);   }
     if (options['style'])   { element.setStyle(options['style']);   delete(options['style']);   }
     if (options['observe']) { element.observe(options['observe']);  delete(options['observe']); }
     
-    return element.set(options);
+    for (var key in options)
+      return element.set(options);
+    return element;
   },
   
   extend: {
-    Methods: {}, // DO NOT Extend this object manually unless you need it, use Element#addMethods
-    
-    /**
-     * IE browsers manual elements extending
-     *
-     * @param Element
-     * @return Element
-     */
-    prepare: function(element) {
-      if (element && element.tagName && !element.set) {
-        $ext(element, Element.Methods, true);
-        
-        if (self['Form']) {
-          switch(element.tagName) {
-            case 'FORM':
-              Form.ext(element);
-              break;
-
-            case 'INPUT':
-            case 'SELECT':
-            case 'BUTTON':
-            case 'TEXTAREA':
-              Form.Element.ext(element);
-              break;
-          }
-        }
-      }
-      return element;
-    },
-    
     /**
      * registeres the methods on the custom element methods list
      * will add them to prototype and will generate a non extensive static mirror
@@ -89,6 +61,8 @@ window.Element = new Class(window.Element, {
       }
       
       return this;
-    }
+    },
+    
+    Methods: {} // DO NOT Extend this object manually unless you really need it, use Element#addMethods
   }
 });
