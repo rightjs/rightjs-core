@@ -57,9 +57,7 @@ JS_SOURCES = {
     dom/window.js
     dom/ready.js
     
-    olds/core/util.js
-    olds/dom/element.js
-    olds/dom/document.js
+    olds/ie.js
   },
   
   :cookie => %w{

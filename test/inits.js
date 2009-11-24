@@ -58,10 +58,8 @@ var scripts = [
   'fx/element.js',
   
   
-  // olds
-  'olds/core/util.js',
-  'olds/dom/element.js',
-  'olds/dom/document.js'
+  // old browser hacks
+  'olds/core/ie.js'
 ];
 
 for (var i=0; i < scripts.length; i++) {
