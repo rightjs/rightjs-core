@@ -58,6 +58,7 @@ JS_SOURCES = {
     dom/ready.js
     
     olds/ie.js
+    olds/konq.js
   },
   
   :cookie => %w{

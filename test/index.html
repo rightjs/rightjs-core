@@ -8,6 +8,23 @@
     <script type="text/javascript" src="../lib/testcase.js"></script>
     <script type="text/javascript" src="./inits.js"></script>
     <script type="text/javascript" src="./tests.js"></script>
+    <style type="text/css">
+      /* Need those setting to have stable element positions during the tests */
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #CCC;
+        margin:  5px 10px;
+        padding: 5px 10px;
+        
+      /** Old IE screws with body paddings so we zerofying it to have
+          exactely the same result as in other browsers */
+      * padding: 0;
+      * margin: 10px 20px;
+      }
+    </style>
   </head>
   <body>
     The project Tests

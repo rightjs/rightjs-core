@@ -120,12 +120,6 @@ function isHash(value) {
   return typeof(value) === 'object' && value !== null && value.constructor === Object;
 };
 
-// Konqueror 3 patch
-if (navigator.userAgent.indexOf('Konqueror/3') != -1) {
-  eval(isHash.toString().replace(';', '&&!(arguments[0] instanceof HTMLElement);'));
-}
-
-
 /**
  * checks if the given value is a function
  *

@@ -59,7 +59,8 @@ var scripts = [
   
   
   // old browser hacks
-  'olds/core/ie.js'
+  'olds/ie.js',
+  'olds/konq.js'
 ];
 
 for (var i=0; i < scripts.length; i++) {

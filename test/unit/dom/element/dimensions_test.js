@@ -10,18 +10,22 @@ ElementDimensionsTest = TestCase.create({
     // makes the window scroll down
     this.spoof = new Element('div', {
       style: 'height: 2000px'
-    }).insertTo(document.body);
+    }).insertTo(document.body, 'top');
     
     window.scrollTo(0, 100);
   },
   
   setUp: function() {
+    /**
+     * NOTE: document.body has margin and padding set to '5px 10px'
+     *       so you'll have +10 and +20 offset for your elements
+     */
     this.div = new Element('div', {
       style: {
         width:   '200px',
         height:  '100px',
-        margin:  '50px',
-        padding: '50px',
+        margin:  '20px 50px',
+        padding: '20px 50px',
         border:  '50px solid transparent'
       }
     }).insertTo(this.spoof, 'before');
@@ -40,12 +44,66 @@ ElementDimensionsTest = TestCase.create({
   },
   
   testSize: function() {
-    this.assertEqual({x: 400, y: 300}, this.div.sizes());
+    this.assertEqual({x: 400, y: 240}, this.div.sizes());
   },
   
   testPosition: function() {
     var pos = this.div.position();
-    this.assert(pos.x > 50 && pos.x < 70 && pos.y > 50 && pos.y < 100);
+    
+    this.assertEqual(70, pos.x);
+    this.assertEqual(30, pos.y);
+  },
+  
+  testPositionWithRelatives: function() {
+    // testing position of relatively positioned element
+    var rel = new Element('div', {
+      style: {
+        position: 'relative',
+        top:    '10px',
+        left:   '20px',
+        width:  '10px',
+        height: '10px'
+      }
+    }).insertTo(this.div, 'top');
+    
+    var pos = rel.position();
+    this.assertEqual(190, pos.x);
+    this.assertEqual(110, pos.y);
+    
+    // testing position of an absolutely positioned element
+    var abs = new Element('div', {
+      style: {
+        position: 'absolute',
+        top:    '10px',
+        left:   '20px',
+        width:  '10px',
+        height: '10px'
+      }
+    }).insertTo(this.div);
+    
+    var pos = abs.position();
+    this.assertEqual(20, pos.x);
+    this.assertEqual(10, pos.y);
+    
+    // testing an element inside a relative positions space
+    abs.insertTo(rel);
+    var pos = abs.position();
+    this.assertEqual(210, pos.x);
+    this.assertEqual(120, pos.y);
+    
+    
+    // testing with two nested relative position spaces
+    var sub = new Element('div', {
+      style: {
+        margin: '10px 20px',
+        width:  '10px',
+        height: '10px'
+      }
+    }).insertTo(abs);
+    
+    var pos = sub.position();
+    this.assertEqual(230, pos.x);
+    this.assertEqual(130, pos.y);
   },
   
   testScrolls: function() {
@@ -55,18 +113,18 @@ ElementDimensionsTest = TestCase.create({
   testDimensions: function() {
     var dims = this.div.dimensions();
     this.assertEqual(400, dims.width);
-    this.assertEqual(300, dims.height);
+    this.assertEqual(240, dims.height);
     this.assertEqual(0, dims.scrollLeft);
     this.assertEqual(0, dims.scrollTop);
-    this.assert(dims.top > 50);
-    this.assert(dims.left > 50);
+    this.assertEqual(30, dims.top);
+    this.assertEqual(70, dims.left);
   },
   
   testSetWidth: function() {
     this.assertSame(this.div, this.div.setWidth(600));
     this.assertEqual(600, this.div.offsetWidth);
     
-    this.assertEqual(300, this.div.offsetHeight);
+    this.assertEqual(240, this.div.offsetHeight);
   },
   
   testSetHeight: function() {
