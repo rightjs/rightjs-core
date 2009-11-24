@@ -27,7 +27,7 @@ window.Element = new Class(window.Element, {
     if (options['style'])   { element.setStyle(options['style']);   delete(options['style']);   }
     if (options['observe']) { element.observe(options['observe']);  delete(options['observe']); }
     
-    for (var key in options)
+    for (var key in options) // a filter in case there is no keys in the options left
       return element.set(options);
     return element;
   },

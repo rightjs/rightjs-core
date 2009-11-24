@@ -18,14 +18,13 @@ Element.addMethods({
   set: function(hash, value) {
     if (value) { var val = {}; val[hash] = value; hash = val; }
     
-    // textarea units cannot be assigned with the value as an attribute
-    if (this.tagName === 'TEXTAREA' && hash.value) {
-      this.value = hash.value;
-      delete(hash.value);
+    for (var key in hash) {
+      // some attributes are not available as properties
+      if (this[key] === undefined) {
+        this.setAttribute(key, ''+hash[key]);
+      }
+      this[key] = hash[key];
     }
-    
-    for (var key in hash)
-      this.setAttribute(key, hash[key]);
       
     return this;
   },

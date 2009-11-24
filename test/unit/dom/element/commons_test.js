@@ -25,6 +25,17 @@ var ElementCommonsTest = TestCase.create({
     this.assertEqual('foo bar', this.el.title);
   },
   
+  testSetCustom: function() {
+    this.el.set('data-boo', 'boo');
+    this.assertEqual('boo', this.el['data-boo']);
+    this.assertEqual('boo', this.el.getAttribute('data-boo'));
+  },
+  
+  testSetLabelFor: function() {
+    var label = $E('label', {'for': 'boo'});
+    this.assertEqual('boo', label.getAttribute('for'));
+  },
+  
   testGet: function() {
     this.el.id = 'something';
     this.assertEqual(this.el.id, this.el.get('id'));
