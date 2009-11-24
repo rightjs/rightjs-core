@@ -5,16 +5,36 @@
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 Element.addMethods({
-  
+  /**
+   * Returns the element sizes as a hash
+   *
+   * @return Object {x: NNN, y: NNN}
+   */
   sizes: function() {
     return { x: this.offsetWidth, y: this.offsetHeight };
   },
   
+  /**
+   * Returns the element absolute position
+   *
+   * NOTE: see the konq.js file for the manual version of the method
+   *
+   * @return Object {x: NNN, y: NNN}
+   */
   position: function() {
-    var dims = this.dimensions();
-    return { x: dims.left, y: dims.top };
+    var rect = this.getBoundingClientRect(), doc = this.ownerDocument.documentElement, scrolls = window.scrolls();
+    
+    return {
+      x: rect.left + scrolls.x - doc.clientLeft,
+      y: rect.top  + scrolls.y - doc.clientTop
+    };
   },
   
+  /**
+   * Returns the element scrolls
+   *
+   * @return Object {x: NNN, y: NNN}
+   */
   scrolls: function() {
     return { x: this.scrollLeft, y: this.scrollTop };
   },
@@ -25,33 +45,17 @@ Element.addMethods({
    * @return Object dimensions (top, left, width, height, scrollLeft, scrollTop)
    */
   dimensions: function() {
-    var left = 0, top = 0;
-    
-    if (this.getBoundingClientRect) {
-      var rect = this.getBoundingClientRect(), doc = this.ownerDocument.documentElement, scrolls = window.scrolls();
-      
-      left = rect.left + scrolls.x - doc.clientLeft;
-      top  = rect.top  + scrolls.y - doc.clientTop;
-    } else {
-      // Manual version
-      left = this.offsetLeft;
-      top  = this.offsetTop;
-      
-      if (this.getStyle('position') != 'absolute') {
-        var body = this.ownerDocument.body, html = body.parentNode;
-        
-        left += body.offsetLeft + html.offsetLeft;
-        top  += body.offsetTop  + html.offsetTop;
-      }
-    }
+    var sizes    = this.sizes();
+    var scrolls  = this.scrolls();
+    var position = this.position();
     
     return {
-      top:        top,
-      left:       left,
-      width:      this.sizes().x,
-      height:     this.sizes().y,
-      scrollLeft: this.scrolls().x,
-      scrollTop:  this.scrolls().y
+      top:        position.y,
+      left:       position.x,
+      width:      sizes.x,
+      height:     sizes.y,
+      scrollLeft: scrolls.x,
+      scrollTop:  scrolls.y
     };
   },
   
