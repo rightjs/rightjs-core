@@ -51,14 +51,6 @@ Element.addMethods({
     return this.prevSiblings(css_rule).first();
   },
   
-// those two are moved to the Selector unit definition
-//  first:  Element.Methods.querySelector,
-//  select: Element.Methods.querySelectorAll,
-  
-  match: function(css_rule) {
-    return new Selector(css_rule).match(this);
-  },
-  
   /**
    * removes the elemnt out of this parent node
    *
@@ -95,7 +87,7 @@ Element.addMethods({
       position = isString(position) ? position.toLowerCase() : 'bottom';
       
       if (isString(content)) {
-        content = content.stripScripts(function(s, h) { scripts = s; });
+        content = content.stripScripts(function(s) { scripts = s; });
       }
       
       Element.insertions[position](this, content.tagName ? content :
@@ -104,11 +96,18 @@ Element.addMethods({
             this : this.parentNode, content
         )
       );
-      $eval(scripts);
+      if (scripts) $eval(scripts);
     }
     return this;
   },
   
+  /**
+   * Inserts the element inside the given one at the given position
+   *
+   * @param mixed destination element reference
+   * @param String optional position
+   * @return Element this
+   */
   insertTo: function(element, position) {
     $(element).insert(this, position);
     return this;
@@ -132,8 +131,9 @@ Element.addMethods({
    */
   update: function(content) {
     if (isString(content)) {
-      this.innerHTML = content.stripScripts();
-      content.evalScripts();
+      var scripts = '';
+      this.innerHTML = content.stripScripts(function(s) { scripts = s; });
+      if (scripts) $eval(scripts);
     } else {
       this.clean().insert(content);
     }
@@ -184,15 +184,15 @@ Element.addMethods({
    * @return Array found elements
    */
   rCollect: function(attr, css_rule) {
-    var node = this, nodes = [];
+    var node = this, result = [];
 
     while ((node = node[attr])) {
-      if (node.tagName && (!css_rule || new Selector(css_rule).match(node))) {
-        nodes.push(Browser.OLD ? Element.prepare(node) : node);
+      if (node.tagName && (!css_rule || $(node).match(css_rule))) {
+        result.push(node);
       }
     }
-    
-    return nodes;
+    if (Browser.OLD) result.forEach(Element.prepare);
+    return result;
   }
 });
 

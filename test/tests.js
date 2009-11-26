@@ -25,9 +25,6 @@ var tests = {
   ElementEventsTest:     'unit/dom/element/events_test.js',
   
   SelectorTest:          'unit/dom/selector_test.js',
-  SelectorAtomTest:      'unit/dom/selector/atom_test.js',
-  SelectorManualTest:    'unit/dom/selector/manual_test.js',
-  SelectorMultipleTest:  'unit/dom/selector/multiple_test.js',
   
   FormTest:              'unit/dom/form_test.js',
   FormElementTest:       'unit/dom/form/element_test.js',

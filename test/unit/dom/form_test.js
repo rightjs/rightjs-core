@@ -123,19 +123,26 @@ var FormTest = TestCase.create({
   testValues: function() {
     if (Browser.Konqueror) return;
     var form = this.setForm();
-    
-    this.assertEqual({
+    var result = document.querySelector ? {
       name: 'Bob',
       password: 'secret',
       text:     'Boo boo boo',
       kinda:    '1',
       items:    ['2', '3']
-    }, form.values());
+    } : {
+      name: 'Bob',
+      password: 'secret',
+      kinda:    '1',
+      items:    ['2', '3'],
+      text:     'Boo boo boo'
+    };
+    
+    this.assertEqual(result, form.values());
     
     form.keep_me.checked = true;
     form.first('#who-bob').checked = true;
     
-    this.assertEqual({
+    var result = document.querySelector ? {
       name:     'Bob',
       password: 'secret',
       keep_me:  '1',
@@ -143,17 +150,27 @@ var FormTest = TestCase.create({
       kinda:    '1',
       items:    ['2', '3'],
       who:      'bob'
-    }, form.values());
+    } :{
+      name:     'Bob',
+      password: 'secret',
+      keep_me:  '1',
+      who:      'bob',
+      kinda:    '1',
+      items:    ['2', '3'],
+      text:     'Boo boo boo'
+    };
+    
+    this.assertEqual(result, form.values());
   },
   
   testSerialize: function() {
     if (Browser.Konqueror) return;
     var form = this.setForm();
-    
-    this.assertEqual(
-      'name=Bob&password=secret&text=Boo%20boo%20boo&kinda=1&items=2%2C3',
-      form.serialize()
-    )
+    var result = document.querySelector ? 
+      'name=Bob&password=secret&text=Boo%20boo%20boo&kinda=1&items=2%2C3' :
+      'name=Bob&password=secret&kinda=1&items=2%2C3&text=Boo%20boo%20boo';
+      
+    this.assertEqual(result, form.serialize());
   }
 });
 

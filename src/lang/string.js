@@ -77,7 +77,7 @@ $ext(String.prototype, {
    */
   extractScripts: function() {
     var scripts = '';
-    this.stripScripts(function(s,t) { scripts = s; });
+    this.stripScripts(function(s) { scripts = s; });
     return scripts;
   },
   

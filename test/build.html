@@ -6,9 +6,25 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     
     <script type="text/javascript" src="../lib/testcase.js"></script>
-    <script type="text/javascript" src="../build/right.js"></script>
+    <script type="text/javascript" src="../build/right-min.js"></script>
     <script type="text/javascript" src="./tests.js"></script>
-    </script>
+    <style type="text/css">
+      /* Need those setting to have stable element positions during the tests */
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #CCC;
+        margin:  5px 10px;
+        padding: 5px 10px;
+        
+      /** Old IE screws with body paddings so we zerofying it to have
+          exactely the same result as in other browsers */
+      * padding: 0;
+      * margin: 10px 20px;
+      }
+    </style>
   </head>
   <body>
     This is the compiled source code test. Don't forget to run 'rake build' if you

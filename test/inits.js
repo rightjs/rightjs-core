@@ -32,9 +32,6 @@ var scripts = [
   'dom/element/events.js',
   
   'dom/selector.js',
-  'dom/selector/atom.js',
-  'dom/selector/manual.js',
-  'dom/selector/multiple.js',
   
   'dom/form.js',
   'dom/form/element.js',
@@ -60,7 +57,8 @@ var scripts = [
   
   // old browser hacks
   'olds/ie.js',
-  'olds/konq.js'
+  'olds/konq.js',
+  'olds/css.js'
 ];
 
 for (var i=0; i < scripts.length; i++) {

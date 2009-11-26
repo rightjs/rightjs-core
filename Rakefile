@@ -13,7 +13,7 @@ require 'rake'
 require 'fileutils'
 require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
 
-RIGHTJS_VERSION = '1.4.3'
+RIGHTJS_VERSION = '1.5.0a'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
@@ -50,15 +50,13 @@ JS_SOURCES = {
     dom/element/events.js
 
     dom/selector.js
-    dom/selector/atom.js
-    dom/selector/manual.js
-    dom/selector/multiple.js
     
     dom/window.js
     dom/ready.js
     
     olds/ie.js
     olds/konq.js
+    olds/css.js
   },
   
   :cookie => %w{

@@ -1,104 +1,70 @@
 /**
- * The DOM elements selection handling class
+ * The DOM elements selection handling
  *
- * Credits:
- *   The naming principles of the unit are inspired by
- *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
+ * NOTE: this module is just a wrap over the native CSS-selectors feature
+ *       see the olds/css.js file for the manual selector code
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-
-// checking, monkeying and hooking the native css-selectors interface
-//          IE8               W3C
-[document, (Element.parent || self['HTMLElement'] || {}.constructor).prototype].each(function(object, i) {
-  var old_selector     = object.querySelector;
-  var old_selector_all = object.querySelectorAll;
-  
-  // the native selectors checking/monkeying
-  var selectors = {};
-  if (!old_selector) selectors.querySelector = function(css_rule) {
-    return new Selector(css_rule).first(this);
-  };
-  if (!old_selector_all) selectors.querySelectorAll = function(css_rule) {
-    return new Selector(css_rule).select(this);
+Element.addMethods((function() {
+  /**
+   * Native css-selectors include the current element into the search context
+   * and as we actually search only inside of the element we add it's tag
+   * as a scope for the search
+   */
+  var stub_rule = function(css_rule, tag) {
+    return css_rule ? css_rule.replace(/(^|,)/g, '$1'+ tag + ' ') : '*';
   };
   
-  // RightJS version of the selectors
-  selectors.first = old_selector ? i ? function(css_rule) {
-    return this.querySelector(this.tagName + ' ' + (css_rule || '*'));
-  } : function(css_rule) {
-    return this.querySelector(css_rule || '*');
-  } : selectors.querySelector;
-  
-  selectors.select = old_selector_all ? i ? function(css_rule) {
-    return $A(this.querySelectorAll(this.tagName + ' ' + (css_rule || '*')));
-  } : function(css_rule) {
-    return $A(this.querySelectorAll(css_rule || '*'));
-  } : selectors.querySelectorAll;
-  
-  return i ? Element.addMethods(selectors) : $ext(object, selectors);
-});
-
-
-var Selector = new Class({
-  extend: {
-    cache: {}
-  },
-    
+return {
   /**
-   * constructor
+   * Extracts the first element matching the css-rule,
+   * or just any first element if no css-rule was specified
    *
-   * @param String css rule definition
-   * @return void
+   * @param String css-rule
+   * @return Element matching node or null
    */
-  initialize: function(css_rule) {
-    var cached = isString(css_rule) ? Selector.cache[css_rule] : css_rule;
-    if (cached) return cached;
-    Selector.cache[css_rule] = this;
-    
-    this.cssRule = css_rule || '*';
-    
-    var strategy = 'Manual';
-    if (this.cssRule.includes(',')) {
-      strategy = 'Multiple';
-    }
-    
-    this.strategy = new Selector[strategy](this.cssRule);
+  first: function(css_rule) {
+    return this.querySelector(stub_rule(css_rule, this.tagName));
   },
   
   /**
-   * selects the first matching element which is a sub node of the given element
-   * and matches the selector's css-rule
+   * Selects a list of matching nodes, or all the descendant nodes if no css-rule provided
    *
-   * @param Element element
-   * @return Element matching element or null if nothing found
+   * @param String css-rule
+   * @return Array of elements
    */
-  first: Browser.OLD ? function(element) {
-    var element = this.strategy.first(element);
-    return  element ? $(element) : null;
-  } : function(element) {
-    return this.strategy.first(element);
+  select: function(css_rule) {
+    return $A(this.querySelectorAll(stub_rule(css_rule, this.tagName)));
   },
   
   /**
-   * select all the subnodes of the element which are matching the rule
+   * checks if the element matches this css-rule
    *
-   * @param Element element
-   * @return Array list of found nodes
-   */
-  select: Browser.OLD ? function(element) {
-    return this.strategy.select(element).map(Element.prepare);
-  } : function(element) {
-    return this.strategy.select(element);
-  },
-  
-  /**
-   * checks if the element matches the rule
-   *
-   * @param Element element
+   * @param String css-rule
    * @return Boolean check result
    */
-  match: function(element) {
-    return this.strategy.match(element);
+  match: function(css_rule) {
+    if (!css_rule || css_rule == '*') return true;
+    
+    var fake, result, parent, parents = this.parents();
+    
+    parent = parents.length ? parents.last() : fake = $E('div').insert(this);
+    result = parent.select(css_rule).include(this);
+    
+    if (fake) { this.remove(); }
+    
+    return result;
+  }
+}})());
+
+// document-level hooks
+$ext(document, {
+  first: function(css_rule) {
+    return this.querySelector(css_rule || '*');
+  },
+  
+  select: function(css_rule) {
+    return $A(this.querySelectorAll(css_rlue || '*'));
   }
 });

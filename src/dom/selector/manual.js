@@ -125,60 +125,6 @@ Selector.Manual = new Class({
     return uniq;
   },
 
-  find: {
-    /**
-     * search for any descendant nodes
-     */
-    ' ': function(element, atom) {
-      var founds = $A(element.getElementsByTagName(atom.tag));
-      if (atom.hasNonTagMatcher) {
-        var matching = [];
-        for (var i=0, length = founds.length; i < length; i++) {
-          if (atom.match(founds[i]))
-            matching.push(founds[i]);
-        }
-        return matching;
-      }
-      return founds;
-    },
-
-    /**
-     * search for immidate descendant nodes
-     */
-    '>': function(element, atom) {
-      var node = element.firstChild, matched = [];
-      while (node) {
-        if (atom.match(node)) {
-          matched.push(node);
-        }
-        node = node.nextSibling;
-      }
-      return matched;
-    },
-
-    /**
-     * search for immiate sibling nodes
-     */
-    '+': function(element, atom) {
-      while ((element = element.nextSibling)) {
-        if (element.tagName) {
-          return atom.match(element) ? [element] : [];
-        }
-      }
-      return [];
-    },
-
-    /**
-     * search for late sibling nodes
-     */
-    '~': function(element, atom) {
-      var founds = [];
-      while ((element = element.nextSibling)) {
-        if (atom.match(element))
-          founds.push(element);
-      }
-      return founds;
-    }
-  } 
+   
 
 });
