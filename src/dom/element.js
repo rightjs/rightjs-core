@@ -1,68 +1,76 @@
 /**
  * The DOM Element unit handling
  *
- * Credits:
- *   The basic principles of the elements extending are originated from
- *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
- *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-window.Element = new Class(window.Element, {
-  /**
-   * basic constructor
-   *
-   * @param String tag name
-   * @param Object new element options
-   * @return Element object
-   */
-  initialize: function(tag_name, options) {
-    if (Browser.IE && tag_name == 'input' && options && options.checked) {
-      tag_name = '<input checked="true"/>';
-    }
+self.Element = (function(old_Element) {
+  
+  var new_Element = function(tag, options) {
+    var element = document.createElement(tag), options = options || {};
     
-    var element = document.createElement(tag_name), options = options || {};
-    
-    if (options['html'])    { element.innerHTML = options['html'];  delete(options['html']);    }
-    if (options['class'])   { element.className = options['class']; delete(options['class']);   }
-    if (options['style'])   { element.setStyle(options['style']);   delete(options['style']);   }
-    if (options['observe']) { element.observe(options['observe']);  delete(options['observe']); }
+    if (options.id)       { element.id = options.id;              delete(options.id);       }
+    if (options.html)     { element.innerHTML = options.html;     delete(options.html);     }
+    if (options['class']) { element.className = options['class']; delete(options['class']); }
+    if (options.style)    { element.setStyle(options.style);      delete(options.style);    }
+    if (options.observe)  { element.observe(options.observe);     delete(options.observe);  }
     
     for (var key in options) // a filter in case there is no keys in the options left
       return element.set(options);
     return element;
+  };
+  
+  
+  if (Browser.IE) {
+    //
+    // IE browsers have a bug with checked input elements
+    // and we kinda hacking the Element constructor so that
+    // it affected IE browsers only
+    //
+    new_Element = eval('({f:'+new_Element.toString().replace(/(\((\w+), (\w+)\) \{)/,
+      '$1if($2=="input"&&$3&&$3.checked)$2="<input checked=true/>";'
+    )+'})').f;
+  }
+  
+  // connecting the old Element instance to the new one for IE browsers
+  if (old_Element) {
+    $ext(new_Element, old_Element);
+    new_Element.parent = old_Element;
+  }
+  
+  return new_Element;
+})(self.Element);
+
+
+$ext(Element, {
+  /**
+   * registeres the methods on the custom element methods list
+   * will add them to prototype and will generate a non extensive static mirror
+   * 
+   * USAGE:
+   *  Element.addMethods({
+   *    foo: function(bar) {}
+   *  });
+   *
+   *  $(element).foo(bar);
+   *  Element.foo(element, bar);
+   *
+   * @param Object new methods list
+   * @param Boolean flag if the method should keep the existing methods alive
+   * @return Element the global Element object
+   */
+  addMethods: function(methods, dont_overwrite) {
+    $ext(this.Methods, methods, dont_overwrite);
+    
+    try { // busting up the basic element prototypes
+      $ext(HTMLElement.prototype, methods, dont_overwrite);
+    } catch(e) {
+      try { // IE8 native element extension
+        $ext(this.parent.prototype, methods, dont_overwrite);
+      } catch(e) {}
+    }
+    
+    return this;
   },
   
-  extend: {
-    /**
-     * registeres the methods on the custom element methods list
-     * will add them to prototype and will generate a non extensive static mirror
-     * 
-     * USAGE:
-     *  Element.addMethods({
-     *    foo: function(bar) {}
-     *  });
-     *
-     *  $(element).foo(bar);
-     *  Element.foo(element, bar);
-     *
-     * @param Object new methods list
-     * @param Boolean flag if the method should keep the existing methods alive
-     * @return Element the global Element object
-     */
-    addMethods: function(methods, dont_overwrite) {
-      $ext(this.Methods, methods, dont_overwrite);
-      
-      try { // busting up the basic element prototypes
-        $ext(HTMLElement.prototype, methods, dont_overwrite);
-      } catch(e) {
-        try { // IE8 native element extension
-          $ext(this.parent.prototype, methods, dont_overwrite);
-        } catch(e) {}
-      }
-      
-      return this;
-    },
-    
-    Methods: {} // DO NOT Extend this object manually unless you really need it, use Element#addMethods
-  }
+  Methods: {} // DO NOT Extend this object manually unless you really need it, use Element#addMethods
 });

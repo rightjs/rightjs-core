@@ -7,47 +7,40 @@
  *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-var Form = new Class(Element, {
+var Form = function(options) {
+  var options = options || {}, remote = options['remote'],
+    form = new Element('form', Object.without(options, 'remote'));
+  
+  if (remote) form.remotize();
+  
+  return form;
+};
+
+$ext(Form, {
   /**
-   * generic forms creation constructor
+   * IE browsers manual elements extending
    *
-   * @param Object form options
+   * @param Element form
+   * @return Form element
    */
-  initialize: function(options) {
-    var options = options || {}, remote = options['remote'],
-      form = this.$super('form', Object.without(options, 'remote'));
-    
-    if (remote) form.remotize();
-    
-    return form;
+  ext: function(element) {
+    return $ext(element, this.Methods);
   },
   
-  extend: {
-    /**
-     * IE browsers manual elements extending
-     *
-     * @param Element form
-     * @return Form element
-     */
-    ext: function(element) {
-      return $ext(element, this.Methods);
-    },
+  Methods: {},
+  
+  /**
+   * Extends the form functionality
+   *
+   * @param Object methods hash
+   * @return void
+   */
+  addMethods: function(methods, dont_overwrite) {
+    $ext(Form.Methods, methods, dont_overwrite);
     
-    Methods: {},
-    
-    /**
-     * Extends the form functionality
-     *
-     * @param Object methods hash
-     * @return void
-     */
-    addMethods: function(methods, dont_overwrite) {
-      $ext(Form.Methods, methods, dont_overwrite);
-      
-      try { // trying to extend the form element prototype
-        $ext(HTMLFormElement.prototype, methods, dont_overwrite);
-      } catch(e) {}
-    }
+    try { // trying to extend the form element prototype
+      $ext(HTMLFormElement.prototype, methods, dont_overwrite);
+    } catch(e) {}
   }
 });
 
