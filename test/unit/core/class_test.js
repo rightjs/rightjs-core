@@ -58,13 +58,54 @@ var ClassTest = TestCase.create({
     this.assertEqual(2, klass.prototype.something4);
   },
   
-  testClassIncludeKlassSkipping: function() {
-    var klass = new Class();
-    klass.include({
-      'klass': 'replacement'
+  testIncludedWithCallback: function() {
+    var Klass = new Class().include({
+      selfIncluded: function(base) {
+        $ext(base, {
+          boo: this.message
+        });
+      },
+      message: 'boo boo'
     });
+    this.assertEqual('boo boo', Klass.boo);
+    this.assertNull(Klass.prototype.selfIncluded);
     
-    this.assertNotEqual('replacement', klass.prototype['klass']);
+    // same for the underscored version
+    var Klass = new Class().include({
+      self_included: function(base) {
+        $ext(base.prototype, {
+          boo: this.message
+        });
+      },
+      message: 'boo boo'
+    });
+    this.assertEqual('boo boo', Klass.prototype.boo);
+    this.assertNull(Klass.prototype.self_included);
+  },
+  
+  testExtendedWithCallback: function() {
+    var Klass = new Class().extend({
+      selfExtended: function(base) {
+        $ext(base, {
+          boo: this.message
+        });
+      },
+      message: 'boo boo'
+    });
+    this.assertEqual('boo boo', Klass.boo);
+    this.assertNull(Klass.prototype.selfExtended);
+    
+    // same for the underscored version
+    var Klass = new Class().extend({
+      self_extended: function(base) {
+        $ext(base.prototype, {
+          boo: this.message
+        });
+      },
+      message: 'boo boo'
+    });
+    this.assertEqual('boo boo', Klass.prototype.boo);
+    this.assertNull(Klass.prototype.self_extended);
   },
   
   testNewWithConstructor: function() {

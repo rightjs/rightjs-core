@@ -130,3 +130,27 @@ class level definitions right in your class. Similar to that:
     // ... the rest of the instance level functions
   })
 </code>
+
+Since the version 1.5.0 you also can specify Ruby style modules callbacks
+named 'selfIncluded' or 'selfExtended' (camelized versions also supported)
+
+<code>
+  var Module = {
+    boo: 'boo',
+    
+    selfIncluded: function(klass) {
+      klass.prototype.boo = this.boo;
+    },
+    
+    selfExtened: function(klass) {
+      klass.boo = this.boo;
+    }
+  }
+  var Klass = new Class({
+    include: Module,
+    extend:  Module
+  });
+  
+  Klass.boo;           // -> 'boo'
+  Klass.prototype.boo; // -> 'boo'
+</code>

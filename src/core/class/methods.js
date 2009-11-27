@@ -5,7 +5,16 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Class.Methods = {
+Class.Methods = (function() {
+  var commons = $w('selfExtended self_extended selfIncluded self_included');
+  var extend  = commons.concat($w('prototype parent extend include'));
+  var include = commons.concat(['constructor']);
+  
+  var clean_module = function(module, what) {
+    return Object.without.apply(Object, [module].concat(what == 'e' ? extend : include));
+  };
+  
+return {
   /**
    * Makes the class get inherited from another one
    *
@@ -27,10 +36,10 @@ Class.Methods = {
       this.ancestors.push(parent);
       parent = parent.parent;
     }
-    
+
     return this.prototype.constructor = this;
   },
-  
+
   /**
    * this method will extend the class-level with the given objects
    *
@@ -47,12 +56,16 @@ Class.Methods = {
    */
   extend: function() {
     $A(arguments).filter(isHash).each(function(module) {
-      $ext(this, Object.without(module, 'prototype', 'parent', 'extend', 'include'));
+      var callback = module.selfExtended || module.self_extended;
+      
+      $ext(this, clean_module(module, 'e'));
+      
+      if (callback) callback.call(module, this);
     }, this);
-    
+
     return this;
   },
-  
+
   /**
    * extends the class prototype with the given objects
    * NOTE: this method _WILL_OVERWRITE_ the existing itercecting entries
@@ -64,30 +77,27 @@ Class.Methods = {
    */
   include: function() {
     var ancestors = this.ancestors.map('prototype'), ancestor;
-    
+
     $A(arguments).filter(isHash).each(function(module) {
+      var callback = module.selfIncluded || module.self_included;
+      module = clean_module(module, 'i');
+
       for (var key in module) {
-        if (key != 'klass' && key != 'constructor') {
-          
-          // handling the super methods
-          ancestor = ancestors.first(function(proto) { return isFunction(proto[key]); });
-          
-          if (ancestor) {
-            (function(name, method, super_method) {
-              this[name] = function() {
-                this.$super = super_method;
-                
-                return method.apply(this, arguments);
-              };
-            }).call(this, key, module[key], ancestor[key]);
-          } else {
-            this[key] = module[key];
-          }
-          
-        }
+        ancestor = ancestors.first(function(proto) { return isFunction(proto[key]); });
+
+        this.prototype[key] = !ancestor ? module[key] :
+          (function(name, method, super_method) {
+            return function() {
+              this.$super = super_method;
+
+              return method.apply(this, arguments);
+            };
+          })(key, module[key], ancestor[key]);
       }
-    }, this.prototype);
-    
+
+      if (callback) callback.call(module, this);
+    }, this);
+
     return this;
   }
-};
+}})();
