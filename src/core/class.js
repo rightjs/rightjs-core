@@ -11,29 +11,29 @@
  */
 var Class = function() {
   var args = $A(arguments), properties = args.pop() || {}, parent = args.pop();
-  
+
   // if only the parent class has been specified
-  if (arguments.length == 1 && isFunction(properties)) {
+  if (!args.length && !isHash(properties)) {
     parent = properties; properties = {};
   }
-  
+
   // basic class object definition
   var klass = function() {
     return this.initialize ? this.initialize.apply(this, arguments) : this;
   };
-  
+
   // attaching main class-level methods
-  $ext(klass, Class.Methods);
+  $ext(klass, Class.Methods).inherit(parent);
   
-  // handling the parent class assign
-  Class.Util.catchSuper(klass, parent);
-  klass.prototype.constructor = klass; // <- don't put it lower
+  // catching the injections
+  $w('extend include').each(function(name) {
+    if (properties[name]) {
+      var modules = properties[name];
+      klass[name].apply(klass, isArray(modules) ? modules : [modules]);
+      delete(properties[name]);
+    }
+  });
   
-  // handling the inlinde extends and includes
-  Class.Util.catchExtends(klass, properties);
-  Class.Util.catchIncludes(klass, properties);
-  
-  klass.include(properties);
-  
-  return klass;
+  return klass.include(properties);
 };
+

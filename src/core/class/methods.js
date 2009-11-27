@@ -3,9 +3,34 @@
  * will be extended. It provides basic and standard way to work
  * with the classes.
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Class.Methods = {
+  /**
+   * Makes the class get inherited from another one
+   *
+   * @param Object another class
+   * @return Class this
+   */
+  inherit: function(parent) {
+    // handling the parent class assign
+    if (parent && parent.prototype) {
+      var s_klass = function() {};
+      s_klass.prototype = parent.prototype;
+      this.prototype = new s_klass;
+      this.parent = parent;
+    }
+
+    // collecting the list of ancestors
+    this.ancestors = [];
+    while (parent) {
+      this.ancestors.push(parent);
+      parent = parent.parent;
+    }
+    
+    return this.prototype.constructor = this;
+  },
+  
   /**
    * this method will extend the class-level with the given objects
    *
@@ -21,16 +46,9 @@ Class.Methods = {
    * @return Class the klass
    */
   extend: function() {
-    var filter = ['prototype', 'name', 'parent', 'extend', 'include'];
-    for (var i=0; i < arguments.length; i++) {
-      if (isHash(arguments[i])) {
-        for (var key in arguments[i]) {
-          if (!filter.includes(key)) {
-            this[key] = arguments[i][key];
-          }
-        }
-      }
-    }
+    $A(arguments).filter(isHash).each(function(module) {
+      $ext(this, Object.without(module, 'prototype', 'parent', 'extend', 'include'));
+    }, this);
     
     return this;
   },
@@ -45,30 +63,31 @@ Class.Methods = {
    * @return Class the klass
    */
   include: function() {
-    for (var i=0; i < arguments.length; i++) {
-      if (isHash(arguments[i])) {
-        for (var key in arguments[i]) {
-          if (key != 'klass' && key != 'constructor') {
-            
-            // handling the super methods
-            var ancestor = this.ancestors.first(function(klass) { return isFunction(klass.prototype[key]); });
-            
-            if (ancestor) {
-              (function(name, method, $super) {
-                this.prototype[name] = function() {
-                  this.$super = $super;
-                  
-                  return method.apply(this, arguments);
-                };
-              }).call(this, key, arguments[i][key], ancestor.prototype[key]);
-            } else {
-              this.prototype[key] = arguments[i][key];
-            }
-            
+    var ancestors = this.ancestors.map('prototype'), ancestor;
+    
+    $A(arguments).filter(isHash).each(function(module) {
+      for (var key in module) {
+        if (key != 'klass' && key != 'constructor') {
+          
+          // handling the super methods
+          ancestor = ancestors.first(function(proto) { return isFunction(proto[key]); });
+          
+          if (ancestor) {
+            (function(name, method, super_method) {
+              this[name] = function() {
+                this.$super = super_method;
+                
+                return method.apply(this, arguments);
+              };
+            }).call(this, key, module[key], ancestor[key]);
+          } else {
+            this[key] = module[key];
           }
+          
         }
       }
-    }
+    }, this.prototype);
+    
     return this;
   }
 };

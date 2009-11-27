@@ -32,7 +32,6 @@ JS_SOURCES = {
     lang/regexp.js
 
     core/class.js
-    core/class/util.js
     core/class/methods.js
 
     util/options.js

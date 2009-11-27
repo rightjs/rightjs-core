@@ -35,7 +35,7 @@ var ClassTest = TestCase.create({
   },
   
   testClassExtendKeyAttributesSkipping: function() {
-    ['name', 'parent', 'extend', 'include'].each(function(key) {
+    ['parent', 'extend', 'include'].each(function(key) {
       var klass = new Class();
       var mixin = {};
       mixin[key] = 'replacement for '+key;
