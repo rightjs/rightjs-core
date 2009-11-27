@@ -64,6 +64,18 @@ var FunctionTest = TestCase.create({
     this.assertEqual(20, quadro(5));
   },
   
+  testRCurry: function() {
+    var func = function() {
+      return $A(arguments);
+    };
+    var f1 = func.rcurry(1);
+    var f2 = func.rcurry(1,2,3);
+    
+    this.assertEqual([1,1], f1(1));
+    this.assertEqual([1,2,1], f1(1,2));
+    this.assertEqual([1,2,1,2,3], f2(1,2));
+  },
+  
   testDelay: function() {
     var timeout = (function(txt) {
       //alert(txt);

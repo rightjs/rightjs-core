@@ -13,13 +13,13 @@ $ext(Function.prototype, (function() {
   
 return {
   /**
-  * binds the function to be executed in the given scope
-  *
-  * @param Object scope
-  * @param mixed optional curry (left) argument
-  * ....
-  * @return Function binded function
-  */
+   * binds the function to be executed in the given scope
+   *
+   * @param Object scope
+   * @param mixed optional curry (left) argument
+   * ....
+   * @return Function binded function
+   */
   bind: function() {
     if (arguments.length < 2 && !arguments[0]) return this;
 
@@ -30,13 +30,13 @@ return {
   },
 
   /**
-  * binds the function as an event listener to the given scope object
-  *
-  * @param Object scope
-  * @param mixed optional curry (left) argument
-  * .......
-  * @return Function binded function
-  */
+   * binds the function as an event listener to the given scope object
+   *
+   * @param Object scope
+   * @param mixed optional curry (left) argument
+   * .......
+   * @return Function binded function
+   */
   bindAsEventListener: function() {
     var slice = _A, args = slice.call(arguments), scope = args.shift(), func = this;
     return function(event) {
@@ -45,24 +45,38 @@ return {
   },
 
   /**
-  * allows you to put some curry in your cookery
-  *
-  * @param mixed value to curry
-  * ....
-  * @return Function carried function
-  */
+   * allows you to put some curry in your cookery
+   *
+   * @param mixed value to curry
+   * ....
+   * @return Function curried function
+   */
   curry: function() {
     return this.bind.apply(this, [this].concat(_A.call(arguments)));
   },
+  
+  /**
+   * The right side curry feature
+   *
+   * @param mixed value to curry
+   * ....
+   * @return Function curried function
+   */
+  rcurry: function() {
+    var curry = _A.call(arguments), func = this;
+    return function() {
+      return func.apply(func, _A.call(arguments).concat(curry));
+    }
+  },
 
   /**
-  * delays the function execution
-  *
-  * @param Integer delay ms
-  * @param mixed value to curry
-  * .....
-  * @return Integer timeout marker
-  */
+   * delays the function execution
+   *
+   * @param Integer delay ms
+   * @param mixed value to curry
+   * .....
+   * @return Integer timeout marker
+   */
   delay: function() {
     var args  = _A.call(arguments), timeout = args.shift();
     var timer = new Number(window.setTimeout(this.bind.apply(this, [this].concat(args)), timeout));
@@ -73,13 +87,13 @@ return {
   },
 
   /**
-  * creates a periodical execution of the function with the given timeout
-  *
-  * @param Integer delay ms
-  * @param mixed value to curry
-  * ...
-  * @return Ineger interval marker
-  */
+   * creates a periodical execution of the function with the given timeout
+   *
+   * @param Integer delay ms
+   * @param mixed value to curry
+   * ...
+   * @return Ineger interval marker
+   */
   periodical: function() {
     var args  = _A.call(arguments), timeout = args.shift();
     var timer = new Number(window.setInterval(this.bind.apply(this, [this].concat(args)), timeout));

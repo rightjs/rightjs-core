@@ -70,6 +70,28 @@ timeouts etc.
   double(2); // 4
   double(4); // 8
   double(8); // 16
+  
+
+### Function#rcurry
+
+== Semantic
+  rcurry(mixed value[, value, ...]) -> Function new
+
+== Description
+  Functional approach right currying feature
+
+== Example
+  var callback = function() { return $A(arguments); };
+  
+  var with_one = callback.rcurry(1);
+  var with_two = callback.rcurry(1,2);
+  
+  
+  with_one(1);     // -> [1,1]
+  with_one(1,2);   // -> [1,2,1]
+  
+  with_two(1);     // -> [1,1,2]
+  with_two(1,2,3); // -> [1,2,3,1,2]
 
 
 
