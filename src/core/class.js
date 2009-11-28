@@ -37,3 +37,22 @@ var Class = function() {
   return klass.include(properties);
 };
 
+/**
+ * This method gets through a list of the object its class and all the ancestors
+ * and finds a hash named after property, used for configuration purposes with
+ * the Observer and Options modules
+ *
+ * NOTE: this method will look for capitalized and uppercased versions of the
+ *       property name
+ *
+ * @param Object a class instance
+ * @param String property name
+ * @return Object hash or null if nothing found
+ */
+Class.findSet = function(object, property) {
+  var upcased = property.toUpperCase(), capcased = property.capitalize(),
+    candidates = [object, object.constructor].concat(object.constructor.ancestors),
+    holder = candidates.first(function(o) { return o[upcased] || o[capcased]});
+    
+  return holder ? holder[upcased] || holder[capcased] : null;
+};

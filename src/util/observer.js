@@ -18,14 +18,8 @@ var Observer = new Class({
    * @param Object options
    */
   initialize: function(options) {
-    this.setOptions(options);
-    
-    // catching up the event shortucts
-    var ancestor, shorts = this.EVENTS || this.constructor.EVENTS ||
-        ((ancestor = this.constructor.ancestors.first('EVENTS')) ?
-          ancestor.EVENTS : null);
-          
-    Observer.createShortcuts(this, shorts);
+    this.setOptions(options);    
+    Observer.createShortcuts(this, Class.findSet(this, 'events'));
   },
   
   /**
@@ -175,7 +169,7 @@ var Observer = new Class({
      */
     create: function(object, events) {
       $ext(object, Object.without(this.prototype, 'initialize', 'setOptions'), true);
-      return this.createShortcuts(object, events || object['EVENTS']);
+      return this.createShortcuts(object, events || Class.findSet(object, 'events'));
     },
     
     /**

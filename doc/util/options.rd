@@ -83,7 +83,6 @@ The default options object might be named as one of the following
 
  * OPTIONS
  * Options
- * options
  
 <code>
   var Klass = new Class({
@@ -92,10 +91,7 @@ The default options object might be named as one of the following
     OPTIONS: {.....},
     
     // or
-    Options: {.....},
-    
-    // or 
-    options: {.....}
+    Options: {.....}
   });
 </code>
 
@@ -113,6 +109,35 @@ overwritten.
 == Example
   var object = new ClassWithOptions();
   
-  object.setOptions({....});
+  object.setOptions({a: 1});
   
-  object.options == {....};
+  object.options == {a: 1};
+
+
+### Options#cutOptions
+
+== Semantic
+  cutOptions(arguments) -> Array of arguments without options
+
+== Description
+  Cuts of an ending options hash from the list of arguments
+  set them up using the {#setOptions} method and at then
+  returns a new list without the ending hash.
+  
+== Example
+  var Klass = new Class({
+    include: Options,
+    
+    /**
+     * this constructor can take various number of arguments
+     * with an options hash at the end
+     */
+    initialize: function() {
+      var args = this.cutOptions(arguments);
+    }
+  });
+  
+  var o = new Klass(1, {opts:1});
+  var o = new Klass(1, 2, {opts:1});
+  var o = new Klass(1, 2, 3, {opts:1});
+  

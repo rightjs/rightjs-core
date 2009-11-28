@@ -86,6 +86,7 @@ var OptionsTest = TestCase.create({
     });
     
     this.assert(klass.observes('finish', the_function));
+    this.assertNull(klass.options.onFinish)
   },
   
   testCutOptions: function() {

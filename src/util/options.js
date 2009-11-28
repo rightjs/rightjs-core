@@ -18,21 +18,15 @@ var Options = {
    * @return Object current instance
    */
   setOptions: function(options) {
-    var names = $w('OPTIONS Options options'),
-      objects = [this, this.constructor].concat(this.constructor.ancestors),
-      OPTIONS = objects.map(function(object) {
-        return names.map(function(name) { return object[name]; });
-      }).flatten().first(function(i) { return !!i; });
-    
-    this.options = Object.merge({}, OPTIONS, options);
+    var options = this.options = Object.merge(Class.findSet(this, 'options'), options);
     
     // hooking up the observer options
     if (isFunction(this.on)) {
       var match;
-      for (var key in this.options) {
-        if (match = key.match(/on([A-Z][a-z]+)/)) {
-          this.on(match[1].toLowerCase(), this.options[key]);
-          delete(this.options[key]);
+      for (var key in options) {
+        if (match = key.match(/on([A-Z][A-Za-z]+)/)) {
+          this.on(match[1].toLowerCase(), options[key]);
+          delete(options[key]);
         }
       }
     }
