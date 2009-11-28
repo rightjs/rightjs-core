@@ -33,9 +33,33 @@ var Observer = new Class({
    * @return Observer self
    */
   observe: function() {
-    var args = $A(arguments), event = args.shift();
+    var args = Array.prototype.slice.call(arguments), event = args.shift();
     
-    if (!event.trim) { // <- not a string
+    if (typeof(event) === 'string') {
+      if (this.$listeners === undefined) this.$listeners = [];
+
+      var callback = args.shift();
+      switch (typeof callback) {
+        case "string":
+          callback = this[callback];
+
+        case "function":
+          var hash = { e: event, f: callback, a: args };
+          this.$listeners.push(hash);
+          break;
+
+        default:
+          if (isArray(callback)) {
+            callback.each(function(params) {
+              this.observe.apply(this, [event].concat(
+                isArray(params) ? params : [params]
+              ).concat(args));
+            }, this);
+          }
+      }
+      
+    } else {
+      // assuming it's a hash of key-value pairs
       for (var name in event) {
         this.observe.apply(this, [name].concat(
           isArray(event[name]) ? event[name] : [event[name]]
@@ -43,30 +67,7 @@ var Observer = new Class({
       }
     }
     
-    if (!this.$listeners) this.$listeners = [];
     
-    var callback = args.shift();
-    switch (typeof callback) {
-      case "string":
-        callback = this[callback];
-        
-      case "function":
-        var hash = { e: event, f: callback, a: args };
-        this.$listeners.push(hash);
-        
-        if (this.$o && this.$o.add) this.$o.add.call(this, hash);
-        
-        break;
-        
-      default:
-        if (isArray(callback)) {
-          callback.each(function(params) {
-            this.observe.apply(this, [event].concat(
-              isArray(params) ? params : [params]
-            ).concat(args));
-          }, this);
-        }
-    }
     
     return this;
   },
@@ -111,12 +112,8 @@ var Observer = new Class({
       if (isString(callback)) callback = this[callback];
       
       this.$listeners = this.$listeners.filter(function(i) {
-        var result = (event && callback) ? (i.e != event || i.f != callback) :
-          (event ? i.e != event : i.f != callback);
-        
-        if (!result && this.$o && this.$o.remove) this.$o.remove.call(this, i);
-        
-        return result;
+        return (event && callback) ? (i.e !== event || i.f !== callback) :
+          (event ? i.e !== event : i.f !== callback);
       }, this);
     }
     
@@ -134,7 +131,7 @@ var Observer = new Class({
    */
   listeners: function(event) {
     return (this.$listeners || []).filter(function(i) {
-      return !event || i.e == event;
+      return !event || i.e === event;
     }).map(function(i) { return i.f; }).uniq();
   },
   
@@ -150,10 +147,7 @@ var Observer = new Class({
     var args = $A(arguments), event = args.shift();
     
     (this.$listeners || []).each(function(i) {
-      if (i.e == event) {
-        (this.$o && this.$o.fire) ? this.$o.fire.call(this, event, args, i)  :
-          i.f.apply(this, i.a.concat(args));
-      }
+      if (i.e === event) i.f.apply(this, i.a.concat(args));
     }, this);
     
     return this;

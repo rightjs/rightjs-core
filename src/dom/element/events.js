@@ -8,38 +8,41 @@ Element.addMethods((function() {
     $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
   );
   
-  observer.$o = {
-    add: function(hash) {
-      var callback = hash.f, args = hash.a;
-      hash.e = Event.cleanName(hash.e);
-      hash.n = Event.realName(hash.e);
+  //
+  // HACK HACK HACK
+  //
+  // I'm kinda patching the observer methods manually in here
+  // the reason is in building flat and fast functions
+  //
+  observer.observe = observer.on = eval('({f:'+
+    observer.observe.toString().replace(/(\$listeners\.push\((\w+?)\);)/, '$1'+
+      '$2.e=Event.cleanName($2.e);$2.n=Event.realName($2.e);'+
       
-      hash.w = function() {
-        Event.ext(arguments[0]);
-        return callback.apply(this, $A(arguments).concat(args));
-      };
+      '$2.w=function(){Event.ext(arguments[0]);'+
+        'return $2.f.apply(this,$A(arguments).concat($2.a));};'+(
       
-      if (this.addEventListener) {
-        this.addEventListener(hash.n, hash.w, false);
-      } else {
-        hash.w = hash.w.bind(this);
-        this.attachEvent('on'+ hash.n, hash.w);
-      }
-    },
-    
-    remove: function(hash) {
-      if (this.removeEventListener) {
-        this.removeEventListener(hash.n, hash.w, false);
-      } else {
-        this.detachEvent('on'+ hash.n, hash.w);
-      }
-    },
-    
-    fire: function(name, args, hash) {
-      var event = new Event(name, args.shift());
-      hash.f.apply(this, [event].concat(hash.a).concat(args));
-    }
-  };
+      self.attachEvent ?
+        '$2.w=$2.w.bind(this);this.attachEvent("on"+$2.n,$2.w);' :
+        'this.addEventListener($2.n,$2.w,false);'
+      )
+    )+
+  '})').f;
+  
+  observer.stopObserving = eval('({f:'+
+    observer.stopObserving.toString().replace(/(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m, 
+      '$1var r=$4;'+
+      'if(!r)' + (self.attachEvent ? 
+        'this.detachEvent("on"+$2.n,$2.w);' :
+        'this.removeEventListener($2.n,$2.w,false);'
+      )+'$3 r')+
+  '})').f;
+  
+  
+  observer.fire = eval('({f:'+
+    observer.fire.toString().replace(/(\w+)\.f\.apply.*?\.concat\((\w+)\)[^}]/,
+      '$1.f.apply(this,[new Event($1.e,$2.shift())].concat($1.a).concat($2))'
+    )+
+  '})').f;
   
   // a simple events terminator method to be hooked like
   // this.onClick('stopEvent');
