@@ -131,7 +131,7 @@ $ext(String.prototype, {
    * @return boolean check result
    */
   includes: function(string) {
-    return this.indexOf(string) != -1;
+    return this.indexOf(string) !== -1;
   },
   
   /**
@@ -143,8 +143,8 @@ $ext(String.prototype, {
    */
   startsWith: function(string, ignorecase) {
     var start_str = this.substr(0, string.length);
-    return ignorecase ? start_str.toLowerCase() == string.toLowerCase() : 
-      start_str == string;
+    return ignorecase ? start_str.toLowerCase() === string.toLowerCase() : 
+      start_str === string;
   },
   
   /**
@@ -156,8 +156,8 @@ $ext(String.prototype, {
    */
   endsWith: function(string, ignorecase) {
     var end_str = this.substring(this.length - string.length);
-    return ignorecase ? end_str.toLowerCase() == string.toLowerCase() :
-      end_str == string;
+    return ignorecase ? end_str.toLowerCase() === string.toLowerCase() :
+      end_str === string;
   },
   
   /**

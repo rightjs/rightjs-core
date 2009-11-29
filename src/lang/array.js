@@ -74,7 +74,7 @@ $ext(Array.prototype, (function(A_proto) {
     
     if (isString(callback)) {
       var attr = callback;
-      if (array.length && isFunction(array[0][attr])) {
+      if (array.length !== 0 && isFunction(array[0][attr])) {
         callback = function(object) { return object[attr].apply(object, args); };
       } else {
         callback = function(object) { return object[attr]; };
@@ -269,10 +269,10 @@ return {
       arg = arguments[i];
       if (isArray(arg)) {
         for (var j=0; j < arg.length; j++) {
-          if (copy.indexOf(arg[j]) == -1)
+          if (copy.indexOf(arg[j]) === -1)
             copy.push(arg[j]);
         }  
-      } else if (copy.indexOf(arg) == -1) {
+      } else if (copy.indexOf(arg) === -1) {
         copy.push(arg);
       }
     }
@@ -324,7 +324,7 @@ return {
    */
   includes: function() {
     for (var i=0, length = arguments.length; i < length; i++)
-      if (this.indexOf(arguments[i]) == -1)
+      if (this.indexOf(arguments[i]) === -1)
         return false;
     return true;
   },

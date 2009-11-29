@@ -62,8 +62,8 @@ var Event = new Class(Event, {
      */
     cleanName: function(name) {
       name = name.toLowerCase();
-      name = name.startsWith('on') ? name.slice(2) : name;
-      name = name == 'rightclick'  ? 'contextmenu' : name;
+      name = name.substr(0,2) === 'on' ? name.slice(2) : name;
+      name = name === 'rightclick'  ? 'contextmenu' : name;
       return name;
     },
     
@@ -74,8 +74,8 @@ var Event = new Class(Event, {
      * @return String real name
      */
     realName: function(name) {
-      if (Browser.Gecko     && name == 'mousewheel')  name = 'DOMMouseScroll';
-      if (Browser.Konqueror && name == 'contextmenu') name = 'rightclick';
+      if (Browser.Gecko     && name === 'mousewheel')  name = 'DOMMouseScroll';
+      if (Browser.Konqueror && name === 'contextmenu') name = 'rightclick';
       return name;
     },
     
