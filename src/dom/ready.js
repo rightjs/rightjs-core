@@ -11,20 +11,10 @@
   Observer.createShortcuts(object, ['ready']);
   var ready = object.ready.bind(object);
   
-  if (Browser.IE) {
-    var tmp = $E('div');
+  // IE and Konqueror browsers
+  if (document.readyState !== undefined) {
     (function() {
-      var loaded = false;
-      try {
-        document.body.appendChild(tmp);
-        tmp.remove();
-        loaded = true;
-      } catch(e) { arguments.callee.delay(50);}
-      if (loaded) ready();
-    })();
-  } else if (document['readyState'] !== undefined) {
-    (function() {
-      $w('loaded complete').includes(document.readyState) ? ready() : arguments.callee.delay(50);
+      ['loaded','complete'].includes(document.readyState) ? ready() : arguments.callee.delay(50);
     })();
   } else {
     document.addEventListener('DOMContentLoaded', ready, false);
