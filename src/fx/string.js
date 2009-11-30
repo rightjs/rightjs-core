@@ -31,11 +31,11 @@ $ext(String.prototype, {
    * @return String hex color
    */
   toHex: function() {
-    var match = this.match(/^#(\w)(\w)(\w)$/);
+    var match = /^#(\w)(\w)(\w)$/.exec(this);
     
     if (match) {
       match = "#"+ match[1]+match[1]+match[2]+match[2]+match[3]+match[3];
-    } else if (match = this.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)) {
+    } else if (match = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(this)) {
       match = "#"+ match.slice(1).map(function(bit) {
         bit = (bit-0).toString(16);
         return bit.length == 1 ? '0'+bit : bit;
@@ -54,7 +54,7 @@ $ext(String.prototype, {
    * @return String rgb(R,G,B) or Array [R,G,B]
    */
   toRgb: function(array) {
-    var match = (this.toHex()||'').match(/#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i);
+    var match = /#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i.exec(this.toHex()||'');
     
     if (match) {
       match = match.slice(1).map('toInt', 16);

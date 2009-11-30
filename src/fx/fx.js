@@ -123,13 +123,13 @@ var Fx = new Class(Observer, {
   
   // the periodically called method
   // NOTE: called outside of the instance scope!
-  step: function($this) {
-    if ($this.steps >= $this.number) {
-      $this.render($this.transition($this.number / $this.steps));
+  step: function(that) {
+    if (that.steps >= that.number) {
+      that.render(that.transition(that.number / that.steps));
       
-      $this.number ++;
+      that.number ++;
     } else {
-      $this.finish();
+      that.finish();
     }
   },
   
@@ -155,7 +155,7 @@ var Fx = new Class(Observer, {
   queue: function(args) {
     if (!this.element) return false;
     if (this.$chained) {
-      delete(this['$chained']);
+      delete(this.$chained);
       return false;
     }
 

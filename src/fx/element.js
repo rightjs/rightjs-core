@@ -9,8 +9,7 @@
  */
 Element.addMethods((function(methods) {
   var old_hide   = methods.hide,
-      old_show   = methods.show,
-      old_resize = methods.resize;
+      old_show   = methods.show;
 
 return {
 
@@ -32,31 +31,6 @@ return {
    */
   show: function(fx, options) {
     return fx ? this.fx(fx, ['in', options], old_show) : old_show.call(this);
-  },
-  
-  /**
-   * resizes the element using the Morph visual effect
-   *
-   * @param Integer width
-   * @param Integer height
-   * @param Object options
-   */
-  resize: function(width, height, options) {
-    if (isHash(width)) {
-      height = width.y;
-      width  = width.x;
-    }
-    if (options) {
-      var style = {};
-      if (isNumber(height)) style.height = height+'px';
-      if (isNumber(width))  style.width  = width +'px';
-      
-      if (!isHash(options)) options = {duration: options};
-      
-      return this.fx('morph', [style, options]);
-    } else {
-      return old_resize.call(this, width, height);
-    }
   },
   
   /**

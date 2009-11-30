@@ -189,12 +189,12 @@ function isNode(value) {
 var $A = (function(slice) {
   return function (it) {
     try {
-      var a = slice.call(it);
+      return slice.call(it);
     } catch(e) {
       for (var a=[], i=0, length = it.length; i < length; i++)
         a[i] = it[i];
+      return a;
     }
-    return a;
   };
 })(Array.prototype.slice);
 
