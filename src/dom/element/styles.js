@@ -36,9 +36,9 @@ Element.addMethods({
     for (var key in hash) {
       c_key = key.indexOf('-') != -1 ? key.camelize() : key;
       
-      if (key == 'opacity') {
+      if (key === 'opacity') {
         this.setOpacity(hash[key]);
-      } else if (key == 'float') {
+      } else if (key === 'float') {
         c_key = Browser.IE ? 'styleFloat' : 'cssFloat';
       }
       
@@ -54,13 +54,11 @@ Element.addMethods({
    * @param Float opacity value between 0 and 1
    * @return Element self
    */
-  setOpacity: function(value) {
-    var key = 'opacity';
-    if (Browser.IE) {
-      key = 'filter';
-      value = 'alpha(opacity='+ value * 100 +')';
-    }
-    this.style[key] = value;
+  setOpacity: Browser.IE ? function(value) {
+    this.style.filter = 'alpha(opacity='+ value * 100 +')';
+    return this;
+  } : function(value) {
+    this.style.opacity = value;
     return this;
   },
   
@@ -81,9 +79,11 @@ Element.addMethods({
    *
    * @return Object/CSSDefinition computed styles
    */
-  computedStyles: function() {
-    //     old IE,              IE8,                 W3C
-    return this.currentStyle || this.runtimeStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
+  computedStyles: Browser.IE ? function() {
+    //     old IE,              IE8
+    return this.currentStyle || this.runtimeStyle;
+  } : function() {
+    return this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
   },
   
   // cleans up the style value
@@ -93,11 +93,11 @@ Element.addMethods({
     switch (key) {
       case 'opacity':
         value = !Browser.IE ? style[key] :
-          (((style['filter'] || '').match(/opacity=(\d+)/i) || ['', '100'])[1].toInt() / 100)+'';
+          ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
         break;
         
       case 'float':
-        key   = Browser.IE ? 'styleFloat' : 'cssFloat';
+        key = Browser.IE ? 'styleFloat' : 'cssFloat';
         
       default:
         if (style[key]) {
@@ -114,9 +114,8 @@ Element.addMethods({
         }
         
         // Opera returns named colors with quotes
-        if (value && Browser.Opera && /color/.test(key)) {
-          var match = value.match(/"(.+?)"/);
-          value = match ? match[1] : value;
+        if (Browser.Opera && /color/.test(key) && value) {
+          value = value.replace(/"/g, '');
         }
     }
     
@@ -130,7 +129,7 @@ Element.addMethods({
    * @return boolean check result
    */
   hasClass: function(name) {
-    return (' '+this.className+' ').indexOf(' '+name+' ') != -1;
+    return (' '+this.className+' ').indexOf(' '+name+' ') !== -1;
   },
   
   /**
@@ -151,8 +150,9 @@ Element.addMethods({
    * @return Element self
    */
   addClass: function(name) {
-    if ((' '+this.className+' ').indexOf(' '+name+' ') == -1) {
-      this.className += (this.className ? ' ' : '') + name;
+    var testee = ' '+this.className+' ';
+    if (testee.indexOf(' '+name+' ') === -1) {
+      this.className += (testee === '  ' ? '' : ' ') + name;
     }
     return this;
   },

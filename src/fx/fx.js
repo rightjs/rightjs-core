@@ -20,7 +20,7 @@ var Fx = new Class(Observer, {
     
     // default options
     Options: {
-      fps:        Browser.IE ? 40 : 60,
+      fps:        Browser.IE ? 30 : 50,
       duration:   'normal',
       transition: 'Sin',
       queue:      true
@@ -69,8 +69,9 @@ var Fx = new Class(Observer, {
     if (this.queue(arguments)) return this;
     this.prepare.apply(this, arguments);
     
-    this.transition = Fx.Transitions[this.options.transition] || this.options.transition;
-    var duration    = Fx.Durations[this.options.duration]     || this.options.duration;
+    var options = this.options,
+        duration  = Fx.Durations[options.duration] || options.duration;
+    this.transition = Fx.Transitions[options.transition] || options.transition;
     
     this.steps  = (duration / 1000 * this.options.fps).ceil();
     this.number = 1;
@@ -124,13 +125,8 @@ var Fx = new Class(Observer, {
   // the periodically called method
   // NOTE: called outside of the instance scope!
   step: function(that) {
-    if (that.steps >= that.number) {
-      that.render(that.transition(that.number / that.steps));
-      
-      that.number ++;
-    } else {
-      that.finish();
-    }
+    if (that.number > that.steps) that.finish();
+    else that.render(that.transition(that.number ++ / that.steps));
   },
   
   // calculates the current value
@@ -154,15 +150,11 @@ var Fx = new Class(Observer, {
   // should return false if there's no queue and true if there is a queue
   queue: function(args) {
     if (!this.element) return false;
-    if (this.$chained) {
-      delete(this.$chained);
-      return false;
-    }
+    if (this.$ch) return this.$ch = false;
 
     var uid = $uid(this.element), chain;
-    if (!Fx.$chains)      Fx.$chains = {};
-    if (!Fx.$chains[uid]) Fx.$chains[uid] = [];
-    chain = Fx.$chains[uid];
+    Fx.$ch = Fx.$ch || [];
+    chain = (Fx.$ch[uid] = Fx.$ch[uid] || []);
 
     if (this.options.queue)
       chain.push([args, this]);
@@ -170,7 +162,7 @@ var Fx = new Class(Observer, {
     this.next = function() {
       var next = chain.shift(); next = chain[0];
       if (next) {
-        next[1].$chained = true;
+        next[1].$ch = true;
         next[1].start.apply(next[1], next[0]);
       }
       return this;

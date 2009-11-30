@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>RightJS - Effects Test</title>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    
+    <script type="text/javascript" src="./inits.js"></script>
+    <style type="text/css">
+      /* Need those setting to have stable element positions during the tests */
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #EEE;
+        margin:  5px 10px;
+        padding: 5px 10px;
+        
+        font-size: 10pt;
+        font-family: Helvetica;
+        
+      /** Old IE screws with body paddings so we zerofying it to have
+          exactely the same result as in other browsers */
+      * padding: 0;
+      * margin: 10px 20px;
+      }
+      
+      div.test-container {
+        height: 80px;
+      }
+      
+      div.testee {
+        height: 80px;
+        line-height: 80px;
+        width:  200px;
+        text-align: center;
+        background: orange;
+        color: brown;
+      }
+      
+      textarea {
+        border: 1px solid #DDD;
+        padding: .5em;
+        width: 400px;
+        height: 100px;
+        display: block;
+        position: relative;
+        margin-left: 220px;
+        margin-top: -80px;
+      }
+    </style>
+    <script>
+      function run_test(link) {
+        eval(link.prev('textarea').value);
+        return false;
+      };
+      function reset_test(link) {
+        var block = link.prev('div.test-container').first('div.testee');
+        block.replace($E('div', {'class': block.className, html: block.innerHTML, id: block.id}));
+        return false;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>The Visual Effects Tests</h1>
+    
+    <h2>Test Morph</h2>
+    <p>
+      <div class="test-container">
+        <div class="testee" id="morph-test">Morph</div>
+      </div>
+      <textarea style="margin: 1em 0">$('morph-test').morph({
+  width: '300px',
+  background: 'green',
+  color: 'blue',
+  fontSize: '40px'
+}, {duration: 'long'});</textarea>
+      <a href="" onclick="return run_test(this)">Run</a>
+      <a href="" onclick="return reset_test(this)">Reset</a>
+    </p>
+    
+    <h2>Test Highlight</h2>
+    <p>
+      <div class="test-container">
+        <div class="testee" id="highlight-test">Hightlight</div>
+      </div>
+      <textarea>$('highlight-test').highlight();</textarea>
+      <a href="" onclick="return run_test(this)">Run</a>
+      <a href="" onclick="return reset_test(this)">Reset</a>
+    </p>
+    
+    <h2>Test Fade</h2>
+    <p>
+      <div class="test-container">
+        <div class="testee" id="fade-test">Fade</div>
+      </div>
+      <textarea>$('fade-test').fade().fade();</textarea>
+      <a href="" onclick="return run_test(this)">Run</a>
+      <a href="" onclick="return reset_test(this)">Reset</a>
+    </p>
+    
+    <h2>Slide Fade</h2>
+    <p>
+      <div class="test-container">
+        <div class="testee" id="slide-test">Slide</div>
+      </div>
+      <textarea>$('slide-test').slide().slide();</textarea>
+      <a href="" onclick="return run_test(this)">Run</a>
+      <a href="" onclick="return reset_test(this)">Reset</a>
+    </p>
+  </body>
+</html>
