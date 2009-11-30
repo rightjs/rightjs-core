@@ -52,7 +52,12 @@
     </style>
     <script>
       function run_test(link) {
-        eval(link.prev('textarea').value);
+        try {
+          eval(link.prev('textarea').value);
+        } catch(e) {
+          alert(e);
+        }
+        
         return false;
       };
       function reset_test(link) {

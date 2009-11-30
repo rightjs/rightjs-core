@@ -168,7 +168,7 @@ var Fx = new Class(Observer, {
       return this;
     };
 
-    return chain[0][1] !== this && this.options.queue;
+    return this.options.queue && chain[0][1] !== this;
   },
   
   next: function() {
