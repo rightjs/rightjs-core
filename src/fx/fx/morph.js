@@ -9,125 +9,178 @@
  */
 Fx.Morph = new Class(Fx, {
 
-// protected
-  
-  /**
-   * starts the effect
-   *
-   * @param mixed an Object with an end style or a string with the end class-name(s)
-   * @return Fx this
-   */
+// protected  
+
+  // parepares the effect
   prepare: function(style) {
-    this.endStyle   = this._findStyle(style);
-    this.startStyle = this._getStyle(this.element, Object.keys(this.endStyle));
+    var before = this._cloneStyle(this.element),
+        after  = this._endStyle(style);
     
-    this._cleanStyles();
+    this._cleanStyles(before, after);
     
-    return this.$super();
+    this.before = this._parse(before);
+    this.after  = this._parse(after);
   },
   
   render: function(delta) {
-    var value, start, end;
-    
-    for (var key in this.endStyle) {
-      start = this.startStyle[key];
-      end   = this.endStyle[key];
-
-      if (typeof(start) == 'number') {
-        // handling floats like opacity
-        value = start + (end - start) * delta;
-        
-      } else if(start.length == 2) {
-        // handling usual sizes with dimensions
-        value = (start[0] + (end[0] - start[0]) * delta) + end[1];
-
-      } else if(start.length == 3) {
-        // calculating colors
-        value = end.map(function(value, i) {
-          return start[i] + (value - start[i]) * delta;
-        }).toRgb();
+    var before, after;
+    for (var key in this.after) {
+      before = this.before[key];
+      after  = this.after[key];
+      
+      for (var i=0, len=after.length, value; i < len; i++) {
+        value = before[i] + (after[i] - before[i]) * delta;
+        if (after.t[0] === 'rgb(') value = Math.round(value);
+        after.t[i*2+1] = value;
       }
       
-      if (key == 'opacity') {
-        this.element.setOpacity(value);
-      } else {
-        this.element.style[key] = value;
-      }
+      this.element.style[key] = after.t.join('');
     }
   },
   
-// private
+  /**
+   * Parses out the numericals out of the style values and nukes non-processables
+   *
+   * It kinda splits the values onto tokens and creates a list of numeric values
+   * that will be later processed inserted into the list of tokens and joined back
+   *
+   * @param Object raw styles
+   * @return Object parsed values
+   */
+  _parse: function(values) {
+    var result = {}, re = /[\d\.\-]+/g, m;
+    
+    for (var key in values) {
+      if (m = values[key].match(re)) {
+        var value = m.map('toFloat');
+        value.t = values[key].split(re);
+        if (/^\d/.test(values[key]) && !value.t[0] !== '') value.t.unshift('');
+        for (var i=0; i < value.length; i++) {
+          value.t.splice(i*2+1, 0, value[i]);
+        }
+        result[key] = value;
+      }
+    }
+    
+    return result;
+  },
+    
+  /**
+   * fast clone for element's styles
+   * NOTE: don't do anything fancy in here, it supposed to work as fast a possible
+   *
+   * @param Element element
+   * @return Object style
+   */
+  _cloneStyle: function(element) {
+    var style = element.computedStyles(), clean = {};
+    
+    if (style.length && style[0]) {
+      for (var i=0, len=style.length, key; i < len; i++) {
+        key = style[i].camelize();
+        if (!/webkit/i.test(key) && style[key]) clean[key] = style[key];
+      }
+    } else {
+      for (var key in style) {
+        key = key.camelize();
+        if (typeof style[key] === 'string' && !/moz/i.test(key))
+          clean[key] = style[key];
+      }
+    }
+    
+    return clean;
+  },
+  
+  /**
+   * Returns a hash of the end style
+   *
+   * @param Object style
+   * @return Object end style
+   */
+  _endStyle: function(style) {
+    var parent = this.element.parentNode,
+        dummy  = $(this.element.cloneNode(true)).setStyle(style);
+        
+    // swapping the element with the dummy and getting the new styles
+    if (parent) parent.replaceChild(dummy, this.element);
+    var after  = this._cloneStyle(dummy);
+    if (parent) parent.replaceChild(this.element, dummy);
+    
+    return after;
+  },
+  
+  /**
+   * cleans up and optimizies the styles
+   *
+   * @param Object before
+   * @param Object after
+   * @return void
+   */
+  _cleanStyles: function(before, after) {
+    var remove = [];
+    
+    for (var key in after) {
+      // getting directional options together so they were processed faster
+      if (key.includes('Top')) {
+        var top = key,
+            left = key.replace('Top', 'Left'),
+            right = key.replace('Top', 'Right'),
+            bottom = key.replace('Top', 'Bottom'),
+            common = key.replace('Top', '');
+            
+        if (after[top] == after[left] && after[top] == after[right] &&  after[top] == after[bottom] &&
+            before[top] == before[left] && before[top] == before[right] && before[top] == before[bottom]
+        ) {
+          after[common]  = after[top];
+          before[common] = before[top];
+          
+          remove = remove.concat([top, left, right, bottom]);
+        }
+      }
+      
+      // checking the height/width options
+      if (key == 'width' || key == 'height') {
+        if (before[key] == 'auto') before[key] = this.element['offset'+key.capitalize()] + 'px';
+      }
+    }
+    
+    // preprocessing the colors
+    for (var key in after) {
+      if (/color/i.test(key)) {
+        if (Browser.Opera) {
+          after[key] = after[key].replace(/"/g, '');
+          before[key] = before[key].replace(/"/g, '');
+        }
 
-  // finds the style definition by a css-selector string
-  _findStyle: function(style) {
-    // a dummy node to calculate the end styles
-    var element = this._dummy().setStyle(style);
+        if (!this._transp(after[key]))  after[key]  = after[key].toRgb();
+        if (!this._transp(before[key])) before[key] = before[key].toRgb();
+
+        if (!after[key] || !before[key]) remove.push(key);
+      }
+    }
     
-    // grabbing the computed styles
-    var element_styles      = element.computedStyles();
-    var this_element_styles = this.element.computedStyles();
+    // IE opacity filter fix
+    if (after.filter && !before.filter) before.filter = 'alpha(opacity=100)';
     
-    // grabbing the element style
-    var end_style = this._getStyle(element, Object.keys(style), element_styles);
-    
-    // assigning the border style if the end style has a border
-    var border_style = element_styles.borderTopStyle, element_border_style = this_element_styles.borderTopStyle;
-    if (border_style != element_border_style) {
-      if (element_border_style  == 'none') {
+    // adjusting the border style
+    if (before.borderStyle != after.borderStyle) {
+      if (before.borderStyle == 'none') {
         this.element.style.borderWidth =  '0px';
       }
-      this.element.style.borderStyle = border_style;
-      if (this._transp(this_element_styles.borderTopColor)) {
-        this.element.style.borderColor = this_element_styles.color;
+      this.element.style.borderStyle = after.borderStyle;
+      if (this._transp(before.borderColor)) {
+        this.element.style.borderColor = this.element.getStyle('color');
       }
     }
     
-    element.remove();
-    
-    return end_style;
-  },
-  
-  // creates a dummy element to work with
-  _dummy: function() {
-    // a container for the styles extraction element
-    var container = Fx.Morph.$c = (Fx.Morph.$c || $E('div', {style: "visibility:hidden;float:left;height:0;width:0"}));
-    if (this.element.parentNode) this.element.parentNode.insertBefore(container, this.element);
-    
-    return $(this.element.cloneNode(false)).insertTo(container);
-  },
-  
-  // grabs computed styles with the given keys out of the element
-  _getStyle: function(element, keys, styles) {
-    var style = {}, styles = styles || element.computedStyles(), name;
-    if (isString(keys)) { name = keys, keys = [keys]; }
-    
-    for (var i=0; i < keys.length; i++) {
-      var key = keys[i].camelize();
-      
-      // keys preprocessing
-      if (key == 'background') key = 'backgroundColor';
-      else if (key == 'border') {
-        key = 'borderWidth';
-        keys.splice(i+1, 0, 'borderColor'); // inserting the border color as the next unit
-      }
-      
-      // getting the actual style
-      style[key] = element._getStyle(styles, key);
-      
-      // Opera returns named colors as quoted strings
-      if (Browser.Opera && /color/i.test(key)) style[key] = style[key].replace(/'|"/g, '');
-      
-      // getting the real color if it's a transparent
-      if (this._transp(style[key])) style[key] = this._getBGColor(element);
-      
-      // getting the real width and height if they not set or set as 'auto'
-      if (!style[key] || style[key] == 'auto') {
-        style[key] = key == 'width'  ? element.offsetWidth  + 'px' :
-                     key == 'height' ? element.offsetHeight + 'px' : '';
+    // removing unnecessary keys
+    for (var key in after) {
+      if (/\d/.test(after[key]) && !/\d/.test(before[key])) before[key] = after[key].replace(/[\d\.\-]+/g, '0');
+      if (after[key] === before[key] || remove.includes(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
+        delete(after[key]);
+        delete(before[key]);
       }
     }
-    
-    return name ? style[name] : style;
   },
   
   // looking for the visible background color of the element
@@ -135,56 +188,13 @@ Fx.Morph = new Class(Fx, {
     return [element].concat(element.parents()).map(function(node) {
       var bg = node.getStyle('backgroundColor');
       return (bg && !this._transp(bg)) ? bg : null; 
-    }, this).compact().first() || 'rgb(255,255,255)';
+    }, this).compact().first() || '#FFF';
   },
   
-  // prepares the style values to be processed correctly
-  _cleanStyles: function() {
-    var end = this.endStyle, start = this.startStyle;
-    
-    // filling up missing styles
-    for (var key in end) {
-      if (start[key] === '' && /^[\d\.\-]+[a-z]+$/.test(end[key])) {
-        start[key] = '0px';
-      }
-    }
-    
-    [end, start].each(this._cleanStyle, this);
-    
-    // removing duplications between start and end styles
-    for (var key in end) {
-      if (!defined(start[key]) || (end[key] instanceof Array ? end[key].join() === start[key].join() : end[key] === start[key])) {
-        delete(end[key]);
-        delete(start[key]);
-      }
-    }
-  },
-  
-  // cleans up a style object
-  _cleanStyle: function(style) {
-    var match;
-    for (var key in style) {
-      style[key] = String(style[key]);
-        
-      if (/color/i.test(key)) {
-        // preparing the colors
-        style[key] = style[key].toRgb(true);
-        if (!style[key]) delete(style[key]);
-      } else if (/^[\d\.]+$/.test(style[key])) {
-        // preparing numberic values
-        style[key] = style[key].toFloat();
-      } else if (match = style[key].match(/^([\d\.\-]+)([a-z]+)$/i)) {
-        // preparing values with dimensions
-        style[key] = [match[1].toFloat(), match[2]];
-        
-      } else {
-        delete(style[key]);
-      }
-    }
-  },
   
   // checks if the color is transparent
   _transp: function(color) {
-    return color == 'transparent' || color == 'rgba(0, 0, 0, 0)';
+    return color === 'transparent' || color === 'rgba(0, 0, 0, 0)';
   }
+  
 });

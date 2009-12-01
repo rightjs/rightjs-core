@@ -79,11 +79,9 @@ Element.addMethods({
    *
    * @return Object/CSSDefinition computed styles
    */
-  computedStyles: Browser.IE ? function() {
-    //     old IE,              IE8
-    return this.currentStyle || this.runtimeStyle;
-  } : function() {
-    return this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
+  computedStyles: function() {
+    //     old IE,              IE8,                 W3C
+    return this.currentStyle || this.runtimeStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
   },
   
   // cleans up the style value
@@ -100,21 +98,10 @@ Element.addMethods({
         key = Browser.IE ? 'styleFloat' : 'cssFloat';
         
       default:
-        if (style[key]) {
-          value = style[key];
-        } else {
-          var values = $w('top right bottom left').map(function(name) {
-            var tokens = key.underscored().split('_'); tokens.splice(1, 0, name);
-            return style[tokens.join('_').camelize()];
-          }).uniq();
-
-          if (values.length == 1) {
-            value = values[0];
-          }
-        }
+        value = style[key];
         
         // Opera returns named colors with quotes
-        if (Browser.Opera && /color/.test(key) && value) {
+        if (Browser.Opera && /color/i.test(key) && value) {
           value = value.replace(/"/g, '');
         }
     }

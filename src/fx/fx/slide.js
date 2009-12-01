@@ -25,7 +25,7 @@ Fx.Slide = new Class(Fx.Twin, {
     this.element.style.overflow = 'hidden';
     this.onFinish('_getBack').onCancel('_getBack');
 
-    return this.$super(this._endStyle(this.options.direction));
+    return this.$super(this._getStyle(this.options.direction));
   },
 
   _getBack: function() {
@@ -33,7 +33,7 @@ Fx.Slide = new Class(Fx.Twin, {
   },
 
   // calculates the final style
-  _endStyle: function(direction) {
+  _getStyle: function(direction) {
     var style = {}, sizes = this.sizes,
       margin_left = (this.styles.marginLeft || '0').toFloat(),
       margin_top  = (this.styles.marginTop  || '0').toFloat();

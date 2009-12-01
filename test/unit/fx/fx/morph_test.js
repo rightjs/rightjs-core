@@ -19,24 +19,27 @@ var FxMorphTest = TestCase.create({
   testStylesCalculation: function() {
     this.fx.start();
     
-    this.assertEqual({}, this.fx.startStyle);
-    this.assertEqual({}, this.fx.endStyle);
+    this.assertEqual({}, this.fx.before);
+    this.assertEqual({}, this.fx.after);
     
     this.fx.start({
       height: '100px',
       color: '#FFF'
     });
     
-    this.assertEqual({height: [100, 'px'], color: [255,255,255]}, this.fx.endStyle);
-    this.assertEqual({height: [0,   'px'], color: [0,0,0]}, this.fx.startStyle);
+    this.assertEqual([0], this.fx.before.height);
+    this.assertEqual([0,0,0], this.fx.before.color);
+    
+    this.assertEqual([100], this.fx.after.height);
+    this.assertEqual([255,255,255], this.fx.after.color);
     
     this.fx.start({
       position: 'relative',
       left: '-100px'
     });
     
-    this.assertEqual({left: [-100, 'px']}, this.fx.endStyle);
-    this.assertEqual({left: [0, 'px']}, this.fx.startStyle);
+    this.assertEqual([-100], this.fx.after.left);
+    this.assertEqual([0], this.fx.before.left);
   },
   
   testNamedColorsRecognition: function() {
@@ -45,16 +48,16 @@ var FxMorphTest = TestCase.create({
       color: 'yellow'
     });
     
-    this.assertEqual({color: [0,0,0]}, this.fx.startStyle);
-    this.assertEqual({color: [255, 255, 0]}, this.fx.endStyle);
+    this.assertEqual([0,0,0], this.fx.before.color);
+    this.assertEqual([255, 255, 0], this.fx.after.color);
   },
   
   testDashedKeysHandling: function() {
     this.el.style.backgroundColor = '#FFF';
     this.fx.start({'background-color': '#DDD'});
     
-    this.assertEqual({backgroundColor: [255, 255, 255]}, this.fx.startStyle);
-    this.assertEqual({backgroundColor: [221, 221, 221]}, this.fx.endStyle);
+    this.assertEqual([255, 255, 255], this.fx.before.backgroundColor);
+    this.assertEqual([221, 221, 221], this.fx.after.backgroundColor);
   },
   
   testBorderSettingUp: function() {

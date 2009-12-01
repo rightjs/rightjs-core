@@ -20,7 +20,7 @@ var Fx = new Class(Observer, {
     
     // default options
     Options: {
-      fps:        Browser.IE ? 30 : 50,
+      fps:        Browser.IE || Browser.Opera ? 35 : 60,
       duration:   'normal',
       transition: 'Sin',
       queue:      true
@@ -57,7 +57,7 @@ var Fx = new Class(Observer, {
    */
   initialize: function(element, options) {
     this.$super(options);
-    this.element = $(element);
+    this.element = this.fxee = $(element);
   },
   
   /**
@@ -117,10 +117,10 @@ var Fx = new Class(Observer, {
   
 // protected
   // dummy method, should be implemented in a subclass
-  prepare: function() {},
+  prepare: function(values) {},
 
-  // dummy method, should implement the actual things happenning
-  render: function(value) {},
+  // dummy method, processes the element properties
+  render: function(delta) {},
   
   // the periodically called method
   // NOTE: called outside of the instance scope!
@@ -128,12 +128,7 @@ var Fx = new Class(Observer, {
     if (that.number > that.steps) that.finish();
     else that.render(that.transition(that.number ++ / that.steps));
   },
-  
-  // calculates the current value
-  calc: function(start, end, delata) {
-    return start + (end - start) * delta;
-  },
-  
+    
   startTimer: function() {
     this.timer = this.step.periodical((1000 / this.options.fps).round(), this);
     return this;
