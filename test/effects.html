@@ -38,6 +38,10 @@
         background: orange;
         color: brown;
       }
+      div#highlight-test {
+        background: transparent;
+        border: 1px solid #CCC;
+      }
       
       textarea {
         border: 1px solid #DDD;
@@ -53,15 +57,15 @@
     <script>
       function run_test(link) {
         try {
-          eval(link.prev('textarea').value);
+          eval($(link).prev('textarea').value);
         } catch(e) {
-          alert(e);
+          alert(e.message);
         }
         
         return false;
       };
       function reset_test(link) {
-        var block = link.prev('div.test-container').first('div.testee');
+        var block = $(link).prev('div.test-container').first('div.testee');
         block.replace($E('div', {'class': block.className, html: block.innerHTML, id: block.id}));
         return false;
       }
@@ -76,7 +80,7 @@
         <div class="testee" id="morph-test">Morph</div>
       </div>
       <textarea style="margin: 1em 0">$('morph-test').morph({
-  width: '300px',
+  width: '400px',
   background: 'green',
   color: 'blue',
   fontSize: '40px'
@@ -105,7 +109,7 @@
       <a href="" onclick="return reset_test(this)">Reset</a>
     </p>
     
-    <h2>Slide Fade</h2>
+    <h2>Test Slide</h2>
     <p>
       <div class="test-container">
         <div class="testee" id="slide-test">Slide</div>
@@ -114,5 +118,25 @@
       <a href="" onclick="return run_test(this)">Run</a>
       <a href="" onclick="return reset_test(this)">Reset</a>
     </p>
+    
+    <h2>Test Scroll</h2>
+    <p>
+      <div class="test-container">
+        <div class="testee" id="props-test" style="overflow: scroll"></div>
+      </div>
+      <textarea>$('props-test').scroll({
+  x: 800,
+  y: 20
+}, {duration: 'long'});</textarea>
+      <a href="" onclick="return run_test(this)">Run</a>
+      <a href="" onclick="reset_test(this);$('props-test').setStyle('overflow: scroll'); return false;">Reset</a>
+      <script type="text/javascript">
+        var props_test = $('props-test');
+        for (var i=0; i < 64; i++)
+          props_test.innerHTML += '&nbsp;'+i;
+      </script>
+    </p>
+    
+    <div style="height: 16em"></div>
   </body>
 </html>

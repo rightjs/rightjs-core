@@ -83,6 +83,7 @@ JS_SOURCES = {
     fx/fx/twin.js
     fx/fx/slide.js
     fx/fx/fade.js
+    fx/fx/scroll.js
     fx/element.js
   }
 }

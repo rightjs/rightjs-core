@@ -9,7 +9,8 @@
  */
 Element.addMethods((function(methods) {
   var old_hide   = methods.hide,
-      old_show   = methods.show;
+      old_show   = methods.show,
+      old_scroll = methods.scrollTo;
 
 return {
 
@@ -76,6 +77,30 @@ return {
   slide: function() {
     return this.fx('slide', arguments);
   },
+  
+  /**
+   * Starts the smooth scrolling effect
+   *
+   * @param Object {x: NNN, y: NNN} where to scroll
+   * @param Object fx-options
+   * @return Element this
+   */
+  scroll: function(value, options) {
+    return this.fx('scroll', [value, options||{}]);
+  },
+  
+  /**
+   * wraps the old scroll to be able to run it with fxes
+   *
+   * If you send two hashes then will start a smooth scrolling
+   * otherwise will just jump over with the usual method
+   * 
+   * @return Element this
+   */
+  scrollTo: function(value, options) {
+    return isHash(options) ? this.scroll(value, options) : old_scroll.apply(this, arguments);
+  },
+  
   
 // protected
 

@@ -63,3 +63,19 @@ of the dom-elements.
   
   $(element).slide('out');
   $(element).slide({onFinish: function() {}});
+
+
+### scroll
+
+== Semantic
+  scroll(Object {x:N, y:N}[, Object options]) -> Element self
+
+== Description
+  Smoothly scrolls to the given position
+
+== Example
+  $(element).scroll({x: 100});
+  $(element).scroll({y: 200});
+  $(element).scroll({x: 10, y: 20});
+  
+  $(element).scroll({x: 100}, {duration: 'long'});
