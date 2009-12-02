@@ -16,7 +16,7 @@ var XhrTest = TestCase.create({
     this.assertEqual('/some/url', request.url);
     this.assertEqual({
       'X-Requested-With': 'XMLHttpRequest',
-      'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+      'Accept': 'text/javascript,text/html,application/xml,text/xml,*/*'
     }, request.headers);
     this.assertEqual('post',  request.method);
     this.assertEqual('utf-8', request.encoding);
@@ -66,7 +66,7 @@ var XhrTest = TestCase.create({
     this.assertEqual('/some/url', request.url);
     this.assertEqual({
       'X-Requested-With': 'XMLHttpRequest',
-      'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+      'Accept': 'text/javascript,text/html,application/xml,text/xml,*/*'
     }, request.headers);
     this.assertEqual('get',     request.method);
     this.assertEqual('koi8r',   request.encoding);

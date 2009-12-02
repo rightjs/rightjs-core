@@ -18,7 +18,7 @@ var Xhr = new Class(Observer, {
     Options: {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+        'Accept': 'text/javascript,text/html,application/xml,text/xml,*/*'
       },
       method:       'post',
       encoding:     'utf-8',
@@ -30,7 +30,8 @@ var Xhr = new Class(Observer, {
       urlEncoded:   true,
       spinner:      null,
       spinnerFx:    'fade',
-      params:       null
+      params:       null,
+      iframed:      false
     },
     
     /**
@@ -103,21 +104,20 @@ var Xhr = new Class(Observer, {
    * @return Xhr self
    */
   send: function(params) {
-    var add_params = {}, url = this.url;
+    var add_params = {}, url = this.url, method = this.method.toLowerCase();
     
-    var method = this.method.toUpperCase();
-    if (['PUT', 'DELETE'].includes(method)) {
-      add_params['_method'] = method.toLowerCase();
-      method = 'POST';
+    if (method == 'put' || method == 'delete') {
+      add_params['_method'] = method;
+      method = 'post';
     }
     
     var data = this.prepareData(this.params, this.prepareParams(params), add_params);
     
-    if (this.urlEncoded && method == 'POST' && !this.headers['Content-type']) {
-      this.setHeader('Content-type', 'application/x-www-form-urlencoded; charset='+this.encoding);
+    if (this.urlEncoded && method == 'post' && !this.headers['Content-type']) {
+      this.setHeader('Content-type', 'application/x-www-form-urlencoded;charset='+this.encoding);
     }
     
-    if (method == 'GET') {
+    if (method == 'get') {
       url += (url.includes('?') ? '&' : '?') + data;
       data = null;
     }
@@ -244,11 +244,8 @@ var Xhr = new Class(Observer, {
   
   // initializes the request callbacks
   initCallbacks: function() {
-    // creating an automatical spinner handling
-    this.on('create', 'showSpinner').on('complete', 'hideSpinner').on('cancel', 'hideSpinner');
-    
-    // response scripts evaluation, should be before the global xhr callbacks
-    this.on('success', 'tryScripts');
+    // connecting basic callbacks
+    this.on('success', 'tryScripts').on('create', 'showSpinner').on('complete', 'hideSpinner').on('cancel', 'hideSpinner');
     
     // wiring the global xhr callbacks
     Xhr.EVENTS.each(function(name) {
@@ -283,13 +280,13 @@ $ext(Xhr, {
   }
 });
 
-Xhr.on('create', function() {
+Xhr.onCreate(function() {
   this.counter++;
   this.showSpinner();
-}).on('complete', function() {
+}).onComplete(function() {
   this.counter--;
   if (this.counter < 1) this.hideSpinner();
-}).on('cancel', function() {
+}).onCancel(function() {
   this.counter--;
   if (this.counter < 1) this.hideSpinner();
 });
