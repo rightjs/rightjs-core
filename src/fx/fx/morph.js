@@ -33,7 +33,6 @@ Fx.Morph = new Class(Fx, {
         if (after.t[0] === 'rgb(') value = Math.round(value);
         after.t[i*2+1] = value;
       }
-      
       this.element.style[key] = after.t.join('');
     }
   },
@@ -119,7 +118,7 @@ Fx.Morph = new Class(Fx, {
    * @return void
    */
   _cleanStyles: function(before, after) {
-    var remove = [];
+    var remove = ['outline'];
     
     for (var key in after) {
       // getting directional options together so they were processed faster
