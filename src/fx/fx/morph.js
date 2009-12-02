@@ -77,13 +77,15 @@ Fx.Morph = new Class(Fx, {
     
     if (style.length && style[0]) {
       for (var i=0, len=style.length, key; i < len; i++) {
-        key = style[i].camelize();
-        if (!/webkit/i.test(key) && style[key]) clean[key] = style[key];
+        key = style[i];
+        if (key.slice(0,1) !== '-') {
+          key = key.replace(/\-[a-z]/g, function(m) { return m[1].toUpperCase() });
+          clean[key] = style[key];
+        }
       }
     } else {
       for (var key in style) {
-        key = key.camelize();
-        if (typeof style[key] === 'string' && !/moz/i.test(key))
+        if (typeof style[key] === 'string' && key.slice(0,3) !== 'Moz')
           clean[key] = style[key];
       }
     }
@@ -128,8 +130,8 @@ Fx.Morph = new Class(Fx, {
             bottom = key.replace('Top', 'Bottom'),
             common = key.replace('Top', '');
             
-        if (after[top] == after[left] && after[top] == after[right] &&  after[top] == after[bottom] &&
-            before[top] == before[left] && before[top] == before[right] && before[top] == before[bottom]
+        if (after[top] === after[left] && after[top] === after[right] &&  after[top] === after[bottom] &&
+            before[top] === before[left] && before[top] === before[right] && before[top] === before[bottom]
         ) {
           after[common]  = after[top];
           before[common] = before[top];
@@ -139,23 +141,8 @@ Fx.Morph = new Class(Fx, {
       }
       
       // checking the height/width options
-      if (key == 'width' || key == 'height') {
+      if (key === 'width' || key === 'height') {
         if (before[key] == 'auto') before[key] = this.element['offset'+key.capitalize()] + 'px';
-      }
-    }
-    
-    // preprocessing the colors
-    for (var key in after) {
-      if (/color/i.test(key)) {
-        if (Browser.Opera) {
-          after[key] = after[key].replace(/"/g, '');
-          before[key] = before[key].replace(/"/g, '');
-        }
-
-        if (!this._transp(after[key]))  after[key]  = after[key].toRgb();
-        if (!this._transp(before[key])) before[key] = before[key].toRgb();
-
-        if (!after[key] || !before[key]) remove.push(key);
       }
     }
     
@@ -173,9 +160,24 @@ Fx.Morph = new Class(Fx, {
       }
     }
     
-    // removing unnecessary keys
+    // cleaing up the list
     for (var key in after) {
+      // proprocessing colors
+      if (after[key] !== before[key] && !remove.includes(key) && /color/i.test(key)) {
+        if (Browser.Opera) {
+          after[key] = after[key].replace(/"/g, '');
+          before[key] = before[key].replace(/"/g, '');
+        }
+
+        if (!this._transp(after[key]))  after[key]  = after[key].toRgb();
+        if (!this._transp(before[key])) before[key] = before[key].toRgb();
+
+        if (!after[key] || !before[key]) after[key] = before[key] = '';
+      }
+      
+      // filling up the missing sizes
       if (/\d/.test(after[key]) && !/\d/.test(before[key])) before[key] = after[key].replace(/[\d\.\-]+/g, '0');
+      
       if (after[key] === before[key] || remove.includes(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
         delete(after[key]);
         delete(before[key]);
