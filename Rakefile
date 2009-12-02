@@ -13,7 +13,7 @@ require 'rake'
 require 'fileutils'
 require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
 
-RIGHTJS_VERSION = '1.5.0a'
+RIGHTJS_VERSION = '1.5.0-rc'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
@@ -52,10 +52,6 @@ JS_SOURCES = {
     
     dom/window.js
     dom/ready.js
-    
-    olds/ie.js
-    olds/konq.js
-    olds/css.js
   },
   
   :cookie => %w{
@@ -85,6 +81,12 @@ JS_SOURCES = {
     fx/fx/fade.js
     fx/fx/scroll.js
     fx/element.js
+  },
+  
+  :olds => %w{
+    olds/ie.js
+    olds/konq.js
+    olds/css.js
   }
 }
 
@@ -109,7 +111,7 @@ task :build do
   modules = []
   
   # filtering the modules
-  %w(core form cookie xhr fx).each do |package|
+  %w(core form cookie xhr fx olds).each do |package|
     unless options.include?("no-#{package}")
       JS_SOURCES[package.to_sym].each do |file|
         source += File.open("src/#{file}", "r").read + "\n\n"
@@ -117,6 +119,12 @@ task :build do
       modules << package
     end
   end
+  
+  # hooking up the olds patch loader if necessary
+  if options.include?('no-olds')
+    source += File.open("src/olds/loader.js", "r").read
+  end
+  
   
   # RightJS Goods modules
   %w(json effects events behavior dnd).each do |package|
@@ -156,5 +164,30 @@ task :build do
     file.write minified.create_self_build
   end
   
+  ### building the olds patch file
+  puts ' * Building the olds patch file'
+  
+  olds_source = ''
+  JS_SOURCES[:olds].each do |file|
+    olds_source += File.open("src/#{file}", "r").read + "\n\n"
+  end
+  
+  olds_header = File.open("src/HEADER.olds.js", 'r').read
+  olds_minified = FrontCompiler.new.compact_js(olds_source)
+  
+  File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js", "w") do |file|
+    file.write olds_header
+    file.write olds_source
+  end
+  
+  File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-min.js", "w") do |file|
+    file.write olds_header
+    file.write olds_minified
+  end
+  
+  File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds.js", "w") do |file|
+    file.write olds_header
+    file.write olds_minified.create_self_build
+  end
   
 end

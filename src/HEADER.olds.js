@@ -1,5 +1,5 @@
 /**
- * RightJS - the right javascript framework
+ * This is old browsers support patch for RightJS
  *
  * The library released under terms of the MIT license
  * Visit http://rightjs.org for more details
