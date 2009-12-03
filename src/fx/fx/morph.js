@@ -53,7 +53,7 @@ Fx.Morph = new Class(Fx, {
       if (m = values[key].match(re)) {
         var value = m.map('toFloat');
         value.t = values[key].split(re);
-        if (/^\d/.test(values[key]) && !value.t[0] !== '') value.t.unshift('');
+        if (/^\d/.test(values[key]) && value.t[0] !== '') value.t.unshift('');
         for (var i=0; i < value.length; i++) {
           value.t.splice(i*2+1, 0, value[i]);
         }

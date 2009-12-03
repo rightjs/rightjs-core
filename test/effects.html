@@ -42,6 +42,10 @@
         background: transparent;
         border: 1px solid #CCC;
       }
+      div#bg-test {
+        background-image: url("http://rightjs.org/images/test/1-thmb.jpg");
+        background-position: 0px 0px;
+      }
       
       textarea {
         border: 1px solid #DDD;
@@ -135,6 +139,22 @@
         for (var i=0; i < 64; i++)
           props_test.innerHTML += '&nbsp;'+i;
       </script>
+    </p>
+    
+    <h2>Test Background Position</h2>
+    <p>
+      <div class="test-container">
+        <div class="testee" id="bg-test">BG Position</div>
+      </div>
+      <textarea>$('bg-test').morph(
+  {backgroundPosition: '180px 60px'},
+  {duration: 'long'}
+).morph(
+  {backgroundPosition: '0px 0px'},
+  {duration: 'long'}
+);</textarea>
+      <a href="" onclick="return run_test(this)">Run</a>
+      <a href="" onclick="return reset_test(this)">Reset</a>
     </p>
     
     <div style="height: 16em"></div>
