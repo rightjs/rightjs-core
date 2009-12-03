@@ -72,22 +72,9 @@ Fx.Morph = new Class(Fx, {
    * @return Object style
    */
   _cloneStyle: function(element) {
-    var style = element.computedStyles(), clean = {};
-    
-    if (style.length && style[0]) {
-      for (var i=0, len=style.length, key; i < len; i++) {
-        key = style[i];
-        if (key.slice(0,1) !== '-') {
-          key = key.replace(/\-[a-z]/g, function(m) { return m[1].toUpperCase() });
-          clean[key] = style[key];
-        }
-      }
-    } else {
-      for (var key in style) {
-        if (typeof style[key] === 'string' && key.slice(0,3) !== 'Moz')
-          clean[key] = style[key];
-      }
-    }
+    var style = element.computedStyles(), clean = {}, style_keys = this.__keys;
+    for (var i=0, len = style_keys.length; i < len; i++)
+      clean[style_keys[i]] = style[style_keys[i]];
     
     return clean;
   },
@@ -118,7 +105,7 @@ Fx.Morph = new Class(Fx, {
    * @return void
    */
   _cleanStyles: function(before, after) {
-    var remove = ['outline'];
+    var remove = [];
     
     for (var key in after) {
       // getting directional options together so they were processed faster
@@ -199,3 +186,30 @@ Fx.Morph = new Class(Fx, {
   }
   
 });
+
+
+/**
+ * This script prebuilds the style-keys list so that the visual effects initialization
+ * was working faster
+ */
+document.onReady(function() {
+  var e = $E('div').insertTo(document.body), style = e.computedStyles(), style_keys = [];
+  
+  if (style.length && style[0]) {
+    for (var i=0; i < style.length; i++) {
+      if (!style[i].startsWith('-')) {
+        style_keys.push(style[i].camelize());
+      }
+    }
+  } else {
+    for (var key in style) {
+      if (isString(style[key]) && !key.startsWith('Moz'))
+        style_keys.push(key);
+    }
+  }
+  
+  Fx.Morph.prototype.__keys = style_keys.filter('match', /colo|wid|hei|arg|add|pos|bor|top|lef|rig|bot|off|pas|opa|ilt|siz/i);
+  
+  e.remove();
+});
+
