@@ -13,7 +13,7 @@ require 'rake'
 require 'fileutils'
 require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
 
-RIGHTJS_VERSION = '1.5.0-rc'
+RIGHTJS_VERSION = '1.5.0'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
@@ -124,16 +124,7 @@ task :build do
   if options.include?('no-olds')
     source += File.open("src/olds/loader.js", "r").read
   end
-  
-  
-  # RightJS Goods modules
-  %w(json effects events behavior dnd).each do |package|
-    if options.include?(package)
-      source += File.open("lib/rightjs_goods/build/right-#{package}-src.js").read + "\n\n"
-      modules << package
-    end
-  end
-  
+    
   desc = File.open('src/right.js', 'r').read
   desc.gsub! '#{version}', RIGHTJS_VERSION
   desc.gsub! '#{modules}', modules.join('", "')
