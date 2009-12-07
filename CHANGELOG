@@ -1,3 +1,18 @@
+2009-12-08 Nikolay V. Nemshilov aka St.
+  o Version 1.5.0 Release
+    * All the old browsers support hacks were moved out
+    * The CSS Selectors engine reworked
+    * DOM elements processing optimization
+    * Observer processing optimization
+    * Ruby like mixins callback for Class
+    * Fx.Morph reworked to make it faster and smarter
+    * Fx.Scroll was added
+    * Function#rcurry feature
+    * Options#cutOptions feature
+    * Functions binding optimization
+    * Manual positions calculations fix
+    
+
 2009-09-24 Nikolay V. Nemshilov aka St.
   o Version 1.4.3 Release
     * Element#position in Konqueror fix
