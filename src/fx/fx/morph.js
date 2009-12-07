@@ -25,7 +25,7 @@ Fx.Morph = new Class(Fx, (function() {
     var result = {}, re = /[\d\.\-]+/g, m;
     
     for (var key in values) {
-      m = values[key].match(re)
+      m = values[key].match(re);
       var value = m.map('toFloat');
       value.t = values[key].split(re);
       if (/^\d/.test(values[key]) && value.t[0] !== '') value.t.unshift('');

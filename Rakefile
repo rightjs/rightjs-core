@@ -156,29 +156,31 @@ task :build do
   end
   
   ### building the olds patch file
-  puts ' * Building the olds patch file'
+  if options.include?('no-olds')
+    puts ' * Building the olds patch file'
   
-  olds_source = ''
-  JS_SOURCES[:olds].each do |file|
-    olds_source += File.open("src/#{file}", "r").read + "\n\n"
-  end
+    olds_source = ''
+    JS_SOURCES[:olds].each do |file|
+      olds_source += File.open("src/#{file}", "r").read + "\n\n"
+    end
   
-  olds_header = File.open("src/HEADER.olds.js", 'r').read
-  olds_minified = FrontCompiler.new.compact_js(olds_source)
+    olds_header = File.open("src/HEADER.olds.js", 'r').read
+    olds_minified = FrontCompiler.new.compact_js(olds_source)
   
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js", "w") do |file|
-    file.write olds_header
-    file.write olds_source
-  end
+    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js", "w") do |file|
+      file.write olds_header
+      file.write olds_source
+    end
   
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-min.js", "w") do |file|
-    file.write olds_header
-    file.write olds_minified
-  end
+    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-min.js", "w") do |file|
+      file.write olds_header
+      file.write olds_minified
+    end
   
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds.js", "w") do |file|
-    file.write olds_header
-    file.write olds_minified.create_self_build
+    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds.js", "w") do |file|
+      file.write olds_header
+      file.write olds_minified.create_self_build
+    end
   end
   
 end
