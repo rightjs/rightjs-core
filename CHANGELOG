@@ -8,6 +8,7 @@
     * Fx.Morph reworked to make it faster and smarter
     * Fx.Scroll was added
     * Function#rcurry feature
+    * Function#chain feature
     * Options#cutOptions feature
     * Functions binding optimization
     * Manual positions calculations fix
