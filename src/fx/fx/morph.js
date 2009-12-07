@@ -55,17 +55,17 @@ return {
   },
   
   render: function(delta) {
-    var before, after;
+    var before, after, value, style = this.element.style;
     for (var key in this.after) {
       before = this.before[key];
       after  = this.after[key];
       
-      for (var i=0, len=after.length, value; i < len; i++) {
+      for (var i=0; i < after.length; i++) {
         value = before[i] + (after[i] - before[i]) * delta;
         if (after.t[0] === 'rgb(') value = Math.round(value);
-        after.t[i*2+1] = value;
+        after.t[i*2+1] = ''+value;
       }
-      this.element.style[key] = after.t.join('');
+      style[key] = after.t.join('');
     }
   },
   
