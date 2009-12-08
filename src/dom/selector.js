@@ -65,6 +65,6 @@ $ext(document, {
   },
   
   select: function(css_rule) {
-    return $A(this.querySelectorAll(css_rlue || '*'));
+    return $A(this.querySelectorAll(css_rule || '*'));
   }
 });
