@@ -58,10 +58,7 @@ function $eval(text) {
   if (window.execScript) {
     window.execScript(text);
   } else {
-    var script = document.createElement('script');
-    script.setAttribute('type', 'text/javascript');
-    script.text = text;
-    document.body.appendChild(script);
+    $E('script', {type: 'text/javascript', text: text}).insertTo(document.body);
   }
 }
 
