@@ -120,6 +120,11 @@ function isHash(value) {
   return typeof(value) === 'object' && value !== null && value.constructor === Object;
 };
 
+// Opera 10.00 and Konqueror 3 heed some extra care with that
+if (isHash(document.createElement('p'))) {
+  eval(isHash.toString().replace(';', '&&!(arguments[0] instanceof HTMLElement);'));
+}
+
 /**
  * checks if the given value is a function
  *

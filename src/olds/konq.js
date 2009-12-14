@@ -3,11 +3,6 @@
  *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St.
  */
-// Konqueror 3 patch for the isHash function
-if (navigator.userAgent.indexOf('Konqueror/3') != -1) {
-  eval(isHash.toString().replace(';', '&&!(arguments[0] instanceof HTMLElement);'));
-}
-
 
 /**
  * manual position calculator, it works for Konqueror and also
