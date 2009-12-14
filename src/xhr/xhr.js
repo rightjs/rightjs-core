@@ -245,7 +245,12 @@ var Xhr = new Class(Observer, {
   // initializes the request callbacks
   initCallbacks: function() {
     // connecting basic callbacks
-    this.on('success', 'tryScripts').on('create', 'showSpinner').on('complete', 'hideSpinner').on('cancel', 'hideSpinner');
+    this.on({
+      success:  'tryScripts',
+      create:   'showSpinner',
+      complete: 'hideSpinner',
+      cancel:   'hideSpinner'
+    });
     
     // wiring the global xhr callbacks
     Xhr.EVENTS.each(function(name) {
