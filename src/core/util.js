@@ -24,7 +24,7 @@ function $ext(dest, src, dont_overwrite) {
   var src = src || {};
 
   for (var key in src)
-    if (!(dont_overwrite && dest[key] !== undefined))
+    if (dont_overwrite === undefined || dest[key] === undefined)
       dest[key] = src[key];
 
   return dest;
