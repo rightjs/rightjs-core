@@ -126,7 +126,7 @@ var Fx = new Class(Observer, {
   // NOTE: called outside of the instance scope!
   step: function(that) {
     if (that.number > that.steps) that.finish();
-    else that.render(that.transition(that.number ++ / that.steps));
+    else that.render(that.transition(++ that.number / that.steps));
   },
     
   startTimer: function() {
