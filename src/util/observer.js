@@ -33,18 +33,19 @@ var Observer = new Class({
    * @return Observer self
    */
   observe: function() {
-    var args = Array.prototype.slice.call(arguments), event = args.shift();
+    var args = $A(arguments), event = args.shift();
     
     if (typeof(event) === 'string') {
       if (this.$listeners === undefined) this.$listeners = [];
 
-      var callback = args.shift();
+      var callback = args.shift(), name;
       switch (typeof callback) {
         case "string":
+          name     = callback;
           callback = this[callback];
 
         case "function":
-          var hash = { e: event, f: callback, a: args };
+          var hash = { e: event, f: callback, a: args, r: name };
           this.$listeners.push(hash);
           break;
 

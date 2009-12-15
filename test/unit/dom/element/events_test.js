@@ -14,7 +14,7 @@ var ElementEventsTest = TestCase.create({
   tearDown: function() {
     this.el.remove();
   },
-  
+
   testObserve: function() {
     var wired = false, context = null;
     this.assertSame(this.el, this.el.observe('click', function() { wired = true; context = this; }));
@@ -144,5 +144,29 @@ var ElementEventsTest = TestCase.create({
   
   testStopEvent: function() {
     this.assert(typeof(this.el.stopEvent) == 'function');
+  },
+  
+  testEventByNameCalls: function() {
+    var add_class_args;
+    var remove_class_args;
+    var stop_event_args;
+    
+    this.el.addClass    = function() { add_class_args    = $A(arguments); };
+    this.el.removeClass = function() { remove_class_args = $A(arguments); };
+    this.el.stopEvent   = function() { stop_event_args   = $A(arguments); };
+    
+    this.el.on('mouseover', 'addClass', 'test-class');
+    this.el.on('mouseout', 'removeClass', 'test-class');
+    this.el.on('click', 'stopEvent');
+    
+    this.fireMouseOver(this.el);
+    this.fireMouseOut(this.el);
+    this.fireClick(this.el);
+    
+    this.assertEqual(['test-class'], add_class_args);
+    this.assertEqual(['test-class'], remove_class_args);
+    this.assertEqual(1, stop_event_args.length);
+    this.assertEqual("click", stop_event_args[0].type);
+    
   }
 });

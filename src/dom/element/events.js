@@ -18,8 +18,8 @@ Element.addMethods((function() {
     observer.observe.toString().replace(/(\$listeners\.push\((\w+?)\);)/, '$1'+
       '$2.e=Event.cleanName($2.e);$2.n=Event.realName($2.e);'+
       
-      '$2.w=function(){Event.ext(arguments[0]);'+
-        'return $2.f.apply(this,$A(arguments).concat($2.a));};'+(
+      '$2.w=function(){var a=$A(arguments),e=($2.r&&$2.r!=="stopEvent")?a.shift():Event.ext(a[0]);'+
+        'return $2.f.apply(this,a.concat($2.a))};'+(
       
       self.attachEvent ?
         '$2.w=$2.w.bind(this);this.attachEvent("on"+$2.n,$2.w);' :
