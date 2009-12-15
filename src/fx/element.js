@@ -21,7 +21,7 @@ return {
    * @param Object fx options
    */
   hide: function(fx, options) {
-    return fx ? this.fx(fx, ['out', options], old_hide) : old_hide.call(this);
+    return fx ? this.fx(fx, ['out', options]) : old_hide.call(this);
   },
   
   /**
@@ -31,7 +31,7 @@ return {
    * @param Object fx options
    */
   show: function(fx, options) {
-    return fx ? this.fx(fx, ['in', options], old_show) : old_show.call(this);
+    return fx ? this.fx(fx, ['in', options]) : old_show.call(this);
   },
   
   /**
@@ -105,12 +105,10 @@ return {
 // protected
 
   // runs an Fx on the element
-  fx: function(name, args, on_finish) {
-    var args = $A(args).compact(), options = {};
-    if (isHash(args.last())) { options = args.pop(); }
+  fx: function(name, args) {
+    var args = $A(args).compact(), options = isHash(args.last()) ? args.pop() : {},
+        fx = new Fx[name.capitalize()](this, options);
     
-    var fx = new Fx[name.capitalize()](this, options);
-    if (on_finish) fx.onFinish(on_finish.bind(this));
     fx.start.apply(fx, args);
     
     return this;

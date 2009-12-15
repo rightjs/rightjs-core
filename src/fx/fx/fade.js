@@ -10,6 +10,6 @@ Fx.Fade = new Class(Fx.Twin, {
     if (this.how == 'in')
       this.element.setOpacity(0).show();
     
-    return this.$super({opacity: typeof(how) == 'number' ? how : this.how == 'in' ? 1 : 0});
+    return this.$super({opacity: isNumber(how) ? how : this.how == 'in' ? 1 : 0});
   }
 });

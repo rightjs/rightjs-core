@@ -57,7 +57,7 @@ var Fx = new Class(Observer, {
    */
   initialize: function(element, options) {
     this.$super(options);
-    this.element = this.fxee = $(element);
+    this.element = $(element);
   },
   
   /**

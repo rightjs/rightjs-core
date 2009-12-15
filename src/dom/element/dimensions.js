@@ -69,8 +69,9 @@ Element.addMethods({
    * @return Element self
    */
   setWidth: function(width_px) {
-    this.style.width = width_px + 'px';
-    if (this.offsetWidth) this.style.width = (2 * width_px - this.offsetWidth) + 'px';
+    var style = this.style, property = 'offsetWidth';
+    style.width = width_px + 'px';
+    style.width = (2 * width_px - this[property]) + 'px';
     return this;
   },
   
@@ -84,8 +85,9 @@ Element.addMethods({
    * @return Element self
    */
   setHeight: function(height_px) {
-    this.style.height = height_px + 'px';
-    if (this.offsetHeight) this.style.height = (2 * height_px - this.offsetHeight) + 'px';
+    var style = this.style, property = 'offsetHeight';
+    style.height = height_px + 'px';
+    style.height = (2 * height_px - this[property]) + 'px';
     return this;
   },
   
@@ -104,9 +106,7 @@ Element.addMethods({
       height = width.y;
       width  = width.x;
     }
-    
-    this.setWidth(width);
-    return this.setHeight(height);
+    return this.setWidth(width).setHeight(height);
   },
   
   /**

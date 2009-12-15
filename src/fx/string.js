@@ -58,7 +58,7 @@ $ext(String.prototype, {
     
     if (match) {
       match = match.slice(1).map('toInt', 16);
-      match = array ? match : match.toRgb();
+      match = array ? match : 'rgb('+match+')';
     }
     
     return match;

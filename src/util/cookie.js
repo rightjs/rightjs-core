@@ -55,16 +55,16 @@ var Cookie = new Class({
    * @return Cookie this
    */
   set: function(value) {
-    var value = encodeURIComponent(value);
-    if (this.options.domain) value += '; domain=' + this.options.domain;
-    if (this.options.path) value += '; path=' + this.options.path;
-    if (this.options.duration){
+    var value = encodeURIComponent(value), options = this.options;
+    if (options.domain) value += '; domain=' + options.domain;
+    if (options.path) value += '; path=' + options.path;
+    if (options.duration){
       var date = new Date();
-      date.setTime(date.getTime() + this.options.duration * 24 * 60 * 60 * 1000);
+      date.setTime(date.getTime() + options.duration * 24 * 60 * 60 * 1000);
       value += '; expires=' + date.toGMTString();
     }
-    if (this.options.secure) value += '; secure';
-    this.options.document.cookie = this.name + '=' + value;
+    if (options.secure) value += '; secure';
+    options.document.cookie = this.name + '=' + value;
     return this;
   },
   

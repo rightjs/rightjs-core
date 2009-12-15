@@ -3,8 +3,8 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-$ext(self, (function(win) {
-  var old_scroll = win.scrollTo;
+$ext(self, (function() {
+  var old_scroll = window.scrollTo;
   
 return {
     /**
@@ -13,8 +13,9 @@ return {
      * @return Object x: d+, y: d+
      */
     sizes: function() {
+      var doc_e = document.documentElement;
       return this.innerWidth ? {x: this.innerWidth, y: this.innerHeight} :
-        {x: document.documentElement.clientWidth, y: document.documentElement.clientHeight};
+        {x: doc_e.clientWidth, y: doc_e.clientHeight};
     },
 
     /**
@@ -23,10 +24,13 @@ return {
      * @return Object x: d+, y: d+
      */
     scrolls: function() {
-      return (this.pageXOffset || this.pageYOffset) ? {x: this.pageXOffset, y: this.pageYOffset} :
-        (this.document.body.scrollLeft || this.document.body.scrollTop) ? 
-        {x: this.document.body.scrollLeft, y: this.document.body.scrollTop} :
-        {x: this.document.documentElement.scrollLeft, y: this.document.documentElement.scrollTop};
+      var body = this.document.body, doc_e = this.document.documentElement,
+        off_x = 'pageXOffset', off_y = 'pageYOffset',
+        scr_x = 'scrollLeft',  scr_y = 'scrollTop';
+      
+      return (this[off_x] || this[off_y]) ? {x: this[off_x], y: this[off_y]} :
+        (body[scr_x] || body[scr_y]) ? {x: body[scr_x], y: body[scr_y]} :
+        {x: doc_e[scr_x], y: doc_e[scr_y]};
     },
 
     /**
@@ -52,4 +56,4 @@ return {
     }
 };
 
-})(window));
+})());

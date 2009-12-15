@@ -131,7 +131,7 @@ $ext(String.prototype, {
    * @return boolean check result
    */
   includes: function(string) {
-    return this.indexOf(string) !== -1;
+    return this.indexOf(string) != -1;
   },
   
   /**

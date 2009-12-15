@@ -25,7 +25,7 @@ return {
 
     var slice = _A, args = slice.call(arguments), scope = args.shift(), func = this;
     return function() {
-      return func.apply(scope, (args.length !== 0 || arguments.length !== 0) ? args.concat(slice.call(arguments)) : args);
+      return func.apply(scope, (args.length != 0 || arguments.length != 0) ? args.concat(slice.call(arguments)) : args);
     };
   },
 

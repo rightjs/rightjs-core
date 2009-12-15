@@ -115,11 +115,11 @@ return {
         for (var i=0; i < border_types.length; i++)
           for (var j=0; j < directions.length; j++)
             keys.push(Border + directions[j] + border_types[i]);
-      else if (key === 'margin' || key === 'padding')
+      else if (key == 'margin' || key == 'padding')
         add_variants(keys, key, directions);
       else if (key.startsWith(Bg))
         add_variants(keys, Bg, [Color, Pos, Pos+'X', Pos+'Y']);
-      else if (key === 'opacity' && Browser.IE)
+      else if (key == 'opacity' && Browser.IE)
         keys.push('filter');
       else
         keys.push(key);
@@ -147,8 +147,8 @@ return {
             bottom = key.replace(Top, Bottom),
             common = key.replace(Top, '');
             
-        if (after[top] === after[left] && after[top] === after[right] &&  after[top] === after[bottom] &&
-            before[top] === before[left] && before[top] === before[right] && before[top] === before[bottom]
+        if (after[top] == after[left] && after[top] == after[right] &&  after[top] == after[bottom] &&
+            before[top] == before[left] && before[top] == before[right] && before[top] == before[bottom]
         ) {
           after[common]  = after[top];
           before[common] = before[top];
@@ -158,8 +158,8 @@ return {
       }
       
       // checking the height/width options
-      if (key === Width || key === 'height') {
-        if (before[key] == 'auto') before[key] = this.element['offset'+key.capitalize()] + 'px';
+      if ((key == 'width' || key == 'height') && before[key] == 'auto') {
+        before[key] = this.element['offset'+key.capitalize()] + 'px';
       }
     }
     

@@ -1,8 +1,6 @@
 /**
- * RightJS - the right javascript framework
+ * RightJS, http://rightjs.org
+ * Released under the MIT license
  *
- * The library released under terms of the MIT license
- * Visit http://rightjs.org for more details
- *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2008-2009 Nikolay Nemshilov
  */

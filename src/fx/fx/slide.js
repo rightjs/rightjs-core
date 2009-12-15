@@ -13,16 +13,17 @@ Fx.Slide = new Class(Fx.Twin, {
 // protected  
   prepare: function(how) {
     this.setHow(how);
-
-    this.element.show();
-    this.sizes = this.element.sizes();
+    
+    var element = this.element;
+    element.show();
+    this.sizes = element.sizes();
     
     this.styles = {};
     $w('overflow height width marginTop marginLeft').each(function(key) {
-      this.styles[key] = this.element.style[key];
+      this.styles[key] = element.style[key];
     }, this);
 
-    this.element.style.overflow = 'hidden';
+    element.style.overflow = 'hidden';
     this.onFinish('_getBack').onCancel('_getBack');
 
     return this.$super(this._getStyle(this.options.direction));
@@ -35,16 +36,17 @@ Fx.Slide = new Class(Fx.Twin, {
   // calculates the final style
   _getStyle: function(direction) {
     var style = {}, sizes = this.sizes,
-      margin_left = (this.styles.marginLeft || '0').toFloat(),
-      margin_top  = (this.styles.marginTop  || '0').toFloat();
+      m_left = 'marginLeft', m_top = 'marginTop',
+      margin_left = this.styles[m_left].toFloat() || 0,
+      margin_top  = this.styles[m_top].toFloat() || 0;
 
     if (this.how == 'out') {
       style[['top', 'bottom'].includes(direction) ? 'height' : 'width'] = '0px';
 
       if (direction == 'right') {
-        style.marginLeft = margin_left + sizes.x+'px';
+        style[m_left] = margin_left + sizes.x+'px';
       } else if (direction == 'bottom') {
-        style.marginTop = margin_top + sizes.y +'px';
+        style[m_top] = margin_top + sizes.y +'px';
       }
 
     } else if (this.how == 'in') {
@@ -59,14 +61,14 @@ Fx.Slide = new Class(Fx.Twin, {
       }
 
       if (direction == 'right') {
-        style.marginLeft = margin_left + 'px';
-        element_style.marginLeft = margin_left + sizes.x + 'px';
+        style[m_left] = margin_left + 'px';
+        element_style[m_left] = margin_left + sizes.x + 'px';
       } else if (direction == 'bottom') {
-        style.marginTop = margin_top + 'px';
-        element_style.marginTop = margin_top + sizes.y + 'px';
+        style[m_top] = margin_top + 'px';
+        element_style[m_top] = margin_top + sizes.y + 'px';
       }
     }
-
+    
     return style;
   }
 

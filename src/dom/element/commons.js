@@ -37,7 +37,7 @@ Element.addMethods({
    */
   get: function(name) {
     var value = this[name] || this.getAttribute(name);
-    return value == '' ? null : value;
+    return value === '' ? null : value;
   },
   
   /**
@@ -47,7 +47,7 @@ Element.addMethods({
    * @return Boolean check result
    */
   has: function(name) {
-    return this.get(name) != null;
+    return this.get(name) !== null;
   },
   
   /**

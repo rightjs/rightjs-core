@@ -169,7 +169,7 @@ function isNumber(value) {
  * @return boolean check result
  */
 function isElement(value) {
-  return value && !!value.tagName;
+  return value && value.tagName;
 };
 
 /**
@@ -179,7 +179,7 @@ function isElement(value) {
  * @return boolean check result
  */
 function isNode(value) {
-  return value && !!value.nodeType;
+  return value && value.nodeType;
 };
 
 /**

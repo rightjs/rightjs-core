@@ -72,7 +72,6 @@ JS_SOURCES = {
   
   :fx => %w{
     fx/fx.js
-    fx/array.js
     fx/string.js
     fx/fx/morph.js
     fx/fx/highlight.js

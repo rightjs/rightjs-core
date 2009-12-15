@@ -19,7 +19,7 @@
  */
 Element.addMethods({
   parent: function(css_rule) {
-    return css_rule ? this.parents(css_rule).first() : $(this.parentNode);
+    return css_rule ? this.parents(css_rule)[0] : $(this.parentNode);
   },
   
   parents: function(css_rule) {
@@ -27,8 +27,9 @@ Element.addMethods({
   },
   
   subNodes: function(css_rule) {
-    return this.firstChild ? (this.firstChild.tagName ? [$(this.firstChild)] : []
-      ).concat(this.rCollect.call(this.firstChild, 'nextSibling', css_rule)) : [];
+    var first_child = this.firstChild;
+    return first_child ? (first_child.tagName ? [$(first_child)] : []
+      ).concat(this.rCollect.call(first_child, 'nextSibling', css_rule)) : [];
   },
   
   siblings: function(css_rule) {
@@ -44,11 +45,11 @@ Element.addMethods({
   },
   
   next: function(css_rule) {
-    return this.nextSiblings(css_rule).first();
+    return this.nextSiblings(css_rule)[0];
   },
   
   prev: function(css_rule) {
-    return this.prevSiblings(css_rule).first();
+    return this.prevSiblings(css_rule)[0];
   },
   
   /**
@@ -83,16 +84,16 @@ Element.addMethods({
         this.insert(content[position], position)
       }
     } else {
-      var scripts = '';
+      var scripts, insertions = Element.insertions;
       position = isString(position) ? position.toLowerCase() : 'bottom';
       
       if (isString(content)) {
         content = content.stripScripts(function(s) { scripts = s; });
       }
       
-      Element.insertions[position](this, content.tagName ? content :
-        Element.insertions.createFragment.call(
-          (position == 'bottom' || position == 'top' || !this.parentNode) ?
+      insertions[position](this, content.tagName ? content :
+        insertions.createFragment.call(
+          (position === 'bottom' || position === 'top' || !this.parentNode) ?
             this : this.parentNode, content
         )
       );
@@ -131,7 +132,7 @@ Element.addMethods({
    */
   update: function(content) {
     if (isString(content)) {
-      var scripts = '';
+      var scripts;
       this.innerHTML = content.stripScripts(function(s) { scripts = s; });
       if (scripts) $eval(scripts);
     } else {
@@ -191,7 +192,7 @@ Element.addMethods({
         result.push(node);
       }
     }
-    if (Browser.OLD) result.forEach(Element.prepare);
+    
     return result;
   }
 });
@@ -208,8 +209,9 @@ Element.insertions = {
   },
   
   after: function(target, content) {
-    if (target.parentNode) {
-      target.nextSibling ? target.parentNode.insertBefore(content, target.nextSibling) : target.parentNode.appendChild(content);
+    var parent = target.parentNode, sibling = target.nextSibling;
+    if (parent) {
+      sibling ? parent.insertBefore(content, sibling) : parent.appendChild(content);
     }
   },
   

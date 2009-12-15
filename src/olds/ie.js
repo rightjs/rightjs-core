@@ -72,4 +72,14 @@ if (Browser.OLD) {
       return element;
     }
   });
+  
+  Element.addMethods((function() {
+    var old_collect = Element.Methods.rCollect;
+    
+    return {
+      rCollect: function(attr, css_rule) {
+        return old_collect.call(this, attr, css_rule).each(Element.prepare);
+      }
+    }
+  })());
 }

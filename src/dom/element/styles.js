@@ -116,7 +116,7 @@ Element.addMethods({
    * @return boolean check result
    */
   hasClass: function(name) {
-    return (' '+this.className+' ').indexOf(' '+name+' ') !== -1;
+    return (' '+this.className+' ').indexOf(' '+name+' ') != -1;
   },
   
   /**
@@ -138,7 +138,7 @@ Element.addMethods({
    */
   addClass: function(name) {
     var testee = ' '+this.className+' ';
-    if (testee.indexOf(' '+name+' ') === -1) {
+    if (testee.indexOf(' '+name+' ') == -1) {
       this.className += (testee === '  ' ? '' : ' ') + name;
     }
     return this;

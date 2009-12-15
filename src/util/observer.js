@@ -35,8 +35,8 @@ var Observer = new Class({
   observe: function() {
     var args = $A(arguments), event = args.shift();
     
-    if (typeof(event) === 'string') {
-      if (this.$listeners === undefined) this.$listeners = [];
+    if (isString(event)) {
+      if (!defined(this.$listeners)) this.$listeners = [];
 
       var callback = args.shift(), name;
       switch (typeof callback) {
