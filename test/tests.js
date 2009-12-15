@@ -46,8 +46,8 @@ var tests = {
 
 var test_names = [];
 for (var key in tests) {
-  document.writeln('<scr'+'ipt type="text/javascript" src="'+tests[key]+'"></scr'+'ipt>');
   test_names.push(key);
+  document.writeln('<scr'+'ipt type="text/javascript" src="'+tests[key]+'"></scr'+'ipt>');
 }
 
 window.onload = function() {
