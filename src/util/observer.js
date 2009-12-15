@@ -45,7 +45,15 @@ var Observer = new Class({
           callback = this[callback];
 
         case "function":
-          var hash = { e: event, f: callback, a: args, r: name };
+          var hash = {};
+          
+          // DON'T move it in the one-line hash variable definition,
+          // it causes problems with the Konqueror 3 later on
+          hash.e = event;
+          hash.f = callback;
+          hash.a = args;
+          hash.r = name;
+          
           this.$listeners.push(hash);
           break;
 
