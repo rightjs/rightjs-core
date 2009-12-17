@@ -17,16 +17,16 @@ $ext(Array.prototype, (function(A_proto) {
   };
   
   var filter = A_proto.filter || function(callback, scope) {
-    for (var result=[], i=0, length = this.length; i < length; i++) {
+    for (var result=[], i=0, j=0, length = this.length; i < length; i++) {
       if (callback.call(scope, this[i], i, this))
-        result.push(this[i]);
+        result[j++] = this[i];
     }
     return result;
   };
   
   var map = A_proto.map || function(callback, scope) {
     for (var result=[], i=0, length = this.length; i < length; i++) {
-      result.push(callback.call(scope, this[i], i, this));
+      result[i] = callback.call(scope, this[i], i, this);
     }
     return result;
   };
