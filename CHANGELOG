@@ -1,3 +1,10 @@
+2009-12-17 Nikolay V. Nemshilov aka St.
+  o Version 1.5.1 Release
+    * Opera =10.00 fix
+    * Opera =9.27  fix
+    * Events by name attachment fix
+    * Size updates
+
 2009-12-08 Nikolay V. Nemshilov aka St.
   o Version 1.5.0 Release
     * All the old browsers support hacks were moved out
