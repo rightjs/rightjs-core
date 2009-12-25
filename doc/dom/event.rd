@@ -19,7 +19,7 @@ The list of faked attributes is following:
 
  * <tt>which</tt> - which mouse button was pressed (1,2,3)
  * <tt>target</tt> - target element reference
- * <tt>relatedElement</tt> - the related element for the over and out mouse events
+ * <tt>relatedTarget</tt> - the related element for the over and out mouse events
  * <tt>pageX</tt>, <tt>pageY</tt> - the cursor position relative to the document
  
 ### Event.ext
@@ -81,6 +81,20 @@ The list of faked attributes is following:
 == Example
   $('element').onMouseover(function(event) {
     $('nice-looking-title').show().moveTo(event.position());
+  });
+  
+### Event#over
+
+== Semantic
+  over(Element element) -> boolean check result
+
+== Description
+  Checks if the event happened in range of the given element
+
+== Example
+  document.onMousemove(function(event) {
+    if (event.over('that-element'))
+      // do something about it
   });
   
 

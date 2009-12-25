@@ -38,8 +38,8 @@ var Event = new Class(Event, {
           event.pageY = event.clientY + scrolls.y;
 
 
-          // faking the relatedElement
-          event.relatedElement = event.type == 'mouseover' ? event.fromEvent :
+          // faking the relatedTarget
+          event.relatedTarget = event.type == 'mouseover' ? event.fromEvent :
             event.type == 'mouseout' ? event.toEvent : null;
 
           // faking the target property  
@@ -127,6 +127,11 @@ Event.addMethods({
   
   position: function() {
     return {x: this.pageX, y: this.pageY};
+  },
+  
+  over: function(element) {
+    var dims = $(element).dimensions(), x = this.pageX, y = this.pageY;
+    return !(x < dims.left || x > (dims.left + dims.width) || y < dims.top || y > (dims.top + dims.height));
   }
 });
 
