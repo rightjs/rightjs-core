@@ -79,13 +79,15 @@ return {
    * @return Object end style
    */
   _endStyle: function(style, keys) {
-    var parent = this.element.parentNode,
-        dummy  = $(this.element.cloneNode(true)).setStyle(style);
-        
-    // swapping the element with the dummy and getting the new styles
-    if (parent) parent.replaceChild(dummy, this.element);
+    var dummy  = $(this.element.cloneNode(true))
+        .setStyle('position:absolute;z-index:-1;visibility:hidden')
+        .insertTo(this.element, 'before')
+        .setWidth(this.element.sizes().x)
+        .setStyle(style);
+    
     var after  = this._cloneStyle(dummy, keys);
-    if (parent) parent.replaceChild(this.element, dummy);
+    
+    dummy.remove();
     
     return after;
   },
