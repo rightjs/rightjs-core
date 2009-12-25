@@ -37,7 +37,11 @@ Element.addMethods({
       c_key = key.indexOf('-') != -1 ? key.camelize() : key;
       
       if (key === 'opacity') {
-        this.setOpacity(hash[key]);
+        if (Browser.IE) {
+          this.style.filter = 'alpha(opacity='+ value * 100 +')';
+        } else {
+          this.style.opacity = value;
+        }
       } else if (key === 'float') {
         c_key = Browser.IE ? 'styleFloat' : 'cssFloat';
       }
@@ -45,20 +49,6 @@ Element.addMethods({
       this.style[c_key] = hash[key];
     }
     
-    return this;
-  },
-  
-  /**
-   * handles the opacity setting
-   *
-   * @param Float opacity value between 0 and 1
-   * @return Element self
-   */
-  setOpacity: Browser.IE ? function(value) {
-    this.style.filter = 'alpha(opacity='+ value * 100 +')';
-    return this;
-  } : function(value) {
-    this.style.opacity = value;
     return this;
   },
   
