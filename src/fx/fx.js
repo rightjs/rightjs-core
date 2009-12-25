@@ -20,7 +20,7 @@ var Fx = new Class(Observer, {
     
     // default options
     Options: {
-      fps:        Browser.IE || Browser.Opera ? 35 : 60,
+      fps:        60,
       duration:   'normal',
       transition: 'Sin',
       queue:      true
@@ -126,7 +126,14 @@ var Fx = new Class(Observer, {
   // NOTE: called outside of the instance scope!
   step: function(that) {
     if (that.number > that.steps) that.finish();
-    else that.render(that.transition(++ that.number / that.steps));
+    else {
+      if (!that.w) {
+        that.w = true;
+        that.render(that.transition(that.number / that.steps));
+        that.w = false;
+      }
+      that.number ++;
+    }
   },
     
   startTimer: function() {
