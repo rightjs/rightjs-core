@@ -28,9 +28,10 @@ Fx.Morph = new Class(Fx, (function() {
       m = values[key].match(re);
       var value = m.map('toFloat');
       value.t = values[key].split(re);
-      if (/^\d/.test(values[key]) && value.t[0] !== '') value.t.unshift('');
+      value.r = value.t[0] === 'rgb(';
+      if (value.t[0] === '' || value.r) value.t.shift();
       for (var i=0; i < value.length; i++) {
-        value.t.splice(i*2+1, 0, value[i]);
+        value.t.splice(i*2, 0, value[i]);
       }
       result[key] = value;
     }
@@ -62,10 +63,12 @@ return {
       
       for (var i=0; i < after.length; i++) {
         value = before[i] + (after[i] - before[i]) * delta;
-        if (after.t[0] === 'rgb(') value = Math.round(value);
-        after.t[i*2+1] = ''+value;
+        if (after.r) value = Math.round(value);
+        after.t[i*2] = value;
       }
-      style[key] = after.t.join('');
+      value = after.t.join('');
+      if (after.r) value = 'rgb('+value;
+      style[key] = value;
     }
   },
   

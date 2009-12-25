@@ -20,7 +20,7 @@ var Fx = new Class(Observer, {
     
     // default options
     Options: {
-      fps:        60,
+      fps:        Browser.IE ? 40 : 60,
       duration:   'normal',
       transition: 'Sin',
       queue:      true
