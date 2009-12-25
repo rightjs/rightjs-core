@@ -9,15 +9,38 @@
  */
 Fx.Morph = new Class(Fx, (function() {
   // a list of common style names to compact the code a bit
-  var Top = 'Top', Left = 'Left', Right = 'Right', Bottom = 'Bottom', Color = 'Color', Style = 'Style',
-      Width = 'Width', Bg = 'background', Border = 'border', Pos = 'Position', BgColor = Bg + Color,
-      BdStyle = Border + Style, BdColor = Border + Color, BdWidth = Border + Width;
+  var Color = 'Color', Style = 'Style', Width = 'Width', Bg = 'background',
+      Border = 'border', Pos = 'Position', BgColor = Bg + Color,
+      directions = $w('Top Left Right Bottom');
   
   
   // adds variants to the style names list
   var add_variants = function(keys, key, variants) {
     for (var i=0; i < variants.length; i++)
       keys.push(key + variants[i]);
+  };
+  
+  // adjusts the border-styles
+  var check_border_styles = function(before, after) {
+    for (var i=0; i < 4; i++) {
+      var direction = directions[i],
+        bd_style = Border + direction + Style,
+        bd_width = Border + direction + Width,
+        bd_color = Border + direction + Color;
+      
+      if (before[bd_style] != after[bd_style]) {
+        var style = this.element.style;
+
+        if (before[bd_style] == 'none') {
+          style[bd_width] = '0px';
+        }
+
+        style[bd_style] = after[bd_style];
+        if (this._transp(before[bd_color])) {
+          style[bd_color] = this.element.getStyle(Color);
+        }
+      }
+    }
   };
   
   // parses the style hash into a processable format
@@ -113,7 +136,7 @@ return {
    * @return Array of clean style keys list
    */
   _styleKeys: function(style) {
-    var keys = [], border_types = [Style, Color, Width], directions = [Top, Left, Right, Bottom];
+    var keys = [], border_types = [Style, Color, Width];
       
     for (var key in style) {
       if (key.startsWith(Border))
@@ -144,24 +167,6 @@ return {
     var remove = [];
     
     for (var key in after) {
-      // getting directional options together so they were processed faster
-      if (key.includes(Top)) {
-        var top = key,
-            left = key.replace(Top, Left),
-            right = key.replace(Top, Right),
-            bottom = key.replace(Top, Bottom),
-            common = key.replace(Top, '');
-            
-        if (after[top] == after[left] && after[top] == after[right] &&  after[top] == after[bottom] &&
-            before[top] == before[left] && before[top] == before[right] && before[top] == before[bottom]
-        ) {
-          after[common]  = after[top];
-          before[common] = before[top];
-          
-          remove = remove.concat([top, left, right, bottom]);
-        }
-      }
-      
       // checking the height/width options
       if ((key == 'width' || key == 'height') && before[key] == 'auto') {
         before[key] = this.element['offset'+key.capitalize()] + 'px';
@@ -172,18 +177,7 @@ return {
     if (after.filter && !before.filter) before.filter = 'alpha(opacity=100)';
     
     // adjusting the border style
-    if (before[BdStyle] != after[BdStyle]) {
-      var style = this.element.style;
-      
-      if (before[BdStyle] == 'none') {
-        style[BdWidth] = '0px';
-      }
-      
-      style[BdStyle] = after[BdStyle];
-      if (this._transp(before[BdColor])) {
-        style[BdColor] = this.element.getStyle(Color);
-      }
-    }
+    check_border_styles.call(this, before, after);
     
     // cleaing up the list
     for (var key in after) {
