@@ -1,3 +1,11 @@
+2009-12-26 Nikolay V. Nemshilov aka St.
+  o Version 1.5.2 Release
+    * Fx a dog-pile effect fixed
+    * Fx autofps feature
+    * Fx jumpless end style calculations
+    * IE Event patch for relatedTarget fixed
+    
+
 2009-12-17 Nikolay V. Nemshilov aka St.
   o Version 1.5.1 Release
     * Opera =10.00 fix
