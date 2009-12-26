@@ -37,40 +37,5 @@ var EventTest = TestCase.create({
     this.assertSame(element, ev.target);
     this.assert(ev.pageX !== undefined);
     this.assert(ev.pageY !== undefined);
-  },
-  
-  testOver: function() {
-    var event = {
-      pageX: 10,
-      pageY: 10,
-      over:  Event.Methods.over
-    };
-    
-    this.assert(event.over({
-      dimensions: function() {
-        return {
-          left: 0,
-          top: 0,
-          width: 20,
-          height: 20
-        };
-      }
-    }));
-    
-    this.assertFalse(event.over({
-      dimensions: function() {
-        return {
-          left: 20
-        }
-      }
-    }));
-    
-    this.assertFalse(event.over({
-      dimensions: function() {
-        return {
-          top: 20
-        }
-      }
-    }));
   }
 });

@@ -82,21 +82,7 @@ The list of faked attributes is following:
   $('element').onMouseover(function(event) {
     $('nice-looking-title').show().moveTo(event.position());
   });
-  
-### Event#over
 
-== Semantic
-  over(Element element) -> boolean check result
-
-== Description
-  Checks if the event happened in range of the given element
-
-== Example
-  document.onMousemove(function(event) {
-    if (event.over('that-element'))
-      // do something about it
-  });
-  
 
 ### Event.addMethods
 

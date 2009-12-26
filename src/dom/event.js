@@ -127,11 +127,6 @@ Event.addMethods({
   
   position: function() {
     return {x: this.pageX, y: this.pageY};
-  },
-  
-  over: function(element) {
-    var dims = $(element).dimensions(), x = this.pageX, y = this.pageY;
-    return !(x < dims.left || x > (dims.left + dims.width) || y < dims.top || y > (dims.top + dims.height));
   }
 });
 
