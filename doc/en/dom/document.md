@@ -1,0 +1,42 @@
+# Document
+
+The `document` object in RightJS has received the standard {Observer}
+interface plus it handles the `dom-ready` event.
+
+## Document Ready
+
+The `dom-ready` event in RightJS is called simple `ready` and you can assign
+a listener in any standard way.
+
+    document.onReady(function() {...});
+    document.on('ready', function() {...});
+    document.observe('ready', function() {...});
+
+This event also can be handled the same way with the `window` object.
+
+
+### on
+
+    on(String name, Function callback[, arguments, ...]) -> document self
+
+A short name for the {#observe} method
+
+    document.on('ready', function() {....});
+
+### observe
+
+    observe(String name, Function callback[, args[, ...]]) -> document self
+
+The standard listeners attachment method
+
+    document.observe('ready', function() {...});
+
+
+### onReady
+
+    onReady(Function callback[, arguments[, ....]]) -> document self
+
+A shortcut method for `on('ready', ...)`
+
+    document.onReady(function() {....});
+
