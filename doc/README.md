@@ -25,7 +25,7 @@ When you describe an unit, keep it's description in the following order
 3. List of the methods in the following format (the order doesn't matter)
    
    --------------------------------------
-   ## #methodName (or '.methodName' for class level methods)
+   ### #methodName (or '.methodName' for class level methods)
    
        method(semantic) -> result
    
@@ -40,6 +40,15 @@ When you describe an unit, keep it's description in the following order
 
 Use the RDoc style unit cross-references like that {Klass}, {Klass#method} or
 {Klass.method} so we could link them together later.
+
+
+## Headers usage
+
+In the documentation we use three types of headers in the following way
+
+* H1 (#) for the very first header as a whole document header
+* H2 (##) is used as a plain text documentation chapters
+* H3 (###) is used as a method description header
 
 
 --

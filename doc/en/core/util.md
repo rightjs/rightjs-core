@@ -6,7 +6,7 @@ frameworks like [Prototype](http://prototypejs.org) or
 [Mootools](http://mootools.net), in RightJS they have the same meaning and 
 interfaces.
 
-## $
+### $
 
     $(String element_id) -> Element
     $(Element element)   -> Element
@@ -17,7 +17,7 @@ Finds an element by its ID or prepares an existing element
     $(element);
 
 
-## $$
+### $$
 
     $$(String css_rule) -> Array of elements
 
@@ -29,7 +29,7 @@ __NOTE__: this method will return an _empty_ list if nothing was found
     $$('div > span.foo');
 
 
-## $w
+### $w
 
     $w(String string) -> Array of strings
 
@@ -38,7 +38,7 @@ Splits the given string into a list of words by spaces
     $w('one two    three'); // -> ['one', 'two', 'three']
 
 
-## $A
+### $A
 
     $A(Iterable it) -> Array
 
@@ -50,7 +50,7 @@ Converts any iterable object into an {Array} instance
     };
 
 
-## $E
+### $E
 
     $E(String tag_name[, Object options]) -> Element new
 
@@ -59,7 +59,7 @@ A shortcut for 'new Element'
     var div = $E('div', {id: 'some-id'});
 
 
-## $ext
+### $ext
 
     $ext(Object first, Object second[, boolean dont_overwrite]) -> Object first
 
@@ -73,7 +73,7 @@ If the third argument is `true`, then it skips all the overlapping keys
     $ext(o, {2:4, 3:3}, true); // -> {1:1, 2:2, 3:3}
 
 
-## $try
+### $try
 
     $try(Function function[, Function function, ...]) -> mixed result
 
@@ -89,7 +89,7 @@ first one that _does not_ raises any exception
     result // -> 1
 
 
-## $eval
+### $eval
 
     $eval(String code) -> void
 
@@ -101,7 +101,7 @@ window
     window['foo']; // -> 'bar'
 
 
-## $break
+### $break
 
     $break() -> void
 
@@ -115,7 +115,7 @@ Initiates a manual break in case of callback based iterations
     // [2,4,3,4]
 
 
-## $alias
+### $alias
 
     $alias(Object object, Object aliases) -> Object the first
 
@@ -132,7 +132,7 @@ Creates the first object property aliases
     // now 'foo' and 'bar' both refer to the same function
 
 
-## defined
+### defined
 
     defined(mixed value) -> boolean check result
 
@@ -146,7 +146,7 @@ Checks if the given value is equal to `undefined`
     defined(object.bar); // -> false
 
 
-## isHash
+### isHash
 
     isHash(mixed value) -> boolean check result
 
@@ -158,7 +158,7 @@ Checks if the given value is a pure JavaScript object (a hash)
 
 
 
-## isFunction
+### isFunction
 
     isFunction(mixed value) -> boolean check result
 
@@ -169,7 +169,7 @@ Checks if the given value is a {Function}
 
 
 
-## isString
+### isString
 
     isString(mixed value) -> boolean check result
 
@@ -180,7 +180,7 @@ Checks if the given value is a {String}
     isString(''); // -> true
 
 
-## isArray
+### isArray
 
     isArray(mixed value) -> boolean check result
 
@@ -191,7 +191,7 @@ Checks if the given value is an instance of {Array}
     isArray([]); // -> true
 
 
-## isNumber
+### isNumber
 
     isNumber(mixed value) -> boolean check result
 
@@ -203,7 +203,7 @@ Checks if the given value is a {Number}
   
 
 
-## isElement
+### isElement
 
     isElement(mixed value) -> boolean check result
 
@@ -213,7 +213,7 @@ Checks if the given value is a {HTMLElement} instance
     isElement(document.createElement('div'));  // -> true
 
 
-## isNode
+### isNode
 
     isNode(mixed value) -> boolean check result
 
