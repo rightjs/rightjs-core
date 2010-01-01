@@ -20,14 +20,11 @@ with the `onStart`, `onFinish`, `onCancel` shortcuts.
 
 There are common list of options which all the visual effects share
 
-Name       | Description                                           |
------------|-------------------------------------------------------|
-duration   | the effect duration in ms or a string predefined name |
-transition | the transition algorithm used for the effect          |
-queue      | boolean marker if the effect should be queued         |
-onStart    | on-start callback                                     |
-onFinish   | on-finish callback                                    |
-onCancel   | on-cancel callback                                    |
+Name       | Default  | Description                                           |
+-----------|----------|-------------------------------------------------------|
+duration   | 'normal' | the effect duration in ms or a string predefined name |
+transition | 'Sin'    | the transition algorithm used for the effect          |
+queue      | true     | boolean marker if the effect should be queued         |
 
 ## Durations
 

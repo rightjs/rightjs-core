@@ -8,14 +8,16 @@ Xhr object supports the following list of options.
 
 Name         | Default | Description                                 |
 -------------|---------|---------------------------------------------|
-method       | 'post'  | request method                              |
+method       | 'post'  | request method (get/post/put/delete)        |
 encoding     | 'utf-8' | encoding                                    |
 async        | true    | asynchronous request                        |
 evalScripts  | false   | extract/eval javascripts from the response  |
 evalResponse | false   | eval response as a javascript code          |
 evalJSON     | true    | eval json responses automatically           |
+secureJSON   | true    | if it should validate json responses        |
 urlEncoded   | true    | urlencode the parameters                    |
 spinner      | null    | common spinner element                      |
+spinnerFx    | 'fade'  | fx name to show/hide the spinner            |
 params       | null    | default parameters                          |
 
 Any of the options might be changed globally by altering the {Xhr.Options}
@@ -103,6 +105,15 @@ come with a json content-type and assign it to the `responseJSON` property
       }
     });
     
+## Short Response Names
+
+To access the server responses you can use the standard names `responseText`,
+`responseXML` and `responseJSON`, or you can use any of the shortified names
+
+* this.text -> this.responseText
+* this.xml  -> this.responseXML
+* this.json -> this.responseJSON
+    
 
 ### .Options
 
@@ -182,9 +193,9 @@ Checks if the request was completed with a successful status.
 
 ### #send
 
-  send([String params])  -> Xhr self
-  send([Object params])  -> Xhr self
-  send([Form   element]) -> Xhr self
+    send([String params])  -> Xhr self
+    send([Object params])  -> Xhr self
+    send([Form   element]) -> Xhr self
 
 Sends the request to the server
 
@@ -202,8 +213,8 @@ Sends the request to the server
 
 ### #update
 
-  update(Element element[, mixed params])   -> Xhr self
-  update(String element_id[, mixed params]) -> Xhr self
+    update(Element element[, mixed params])   -> Xhr self
+    update(String element_id[, mixed params]) -> Xhr self
 
 Sends the request and updates the given element with the result of the request
 

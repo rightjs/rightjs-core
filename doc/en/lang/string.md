@@ -61,7 +61,6 @@ every script body will be tossed into the function.
     
     string.stripScripts();     // -> 'asdf'
     string.stripScripts(true); // -> 'asdf' and you'll see the alert
-    string.stripScripts(2000); // -> 'asdf' and you'll see the alert in two seconds
     
     string.stripScripts(function(script) {
       // do something with the script in here

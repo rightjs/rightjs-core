@@ -1,4 +1,4 @@
-# Intro
+# Form
 
 RightJS inherits forms from the general Element unit, which means you can do
 everything the same that you can do with any other element in the system, plus
@@ -25,11 +25,13 @@ the form it will go via a {Xhr} request automatically.
 And you can specify any the standard {Xhr} options too.
 
     $('some-form').send({
-      spinner: 'spinner-id',
       onSuccess: function(r) {
         $('notices').update(r.responseText);
       }
     });
+    
+If your form has an element with css-class `spinner`, it will automatically
+use it as a spinner for your form, you don't need to define it specifically
 
 
 ### .addMethods
@@ -140,7 +142,7 @@ url-query string.
 Remotely submits the form via an XHR request. The argument might contain
 any standard {Xhr} object options.
   
-NOTE: works with files uploading too!
+__NOTE__: works with files uploading too!
 
 
     $('form').send();

@@ -19,7 +19,7 @@ This event also can be handled the same way with the `window` object.
 
     on(String name, Function callback[, arguments, ...]) -> document self
 
-A short name for the {#observe} method
+The standard listeners attachment method
 
     document.on('ready', function() {....});
 
@@ -28,6 +28,8 @@ A short name for the {#observe} method
     observe(String name, Function callback[, args[, ...]]) -> document self
 
 The standard listeners attachment method
+
+__DEPRECATED__: please use the shorter method {#on}
 
     document.observe('ready', function() {...});
 

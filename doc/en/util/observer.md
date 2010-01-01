@@ -124,6 +124,7 @@ the observer will automatically wire it to the to the 'something' event.
 
     observe(String name, Function callback[, arguments])  -> Observer self
     observe(String name, String method_name[, arguments]) -> Observer self
+    observe(String name, Array callbacks[, arguments])    -> Observer self
     observe(Object hash)                                  -> Observer self
 
 Makes the observer observe the event with the callback.
@@ -134,10 +135,13 @@ __DEPRECATED__: please use the {#on} method instead
     
     observer.observe('something', function() {...});
     
-    // or
+    // or by name
     observer.observe('something', 'observer_method_name', arg1, arg2);
     
-    // or
+    // or a whole list
+    observer.observe('something', [func1, func2, func3, ...]);
+    
+    // or a hash
     observer.observe({
       one: function() {},
       two: 'something'
@@ -148,6 +152,7 @@ __DEPRECATED__: please use the {#on} method instead
 
     on(String name, Function callback[, arguments])  -> Observer self
     on(String name, String method_name[, arguments]) -> Observer self
+    on(String name, Array callbacks[, arguments])    -> Observer self
     on(Object hash)                                  -> Observer self
 
 Binds an event listener to the observer
@@ -155,7 +160,14 @@ Binds an event listener to the observer
     var observer = new Observer();
     
     observer.on('something', function() {...});
+    
+    // or by name
     observer.on('something', 'observer_method_name', arg1, arg2);
+    
+    // or a whole list
+    observer.on('something', [func1, func2, func3, ...]);
+    
+    // or using a hash
     observer.on({
       one: function() {},
       two: 'something'

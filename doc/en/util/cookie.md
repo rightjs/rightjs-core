@@ -1,4 +1,4 @@
-# Cooke
+# Cookie
 
 `Cookie` is an object oriented wrapper over a browser's native cookies support
 
