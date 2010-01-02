@@ -8,7 +8,7 @@ If you attach your event listeners via the RightJS interfaces, then all the
 events your listeners receive will be automatically extended, otherwise, you
 might need to call the {Event.ext} method on your events.
 
-== Internet Explorer Fixes
+## Internet Explorer Fixes
 
 Instead of providing some mediator interface for the dom events, to let you
 work with the events in a cross-browser way, RightJS fixes the IE type of
