@@ -16,7 +16,7 @@ Collects the object keys list
 
 ### .values
 
-  Object.values(Object object) -> Array values
+    Object.values(Object object) -> Array values
 
 Collects the object values list
 

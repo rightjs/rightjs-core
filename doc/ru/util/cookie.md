@@ -47,7 +47,7 @@ secure   | маркер указывающий если кука должна б
 
 ### .set
 
-  Cookie.set(String name, String value[, Object options]) -> Cookie
+    Cookie.set(String name, String value[, Object options]) -> Cookie
 
 Устанавливает куку
 

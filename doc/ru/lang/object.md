@@ -16,7 +16,7 @@
 
 ### .values
 
-  Object.values(Object object) -> Array values
+    Object.values(Object object) -> Array values
 
 Возвращает список значений объекта
 

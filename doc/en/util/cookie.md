@@ -47,7 +47,7 @@ and plain objects
 
 ### .set
 
-  Cookie.set(String name, String value[, Object options]) -> Cookie
+    Cookie.set(String name, String value[, Object options]) -> Cookie
 
 Sets the cookie
 
