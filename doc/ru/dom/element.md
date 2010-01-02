@@ -614,7 +614,7 @@ __ВНИМАНИЕ__: Проверяет оба, собственные стил
     $('element').getStyle('dispaly'); // -> 'none'
 
 
-### Element#hasClass
+### #hasClass
 
     hasClass(String class) -> boolean
 

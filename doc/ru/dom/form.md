@@ -85,7 +85,7 @@ __ВНИМАНИЕ__: данный метод так же автоматичес
     $('form').inputs();
 
 
-### Form#focus
+### #focus
 
     focus() -> Form self
 
@@ -94,7 +94,7 @@ __ВНИМАНИЕ__: данный метод так же автоматичес
     $('form').focus();
 
 
-### Form#blur
+### #blur
 
     blur() -> Form self
 

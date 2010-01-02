@@ -1,6 +1,6 @@
 # RegExp
 
-### RegExp.escape
+### .escape
 
     RegExp.escape(String string) -> String new
 

@@ -4,7 +4,7 @@ There are several shortcuts to initiate the visual effects right out
 of dom-elements.
 
 
-### morph
+### #morph
 
     morph(Object style[, Object fx_options]) -> Element self
 
@@ -15,7 +15,7 @@ Runs the {Fx.Morph} effect on the element
       height: '400px'
     });
 
-### highlight
+### #highlight
 
     highlight([String color[, String end_color[, Object fx_options]]]) -> Element self
     highlight([String color[, Object fx_options]]) -> Element self
@@ -28,7 +28,7 @@ Runs the {Fx.Highlight} effect on the element
     $(element).highlight('blue');
     $(element).highlight({onFinish: function() {}});
 
-### fade
+### #fade
 
     fade([String how[, Object options]]) -> Element self
     fade([Object options])               -> Element self
@@ -40,7 +40,7 @@ Runs the {Fx.Fade} effect on the element
     $(element).fade('out');
     $(element).fade('in', {onFinish: function() {}});
 
-### slide
+### #slide
 
     slide([String how[, Object fx_options]]) -> Element self
     slide([Object fx_options])               -> Element self
@@ -53,7 +53,7 @@ Runs the {Fx.Slide} effect on the element
     $(element).slide({onFinish: function() {}});
 
 
-### scroll
+### #scroll
 
     scroll(Object {x:N, y:N}[, Object options]) -> Element self
 

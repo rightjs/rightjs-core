@@ -79,7 +79,7 @@ Returns a list of all the form input elements without the buttons.
     $('form').inputs();
 
 
-### Form#focus
+### #focus
 
     focus() -> Form self
 
@@ -89,7 +89,7 @@ is visible and not disabled.
     $('form').focus();
 
 
-### Form#blur
+### #blur
 
     blur() -> Form self
 

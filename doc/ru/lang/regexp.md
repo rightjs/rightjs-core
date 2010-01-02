@@ -1,6 +1,6 @@
 # Регулярные выражения
 
-### RegExp.escape
+### .escape
 
     RegExp.escape(String string) -> String new
 

@@ -4,7 +4,7 @@
 эффектами непосредственно с элементов страницы.
 
 
-### morph
+### #morph
 
     morph(Object style[, Object fx_options]) -> Element self
 
@@ -15,7 +15,7 @@
       height: '400px'
     });
 
-### highlight
+### #highlight
 
     highlight([String color[, String end_color[, Object fx_options]]]) -> Element self
     highlight([String color[, Object fx_options]]) -> Element self
@@ -28,7 +28,7 @@
     $(element).highlight('blue');
     $(element).highlight({onFinish: function() {}});
 
-### fade
+### #fade
 
     fade([String how[, Object options]]) -> Element self
     fade([Object options])               -> Element self
@@ -40,7 +40,7 @@
     $(element).fade('out');
     $(element).fade('in', {onFinish: function() {}});
 
-### slide
+### #slide
 
     slide([String how[, Object fx_options]]) -> Element self
     slide([Object fx_options])               -> Element self
@@ -53,7 +53,7 @@
     $(element).slide({onFinish: function() {}});
 
 
-### scroll
+### #scroll
 
     scroll(Object {x:N, y:N}[, Object options]) -> Element self
 

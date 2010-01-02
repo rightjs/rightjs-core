@@ -99,7 +99,7 @@ Assigns the options to the instance.
     object.options == {a: 1};
 
 
-### Options#cutOptions
+### #cutOptions
   
     cutOptions(arguments) -> Array of arguments without options
 

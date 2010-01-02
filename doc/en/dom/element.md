@@ -606,7 +606,7 @@ NOTE: Will process both element own and computed (css) level styles
     $('element').getStyle('dispaly'); // -> 'none'
 
 
-### Element#hasClass
+### #hasClass
 
     hasClass(String class) -> boolean
 
