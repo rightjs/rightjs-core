@@ -10,9 +10,9 @@ might need to call the {Event.ext} method on your events.
 
 ## Internet Explorer Fixes
 
-Instead of providing some mediator interface for the dom events, to let you
-work with the events in a cross-browser way, RightJS fixes the IE type of
-events, creating the W3C type of attributes for the events, so that you could
+Instead of providing some mediative interface for the dom events, to let you
+work with the events in a cross-browser way RightJS fixes the IE type of
+events creating the W3C type of attributes for the events, so that you could
 work with them in IE transparently as if you had a normal browser.
 
 The list of faked attributes is following:
@@ -54,7 +54,7 @@ Registers additional methods for the dom events
 
     stop() -> Event self
 
-Stops the event from the further bubbling
+Stops the event from further bubbling and cancels default handling
 
     $('element').onContextmenu(function(e) {
       e.stop();

@@ -43,7 +43,7 @@ property of the instance.
 
 Default options might be an instance attribute, or a class level attribute
 or one of the ancestor classes attribute. The module will look through all of
-them form the instance to the top class and the first found.
+them form the instance to the top class and use the first found.
 
     var Klass = new Class({
       include: Options,
@@ -103,7 +103,7 @@ Assigns the options to the instance.
   
     cutOptions(arguments) -> Array of arguments without options
 
-Cuts of an ending options hash from the list of arguments  set them up using 
+Cuts off an ending options hash from the list of arguments  set them up using 
 the {#setOptions} method and at then returns a new list without the ending
 hash.
 

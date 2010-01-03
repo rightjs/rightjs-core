@@ -14,8 +14,8 @@ events. Those are the names
 * blur
 * change
 
-They are handled simultaneously with all the other events handling, so all the
-shortcuts are in place, you can wire and run the event in the usual way.
+They are handled simultaneously with all the other events, so all the
+shortcuts are in place, you can wire and run the events in the usual way.
 
 ### .addMethods
 

@@ -10,7 +10,7 @@ from the [Prototype][] JavaScript framework and [Ruby][] programming language.
 
 ## Basic Definition
 
-A basic class definition is the same you might see in [Prototype][] or
+A basic class definition is the same as you might see in [Prototype][] or
 [Mootools][]
 
     var Klass = new Class({
@@ -25,7 +25,7 @@ A basic class definition is the same you might see in [Prototype][] or
 
 ## Inheritance
 
-Inheritance looks the same way it is in [Prototype][], except in RightJS you
+Inheritance looks the same way it does in [Prototype][], except in RightJS you
 refer to a super method by calling the `this.$super` variable
 
     var Girl = new Class({
@@ -67,7 +67,7 @@ You can specify several modules by using arrays
       extend:  [Module1, Module2, ...]
     });
 
-You also can define class-level methods inline with all the rest of the class
+You also can define class-level methods in-line with all the rest of the class
 
     var Klass = new Class({
       extend: {
@@ -80,7 +80,7 @@ You also can define class-level methods inline with all the rest of the class
       // instance level methods
     });
 
-And you can call `include()` and `extend()` methods after a class was defined
+And you can call the `include()` and `extend()` methods after a class was defined
 
     var Klass = new Class({
       // ....
@@ -89,7 +89,7 @@ And you can call `include()` and `extend()` methods after a class was defined
     Klass.include(Module, Module, ...);
     Klass.extend(Module, Module, ...);
     
-__NOTE:__ the mixins follows the same priority principles as it is in the
+__NOTE:__ the mixins follow the same priority principles as it is in the
 [Ruby][] language. If you inject your modules _with_ a class definition,
 then the class own methods will overwrite methods from the modules. But if you
 inject your modules _after_ class was defined by using the `include()` and
@@ -97,12 +97,12 @@ inject your modules _after_ class was defined by using the `include()` and
 the class.
 
 
-## Mixins Callbacks
+## Mixin Callbacks
   
-As RightJS monkeys the modules system from [Ruby][] it also supports the post
-injection callbacks, the same way it is done in [Ruby][]. The names of the
-callback methods are similar to the ones in [Ruby][]: `selfIncluded` and
-`selfExtended`. Or in underscored version `self_included` and `self_extened`
+As RightJS monkeys the modules system from [Ruby][], it also supports the post
+injection callbacks the same way it is done in [Ruby][]. The names of the
+callback methods are similar: `selfIncluded` and `selfExtended`. Or in 
+an underscored version `self_included` and `self_extened`.
 
     var Module = {
       selfIncluded: function(klass) {

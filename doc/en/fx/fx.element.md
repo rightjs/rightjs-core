@@ -1,6 +1,6 @@
 # Fx Element Extensions
 
-There are several shortcuts to initiate the visual effects right out
+There are several shortcuts to initiate visual effects right out
 of dom-elements.
 
 

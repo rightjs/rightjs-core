@@ -13,13 +13,13 @@ list items, or process the same attribute. For example
 
     elements.each('hide');
     elements.each('addClass', 'marked');
-    elements.each('observe', 'click', function() {});
+    elements.each('onClick', function() {});
 
     var ids = elements.map('id');
     var classes = elements.map('className').map('split', /\s+/).flatten().uniq();
 
     var visible_elements = elements.filter('visible');
-    var marked_eleemnts  = elements.filter('hasClass', 'marked');
+    var marked_elements  = elements.filter('hasClass', 'marked');
 
 And finally it adds several additional, but standard methods like {#compact},
 {#uniq}, {#merge}. Most of them are just equivalents of Ruby Array methods.
@@ -49,7 +49,7 @@ Every item in the array will get called by their 'foo' method with arguments
 
     indexOf(mixed value) -> Integer
 
-Returns the integer index of an element in the array or -1 if the item is not 
+Returns an integer index of an element in the array or -1 if the item is not 
 on the list.
 
 
@@ -67,7 +67,7 @@ the item is not on the list.
     first([Function lambda[, Object scope]]) -> mixed
     first([String name[, argument, ...]])    -> mixed
 
-Returns the first item in the array or undefined if the array is empty
+Returns the first item in the array or `undefined` if the array is empty
 
 If a callback is provided, then the method will return the first item
 that passes the check in the function
@@ -135,7 +135,7 @@ Creates a new array that contains all the same items as the original one
     each(Function lambda[, Object scope]) -> Array self
     each(String name[, argument, ...])    -> Array self
 
-Applies the given function in the given optional scope on every item in the 
+Calls the given function in the given optional scope with every item in the 
 array.
 
     var elements = some_html_elements_list;
@@ -183,7 +183,7 @@ array.
     filter(String name[, argument, ...])    -> Array new
 
 Creates a new array that contains all the items from the original array 
-that passes a check in the lambda function
+that pass a check in the lambda function
 
     var strings = ['anny', 'manny', 'banny', 'bob'];
     
@@ -331,7 +331,7 @@ calling the lambda function or attribute of each item
 Checks if every item in the array matches the given check function
 
 If no function provided then every element will be checked as
-boolean values
+a boolean value
 
     [1,2,3,4].every() // -> true
     [0,1,2,3].every() // -> false
@@ -349,10 +349,10 @@ boolean values
     some(Function lambda[, Object scope]) -> boolean
     some(String name[, argument, ...])    -> boolean
 
-Checks if any of the items in the array passes the check function
+Checks if any of the items in the array pass the check function
 
 If no function provided, then every element will be checked as
-boolean values
+a boolean value
 
     [0,false,1].some()    // -> true
     [0,false,null].some() // -> false

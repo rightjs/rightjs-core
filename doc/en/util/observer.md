@@ -51,8 +51,7 @@ and if found, will try to generate shortcuts automatically.
     });
     
     var klass = new Klass();
-    klass.onStart(.....);
-    klass.start();
+    klass.onStart(function() {...});
 
 __NOTE:__ if your class has intersecting methods the shortcuts generator 
 will keep them alive and just skip the name.
@@ -104,15 +103,18 @@ Generates the observer shortcuts on the observable unit
     
     Observer.createShortcuts(observer, ['start', 'stop']);
     
-    observer.onStart(function() {});
-    observer.stop();
+    observer.onStart(function() {...});
 
 ### #initialize
 
     initialize([Object options])
 
-The generic constructor. If you send with options keys like 'onSomething'
+The generic constructor. If you send with options keys like `'onSomething'`
 the observer will automatically wire it to the to the 'something' event.
+
+__NOTE__: if you create a subclass of `Observer` and overload its constructor,
+don't forget to call `this.$super(options);` inside of it to bypass the event
+handlers.
 
     var observer = new Observer();
     var observer = new Observer({

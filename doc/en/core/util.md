@@ -54,7 +54,7 @@ Converts any iterable object into an {Array} instance
 
     $E(String tag_name[, Object options]) -> Element new
 
-A shortcut for 'new Element'
+A shortcut for `new Element`
 
     var div = $E('div', {id: 'some-id'});
 
@@ -207,7 +207,7 @@ Checks if the given value is a {Number}
 
     isElement(mixed value) -> boolean check result
 
-Checks if the given value is a {HTMLElement} instance
+Checks if the given value is an {HTMLElement} instance
 
     isElement(document.createTextNode('boo')); // -> false
     isElement(document.createElement('div'));  // -> true

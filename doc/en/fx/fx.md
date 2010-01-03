@@ -81,7 +81,7 @@ Forces the effect to stop and mark it as a completely finished
 
     cancel() -> Fx self
 
-Interrupts the effect
+Cancels the effect
 
 
 ### #pause
@@ -102,8 +102,8 @@ Resumes a paused effect processing
 
     prepare([....]) -> void
     
-An abstract method, which called with all the same arguments as the {#start}
-method when the visual effects queue comes to this effect.
+An abstract method, which is getting called with all the same arguments as the
+{#start} method when the visual effects queue comes to this effect.
 
 
 ### #render

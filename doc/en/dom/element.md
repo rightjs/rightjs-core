@@ -1,34 +1,36 @@
 # Element
 
 The dom-element unit in RightJS is called `Element` and it handles all the
-dom-elements extensions.
+dom-element extensions.
 
 
 ## Additional Methods
 
-All the additional methods in RightJS are built into the element prototype,
-but as the old IE browsers don't support the feature, you need to call the
-`$()` function at least once, when you pick up a new element form a page.
+If you use RightJS own methods and functions to navigate around elements,
+then all the extensions on selected elements will be available automatically
+and immediately.
 
-You don't need to worry about it when you select elements using RightJS own
-methods, all of them will be extended automatically. `$()` is only for the
-case when you grab an element by ID or receive it outside of RightJS stack.
+The only exception is the cases when you take an element from outside of
+the RightJS stack. Say, you assign an event handler directly in an element
+attribute, or you receive a dom-element that was found by another script.
+In those cases you need to call the `$()` function on those elements at
+least once to make all the additional methods to appear.
 
 
-## Setting Methods And Chains
+## Set Methods And Chains
 
 All the set-methods in RightJS return a reference to the object they belong
 to, this way you can easily create chains of calls like that
 
-    $('some-element').on("click", function() {}).setStyle({
-      fontSize: '200%'
-    }).addClass('marked').update('with text'
-    ).toggle().set('title', 'some-title') ...;
+    $('some-element').on("click", function() {})
+      .setStyle({fontSize: '200%'})
+      .addClass('marked').update('with text')
+      .toggle().set('title', 'some-title') ...;
 
 
 ## Selector Methods
 
-There is a number of methods like, {#parents}, {#siblings}, etc. that meant to
+There is a number of methods like, {#parents}, {#siblings}, etc. to
 help you to navigate around an element's neighborhood. All the methods can be
 used as is, or they can receive an optional css-selector rule that will filter
 out the result.
@@ -39,8 +41,8 @@ out the result.
     element.siblings('div'); // all the siblings with tag 'div'
 
 __NOTE__: RightJS doesn't use any special interfaces to process node lists,
-instead of that we use simple {Array} instances, so you can take all the
-advantages of that
+instead of that we use simple {Array} instances. And as they support calls
+by name, you can take all the advantages of that working with dom-elements
 
     $('some-list').select('li')
       .filter('hasClass', 'marked')
@@ -49,7 +51,7 @@ advantages of that
 
 ## Events Processing
 
-The Element unit has all the standard {Observer} unit interfaces and handles
+The `Element` unit has all the standard {Observer} unit interface and handles
 events binding the same exact way.
 
     $('some-element').on('click', function() {
@@ -66,8 +68,8 @@ events binding the same exact way.
       function1, function2, function3
     ]);
 
-There are also shortcuts for all the standard dom-events and you can use the
-callbacks by name references as well
+There are also shortcuts for all the standard dom-events. And you can use the
+name references for callbacks by as well
 
     $('element').onClick('addClass', 'marked');
 
@@ -78,6 +80,15 @@ And finally, you can trigger any event handler manually like this
   
     element.fire('click',    { button: 3 });
     element.fire('keypress', { keyCode: 12 });
+
+
+## Custom events
+
+At the interface level, in RightJS there is no difference between standard
+and custom events, all of them are handled the same exact way
+
+    element.on('my-event', function() {....});
+    element.fire('my-event');
 
 
 ### .addMethods
@@ -123,8 +134,8 @@ Everything will be handled in one flow.
 
 ### #set
 
-    set(String name, mixed value) -> Element self
-    set(Object properties_hash)   -> Element self
+    set(String name, String value) -> Element self
+    set(Object properties_hash)    -> Element self
 
 Assigns the given attribute(s) to the element
 
@@ -202,7 +213,7 @@ __NOTE:__ Checks both, the element own and computed (css) styles.
     visible() -> boolean
 
 
-Checks if the element is visible. See {#hidden} for more details.
+Checks if the element is visible. See the {#hidden} method for more details.
 
     $('some-element').visible();
 
@@ -251,7 +262,7 @@ the effect will be used to process the toggle.
     radio([String effect[, Object options]]) -> Element self
 
 Hides all the sibling elements and shows itself. If a valid effect name was
-specified, the effect will be used to process the showing
+specified, the effect will be used to process the show
 
     $('some-element').radio();
     
@@ -300,7 +311,7 @@ was specified, the list will be filtered out by the rule
 
     subNodes([String css_rule]) -> Array of elements
 
-Returns the list of the immediate descendants of the element. Optionally
+Returns a list of the immediate descendants of the element. Optionally
 filtered out by the given css-rule.
 
     /*
@@ -534,6 +545,8 @@ Replaces the current element with the given content.
     update(mixed content) -> Element self
 
 Replaces the current element internal structure with the given content
+
+__NOTE__: all the scripts will be evaluated _after_ the update
 
     // <div id="one">foo bar</div>
     
@@ -816,7 +829,7 @@ Returns the element absolute position on the page
 
     scrolls() -> Object {x: NN , y: NN }
 
-Returns the element scrolls hash
+Returns the element scrolls in a hash
 
     var scroll_top  = $('element').scrolls().y;
     var scroll_left = $('element').scrolls().x;
@@ -827,7 +840,8 @@ Returns the element scrolls hash
     dimensions() -> Object
 
 Returns the element dimensions in a single hash. Includes the element
-width, height, top and left positions and scrollLeft and scrollTop values.
+`width`, `height`, `top` and `left` positions and `scrollLeft` and 
+`scrollTop` values.
 
     $('element').dimensions();
 
@@ -838,7 +852,7 @@ width, height, top and left positions and scrollLeft and scrollTop values.
 
 Sets the element width to the given size.
 
-__NOTE__: the method will automatically adjust the actual style.width to
+__NOTE__: this method will automatically adjust the actual style.width for
 existing paddings and borders so the end result was exactly the same as 
 was asked.
 
@@ -862,7 +876,7 @@ was asked.
 
 Sets the element height to the given size.
 
-__NOTE__: the method will automatically adjust the actual style.height to
+__NOTE__: this method will automatically adjust the actual style.height for
 existing paddings and borders so the end result was exactly the same as 
 was asked.
 
@@ -885,7 +899,7 @@ was asked.
 
 Sets the element size.
   
-NOTE: the method will automatically adjust the actual style to existing
+__NOTE:__ this method will automatically adjust the actual style for existing
 paddings and borders so the end result was exactly the same as asked.
 
     var element = new Element('div', {
@@ -942,7 +956,7 @@ with the response body.
   
 Takes all the standard {Xhr} class options as the second parameter.
   
-If there is javascript code in the response, by default it will be
+If there is any javascript code in the response, by default it will be
 automatically evaluated after the element body was updated.
   
 __NOTE:__ will perform a `GET` request by default.

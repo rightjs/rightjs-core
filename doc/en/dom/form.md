@@ -1,28 +1,28 @@
 # Form
 
-RightJS inherits forms from the general Element unit, which means you can do
+RightJS inherits forms from the common {Element} unit, which means you can do
 everything the same that you can do with any other element in the system, plus
 there are several additional features that might make the work with forms much 
 easier.
 
 ## Ajax handling
 
-To submit your form via an {Xhr} request you just need to call the `.send()`
+To submit your form via an {Xhr} request you simply need to call the {#send}
 method.
 
     $('some-form').send();
 
 This will handle everything automatically, grab the request method, url,
-options, etc. And, if your the form contains files to upload, it will be
+options, etc. And, if your form contains files to upload, it will be
 nicely handled by an iframed request in just the same way. You don't need
 to worry about anything.
 
 You can also mark the form as a remote one and then, when it gets submitted
-the form it will go via a {Xhr} request automatically.
+the form will go via a {Xhr} request automatically.
 
     $('some-form').remotize();
 
-And you can specify any the standard {Xhr} options too.
+And you can specify any standard {Xhr} options too.
 
     $('some-form').send({
       onSuccess: function(r) {
@@ -30,15 +30,15 @@ And you can specify any the standard {Xhr} options too.
       }
     });
     
-If your form has an element with css-class `spinner`, it will automatically
-use it as a spinner for your form, you don't need to define it specifically
+If your form has an element with the css-class `spinner`, it will be automatically
+used as a spinner for your form submission. You don't need to define it specifically
 
 
 ### .addMethods
 
     addMethods(Object methods[, boolean dont_rewrite])
 
-Registers additional methods for the Form elements
+Registers additional methods for the `Form` elements
 
     Form.addMethods({
       myMethod: function() {....}
@@ -51,9 +51,9 @@ Registers additional methods for the Form elements
 
     initialize([Object options])
 
-Basic constructor. Receives all the common Element unit options plus a
-boolean one named `remote` which tells if you want the form to be submitted
-via an {Xhr} request by default.
+Basic constructor. Receives all the common {Element} unit options plus a
+boolean one named `remote`, which tells if you want the form to be submitted
+via a {Xhr} request by default.
 
     var form = new Form({
       method: 'post',
@@ -74,7 +74,7 @@ Returns the form elements list in an array
 
     inputs() -> Array of elements
 
-Returns a list of all the form input elements without the buttons.
+Returns a list of all the form input elements _without_ the buttons.
 
     $('form').inputs();
 
@@ -139,7 +139,7 @@ url-query string.
 
     send([Object options]) -> Form self
 
-Remotely submits the form via an XHR request. The argument might contain
+Remotely submits the form via a {Xhr} request. The argument might contain
 any standard {Xhr} object options.
   
 __NOTE__: works with files uploading too!
@@ -157,7 +157,7 @@ __NOTE__: works with files uploading too!
 
     remotize([Object options]) -> Form self
 
-Marks the form to be automatically send via an {Xhr} request when submitted.
+Marks the form to be automatically send via a {Xhr} request when submitted.
 Optionally might preset any standard {Xhr} object options.
 
     $('form').remotize({spinner: $('some-image')});

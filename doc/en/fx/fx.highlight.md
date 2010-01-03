@@ -1,6 +1,6 @@
 # Fx.Highlight
 
-Fx.Highlight is a standard element highlighting visual effect.
+Fx.Highlight is a standard elements highlighting visual effect.
 
 ## Default Color
 

@@ -29,7 +29,7 @@ can take optional curry arguments
 
     bindAsEventListener(Object scope[, argument, ...]) -> Function new
 
-Binds the function to the given scope the way that it was handled the first 
+Binds the function to the given scope the way that it was handling the first 
 argument as an event
 
     var object = {
@@ -86,7 +86,7 @@ The functional approach right currying feature
 
 Schedules a delayed execution for the function.
   
-__NOTE__: this method returns the timeout pointer with additional method
+__NOTE__: this method returns a timeout pointer with additional method
 called `cancel()` by calling which the timeout can be canceled.
 
     var func = function() {
@@ -110,7 +110,7 @@ called `cancel()` by calling which the timeout can be canceled.
 
 Makes the function be periodically executed with the given timeout.
 
-__NOTE__: this method returns the timeout pointer with additional method
+__NOTE__: this method returns a timeout pointer with additional method
 called `stop()` by calling which the periodical execution can be stopped.
 
     var func = function() {
