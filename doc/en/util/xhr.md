@@ -92,6 +92,15 @@ cancel   | when the request was _manually_ canceled                      |
 __NOTE:__ Every callback will receive two arguments. The first one is the
 request instance, and the second one is the actual original request instance.
 
+You also can attach listeners to those events globally using the `Xhr` class
+level observer.
+
+    Xhr.onCreate(function() {...});
+    Xhr.onFailure(function() {...});
+    
+In this case `Xhr` will call your listeners on _every_ xhr request.
+
+
 ## JSON handling
 
 If the option `evalJSON` is true, then Xhr will try to evaluate responses that
