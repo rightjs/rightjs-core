@@ -102,9 +102,11 @@ Element.addMethods({
    * @return Element self
    */
   show: function(effect, options) {
-    // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
-    var value = this.tagName == 'DIV' ? 'block' : 'inline';
-    this.style.display = this._$pd == 'none' ? value : this._$pd || value;
+    if (this.getStyle('display') == 'none') {
+      // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
+      var value = this.tagName == 'DIV' ? 'block' : 'inline';
+      this.style.display = this._$pd == 'none' ? value : this._$pd || value;
+    }
     return this;
   },
   
