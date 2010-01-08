@@ -16,7 +16,7 @@ Element.addMethods({
    * @return Element self
    */
   set: function(hash, value) {
-    if (value) { var val = {}; val[hash] = value; hash = val; }
+    if (typeof(hash) === 'string') { var val = {}; val[hash] = value; hash = val; }
     
     for (var key in hash) {
       // some attributes are not available as properties
