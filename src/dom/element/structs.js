@@ -27,8 +27,8 @@ Element.addMethods({
   },
   
   subNodes: function(css_rule) {
-    var first_child = this.firstChild;
-    return first_child ? (first_child.tagName ? [$(first_child)] : []
+    var first_child = $(this.firstChild);
+    return first_child ? (first_child.tagName && (!css_rule || first_child.match(css_rule)) ? [first_child] : []
       ).concat(this.rCollect.call(first_child, 'nextSibling', css_rule)) : [];
   },
   

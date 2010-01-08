@@ -67,7 +67,17 @@ var ElementStructsTest = TestCase.create({
     this.assert(el2['subNodes']);
     this.assert(el3['subNodes']);
     
-    this.assertEqual([el1, el3], this.el.subNodes('div, span'), "getting the filtered parents list");
+    this.assertEqual([el1, el3], this.el.subNodes('div, span'), "getting the filtered subnodes list");
+    this.assertEqual([el2], this.el.subNodes('p'), "filtering the subnodes differently");
+    
+    // trying the same things, but with more settings
+    var el = $E('div');
+    var d1 = $E('div', {id: 'a'});
+    var d2 = $E('div', {id: 'b'});
+    
+    el.insert([d1, d2]);
+    
+    this.assertEqual([d2], el.subNodes('#b'));
   },
   
   testSiblings: function() {
