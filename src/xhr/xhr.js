@@ -230,15 +230,20 @@ var Xhr = new Class(Observer, {
   
   // sanitizes the json-response texts
   sanitizedJSON: function() {
-    // checking the JSON response formatting
-    if (!(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
-      if (this.secureJSON) {
-        throw "JSON parse error: "+this.text;
-      } else {
-        return null;
+    try {
+      return JSON.parse(this.text);
+    } catch(e) {
+      // manual json consistancy check
+      if (self.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
+        if (this.secureJSON) {
+          throw "JSON parse error: "+this.text;
+        } else {
+          return null;
+        }
       }
     }
     
+    // the fallback JSON extraction
     return eval("("+this.text+")");
   },
   

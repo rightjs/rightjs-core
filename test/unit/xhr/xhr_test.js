@@ -298,7 +298,7 @@ var XhrTest = TestCase.create({
   
   testJSONEvaluation: function() {
     this.mockAjax({
-      text: '{1:1, 2:2}',
+      text: '{"1":1, "2":2}',
       headers: {
         'Content-type': 'text/x-json'
       }
@@ -316,12 +316,12 @@ var XhrTest = TestCase.create({
     // should not process json if switched off
     this.assertNull(request.json);
     this.assertNull(request.responseJSON);
-    this.assertEqual('{1:1, 2:2}', request.text);
+    this.assertEqual('{"1":1, "2":2}', request.text);
   },
   
   testJSONEvaluationWithConstructorLevelCallbacks: function() {
     this.mockAjax({
-      text: '{1:1, 2:2}',
+      text: '{"1":1, "2":2}',
       headers: {
         'Content-type': 'text/x-json'
       }
