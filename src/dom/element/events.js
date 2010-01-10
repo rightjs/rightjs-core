@@ -18,7 +18,7 @@ Element.addMethods((function() {
     observer.observe.toString().replace(/(\$listeners\.push\((\w+?)\);)/, '$1'+
       '$2.e=Event.cleanName($2.e);$2.n=Event.realName($2.e);'+
       
-      '$2.w=function(){var a=$A(arguments),e=($2.r&&$2.r!=="stopEvent")?a.shift():Event.ext(a[0]);'+
+      '$2.w=function(){var a=$A(arguments),e=($2.r&&$2.r!=="stopEvent")?a.shift():Event.ext(a[0],this);'+
         'return $2.f.apply(this,a.concat($2.a))};'+(
       
       self.attachEvent ?

@@ -15,35 +15,30 @@ var Event = new Class(Event, {
      * extends a native object with additional functionality
      *
      * @param Event event
+     * @param Element bounding element
      * @return Event same event but extended
      */
-    ext: function(event) {
+    ext: function(event, bound_element) {
       if (!event.stop) {
         $ext(event, this.Methods, true);
         
         if (Browser.IE) {
           // faking the which button
-          if (event.type == 'click' || event.type == 'dblclick') {
-            event.which = 1;
-          } else if (event.type == 'contextmenu') {
-            event.which = 3;
-          } else {
-            event.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
-          }
+          event.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
           
           // faking the mouse position
           var scrolls = window.scrolls();
 
           event.pageX = event.clientX + scrolls.x;
           event.pageY = event.clientY + scrolls.y;
-
-
-          // faking the relatedTarget
-          event.relatedTarget = event.type == 'mouseover' ? event.fromEvent :
-            event.type == 'mouseout' ? event.toEvent : null;
-
+          
           // faking the target property  
-          event.target = event.srcElement;
+          event.target = event.srcElement || bound_element;
+          
+          // faking the relatedTarget, currentTarget and other targets
+          event.relatedTarget = event[(event.target == event.fromElement ? 'to' : 'from') + 'Element'];
+          event.currentTarget = bound_element;
+          event.eventPhase    = 3; // bubbling phase
         }
       }
       

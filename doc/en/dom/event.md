@@ -19,6 +19,7 @@ The list of faked attributes is following:
 
 * `which` - which mouse button was pressed (1,2,3)
 * `target` - target element reference
+* `currentTarget` - the bounding (listener) element reference
 * `relatedTarget` - the related element for the over and out mouse events
 * `pageX`, `pageY` - the cursor position relative to the document
  

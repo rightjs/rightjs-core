@@ -167,6 +167,15 @@ var ElementEventsTest = TestCase.create({
     this.assertEqual(['test-class'], remove_class_args);
     this.assertEqual(1, stop_event_args.length);
     this.assertEqual("click", stop_event_args[0].type);
+  },
+  
+  testW3CEventProperties: function() {
+    var e = null;
     
+    this.el.on('click', function(ev) { e = ev; });
+    this.fireClick(this.el);
+    
+    this.assertSame(this.el, e.target, "testing target");
+    this.assertEqual(1, e.which)
   }
 });
