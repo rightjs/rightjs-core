@@ -7,7 +7,7 @@
  *   The naming principle is inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var Observer = new Class({
   include: Options,
@@ -184,14 +184,12 @@ var Observer = new Class({
      */
     createShortcuts: function(object, names) {
       (names || []).each(function(name) {
-        var shortcuts = {}, method_name = name.replace(/:/g, '_').camelize();
-        shortcuts[method_name] = function() {
-          return this.fire.apply(this, [name].concat($A(arguments)));
-        };
-        shortcuts['on'+method_name.capitalize()] = function() {
-          return this.on.apply(this, [name].concat($A(arguments)));
-        };
-        $ext(object, shortcuts, true);
+        var method_name = 'on'+name.replace(/:/g, '_').camelize().capitalize();
+        if (!defined(object[method_name])) {
+          object[method_name] = function() {
+            return this.on.apply(this, [name].concat($A(arguments)));
+          };
+        }
       });
       
       return object;

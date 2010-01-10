@@ -253,8 +253,6 @@ var ObserverTest = TestCase.create({
     
     this.assert(klass.onSomeEvent);
     this.assert(klass.onAnotherEvent);
-    this.assert(klass.someEvent);
-    this.assert(klass.anotherEvent);
   },
   
   testAutoShortcutsGeneratorForClass: function() {

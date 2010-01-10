@@ -9,7 +9,7 @@
  */
 [window, document].each(function(object) {
   Observer.createShortcuts(object, ['ready']);
-  var ready = object.ready.bind(object);
+  var ready = object.fire.bind(object, 'ready');
   
   // IE and Konqueror browsers
   if (document.readyState !== undefined) {

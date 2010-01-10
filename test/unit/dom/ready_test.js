@@ -17,8 +17,8 @@ var DomReadyTest = TestCase.create({
     window.onReady(function() { one = 1;});
     document.onReady(function() { two = 2;});
     
-    window.ready();
-    document.ready();
+    window.fire('ready');
+    document.fire('ready');
     
     this.assertEqual(1, one);
     this.assertEqual(2, two);

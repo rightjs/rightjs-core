@@ -135,8 +135,8 @@ var ElementEventsTest = TestCase.create({
   testShortcuts: function() {
     $w('click contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup').each(function(event) {
       var submitted = false;
-      
-      this.el['on'+event.capitalize()](function() { submitted = true; })[event]();
+
+      this.el['on'+event.capitalize()](function() { submitted = true; }).fire(event);
       
       this.assert(submitted, "testing event: "+event);
     }, this);
