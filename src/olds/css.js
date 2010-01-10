@@ -10,10 +10,10 @@
  *   - Sizzle    (http://sizzlejs.org)      Copyright (C) John Resig
  *   - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St.
  */
 if (!document.querySelector) {
-  Element.addMethods((function() {
+  Element.include((function() {
     /**
      * The token searchers collection
      */
@@ -416,7 +416,7 @@ if (!document.querySelector) {
       return select_all(document, css_rule || '*');
     };
     
-    // sending the extension to the Element#addMethods
+    // sending the extension to the Element#include
     return dom_extension;
   })());
 }

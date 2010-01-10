@@ -5,9 +5,9 @@
  *   Most of the naming system in the module inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Element.addMethods({
+Element.include({
   /**
    * sets the element attributes
    *

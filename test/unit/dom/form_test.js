@@ -1,7 +1,7 @@
 /**
  * The Form unit tests
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var FormTest = TestCase.create({
   name: 'FormTest',

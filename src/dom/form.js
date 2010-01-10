@@ -5,7 +5,7 @@
  *   The basic principles of the module are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Form = function(options) {
   var options = options || {}, remote = options.remote,
@@ -35,7 +35,7 @@ $ext(Form, {
    * @param Object methods hash
    * @return void
    */
-  addMethods: function(methods, dont_overwrite) {
+  include: function(methods, dont_overwrite) {
     $ext(Form.Methods, methods, dont_overwrite);
     
     try { // trying to extend the form element prototype
@@ -44,7 +44,8 @@ $ext(Form, {
   }
 });
 
-Form.addMethods({
+Form.addMethods = Form.include;
+Form.include({
   /**
    * returns the form elements as an array of extended units
    *
@@ -133,5 +134,5 @@ Form.addMethods({
 });
 
 // creating the shortcuts
-Form.addMethods(Observer.createShortcuts({}, $w('submit reset focus')), true);
+Form.include(Observer.createShortcuts({}, $w('submit reset focus')), true);
 

@@ -42,13 +42,23 @@ Extends the event object with additional methods
 
 Registers additional methods for the dom events
 
-    Event.addMethods({
+__DEPRECATED__: Please use the {.include} method instead
+
+    
+### .include
+
+    Event.include(Object methods[, boolean dont_rewrite])
+
+Registers additional methods for the dom events
+
+    Event.include({
       myMethod: function() {....}
     });
-    
+
     $('my_element').onClick(function(event) {
       event.myMethod()
     });
+
 
 
 ### #stop

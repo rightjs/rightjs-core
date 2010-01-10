@@ -6,9 +6,9 @@
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - jQuery    (http://jquery.com)        Copyright (C) John Resig
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Form.addMethods({
+Form.include({
   /**
    * sends the form via xhr request
    *

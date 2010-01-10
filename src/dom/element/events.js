@@ -1,9 +1,9 @@
 /**
  * DOM Element events handling methods
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Element.addMethods((function() {
+Element.include((function() {
   var observer = Observer.create({}, 
     $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
   );

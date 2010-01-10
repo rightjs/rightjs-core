@@ -7,7 +7,7 @@
  *   The additional method names are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Event = new Class(Event, {
   extend: {
@@ -74,20 +74,6 @@ var Event = new Class(Event, {
       return name;
     },
     
-    /**
-     * Registers some additional event extendsions
-     *
-     * @param Object methods
-     * @return void
-     */
-    addMethods: function(methods) {
-      $ext(this.Methods, methods);
-      
-      try { // extending the events prototype
-        $ext(Event.parent.prototype, methods, true);
-      } catch(e) {};
-    },
-    
     // the additional methods registry
     Methods: {}
   },
@@ -104,8 +90,23 @@ var Event = new Class(Event, {
   }
 });
 
+
+/**
+ * Registers some additional event extendsions
+ *
+ * @param Object methods
+ * @return void
+ */
+Event.addMethods = Event.include = function(methods) {
+  $ext(this.Methods, methods);
+  
+  try { // extending the events prototype
+    $ext(Event.parent.prototype, methods, true);
+  } catch(e) {};
+};
+
 // hooking up the standard extendsions
-Event.addMethods({
+Event.include({
   stopPropagation: function() {
     this.cancelBubble = true;
   },

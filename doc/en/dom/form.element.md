@@ -24,11 +24,22 @@ shortcuts are in place, you can wire and run the events in the usual way.
 Registers additional methods for the form input element units, like INPUT,
 SELECT, TEXTAREA
 
-    Form.Element.addMethods({
+__DEPRECATED__: Please use the {.include} method instead
+
+
+### .include
+
+    include(Object methods[, boolean dont_rewrite])
+
+Registers additional methods for the form input element units, like INPUT,
+SELECT, TEXTAREA
+
+    Form.Element.include({
       myMethod: function() {....}
     });
-    
+
     $('my_input').myMethod();
+
 
 
 ### #getValue

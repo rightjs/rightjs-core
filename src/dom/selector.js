@@ -4,9 +4,9 @@
  * NOTE: this module is just a wrap over the native CSS-selectors feature
  *       see the olds/css.js file for the manual selector code
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Element.addMethods((function() {
+Element.include((function() {
   /**
    * Native css-selectors include the current element into the search context
    * and as we actually search only inside of the element we add it's tag

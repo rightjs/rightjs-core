@@ -1,7 +1,7 @@
 /**
  * The Element class unit-test
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var ElementTest = TestCase.create({
   name: 'ElementTest',
@@ -60,7 +60,7 @@ var ElementTest = TestCase.create({
     this.assertEqual('inner html', el.innerHTML);
   },
   
-  testAddMethods: function() {
+  testInclude: function() {
     var foo = function(title) {
       this.title = title;
       this.id    = this.___bar();
@@ -68,7 +68,7 @@ var ElementTest = TestCase.create({
     };
     var bar = function() { return this.title + '-id' };
     
-    this.assertSame(Element, Element.addMethods({
+    this.assertSame(Element, Element.include({
       ___foo: foo,
       ___bar: bar
     }));

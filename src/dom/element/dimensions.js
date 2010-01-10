@@ -2,9 +2,9 @@
  * this module contains the Element's part of functionality 
  * responsible for the dimensions and positions getting/setting
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Element.addMethods({
+Element.include({
   /**
    * Returns the element sizes as a hash
    *

@@ -40,11 +40,21 @@ used as a spinner for your form submission. You don't need to define it specific
 
 Registers additional methods for the `Form` elements
 
-    Form.addMethods({
+__DEPRECATED__: Please use the {.include} method instead
+
+
+### .include
+
+    include(Object methods[, boolean dont_rewrite])
+
+Registers additional methods for the `Form` elements
+
+    Form.include({
       myMethod: function() {....}
     });
-    
+
     $('my_form').myMethod();
+
 
 
 ### #initialize

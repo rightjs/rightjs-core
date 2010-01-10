@@ -5,7 +5,7 @@
  *   The basic ideas are taken from
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 (function() {
   // trying to get the input element classes list
@@ -37,7 +37,7 @@
      * @param Object methods list
      * @return void
      */
-    addMethods: function(methods, dont_overwrite) {
+    include: function(methods, dont_overwrite) {
       $ext(this.Methods, methods, dont_overwrite);
 
       // extending the input element prototypes
@@ -56,8 +56,8 @@
     });
   });
 })();
-
-Form.Element.addMethods({
+Form.Element.addMethods = Form.Element.include;
+Form.Element.include({
   /**
    * uniform access to the element values
    *
@@ -150,4 +150,4 @@ Form.Element.addMethods({
 });
 
 // creating the common event shortcuts
-Form.Element.addMethods(Observer.createShortcuts({}, $w('disable enable focus blur change')), true);
+Form.Element.include(Observer.createShortcuts({}, $w('disable enable focus blur change')), true);

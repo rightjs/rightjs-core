@@ -7,9 +7,9 @@
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - Dojo      (www.dojotoolkit.org)      Copyright (C) The Dojo Foundation
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Element.addMethods({
+Element.include({
   /**
    * assigns styles out of the hash to the element
    *

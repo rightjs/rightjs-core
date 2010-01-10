@@ -4,9 +4,9 @@
  * Credits:
  *   - jQuery    (http://jquery.com)        Copyright (C) John Resig
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-Element.addMethods({
+Element.include({
   /**
    * performs an Xhr request to the given url
    * and updates the element internals with the responseText

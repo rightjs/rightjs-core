@@ -3,7 +3,7 @@
  *
  *   Keep them in one place so they were more compact
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St.
  */
 if (Browser.OLD) {
   // loads DOM element extensions for selected elements
@@ -73,7 +73,7 @@ if (Browser.OLD) {
     }
   });
   
-  Element.addMethods((function() {
+  Element.include((function() {
     var old_collect = Element.Methods.rCollect;
     
     return {

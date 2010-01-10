@@ -97,12 +97,21 @@ and custom events, all of them are handled the same exact way
 
 Registers additional methods for the dom-elements on the page
 
-    Element.addMethods({
+__DEPRECATED__: please use the {.include} method instead
+
+
+### .include
+  
+    Element.include(Object methods[, boolean don_rewrite])
+
+Registers additional methods for the dom-elements on the page
+    
+    Element.include({
       myMethod: function() {....}
     });
 
     $('my_element').myMethod();
-
+    
 
 ### #initialize
 

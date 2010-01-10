@@ -15,9 +15,9 @@
  *   The insertions system implementation is inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Element.addMethods({
+Element.include({
   parent: function(css_rule) {
     return css_rule ? this.parents(css_rule)[0] : $(this.parentNode);
   },

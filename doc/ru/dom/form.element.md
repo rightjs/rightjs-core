@@ -25,11 +25,21 @@
 
 Регистрирует дополнительные методы для элементов форм
 
-    Form.Element.addMethods({
+__УСТАРЕВШЕЕ__: пожалуйста используйте метод {.include}
+
+
+### .include
+
+    include(Object methods[, boolean dont_rewrite])
+
+Регистрирует дополнительные методы для элементов форм
+
+    Form.Element.include({
       myMethod: function() {....}
     });
-    
+
     $('my_input').myMethod();
+
 
 
 ### #getValue

@@ -1,7 +1,7 @@
 /**
  * The DOM Element unit handling
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 self.Element = (function(old_Element) {
   
@@ -47,7 +47,7 @@ $ext(Element, {
    * will add them to prototype and will generate a non extensive static mirror
    * 
    * USAGE:
-   *  Element.addMethods({
+   *  Element.include({
    *    foo: function(bar) {}
    *  });
    *
@@ -58,7 +58,7 @@ $ext(Element, {
    * @param Boolean flag if the method should keep the existing methods alive
    * @return Element the global Element object
    */
-  addMethods: function(methods, dont_overwrite) {
+  include: function(methods, dont_overwrite) {
     $ext(this.Methods, methods, dont_overwrite);
     
     try { // busting up the basic element prototypes
@@ -72,5 +72,8 @@ $ext(Element, {
     return this;
   },
   
-  Methods: {} // DO NOT Extend this object manually unless you really need it, use Element#addMethods
+  Methods: {} // DO NOT Extend this object manually unless you really need it, use Element#include
 });
+
+// the old interface alias, NOTE will be nuked
+Element.addMethods = Element.include;
