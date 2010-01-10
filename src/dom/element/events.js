@@ -51,5 +51,7 @@ Element.include((function() {
   $ext(window,   observer);
   $ext(document, observer);
   
+  Observer.createShortcuts(window, $w('blur focus scroll'));
+  
   return observer;
 })());

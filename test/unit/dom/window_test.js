@@ -1,7 +1,7 @@
 /**
  * The window extensions tests
  *
- * @copyright 2009 Nikolay V. Nemshilov aka St.
+ * @copyright 2009-2010 Nikolay V. Nemshilov aka St.
  */
 var WindowTest = TestCase.create({
   name: 'WindowTest',
@@ -69,5 +69,11 @@ var WindowTest = TestCase.create({
       this.assertEqual(el.position().y, window.scrolls().y);
     
     el.remove();
+  },
+  
+  testShortcuts: function() {
+    this.assertNotNull(window.onBlur, "test onBlur");
+    this.assertNotNull(window.onFocus, "test onFocus");
+    this.assertNotNull(window.onScroll, "test onScroll");
   }
 });

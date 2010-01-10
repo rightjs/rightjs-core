@@ -23,16 +23,16 @@ var Observer = new Class({
   },
   
   /**
-   * starts observing an event
+   * binds an event listener
    *
    * USAGE:
-   *  observe(String event, Function callback[, arguments, ...]);
-   *  observe(String event, String method_name[, arguments, ...]);
-   *  observe(Object events_hash);
+   *  on(String event, Function callback[, arguments, ...]);
+   *  on(String event, String method_name[, arguments, ...]);
+   *  on(Object events_hash);
    *
    * @return Observer self
    */
-  observe: function() {
+  on: function() {
     var args = $A(arguments), event = args.shift();
     
     if (isString(event)) {
@@ -89,7 +89,7 @@ var Observer = new Class({
    *   observes(Function callback)
    *   observes(String event, Function callback)
    *
-   * @retun Observer self
+   * @retun boolean check result
    */
   observes: function(event, callback) {
     if (this.$listeners) {
@@ -199,4 +199,4 @@ var Observer = new Class({
   }
 });
 
-$alias(Observer.prototype, { on: 'observe' });
+$alias(Observer.prototype, { observe: 'on' });
