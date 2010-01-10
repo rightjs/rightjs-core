@@ -1,7 +1,7 @@
 /**
  * The String class unit-test
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var StringTest = TestCase.create({
   name: 'StringTest',
@@ -39,16 +39,16 @@ var StringTest = TestCase.create({
   
   testStripScriptsWithScriptsExtraction: function() {
     var scripts = '';
-    "<script>\nalert('bla');\n\n\n</script> asdf <script>\talert('foo');</script>".stripScripts(
-      function(source) { scripts = source;
-    });
-    this.assertEqual("alert('bla');\nalert('foo');\n", scripts);
+    "<script>alert('bla');</script> asdf <script>alert('foo');</script>".stripScripts(
+      function(source) { scripts = source; }
+    );
+    this.assertEqual("alert('bla');\nalert('foo');", scripts.trim());
   },
   
   testExtractScripts: function() {
     this.assertEqual(
       "alert('bla');\nalert('foo');",
-      "<script>\nalert('bla');\n\n\n</script> asdf <script>\talert('foo');</script>".extractScripts().trim()
+      "<script>alert('bla');</script> asdf <script>alert('foo');</script>".extractScripts().trim()
     );
   },
   
@@ -63,10 +63,6 @@ var StringTest = TestCase.create({
     this.assertEqual('asdfAsdfAsdf', 'asdf_asdf_asdf'.camelize());
     this.assertEqual('asdfAsdfAsdf', 'asdf-asdf-asdf'.camelize());
     this.assertEqual('_asdfAsdfASDf', '_asdf_asdf_ASDf'.camelize());
-    
-    this.assertEqual('фываФываФыва', 'фыва_фыва_фыва'.camelize());
-    this.assertEqual('фываФываФыва', 'фыва-фыва-фыва'.camelize());
-    this.assertEqual('_фываФываФЫВА', '_фыва_фыва_ФЫВА'.camelize());
   },
   
   testUnderscored: function() {

@@ -7,7 +7,7 @@
  *   The trim function taken from work of Steven Levithan
  *     - http://blog.stevenlevithan.com/archives/faster-trim-javascript
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(String.prototype, {
   /**
@@ -54,9 +54,8 @@ $ext(String.prototype, {
    * @return String without scripts
    */
   stripScripts: function(option) {
-    var scripts = '';
-    var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/img, function(match, source) {
-      scripts += source.trim() + "\n";
+    var scripts = '', text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/img, function(match, source) {
+      scripts += source + "\n";
       return '';
     });
     
@@ -64,8 +63,6 @@ $ext(String.prototype, {
       $eval(scripts);
     else if (isFunction(option))
       option(scripts, text);
-    else if (isNumber(option))
-      $eval.bind(scripts).delay(options);
     
     return text;
   },

@@ -1,7 +1,7 @@
 /**
  * The Element class structures related module functionality test
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var ElementStructsTest = TestCase.create({
   name: 'ElementStructsTest',
@@ -349,6 +349,14 @@ var ElementStructsTest = TestCase.create({
     
     this.el.update([$E('i'), $E('b'), $E('u')]);
     this.assertEqual('<i></i><b></b><u></u>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+  },
+  
+  testInsertAndUpdateWithNumbers: function() {
+    this.el.insert(2.2);
+    this.assertEqual('2.2', this.el.innerHTML);
+    this.el.update(44);
+    this.assertEqual('44', this.el.innerHTML);
+    this.assertEqual('8.8', $E('div', {html: 8.8}).innerHTML);
   },
   
   testWrap: function() {

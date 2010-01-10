@@ -87,8 +87,8 @@ Element.include({
       var scripts, insertions = Element.insertions;
       position = isString(position) ? position.toLowerCase() : 'bottom';
       
-      if (isString(content)) {
-        content = content.stripScripts(function(s) { scripts = s; });
+      if (isString(content) || isNumber(content)) {
+        content = (''+content).stripScripts(function(s) { scripts = s; });
       }
       
       insertions[position](this, content.tagName ? content :
@@ -131,9 +131,9 @@ Element.include({
    * @return Element self
    */
   update: function(content) {
-    if (isString(content)) {
+    if (isString(content) || isNumber(content)) {
       var scripts;
-      this.innerHTML = content.stripScripts(function(s) { scripts = s; });
+      this.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
       if (scripts) $eval(scripts);
     } else {
       this.clean().insert(content);
