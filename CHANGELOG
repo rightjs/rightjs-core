@@ -1,3 +1,15 @@
+2010-01-12 Nikolay V. Nemshilov aka St.
+  o Version 1.5.3 Release
+    * IE Event patch for the currentTarget property
+    * Checkbox#set method fix in case of two arguments use
+    * Element#show bug fix when element was not hidden
+    * Element#subNodes bug fix for case when used with a filter
+    * Element.addMethods -> Element.include renamed
+    * Nuked undocumented events firing shortcuts
+    * Native JSON parser use for the Xhr class
+    * Window onBlur, onFocus, onScroll shortcuts
+    
+
 2009-12-26 Nikolay V. Nemshilov aka St.
   o Version 1.5.2 Release
     * Fx a dog-pile effect fixed
@@ -12,6 +24,7 @@
     * Opera =9.27  fix
     * Events by name attachment fix
     * Size updates
+
 
 2009-12-08 Nikolay V. Nemshilov aka St.
   o Version 1.5.0 Release
