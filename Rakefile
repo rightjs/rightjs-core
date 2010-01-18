@@ -11,7 +11,8 @@
 
 require 'rake'
 require 'fileutils'
-require File.dirname(__FILE__)+'/lib/front_compiler/init.rb'
+require 'rubygems'
+require 'front_compiler'
 
 RIGHTJS_VERSION = '1.5.3'
 
@@ -130,6 +131,10 @@ task :build do
   
   source = desc + source
   
+  # joining muli-lined strings
+  source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
+  
+  
   minified = FrontCompiler.new.compact_js(source)
   
   
@@ -162,6 +167,8 @@ task :build do
     JS_SOURCES[:olds].each do |file|
       olds_source += File.open("src/#{file}", "r").read + "\n\n"
     end
+    
+    olds_source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
   
     olds_header = File.open("src/HEADER.olds.js", 'r').read
     olds_minified = FrontCompiler.new.compact_js(olds_source)

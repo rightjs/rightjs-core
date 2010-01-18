@@ -1,3 +1,0 @@
-[submodule "lib/front_compiler"]
-	path = lib/front_compiler
-	url = git://github.com/MadRabbit/frontcompiler.git
