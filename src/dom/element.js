@@ -26,9 +26,9 @@ self.Element = (function(old_Element) {
     // and we kinda hacking the Element constructor so that
     // it affected IE browsers only
     //
-    new_Element = eval('({f:'+new_Element.toString().replace(/(\((\w+), (\w+)\) \{)/,
+    new_Element = eval('['+new_Element.toString().replace(/(\((\w+), (\w+)\) \{)/,
       '$1if($2=="input"&&$3&&$3.checked)$2="<input checked=true/>";'
-    )+'})').f;
+    )+']')[0];
   }
   
   // connecting the old Element instance to the new one for IE browsers

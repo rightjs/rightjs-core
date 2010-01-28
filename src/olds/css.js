@@ -264,7 +264,7 @@ if (!document.querySelector) {
             patch_filter('if(!s[p].call(e,v,s))continue;');
           }
 
-          desc.filter = eval('({f:'+ filter.replace('_f_', 'r.push(e)') +'})').f;
+          desc.filter = eval('['+ filter.replace('_f_', 'r.push(e)') +']')[0];
         }
         
         atoms_cache[atom] = desc;
