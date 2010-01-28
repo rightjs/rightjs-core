@@ -103,9 +103,14 @@ $ext(Object, {
   merge: function() {
     var object = {};
     for (var i=0, length = arguments.length; i < length; i++) {
-      if (isHash(arguments[i])) {
-        $ext(object, arguments[i]);
+      try {
+        if (isHash(arguments[i])) {
+          $ext(object, arguments[i]);
+        }
+      } catch(e) {
+        alert(arguments[i])
       }
+      
     }
     return object;
   },
@@ -123,4 +128,4 @@ $ext(Object, {
     }
     return tokens.join('&');
   }
-});
+}, true);
