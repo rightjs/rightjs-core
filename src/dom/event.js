@@ -22,7 +22,7 @@ var Event = new Class(Event, {
       if (!event.stop) {
         $ext(event, this.Methods, true);
         
-        if (Browser.IE) {
+        if (!event.which) {
           // faking the which button
           event.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
           
@@ -33,10 +33,10 @@ var Event = new Class(Event, {
           event.pageY = event.clientY + scrolls.y;
           
           // faking the target property  
-          event.target = event.srcElement || bound_element;
+          event.target = $(event.srcElement) || bound_element;
           
           // faking the relatedTarget, currentTarget and other targets
-          event.relatedTarget = event[(event.target == event.fromElement ? 'to' : 'from') + 'Element'];
+          event.relatedTarget = event.target === event.fromElement ? $(event.toElement) : event.target;
           event.currentTarget = bound_element;
           event.eventPhase    = 3; // bubbling phase
         }
