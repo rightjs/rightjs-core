@@ -217,8 +217,9 @@ function $w(string) {
   // Internet Explorer needs some additional mumbo-jumbo in here
   if (isHash(document.documentElement)) {
     win.isHash = function(value) {
-      return to_s.call(value) === '[object Object]' && value !== null &&
-        value.constructor !== document.documentElement.constructor;
+      return to_s.call(value) === '[object Object]' &&
+        value !== null && value !== undefined &&
+        value.hasOwnProperty !== undefined;
     };
   }
 

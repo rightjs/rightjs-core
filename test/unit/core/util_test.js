@@ -108,6 +108,7 @@ var UtilTest = TestCase.create({
     this.assertFalse(isHash('a'));
     this.assertFalse(isHash(null));
     this.assertFalse(isHash(false));
+    this.assertFalse(isHash(undefined));
     this.assertFalse(isHash(function() {}));
     this.assertFalse(isHash(new String('a')));
     this.assertFalse(isHash(new Element('div')));
