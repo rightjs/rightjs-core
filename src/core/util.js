@@ -107,20 +107,6 @@ function defined(value) {
   return value !== undefined;
 };
 
-/**
- * checks if the given value is a hash-like object
- *
- * @param mixed value
- * @return boolean check result
- */
-function isHash(value) {
-  return typeof(value) === 'object' && value !== null && value.constructor === Object;
-};
-
-// Opera 10.00 and Konqueror 3 heed some extra care with that
-if (isHash(document.createElement('p'))) {
-  eval(isHash.toString().replace(';', '&&!(arguments[0] instanceof HTMLElement);'));
-}
 
 /**
  * checks if the given value is a function
@@ -142,15 +128,6 @@ function isString(value) {
   return typeof(value) === 'string';
 };
 
-/**
- * checks if the given value is an array
- *
- * @param mixed value to check
- * @return boolean check result
- */
-function isArray(value) {
-  return value instanceof Array;
-};
 
 /**
  * checks if the given value is a number
@@ -181,24 +158,6 @@ function isElement(value) {
 function isNode(value) {
   return value && value.nodeType;
 };
-
-/**
- * converts any iterables into an array
- *
- * @param Object iterable
- * @return Array list
- */
-var $A = (function(slice) {
-  return function (it) {
-    try {
-      return slice.call(it);
-    } catch(e) {
-      for (var a=[], i=0, length = it.length; i < length; i++)
-        a[i] = it[i];
-      return a;
-    }
-  };
-})(Array.prototype.slice);
 
 /**
  * shortcut to instance new elements
@@ -241,14 +200,64 @@ function $w(string) {
   return string.trim().split(/\s+/);
 }
 
-/**
- * generates an unique id for an object
- *
- * @param Object object
- * @return Integer uniq id
- */
-var $uid = (function(UID) {
-  return function(item) {
+// we need to generate those functions in an anonymous scope
+(function(win) {
+  var to_s = Object.prototype.toString, slice = Array.prototype.slice, UID = 1;
+  
+  /**
+   * checks if the given value is a hash-like object
+   *
+   * @param mixed value
+   * @return boolean check result
+   */
+  win.isHash = function(value) {
+    return to_s.call(value) === '[object Object]';
+  };
+  
+  // Internet Explorer needs some additional mumbo-jumbo in here
+  if (isHash(document.documentElement)) {
+    win.isHash = function(value) {
+      return to_s.call(value) === '[object Object]' && value !== null &&
+        value.constructor !== document.documentElement.constructor;
+    };
+  }
+
+  /**
+   * checks if the given value is an array
+   *
+   * @param mixed value to check
+   * @return boolean check result
+   */
+  win.isArray = function(value) {
+    return to_s.call(value) === '[object Array]';
+  };
+  
+  /**
+   * converts any iterables into an array
+   *
+   * @param Object iterable
+   * @return Array list
+   */
+  win.$A = function (it) {
+    try {
+      return slice.call(it);
+    } catch(e) {
+      for (var a=[], i=0, length = it.length; i < length; i++)
+        a[i] = it[i];
+      return a;
+    }
+  };
+
+  /**
+   * generates an unique id for an object
+   *
+   * @param Object object
+   * @return Integer uniq id
+   */
+  win.$uid = function(item) {
     return item.uid || (item.uid = UID++);
   };
-})(1);
+  
+})(self);
+
+

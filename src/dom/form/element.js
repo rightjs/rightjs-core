@@ -81,7 +81,7 @@ Form.Element.include({
    */
   setValue: function(value) {
     if (this.type == 'select-multiple') {
-      value = (isArray(value) ? value : [value]).map(String);
+      value = $A(isArray(value) ? value : [value]).map(String);
       $A(this.getElementsByTagName('option')).each(function(option) {
         option.selected = value.includes(option.value);
       });

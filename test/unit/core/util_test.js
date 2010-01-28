@@ -1,10 +1,31 @@
 /**
  * There are the util methods test-case
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var UtilTest = TestCase.create({
   name: "UtilTest",
+  
+  beforeAll: function() {
+    var id = 'datatypes_checks_iframe';
+    
+    $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
+      '" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
+    
+    var array, object, doc;
+    
+    with (window.frames[id]) {
+      array  = Array;
+      object = Object;
+      doc    = document;
+    }
+    
+    this.scoped = {
+      'Array':    array,
+      'Object':   object,
+      'document': doc
+    };
+  },
   
   test_$ext: function() {
     var obj1 = { a: 1, b: 2 };
@@ -91,6 +112,17 @@ var UtilTest = TestCase.create({
     this.assertFalse(isHash(new String('a')));
     this.assertFalse(isHash(new Element('div')));
     this.assertFalse(isHash(document.createElement('div')));
+    
+    
+    // checking scoped elements
+    this.assertFalse(isHash(this.scoped.Array));
+    this.assertFalse(isHash(this.scoped.Object));
+    this.assertFalse(isHash(this.scoped.document));
+    
+    this.assertFalse(isHash(new this.scoped.Array));
+    this.assertFalse(isHash(this.scoped.document.createElement('div')));
+    
+    this.assertTrue(isHash(new this.scoped.Object));
   },
   
   test_isFunction: function() {
@@ -126,6 +158,8 @@ var UtilTest = TestCase.create({
     this.assertFalse(isArray(null));
     this.assertFalse(isArray(false));
     this.assertFalse(isArray(function(){}));
+    
+    this.assert(new this.scoped.Array);
   },
   
   test_isNumber: function() {

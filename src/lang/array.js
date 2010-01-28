@@ -6,7 +6,7 @@
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Array.prototype, (function(A_proto) {
   

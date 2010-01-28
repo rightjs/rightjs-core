@@ -59,11 +59,11 @@ var Observer = new Class({
 
         default:
           if (isArray(callback)) {
-            callback.each(function(params) {
+            for (var i=0; i < callback.length; i++) {
               this.observe.apply(this, [event].concat(
-                isArray(params) ? params : [params]
+                isArray(callback[i]) ? callback[i] : [callback[i]]
               ).concat(args));
-            }, this);
+            }
           }
       }
       

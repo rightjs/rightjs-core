@@ -7,7 +7,7 @@
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Class = function() {
   var args = $A(arguments), properties = args.pop() || {}, parent = args.pop();
