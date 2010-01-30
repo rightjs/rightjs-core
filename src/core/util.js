@@ -21,9 +21,9 @@
  * @return Objecte extended destination object
  */
 function $ext(dest, src, dont_overwrite) { 
-  var src = src || {};
+  var src = src || {}, key;
 
-  for (var key in src)
+  for (key in src)
     if (dont_overwrite === undefined || dest[key] === undefined)
       dest[key] = src[key];
 
@@ -201,7 +201,7 @@ function $w(string) {
 }
 
 // we need to generate those functions in an anonymous scope
-(function(win) {
+(function() {
   var to_s = Object.prototype.toString, slice = Array.prototype.slice, UID = 1;
   
   /**
@@ -210,13 +210,13 @@ function $w(string) {
    * @param mixed value
    * @return boolean check result
    */
-  win.isHash = function(value) {
+  isHash = function(value) {
     return to_s.call(value) === '[object Object]';
   };
   
   // Internet Explorer needs some additional mumbo-jumbo in here
   if (isHash(document.documentElement)) {
-    win.isHash = function(value) {
+    isHash = function(value) {
       return to_s.call(value) === '[object Object]' &&
         value !== null && value !== undefined &&
         value.hasOwnProperty !== undefined;
@@ -229,7 +229,7 @@ function $w(string) {
    * @param mixed value to check
    * @return boolean check result
    */
-  win.isArray = function(value) {
+  isArray = function(value) {
     return to_s.call(value) === '[object Array]';
   };
   
@@ -239,7 +239,7 @@ function $w(string) {
    * @param Object iterable
    * @return Array list
    */
-  win.$A = function (it) {
+  $A = function (it) {
     try {
       return slice.call(it);
     } catch(e) {
@@ -255,10 +255,10 @@ function $w(string) {
    * @param Object object
    * @return Integer uniq id
    */
-  win.$uid = function(item) {
+  $uid = function(item) {
     return item.uid || (item.uid = UID++);
   };
   
-})(self);
+})();
 
 

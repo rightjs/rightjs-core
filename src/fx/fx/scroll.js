@@ -13,8 +13,8 @@ Fx.Scroll = new Class(Fx, {
   },
   
   render: function(delta) {
-    var before = this.before;
-    for (var key in before) {
+    var before = this.before, key;
+    for (key in before) {
       this.element['scroll' + (key == 'x' ? 'Left' : 'Top')] = before[key] + (this.after[key] - before[key]) * delta;
     }
   }

@@ -5,7 +5,7 @@
  *   Some functionality is inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Object, {
   /**
@@ -15,8 +15,8 @@ $ext(Object, {
    * @return Array keys list
    */
   keys: function(object) {
-    var keys = [];
-    for (var key in object)
+    var keys = [], key;
+    for (key in object)
       keys.push(key);
     return keys;
   },
@@ -28,8 +28,8 @@ $ext(Object, {
    * @return Array values list
    */
   values: function(object) {
-    var values = [];
-    for (var key in object)
+    var values = [], key;
+    for (key in object)
       values.push(object[key]);
     return values;
   },
@@ -56,9 +56,9 @@ $ext(Object, {
    * @return Object filtered copy
    */
   without: function() {
-    var filter = $A(arguments), object = filter.shift(), copy = {};
+    var filter = $A(arguments), object = filter.shift(), copy = {}, key;
     
-    for (var key in object)
+    for (key in object)
       if (!filter.includes(key))
         copy[key] = object[key];
     
@@ -77,9 +77,10 @@ $ext(Object, {
    * @return Object filtered copy
    */
   only: function() {
-    var filter = $A(arguments), object = filter.shift(), copy = {};
+    var filter = $A(arguments), object = filter.shift(), copy = {},
+        i=0, length = filter.length;
     
-    for (var i=0, length = filter.length; i < length; i++) {
+    for (; i < length; i++) {
       if (defined(object[filter[i]]))
         copy[filter[i]] = object[filter[i]];
     }
@@ -101,16 +102,11 @@ $ext(Object, {
    * @return Object merged object
    */
   merge: function() {
-    var object = {};
-    for (var i=0, length = arguments.length; i < length; i++) {
-      try {
-        if (isHash(arguments[i])) {
-          $ext(object, arguments[i]);
-        }
-      } catch(e) {
-        alert(arguments[i])
+    var object = {}, i=0, length = arguments.length;
+    for (; i < length; i++) {
+      if (isHash(arguments[i])) {
+        $ext(object, arguments[i]);
       }
-      
     }
     return object;
   },
@@ -122,8 +118,8 @@ $ext(Object, {
    * @return String query
    */
   toQueryString: function(object) {
-    var tokens = [];
-    for (var key in object) {
+    var tokens = [], key;
+    for (key in object) {
       tokens.push(key+'='+encodeURIComponent(object[key]))
     }
     return tokens.join('&');

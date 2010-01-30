@@ -265,10 +265,10 @@ return {
    * @return Array new merged
    */
   merge: function() {
-    for (var copy = this.clone(), arg, i=0, length = arguments.length; i < length; i++) {
+    for (var copy = this.clone(), arg, i=0, j, length = arguments.length; i < length; i++) {
       arg = arguments[i];
       if (isArray(arg)) {
-        for (var j=0; j < arg.length; j++) {
+        for (j=0; j < arg.length; j++) {
           if (copy.indexOf(arg[j]) == -1)
             copy.push(arg[j]);
         }  
@@ -349,10 +349,9 @@ return {
    * @return Array shuffled version
    */
   shuffle: function() {
-    var shuff = this.clone();
+    var shuff = this.clone(), j, x, i = shuff.length;
     
-    for (var j, x, i = shuff.length; i;
-       j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x);
+    for (; i; j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x);
     
     return shuff;
   },

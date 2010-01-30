@@ -16,17 +16,6 @@ if (Browser.OLD) {
   
   
   $ext(document, {
-/* TODO Not sure about this thing for now
-        It's kinda makes sense, but it will perform
-        double check in node search operations
-        
-    getElementById: (function(old_method) {
-      return function(id) {
-        return Element.prepare(old_method(id));
-      };
-    })(document.getElementById),
- */
-    
     /**
      * Overloading the native method to extend the new elements as it is
      * in all the other browsers
@@ -54,7 +43,7 @@ if (Browser.OLD) {
       if (element && element.tagName && !element.set) {
         $ext(element, Element.Methods, true);
 
-        if (self['Form']) {
+        if (self.Form) {
           switch(element.tagName) {
             case 'FORM':
               Form.ext(element);

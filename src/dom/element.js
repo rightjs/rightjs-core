@@ -3,10 +3,10 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-self.Element = (function(old_Element) {
+Element = (function(old_Element) {
   
   var new_Element = function(tag, options) {
-    var element = document.createElement(tag), options = options || {};
+    var element = document.createElement(tag), options = options || {}, key;
     
     if (options.id)       { element.id = options.id;              delete(options.id);       }
     if (options.html)     { element.innerHTML = options.html;     delete(options.html);     }
@@ -14,7 +14,7 @@ self.Element = (function(old_Element) {
     if (options.style)    { element.setStyle(options.style);      delete(options.style);    }
     if (options.observe)  { element.observe(options.observe);     delete(options.observe);  }
     
-    for (var key in options) // a filter in case there is no keys in the options left
+    for (key in options) // a filter in case there is no keys in the options left
       return element.set(options);
     return element;
   };

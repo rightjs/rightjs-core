@@ -5,7 +5,7 @@
  *   Some of the functionality inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 $ext(Function.prototype, (function() {
   // creating a local reference to the method for a faster access
@@ -78,8 +78,8 @@ return {
    * @return Integer timeout marker
    */
   delay: function() {
-    var args  = _A.call(arguments), timeout = args.shift();
-    var timer = new Number(window.setTimeout(this.bind.apply(this, [this].concat(args)), timeout));
+    var args  = _A.call(arguments), timeout = args.shift(),
+        timer = new Number(window.setTimeout(this.bind.apply(this, [this].concat(args)), timeout));
 
     timer.cancel = function() { window.clearTimeout(this); };
 
@@ -95,8 +95,8 @@ return {
    * @return Ineger interval marker
    */
   periodical: function() {
-    var args  = _A.call(arguments), timeout = args.shift();
-    var timer = new Number(window.setInterval(this.bind.apply(this, [this].concat(args)), timeout));
+    var args  = _A.call(arguments), timeout = args.shift(),
+        timer = new Number(window.setInterval(this.bind.apply(this, [this].concat(args)), timeout));
 
     timer.stop = function() { window.clearInterval(this); };
 

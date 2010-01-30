@@ -8,9 +8,9 @@
  *   The idea of the module is inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-var Options = {
+Options = {
   /**
    * assigns the options by merging them with the default ones
    *
@@ -18,12 +18,11 @@ var Options = {
    * @return Object current instance
    */
   setOptions: function(options) {
-    var options = this.options = Object.merge(Class.findSet(this, 'options'), options);
+    var options = this.options = Object.merge(Class.findSet(this, 'options'), options), match, key;
     
     // hooking up the observer options
     if (isFunction(this.on)) {
-      var match;
-      for (var key in options) {
+      for (key in options) {
         if (match = key.match(/on([A-Z][A-Za-z]+)/)) {
           this.on(match[1].toLowerCase(), options[key]);
           delete(options[key]);

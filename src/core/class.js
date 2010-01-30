@@ -10,18 +10,18 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Class = function() {
-  var args = $A(arguments), properties = args.pop() || {}, parent = args.pop();
+  var args = $A(arguments), properties = args.pop() || {}, parent = args.pop(),
+  
+  // basic class object definition
+  klass = function() {
+    return this.initialize ? this.initialize.apply(this, arguments) : this;
+  };
 
   // if only the parent class has been specified
   if (!args.length && !isHash(properties)) {
     parent = properties; properties = {};
   }
-
-  // basic class object definition
-  var klass = function() {
-    return this.initialize ? this.initialize.apply(this, arguments) : this;
-  };
-
+  
   // attaching main class-level methods
   $ext(klass, Class.Methods).inherit(parent);
   

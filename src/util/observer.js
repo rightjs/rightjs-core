@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-var Observer = new Class({
+Observer = new Class({
   include: Options,
   
   /**

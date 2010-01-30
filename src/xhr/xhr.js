@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-var Xhr = new Class(Observer, {
+Xhr = new Class(Observer, {
   extend: {
     // supported events list
     EVENTS: $w('success failure complete request cancel create'),
@@ -104,7 +104,7 @@ var Xhr = new Class(Observer, {
    * @return Xhr self
    */
   send: function(params) {
-    var add_params = {}, url = this.url, method = this.method.toLowerCase();
+    var add_params = {}, url = this.url, method = this.method.toLowerCase(), key;
     
     if (method == 'put' || method == 'delete') {
       add_params['_method'] = method;
@@ -129,7 +129,7 @@ var Xhr = new Class(Observer, {
     
     this.xhr.onreadystatechange = this.stateChanged.bind(this);
     
-    for (var key in this.headers) {
+    for (key in this.headers) {
       this.xhr.setRequestHeader(key, this.headers[key]);
     }
     

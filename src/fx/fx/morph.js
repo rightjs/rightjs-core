@@ -5,7 +5,7 @@
  *   The idea is inspired by the Morph effect from
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 Fx.Morph = new Class(Fx, (function() {
   // a list of common style names to compact the code a bit
@@ -45,15 +45,15 @@ Fx.Morph = new Class(Fx, (function() {
   
   // parses the style hash into a processable format
   var parse_style = function(values) {
-    var result = {}, re = /[\d\.\-]+/g, m;
+    var result = {}, re = /[\d\.\-]+/g, m, key, value, i;
     
-    for (var key in values) {
+    for (key in values) {
       m = values[key].match(re);
-      var value = m.map('toFloat');
+      value = m.map('toFloat');
       value.t = values[key].split(re);
       value.r = value.t[0] === 'rgb(';
       if (value.t[0] === '' || value.r) value.t.shift();
-      for (var i=0; i < value.length; i++) {
+      for (i=0; i < value.length; i++) {
         value.t.splice(i*2, 0, value[i]);
       }
       result[key] = value;
@@ -79,12 +79,12 @@ return {
   },
   
   render: function(delta) {
-    var before, after, value, style = this.element.style;
-    for (var key in this.after) {
+    var before, after, value, style = this.element.style, key, i;
+    for (key in this.after) {
       before = this.before[key];
       after  = this.after[key];
       
-      for (var i=0; i < after.length; i++) {
+      for (i=0; i < after.length; i++) {
         value = before[i] + (after[i] - before[i]) * delta;
         if (after.r) value = Math.round(value);
         after.t[i*2] = value;
@@ -106,9 +106,9 @@ return {
         .setStyle('position:absolute;z-index:-1;visibility:hidden')
         .insertTo(this.element, 'before')
         .setWidth(this.element.sizes().x)
-        .setStyle(style);
+        .setStyle(style),
     
-    var after  = this._cloneStyle(dummy, keys);
+    after  = this._cloneStyle(dummy, keys);
     
     dummy.remove();
     
@@ -136,12 +136,12 @@ return {
    * @return Array of clean style keys list
    */
   _styleKeys: function(style) {
-    var keys = [], border_types = [Style, Color, Width];
+    var keys = [], border_types = [Style, Color, Width], key, i, j;
       
-    for (var key in style) {
+    for (key in style) {
       if (key.startsWith(Border))
-        for (var i=0; i < border_types.length; i++)
-          for (var j=0; j < directions.length; j++)
+        for (i=0; i < border_types.length; i++)
+          for (j=0; j < directions.length; j++)
             keys.push(Border + directions[j] + border_types[i]);
       else if (key == 'margin' || key == 'padding')
         add_variants(keys, key, directions);
@@ -164,9 +164,9 @@ return {
    * @return void
    */
   _cleanStyles: function(before, after) {
-    var remove = [];
+    var remove = [], key;
     
-    for (var key in after) {
+    for (key in after) {
       // checking the height/width options
       if ((key == 'width' || key == 'height') && before[key] == 'auto') {
         before[key] = this.element['offset'+key.capitalize()] + 'px';
@@ -180,7 +180,7 @@ return {
     check_border_styles.call(this, before, after);
     
     // cleaing up the list
-    for (var key in after) {
+    for (key in after) {
       // proprocessing colors
       if (after[key] !== before[key] && !remove.includes(key) && /color/i.test(key)) {
         if (Browser.Opera) {

@@ -20,9 +20,10 @@ Element.include({
    * @return Element self
    */
   setStyle: function(hash, value) {
-    if (value) { var style = {}; style[hash] = value; hash = style; }
+    var key, c_key, style = {};
+    
+    if (value) { style[hash] = value; hash = style; }
     else if(isString(hash)) {
-      var style = {};
       hash.split(';').each(function(option) {
         var els = option.split(':').map('trim');
         if (els[0] && els[1]) {
@@ -32,8 +33,8 @@ Element.include({
       hash = style;
     }
     
-    var c_key;
-    for (var key in hash) {
+    
+    for (key in hash) {
       c_key = key.indexOf('-') != -1 ? key.camelize() : key;
       
       if (key === 'opacity') {

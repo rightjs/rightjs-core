@@ -1,8 +1,8 @@
 /**
  * iterators in-callbacks break exception
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-var Break = new Class(Error, {
+Break = new Class(Error, {
   message: "Manual iterator break"
 });

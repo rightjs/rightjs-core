@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-var Event = new Class(Event, {
+Event = new Class(self.Event, {
   extend: {
     /**
      * extends a native object with additional functionality
