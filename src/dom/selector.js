@@ -41,18 +41,18 @@ return {
   /**
    * checks if the element matches this css-rule
    *
+   * NOTE: the element should be attached to the page
+   *
    * @param String css-rule
    * @return Boolean check result
    */
   match: function(css_rule) {
-    if (!css_rule || css_rule == '*') return true;
+    var result, parent = this.tagName === 'HTML' ? this.ownerDocument : this.parents().last();
     
-    var fake, result, parent, parents = this.parents();
+    // if it's a single node putting it into the context
+    result = $(parent || $E('p').insert(this)).select(css_rule).include(this);
     
-    parent = parents.length ? parents.last() : fake = $E('div').insert(this);
-    result = parent.select(css_rule).include(this);
-    
-    if (fake) { this.remove(); }
+    if (!parent) this.remove();
     
     return result;
   }
@@ -61,10 +61,10 @@ return {
 // document-level hooks
 $ext(document, {
   first: function(css_rule) {
-    return this.querySelector(css_rule || '*');
+    return this.querySelector(css_rule);
   },
   
   select: function(css_rule) {
-    return $A(this.querySelectorAll(css_rule || '*'));
+    return $A(this.querySelectorAll(css_rule));
   }
 });

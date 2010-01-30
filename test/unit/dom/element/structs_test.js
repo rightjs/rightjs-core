@@ -6,6 +6,14 @@
 var ElementStructsTest = TestCase.create({
   name: 'ElementStructsTest',
   
+  beforeAll: function() {
+    this.container = $E('div').insertTo(document.body);
+  },
+  
+  afterAll: function() {
+    this.container.remove();
+  },
+  
   setUp: function() {
     this.el = new Element('div');
   },
@@ -44,9 +52,19 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([el1, el2, el3], this.el.parents());
     this.assert(el1['parents']);
     this.assert(el2['parents']);
-    this.assert(el2['parents']);
+    this.assert(el3['parents']);
     
     this.assertEqual([el1, el3], this.el.parents('div, span'), "getting the filtered parents list");
+    
+    // trying them inside of the page context
+    this.container.insert(el3);
+    
+    this.assertEqual(
+      [el1, el2, el3, this.container, document.body, document.documentElement],
+      this.el.parents()
+    );
+    
+    this.assertEqual([el1, el3, this.container], this.el.parents('div, span'));
   },
   
   testSubNodes: function() {

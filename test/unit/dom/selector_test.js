@@ -1,10 +1,18 @@
 /**
  * The Element unit common methods module test-case
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
 var SelectorTest = TestCase.create({
   name: "SelectorTest",
+  
+  beforeAll: function() {
+    this.container = $E('div').insertTo(document.body);
+  },
+  
+  afterAll: function() {
+    this.container.remove();
+  },
   
   assertSelect: function(css_rule, block, elements, message) {
     var selected = block.select(css_rule);
@@ -144,7 +152,7 @@ var SelectorTest = TestCase.create({
     el12.appendChild(el121);
     
     block.id = 'test-block';
-    document.body.appendChild(block);
+    this.container.insert(block);
     
     /**
     
@@ -161,19 +169,14 @@ var SelectorTest = TestCase.create({
     
      */
      
-    try {
-      this.assertMatchRule('div#test-block', [block]);
-      this.assertMatchRule('div#test-block *', [el1, el2, el11, el12, el13, el121]);
-      this.assertMatchRule('div#test-block div > div', [el12, el121]);
-      this.assertMatchRule('div#test-block input, div#test-block h1', [el11, el13]);
-      
-    } finally {
-      document.body.removeChild(block);
-    }
+    this.assertMatchRule('div#test-block', [block]);
+    this.assertMatchRule('div#test-block *', [el1, el2, el11, el12, el13, el121]);
+    this.assertMatchRule('div#test-block div > div', [el12, el121]);
+    this.assertMatchRule('div#test-block input, div#test-block h1', [el11, el13]);
   },
   
   testIdMatch: function() {
-    var element = document.createElement('div');
+    var element = $E('div').insertTo(this.container);
     element.id = 'some';
     
     this.assertMatchRule('#some', element);
@@ -181,7 +184,7 @@ var SelectorTest = TestCase.create({
   },
   
   testTagMatch: function() {
-    var element = document.createElement('div');
+    var element = $E('div').insertTo(this.container);
     
     this.assertMatchRule('div', element);
     this.assertMatchRule('*', element);
@@ -189,7 +192,7 @@ var SelectorTest = TestCase.create({
   },
   
   testClassMatch: function() {
-    var element = document.createElement('div');
+    var element = $E('div').insertTo(this.container);
     element.className = 'boo foo';
     
     this.assertMatchRule('.boo', element);
@@ -203,7 +206,7 @@ var SelectorTest = TestCase.create({
   },
   
   testAttrsMatch: function() {
-    var element = document.createElement('input');
+    var element = $E('input').insertTo(this.container);
     element.title = 'title';
     element.name  = 'name';
     
@@ -240,8 +243,14 @@ var SelectorTest = TestCase.create({
   testPseudoMatch: function() {
     if (Browser.IE8) return; // IE8 has problems with the native selectors
     
-    var element = document.createElement('input');
-    element.type = 'checkbox';
+    var div = $E('div').insertTo(this.container);
+    
+    this.assertMatchRule('*:empty', div);
+    div.innerHTML = 'something';
+    this.assertNotMatchRule('*:empty', div);
+    
+    var element = $E('input', {type: 'checkbox'});
+    div.appendChild(element);
     
     this.assertNotMatchRule('input:checked', element);
     element.checked = true;
@@ -253,17 +262,9 @@ var SelectorTest = TestCase.create({
     if (!Browser.Opera) // opera doesn't get it somehow
       this.assertMatchRule('input:disabled', element);
     
-    var div = document.createElement('div');
-    this.assertMatchRule('*:empty', div);
-    div.innerHTML = 'something';
-    this.assertNotMatchRule('*:empty', div);
+    this.assertMatchRule('*:only-child', element);
     
     var element2 = document.createElement('input');
-    div.appendChild(element);
-    
-    this.assertMatchRule('*:only-child', element);
-    this.assertMatchRule('*:only-child', element2);
-    
     div.appendChild(element2);
     
     this.assertNotMatchRule('*:only-child', element);
