@@ -7,11 +7,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
-$ext(Function.prototype, (function() {
-  // creating a local reference to the method for a faster access
-  var _A = Array.prototype.slice;
-  
-return {
+$ext(Function.prototype, {
   /**
    * binds the function to be executed in the given scope
    *
@@ -21,11 +17,9 @@ return {
    * @return Function binded function
    */
   bind: function() {
-    if (arguments.length < 2 && !arguments[0]) return this;
-
-    var slice = _A, args = slice.call(arguments), scope = args.shift(), func = this;
+    var args = $A(arguments), scope = args.shift(), func = this;
     return function() {
-      return func.apply(scope, (args.length != 0 || arguments.length != 0) ? args.concat(slice.call(arguments)) : args);
+      return func.apply(scope, (args.length || arguments.length) ? args.concat($A(arguments)) : args);
     };
   },
 
@@ -38,9 +32,9 @@ return {
    * @return Function binded function
    */
   bindAsEventListener: function() {
-    var slice = _A, args = slice.call(arguments), scope = args.shift(), func = this;
+    var args = $A(arguments), scope = args.shift(), func = this;
     return function(event) {
-      return func.apply(scope, [event || window.event].concat(args).concat(slice.call(arguments)));
+      return func.apply(scope, [event || window.event].concat(args).concat($A(arguments)));
     };
   },
 
@@ -52,7 +46,7 @@ return {
    * @return Function curried function
    */
   curry: function() {
-    return this.bind.apply(this, [this].concat(_A.call(arguments)));
+    return this.bind.apply(this, [this].concat($A(arguments)));
   },
   
   /**
@@ -63,9 +57,9 @@ return {
    * @return Function curried function
    */
   rcurry: function() {
-    var curry = _A.call(arguments), func = this;
+    var curry = $A(arguments), func = this;
     return function() {
-      return func.apply(func, _A.call(arguments).concat(curry));
+      return func.apply(func, $A(arguments).concat(curry));
     }
   },
 
@@ -78,7 +72,7 @@ return {
    * @return Integer timeout marker
    */
   delay: function() {
-    var args  = _A.call(arguments), timeout = args.shift(),
+    var args  = $A(arguments), timeout = args.shift(),
         timer = new Number(window.setTimeout(this.bind.apply(this, [this].concat(args)), timeout));
 
     timer.cancel = function() { window.clearTimeout(this); };
@@ -95,7 +89,7 @@ return {
    * @return Ineger interval marker
    */
   periodical: function() {
-    var args  = _A.call(arguments), timeout = args.shift(),
+    var args  = $A(arguments), timeout = args.shift(),
         timer = new Number(window.setInterval(this.bind.apply(this, [this].concat(args)), timeout));
 
     timer.stop = function() { window.clearInterval(this); };
@@ -112,11 +106,11 @@ return {
    * @return Function chained function
    */
   chain: function() {
-    var args = _A.call(arguments), func = args.shift(), current = this;
+    var args = $A(arguments), func = args.shift(), current = this;
     return function() {
       var result = current.apply(current, arguments);
       func.apply(func, args);
       return result;
     };
   }
-}})());
+});
