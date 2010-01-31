@@ -25,9 +25,9 @@ Element.include({
   },
   
   subNodes: function(css_rule) {
-    var first_child = $(this.firstChild);
-    return first_child ? (first_child.tagName && (!css_rule || first_child.match(css_rule)) ? [first_child] : []
-      ).concat(this.rCollect.call(first_child, 'nextSibling', css_rule)) : [];
+    return this.select(css_rule).filter(function(element) {
+      return element.parentNode === this;
+    }, this);
   },
   
   siblings: function(css_rule) {
