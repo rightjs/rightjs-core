@@ -8,9 +8,9 @@
 Class.Methods = (function() {
   var commons = $w('selfExtended self_extended selfIncluded self_included'),
       extend  = commons.concat($w('prototype parent extend include')),
-      include = commons.concat(['constructor']),
+      include = commons.concat(['constructor']);
   
-  clean_module = function(module, what) {
+  function clean_module(module, what) {
     return Object.without.apply(Object, [module].concat(what == 'e' ? extend : include));
   };
   

@@ -6,7 +6,7 @@
 Element.include((function() {
   var observer = Observer.create({}, 
     $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
-  ),
+  );
   
   //
   // HACK HACK HACK
@@ -14,7 +14,7 @@ Element.include((function() {
   // I'm kinda patching the observer methods manually in here
   // the reason is in building flat and fast functions
   //
-  hack = function(name, re, text) {
+  function hack(name, re, text) {
     observer[name] = eval('['+ observer[name].toString().replace(re, text) +']')[0];
   };
   

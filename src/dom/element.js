@@ -5,7 +5,7 @@
  */
 Element = (function(old_Element) {
   
-  var new_Element = function(tag, options) {
+  function new_Element(tag, options) {
     var element = document.createElement(tag), options = options || {}, key;
     
     if (options.id)       { element.id = options.id;              delete(options.id);       }
@@ -44,7 +44,7 @@ Element = (function(old_Element) {
 $ext(Element, {
   /**
    * registeres the methods on the custom element methods list
-   * will add them to prototype and will generate a non extensive static mirror
+   * will add them to prototype and register at the Element.Methods hash
    * 
    * USAGE:
    *  Element.include({
@@ -52,7 +52,6 @@ $ext(Element, {
    *  });
    *
    *  $(element).foo(bar);
-   *  Element.foo(element, bar);
    *
    * @param Object new methods list
    * @param Boolean flag if the method should keep the existing methods alive
@@ -62,12 +61,8 @@ $ext(Element, {
     $ext(this.Methods, methods, dont_overwrite);
     
     try { // busting up the basic element prototypes
-      $ext(HTMLElement.prototype, methods, dont_overwrite);
-    } catch(e) {
-      try { // IE8 native element extension
-        $ext(this.parent.prototype, methods, dont_overwrite);
-      } catch(e) {}
-    }
+      $ext((self.HTMLElement || this.parent).prototype, methods, dont_overwrite);
+    } catch(e) {}
     
     return this;
   },

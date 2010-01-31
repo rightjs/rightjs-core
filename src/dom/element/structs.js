@@ -7,8 +7,6 @@
  * NOTE: if a css-rule was specified then the result of the method
  *       will be filtered/adjusted depends on the rule
  *
- *       the css-rule might be a string or a Selector instance
- *
  * Credits:
  *   The naming principle and most of the names are taken from
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson

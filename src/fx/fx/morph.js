@@ -15,13 +15,13 @@ Fx.Morph = new Class(Fx, (function() {
   
   
   // adds variants to the style names list
-  var add_variants = function(keys, key, variants) {
+  function add_variants(keys, key, variants) {
     for (var i=0; i < variants.length; i++)
       keys.push(key + variants[i]);
   };
   
   // adjusts the border-styles
-  var check_border_styles = function(before, after) {
+  function check_border_styles(before, after) {
     for (var i=0; i < 4; i++) {
       var direction = directions[i],
         bd_style = Border + direction + Style,
@@ -44,7 +44,7 @@ Fx.Morph = new Class(Fx, (function() {
   };
   
   // parses the style hash into a processable format
-  var parse_style = function(values) {
+  function parse_style(values) {
     var result = {}, re = /[\d\.\-]+/g, m, key, value, i;
     
     for (key in values) {

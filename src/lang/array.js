@@ -47,7 +47,7 @@ $ext(Array.prototype, (function(A_proto) {
     return true;
   };
   
-  var first = function(callback, scope) {
+  function first(callback, scope) {
     for (var i=0, length = this.length; i < length; i++) {
       if (callback.call(scope, this[i], i, this))
         return this[i];
@@ -55,7 +55,7 @@ $ext(Array.prototype, (function(A_proto) {
     return undefined;
   };
   
-  var last = function(callback, scope) {
+  function last(callback, scope) {
     for (var i=this.length-1; i > -1; i--) {
       if (callback.call(scope, this[i], i, this))
         return this[i];
@@ -69,7 +69,7 @@ $ext(Array.prototype, (function(A_proto) {
   //
   
   // prepares a correct callback function
-  var guess_callback = function(args, array) {
+  function guess_callback(args, array) {
     var callback = args[0], args = A_proto.slice.call(args, 1), scope = array;
     
     if (isString(callback)) {
@@ -87,10 +87,15 @@ $ext(Array.prototype, (function(A_proto) {
   };
   
   // calls the given method with preprocessing the arguments
-  var call_method = function(func, scope, args) {
+  function call_method(func, scope, args) {
     try {
       return func.apply(scope, guess_callback(args, scope));
     } catch(e) { if (!(e instanceof Break)) throw(e); }
+  };
+  
+  // checks the value as a boolean
+  function boolean_check(i) {
+    return !!i;
   };
   
 return {
@@ -228,8 +233,8 @@ return {
    * @param Object optional scope for the callback
    * @return boolean check result
    */
-  some: function() {
-    return call_method(some, this, arguments.length ? arguments : [function(i) { return !!i; }]);
+  some: function(value) {
+    return call_method(some, this, value ? arguments : [boolean_check]);
   },
   
   /**
@@ -239,8 +244,8 @@ return {
    * @param Object optional scope for the callback
    * @return Boolean check result
    */
-  every: function() {
-    return call_method(every, this, arguments.length ? arguments : [function(i) { return !!i; }]);
+  every: function(value) {
+    return call_method(every, this, value ? arguments : [boolean_check]);
   },
   
   /**

@@ -12,7 +12,7 @@ Element.include((function() {
    * and as we actually search only inside of the element we add it's tag
    * as a scope for the search
    */
-  var stub_rule = function(css_rule, tag) {
+  function stub_rule(css_rule, tag) {
     return css_rule ? css_rule.replace(/(^|,)/g, '$1'+ tag + ' ') : '*';
   };
   

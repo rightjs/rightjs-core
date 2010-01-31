@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-Form = function(options) {
+function Form(options) {
   var options = options || {}, remote = options.remote,
     form = new Element('form', Object.without(options, 'remote'));
   

@@ -168,7 +168,7 @@ if (!document.querySelector) {
      * @return Object atom matcher
      */
     var atoms_cache = {};
-    var build_atom = function(atom) {
+    function build_atom(atom) {
       if (!atoms_cache[atom]) {
         //
         // HACK HACK HACK
@@ -280,7 +280,7 @@ if (!document.querySelector) {
      * @return Function selector
      */
     var tokens_cache = {};
-    var build_selector = function(rule) {
+    function build_selector(rule) {
       var rule_key = rule.join('');
       if (!tokens_cache[rule_key]) {
         for (var i=0; i < rule.length; i++) {
@@ -346,7 +346,7 @@ if (!document.querySelector) {
      * @return Array of selectors
      */
     var selectors_cache = {}, chunks_cache = {};
-    var split_rule_to_selectors = function(css_rule) {
+    function split_rule_to_selectors(css_rule) {
       if (!selectors_cache[css_rule]) {
         chunker.lastIndex = 0;
         
@@ -382,7 +382,7 @@ if (!document.querySelector) {
      * @param String raw css-rule
      * @return Array search result
      */
-    var select_all = function(element, css_rule) {
+    function select_all(element, css_rule) {
       var selectors = split_rule_to_selectors(css_rule), result = [];
       for (var i=0, length = selectors.length; i < length; i++)
         result = result.concat(selectors[i](element));

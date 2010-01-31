@@ -10,10 +10,10 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
 var Class = function() {
-  var args = $A(arguments), properties = args.pop() || {}, parent = args.pop(),
+  var args = $A(arguments), properties = args.pop() || {}, parent = args.pop();
   
   // basic class object definition
-  klass = function() {
+  function klass() {
     return this.initialize ? this.initialize.apply(this, arguments) : this;
   };
 
