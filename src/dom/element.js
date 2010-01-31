@@ -5,17 +5,30 @@
  */
 Element = (function(old_Element) {
   
+  // Element constructor options mapper
+  var options_map = {
+    id:      ['id',        0],
+    html:    ['innerHTML', 0],
+    'class': ['className', 0],
+    style:   ['setStyle',  1],
+    observe: ['on',        1],
+    on:      ['on',        1]
+  };
+  
   function new_Element(tag, options) {
-    var element = document.createElement(tag), options = options || {}, key;
+    var element = document.createElement(tag);
     
-    if (options.id)       { element.id = options.id;              delete(options.id);       }
-    if (options.html)     { element.innerHTML = options.html;     delete(options.html);     }
-    if (options['class']) { element.className = options['class']; delete(options['class']); }
-    if (options.style)    { element.setStyle(options.style);      delete(options.style);    }
-    if (options.observe)  { element.observe(options.observe);     delete(options.observe);  }
+    if (options) {
+      for (var key in options) {
+        if (options_map[key]) {
+          if (options_map[key][1]) element[options_map[key][0]](options[key]);
+          else element[options_map[key][0]] = options[key];
+        } else {
+          element.set(key, options[key]);
+        }
+      }
+    }
     
-    for (key in options) // a filter in case there is no keys in the options left
-      return element.set(options);
     return element;
   };
   
