@@ -7,14 +7,14 @@
  * finds the core inclusion tag and uses it's src attribute
  * to dynamically load the olds patch
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St.
  */
 if (!document.querySelector) {
   (function() {
-    var rigth_src_re = /(\/right)([^\/]+)$/;
-    var core_src = $A(document.getElementsByTagName('script')).map('src').compact().first('match', rigth_src_re);
+    var rigth_src_re = /(^|\/)(right)([^\/]+)$/,
+        core_src = $A(document.getElementsByTagName('script')).map('src').compact().first('match', rigth_src_re);
     if (core_src)
-      document.write('<scr'+'ipt src="'+core_src.replace(rigth_src_re, '$1-olds$2')+'"></scr'+'ipt>');
+      document.write('<scr'+'ipt src="'+core_src.replace(rigth_src_re, '$1$2-olds$3')+'"></scr'+'ipt>');
   })();
 }
  
