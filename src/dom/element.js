@@ -39,7 +39,7 @@ Element = (function(old_Element) {
     // and we kinda hacking the Element constructor so that
     // it affected IE browsers only
     //
-    new_Element = eval('['+new_Element.toString().replace(/(\((\w+), (\w+)\) \{)/,
+    new_Element = eval('['+new_Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
       '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
     )+']')[0];
   }

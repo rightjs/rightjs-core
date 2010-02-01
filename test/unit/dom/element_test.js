@@ -90,6 +90,14 @@ var ElementTest = TestCase.create({
     this.assertEqual('radio', box2.type);
     this.assertEqual('box2',  box2.name);
     this.assertEqual(true,    box2.checked);
+    
+    if (Browser.OLD) {
+      this.assertEqual(
+        '<INPUT type=checkbox CHECKED name=box1>'+
+        '<INPUT type=radio CHECKED name=box2>',
+        $E('div').insert([box1, box2]).innerHTML
+      );
+    }
   },
   
   testInclude: function() {
