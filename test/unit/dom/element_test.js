@@ -52,12 +52,44 @@ var ElementTest = TestCase.create({
     this.assert(el.observes('click'));
   },
   
+  testInstanceWithShorterEvents: function() {
+    var el = new Element('div', {
+      on: {
+        click: function() {}
+      }
+    });
+    
+    this.assert(el.observes('click'));
+  },
+  
   testInstanceWithHtml: function() {
     var el = new Element('div', {
       html: "inner html"
     });
     
     this.assertEqual('inner html', el.innerHTML);
+  },
+  
+  testCheckboxConstruction: function() {
+    var box1 = new Element('input', {
+      type: 'checkbox',
+      name: 'box1',
+      checked: true
+    });
+    
+    this.assertEqual('checkbox', box1.type);
+    this.assertEqual('box1',     box1.name);
+    this.assertEqual(true,       box1.checked);
+    
+    var box2 = new Element('input', {
+      type: 'radio',
+      name: 'box2',
+      checked: true
+    });
+    
+    this.assertEqual('radio', box2.type);
+    this.assertEqual('box2',  box2.name);
+    this.assertEqual(true,    box2.checked);
   },
   
   testInclude: function() {
