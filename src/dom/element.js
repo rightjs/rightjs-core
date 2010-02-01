@@ -40,7 +40,7 @@ Element = (function(old_Element) {
     // it affected IE browsers only
     //
     new_Element = eval('['+new_Element.toString().replace(/(\((\w+), (\w+)\) \{)/,
-      '$1if($2=="input"&&$3) $2="<input name="+$3.name+ ($3.checked ? " checked" : "")+"/>";'
+      '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
     )+']')[0];
   }
   
