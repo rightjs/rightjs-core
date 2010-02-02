@@ -2,52 +2,52 @@
  * this script builds and runs all the tests
  */
 var tests = {
-  UtilTest:              'unit/core/util_test.js',
-  
-  BrowserTest:           'unit/core/browser_test.js',
-  ClassTest:             'unit/core/class_test.js',
-  
-  ObjectTest:            'unit/lang/object_test.js',
-  MathTest:              'unit/lang/math_test.js',
-  ArrayTest:             'unit/lang/array_test.js',
-  StringTest:            'unit/lang/string_test.js',
-  FunctionTest:          'unit/lang/function_test.js',
-  NumberTest:            'unit/lang/number_test.js',
-  RegexpTest:            'unit/lang/regexp_test.js',
-  
-  EventTest:             'unit/dom/event_test.js',
-  
-  ElementTest:           'unit/dom/element_test.js',
-  ElementStylesTest:     'unit/dom/element/styles_test.js',
-  ElementCommonsTest:    'unit/dom/element/commons_test.js',
-  ElementStructsTest:    'unit/dom/element/structs_test.js',
-  ElementDimensionsTest: 'unit/dom/element/dimensions_test.js',
-  ElementEventsTest:     'unit/dom/element/events_test.js',
-  
-  SelectorTest:          'unit/dom/selector_test.js',
-  
-  FormTest:              'unit/dom/form_test.js',
-  FormElementTest:       'unit/dom/form/element_test.js',
-  
-  DomReadyTest:          'unit/dom/ready_test.js',
-  WindowTest:            'unit/dom/window_test.js',
-  
-  OptionsTest:           'unit/util/options_test.js',
-  ObserverTest:          'unit/util/observer_test.js',
-  
-  CookieTest:            'unit/util/cookie_test.js',
-  
-  XhrTest:               'unit/xhr/xhr_test.js',
-  XhrIFramedTest:        'unit/xhr/xhr_iframed_test.js',
-  
-  FxTest:                'unit/fx/fx_test.js',
-  FxMorphTest:           'unit/fx/fx/morph_test.js'
+  UtilTest:              'core/util_test',
+                          
+  BrowserTest:           'core/browser_test',
+  ClassTest:             'core/class_test',
+                          
+  ObjectTest:            'lang/object_test',
+  MathTest:              'lang/math_test',
+  ArrayTest:             'lang/array_test',
+  StringTest:            'lang/string_test',
+  FunctionTest:          'lang/function_test',
+  NumberTest:            'lang/number_test',
+  RegexpTest:            'lang/regexp_test',
+                          
+  EventTest:             'dom/event_test',
+                          
+  ElementTest:           'dom/element_test',
+  ElementStylesTest:     'dom/element/styles_test',
+  ElementCommonsTest:    'dom/element/commons_test',
+  ElementStructsTest:    'dom/element/structs_test',
+  ElementDimensionsTest: 'dom/element/dimensions_test',
+  ElementEventsTest:     'dom/element/events_test',
+                          
+  SelectorTest:          'dom/selector_test',
+                          
+  FormTest:              'dom/form_test',
+  FormElementTest:       'dom/form/element_test',
+                          
+  DomReadyTest:          'dom/ready_test',
+  WindowTest:            'dom/window_test',
+                          
+  OptionsTest:           'util/options_test',
+  ObserverTest:          'util/observer_test',
+                          
+  CookieTest:            'util/cookie_test',
+                          
+  XhrTest:               'xhr/xhr_test',
+  XhrIFramedTest:        'xhr/xhr_iframed_test',
+                          
+  FxTest:                'fx/fx_test',
+  FxMorphTest:           'fx/fx/morph_test'
 };
 
 var test_names = [];
 for (var key in tests) {
   test_names.push(key);
-  document.writeln('<scr'+'ipt type="text/javascript" src="'+tests[key]+'"></scr'+'ipt>');
+  document.writeln('<scr'+'ipt type="text/javascript" src="unit/'+tests[key]+'.js"></scr'+'ipt>');
 }
 
 window.onload = function() {

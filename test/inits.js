@@ -1,66 +1,66 @@
 var scripts = [
-  'right.js',
+  'right',
   
-  'core/browser.js',
-  'core/util.js',
+  'core/browser',
+  'core/util',
   
-  'lang/object.js',
-  'lang/math.js',
-  'lang/array.js',
-  'lang/string.js',
-  'lang/function.js',
-  'lang/number.js',
-  'lang/regexp.js',
+  'lang/object',
+  'lang/math',
+  'lang/array',
+  'lang/string',
+  'lang/function',
+  'lang/number',
+  'lang/regexp',
   
-  'core/class.js',
-  'core/class/methods.js',
+  'core/class',
+  'core/class/methods',
   
-  'util/options.js',
-  'util/observer.js',
-  'util/break.js',
-  'util/cookie.js',
+  'util/options',
+  'util/observer',
+  'util/break',
+  'util/cookie',
   
-  'dom/event.js',
-  'dom/event/custom.js',
+  'dom/event',
+  'dom/event/custom',
   
-  'dom/element.js',
-  'dom/element/structs.js',
-  'dom/element/styles.js',
-  'dom/element/commons.js',
-  'dom/element/dimensions.js',
-  'dom/element/events.js',
+  'dom/element',
+  'dom/element/structs',
+  'dom/element/styles',
+  'dom/element/commons',
+  'dom/element/dimensions',
+  'dom/element/events',
   
-  'dom/selector.js',
+  'dom/selector',
   
-  'dom/form.js',
-  'dom/form/element.js',
+  'dom/form',
+  'dom/form/element',
   
-  'dom/window.js',
-  'dom/ready.js',
+  'dom/window',
+  'dom/ready',
   
-  'xhr/xhr.js',
-  'xhr/form.js',
-  'xhr/element.js',
-  'xhr/iframed.js',
+  'xhr/xhr',
+  'xhr/form',
+  'xhr/element',
+  'xhr/iframed',
   
-  'fx/fx.js',
-  'fx/string.js',
-  'fx/fx/morph.js',
-  'fx/fx/highlight.js',
-  'fx/fx/twin.js',
-  'fx/fx/slide.js',
-  'fx/fx/fade.js',
-  'fx/fx/scroll.js',
-  'fx/element.js',
+  'fx/fx',
+  'fx/string',
+  'fx/fx/morph',
+  'fx/fx/highlight',
+  'fx/fx/twin',
+  'fx/fx/slide',
+  'fx/fx/fade',
+  'fx/fx/scroll',
+  'fx/element',
   
   
   // old browser hacks
-  'olds/ie.js',
-  'olds/konq.js',
-  'olds/css.js'
+  'olds/ie',
+  'olds/konq',
+  'olds/css'
 ];
 
 for (var i=0; i < scripts.length; i++) {
-  document.writeln('<scr'+'ipt type="text/javascript" src="../src/'+scripts[i]+'"></scr'+'ipt>');
+  document.writeln('<scr'+'ipt type="text/javascript" src="../src/'+scripts[i]+'.js"></scr'+'ipt>');
 }
 
