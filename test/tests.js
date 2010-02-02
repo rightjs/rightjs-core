@@ -16,6 +16,7 @@ var tests = {
   RegexpTest:            'lang/regexp_test',
                           
   EventTest:             'dom/event_test',
+  EventDelegationTest:   'dom/event/delegation_test',
                           
   ElementTest:           'dom/element_test',
   ElementStylesTest:     'dom/element/styles_test',

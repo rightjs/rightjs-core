@@ -22,6 +22,7 @@ var scripts = [
   
   'dom/event',
   'dom/event/custom',
+  'dom/event/delegation',
   
   'dom/element',
   'dom/element/structs',

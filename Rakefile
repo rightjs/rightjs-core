@@ -41,6 +41,7 @@ JS_SOURCES = {
     
     dom/event.js
     dom/event/custom.js
+    dom/event/delegation.js
 
     dom/element.js
     dom/element/structs.js
