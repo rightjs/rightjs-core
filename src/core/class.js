@@ -52,7 +52,7 @@ var Class = function() {
 Class.findSet = function(object, property) {
   var upcased = property.toUpperCase(), capcased = property.capitalize(),
     candidates = [object, object.constructor].concat(object.constructor.ancestors),
-    holder = candidates.first(function(o) { return o[upcased] || o[capcased]});
+    holder = candidates.first(function(o) { return o && (o[upcased] || o[capcased]) });
     
   return holder ? holder[upcased] || holder[capcased] : null;
 };
