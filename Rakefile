@@ -21,73 +21,76 @@ BUILD_FILE  = 'right'
 
 JS_SOURCES = {
   :core => %w{
-    core/browser.js
-    core/util.js
+    core/util
 
-    lang/object.js
-    lang/math.js
-    lang/array.js
-    lang/string.js
-    lang/function.js
-    lang/number.js
-    lang/regexp.js
+    lang/object
+    lang/math
+    lang/array
+    lang/string
+    lang/function
+    lang/number
+    lang/regexp
 
-    core/class.js
-    core/class/methods.js
+    core/class
+    core/class/methods
 
-    util/options.js
-    util/observer.js
-    util/break.js
+    core/options
+    core/observer
+    core/break
+  },
+  
+  :dom => %w{
+    dom/browser
     
-    dom/event.js
-    dom/event/custom.js
-    dom/event/delegation.js
+    dom/event
+    dom/event/custom
+    dom/event/delegation
 
-    dom/element.js
-    dom/element/structs.js
-    dom/element/styles.js
-    dom/element/commons.js
-    dom/element/dimensions.js
-    dom/element/events.js
+    dom/element
+    dom/element/structs
+    dom/element/styles
+    dom/element/commons
+    dom/element/dimensions
+    dom/element/events
 
-    dom/selector.js
+    dom/selector
     
-    dom/window.js
-    dom/ready.js
+    dom/window
+    dom/ready
   },
   
   :cookie => %w{
-    util/cookie.js
+    dom/cookie
   },
   
   :form => %w{
-    dom/form.js
-    dom/form/element.js
+    dom/form
+    dom/form/element
   },
   
   :xhr => %w{
-    xhr/xhr.js
-    xhr/form.js
-    xhr/element.js
-    xhr/iframed.js
+    xhr/xhr
+    xhr/form
+    xhr/element
+    xhr/iframed
   },
   
   :fx => %w{
-    fx/fx.js
-    fx/string.js
-    fx/fx/morph.js
-    fx/fx/highlight.js
-    fx/fx/twin.js
-    fx/fx/slide.js
-    fx/fx/fade.js
-    fx/fx/scroll.js
-    fx/element.js
+    fx/fx
+    fx/string
+    fx/fx/morph
+    fx/fx/highlight
+    fx/fx/twin
+    fx/fx/slide
+    fx/fx/fade
+    fx/fx/scroll
+    fx/element
   },
   
   :olds => %w{
-    olds/ie.js
-    olds/konq.js
-    olds/css.js
+    olds/ie
+    olds/konq
+    olds/css
   }
 }
 
@@ -112,10 +115,10 @@ task :build do
   modules = []
   
   # filtering the modules
-  %w(core form cookie xhr fx olds).each do |package|
+  %w(core dom form cookie xhr fx olds).each do |package|
     unless options.include?("no-#{package}")
       JS_SOURCES[package.to_sym].each do |file|
-        source += File.open("src/#{file}", "r").read + "\n\n"
+        source += File.open("src/#{file}.js", "r").read + "\n\n"
       end
       modules << package
     end

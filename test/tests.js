@@ -4,9 +4,6 @@
 var tests = {
   UtilTest:              'core/util_test',
                           
-  BrowserTest:           'core/browser_test',
-  ClassTest:             'core/class_test',
-                          
   ObjectTest:            'lang/object_test',
   MathTest:              'lang/math_test',
   ArrayTest:             'lang/array_test',
@@ -14,6 +11,13 @@ var tests = {
   FunctionTest:          'lang/function_test',
   NumberTest:            'lang/number_test',
   RegexpTest:            'lang/regexp_test',
+  
+  ClassTest:             'core/class_test',
+  OptionsTest:           'core/options_test',
+  ObserverTest:          'core/observer_test',
+  
+  BrowserTest:           'dom/browser_test',
+  CookieTest:            'dom/cookie_test',
                           
   EventTest:             'dom/event_test',
   EventDelegationTest:   'dom/event/delegation_test',
@@ -32,11 +36,6 @@ var tests = {
                           
   DomReadyTest:          'dom/ready_test',
   WindowTest:            'dom/window_test',
-                          
-  OptionsTest:           'util/options_test',
-  ObserverTest:          'util/observer_test',
-                          
-  CookieTest:            'util/cookie_test',
                           
   XhrTest:               'xhr/xhr_test',
   XhrIFramedTest:        'xhr/xhr_iframed_test',

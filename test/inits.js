@@ -1,7 +1,6 @@
 var scripts = [
   'right',
   
-  'core/browser',
   'core/util',
   
   'lang/object',
@@ -15,10 +14,12 @@ var scripts = [
   'core/class',
   'core/class/methods',
   
-  'util/options',
-  'util/observer',
-  'util/break',
-  'util/cookie',
+  'core/options',
+  'core/observer',
+  'core/break',
+  
+  'dom/browser',
+  'dom/cookie',
   
   'dom/event',
   'dom/event/custom',
