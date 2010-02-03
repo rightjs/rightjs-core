@@ -4,7 +4,11 @@
 #
 #  You can pass options with the building script to exclude some blocks, like that
 #
-#  rake build OPTIONS=no-form,no-fx,no-xhr,no-cookie
+#  rake build OPTIONS=no-dom,no-form,no-fx,no-xhr,no-cookie
+#
+#  Use the 'server' option to build the server version
+#
+#  rake build OPTIONS=server
 #
 #  See the JS_SOURCES list keys for the options
 #
@@ -14,10 +18,12 @@ require 'fileutils'
 require 'rubygems'
 require 'front_compiler'
 
-RIGHTJS_VERSION = '1.5.3'
+RIGHTJS_VERSION = '1.5.4rc'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
+
+BUILD_OPTIONS = %w(core dom form cookie xhr fx olds)
 
 JS_SOURCES = {
   :core => %w{
@@ -102,9 +108,11 @@ task :build do
   
   ### preparing the directories
   
-  puts ' * Creating the build dir'
-  FileUtils.rm_rf BUILD_DIR
-  Dir.mkdir BUILD_DIR
+  unless options == ['server'] or !File.exists?(BUILD_DIR)
+    puts ' * Creating the build dir'
+    FileUtils.rm_rf BUILD_DIR
+    Dir.mkdir BUILD_DIR
+  end
   
   
   ### compiling the source code
@@ -115,7 +123,7 @@ task :build do
   modules = []
   
   # filtering the modules
-  %w(core dom form cookie xhr fx olds).each do |package|
+  BUILD_OPTIONS.each do |package|
     unless options.include?("no-#{package}")
       JS_SOURCES[package.to_sym].each do |file|
         source += File.open("src/#{file}.js", "r").read + "\n\n"
@@ -190,6 +198,27 @@ task :build do
     File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds.js", "w") do |file|
       file.write olds_header
       file.write olds_minified.create_self_build
+    end
+  end
+  
+  ### creating the server build
+  if options.include?('server')
+    puts ' * Creating the server-side build'
+    
+    source = JS_SOURCES[:core].collect do |file|
+      File.read("src/#{file}.js")
+    end.join("\n\n")
+    
+    source.gsub! '#{version}', RIGHTJS_VERSION
+    source.gsub! '#{modules}', 'core'
+    
+    # removing dom related util methods and hacks
+    source.gsub! /\/\*\*\s+!#server.+?(?=\/\*\*)/m, ''
+    
+    File.open("#{BUILD_DIR}/#{BUILD_FILE}-server.js", "w") do |file|
+      file.write File.read("src/HEADER.server.js")
+      file.write source
+      file.write File.read("src/core/server.js")
     end
   end
   

@@ -6,7 +6,7 @@
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
  */
  
 /**
@@ -47,7 +47,7 @@ function $try() {
   }
 };
 
-/**
+/** !#server
  * evals the given javascript text in the context of the current window
  *
  * @param String javascript
@@ -139,7 +139,7 @@ function isNumber(value) {
   return typeof(value) === 'number';
 };
 
-/**
+/** !#server
  * checks if the given value is an element
  *
  * @param mixed value to check
@@ -149,7 +149,7 @@ function isElement(value) {
   return value && value.tagName;
 };
 
-/**
+/** !#server
  * checks if the given value is a DOM-node
  *
  * @param mixed value to check
@@ -159,7 +159,7 @@ function isNode(value) {
   return value && value.nodeType;
 };
 
-/**
+/** !#server
  * shortcut to instance new elements
  *
  * @param String tag name
@@ -170,7 +170,7 @@ function $E(tag_name, options) {
   return new Element(tag_name, options);
 };
 
-/**
+/** !#server
  * searches an element by id and/or extends it with the framework extentions
  *
  * @param String element id or Element to extend
@@ -180,7 +180,7 @@ function $(element) {
   return typeof(element) === 'string' ? document.getElementById(element) : element;
 };
 
-/**
+/** !#server
  * searches for elements in the document which matches the given css-rule
  *
  * @param String css-rule
@@ -214,7 +214,9 @@ function $w(string) {
     return to_s.call(value) === '[object Object]';
   };
   
-  // Internet Explorer needs some additional mumbo-jumbo in here
+  /** !#server
+   * Internet Explorer needs some additional mumbo-jumbo in here
+   */
   if (isHash(document.documentElement)) {
     isHash = function(value) {
       return to_s.call(value) === '[object Object]' &&
