@@ -177,7 +177,7 @@ task :build do
   
     olds_source = ''
     JS_SOURCES[:olds].each do |file|
-      olds_source += File.open("src/#{file}", "r").read + "\n\n"
+      olds_source += File.open("src/#{file}.js", "r").read + "\n\n"
     end
     
     olds_source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
