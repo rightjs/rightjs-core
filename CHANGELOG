@@ -1,3 +1,16 @@
+2010-02-06 Nikolay V. Nemshilov aka St.
+  o Version 1.5.4 Release
+    * Framesafe functions isArray, isHash
+    * Element#match method fixes for the #parent(s) method
+    * Element#subNodes optimization
+    * Event.ext extends target elements under old IE
+    * Short options 'on' for the Element construction
+    * Radioboxes constructing fix for IE6
+    * Olds module loading script fix
+    * Native V8 Object.keys method reused
+    * Basic events delegation feature
+
+
 2010-01-12 Nikolay V. Nemshilov aka St.
   o Version 1.5.3 Release
     * IE Event patch for the currentTarget property

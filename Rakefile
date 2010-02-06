@@ -18,7 +18,7 @@ require 'fileutils'
 require 'rubygems'
 require 'front_compiler'
 
-RIGHTJS_VERSION = '1.5.4rc'
+RIGHTJS_VERSION = '1.5.4'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
