@@ -6,9 +6,9 @@
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-$ext(Array.prototype, (function(A_proto) {
+(function(A_proto) {
   
   // JavaScript 1.6 methods recatching up or faking
   var for_each = A_proto.forEach || function(callback, scope) {
@@ -98,7 +98,7 @@ $ext(Array.prototype, (function(A_proto) {
     return !!i;
   };
   
-return {
+Array.include({
   /**
    * IE fix
    * returns the index of the value in the array
@@ -379,10 +379,13 @@ return {
       return a.value > b.value ? 1 : a.value < b.value ? -1 : 0;
     }).map('item');
   }
-}})(Array.prototype));
+});
 
-$alias(Array.prototype, {
+$alias(A_proto, {
   include: 'includes',
   all: 'every',
   any: 'some'
 });
+
+})(Array.prototype);
+

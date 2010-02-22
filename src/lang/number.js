@@ -5,9 +5,9 @@
  *   Some methods inspired by
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-$ext(Number.prototype, {
+Number.include({
   /**
    * executes the given callback the given number of times
    *

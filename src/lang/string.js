@@ -7,9 +7,9 @@
  *   The trim function taken from work of Steven Levithan
  *     - http://blog.stevenlevithan.com/archives/faster-trim-javascript
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-$ext(String.prototype, {
+String.include({
   /**
    * checks if the string is an empty string
    *
