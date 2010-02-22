@@ -24,7 +24,7 @@ function $ext(dest, src, dont_overwrite) {
   var src = src || {}, key;
 
   for (key in src)
-    if (dont_overwrite === undefined || dest[key] === undefined)
+    if (dont_overwrite !== true || typeof(dest[key]) === 'undefined')
       dest[key] = src[key];
 
   return dest;
@@ -104,7 +104,7 @@ function $alias(object, names) {
  * @return boolean check result
  */
 function defined(value) {
-  return value !== undefined;
+  return typeof(value) !== 'undefined';
 };
 
 
@@ -220,8 +220,8 @@ function $w(string) {
   if (isHash(document.documentElement)) {
     isHash = function(value) {
       return to_s.call(value) === '[object Object]' &&
-        value !== null && value !== undefined &&
-        value.hasOwnProperty !== undefined;
+        value !== null && typeof(value) !== 'undefined' &&
+        typeof(value.hasOwnProperty) !== 'undefined';
     };
   }
 

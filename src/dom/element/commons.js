@@ -20,7 +20,7 @@ Element.include({
     
     for (var key in hash) {
       // some attributes are not available as properties
-      if (this[key] === undefined) {
+      if (typeof(this[key]) === 'undefined') {
         this.setAttribute(key, ''+hash[key]);
       }
       this[key] = hash[key];

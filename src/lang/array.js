@@ -52,7 +52,7 @@ $ext(Array.prototype, (function(A_proto) {
       if (callback.call(scope, this[i], i, this))
         return this[i];
     }
-    return undefined;
+    return this._$u; // <- undefined, see #191
   };
   
   function last(callback, scope) {
@@ -60,7 +60,7 @@ $ext(Array.prototype, (function(A_proto) {
       if (callback.call(scope, this[i], i, this))
         return this[i];
     }
-    return undefined;
+    return this._$u; // <- undefined, see #191
   };
   
   
@@ -307,7 +307,7 @@ return {
    * @return Array filtered version
    */
   compact: function() {
-    return this.without(null, undefined);
+    return this.without(null, this._$u); // <- this._u === undefined, see #191
   },
   
   /**

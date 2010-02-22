@@ -18,12 +18,16 @@ var UtilTest = TestCase.create({
       array  = Array;
       object = Object;
       doc    = document;
+      und    = undefined;
+      nil    = null;
     }
     
     this.scoped = {
       'Array':    array,
       'Object':   object,
-      'document': doc
+      'document': doc,
+      'undef':    und,
+      'nil':      nil
     };
   },
   
@@ -97,6 +101,13 @@ var UtilTest = TestCase.create({
     
     var smth = [];
     this.assertFalse(defined(smth[0]));
+    
+    this.assertFalse(defined(undefined));
+    
+    this.assertFalse(defined(this.scoped.undef), "another frame undefined");
+    
+    var smth = new this.scoped.Object();
+    this.assertFalse(defined(smth.smth), "another frame's Object undefined key")
   },
   
   test_isHash: function() {
