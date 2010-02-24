@@ -39,8 +39,9 @@ Xhr.IFramed = new Class({
     this.status       = 200;
     this.readyState   = 4;
     
-    var doc = window[this.iframe.id].document.documentElement;
-    this.responseText = doc ? doc.innerHTML : null;
+    try {
+      this.responseText = window[this.iframe.id].document.documentElement.innerHTML;
+    } catch(e) { }
     
     this.onreadystatechange();
   },
