@@ -1,7 +1,7 @@
 /**
  * There are the String unit extensions for the effects library
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov
  */
 String.COLORS = {
   maroon:  '#800000',

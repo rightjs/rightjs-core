@@ -4,7 +4,7 @@
  * NOTE: this module is just a wrap over the native CSS-selectors feature
  *       see the olds/css.js file for the manual selector code
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Element.include((function() {
   /**

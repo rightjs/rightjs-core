@@ -5,7 +5,7 @@
  *   The idea is inspired by the Morph effect from
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Fx.Morph = new Class(Fx, (function() {
   // a list of common style names to compact the code a bit

@@ -2,7 +2,7 @@
  * This unit presents a fake drop in replacement for the XmlHTTPRequest unit
  * but works with an iframe targeting in the background
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Xhr.IFramed = new Class({
   /**

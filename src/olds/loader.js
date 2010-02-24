@@ -7,7 +7,7 @@
  * finds the core inclusion tag and uses it's src attribute
  * to dynamically load the olds patch
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 if (!document.querySelector) {
   (function() {

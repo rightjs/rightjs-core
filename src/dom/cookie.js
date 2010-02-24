@@ -5,7 +5,7 @@
  *   Most things in the unit are take from
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Cookie = new Class({
   include: Options,

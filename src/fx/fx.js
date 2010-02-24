@@ -5,7 +5,7 @@
  *   The basic principles, structures and naming system are inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Fx = new Class(Observer, {
   extend: {

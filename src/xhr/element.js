@@ -4,7 +4,7 @@
  * Credits:
  *   - jQuery    (http://jquery.com)        Copyright (C) John Resig
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Element.include({
   /**

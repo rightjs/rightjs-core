@@ -3,7 +3,7 @@
  * will be extended. It provides basic and standard way to work
  * with the classes.
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Class.Methods = (function() {
   var commons = $w('selfExtended self_extended selfIncluded self_included'),

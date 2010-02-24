@@ -1,7 +1,7 @@
 /**
  * A smooth scrolling visual effect
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 Fx.Scroll = new Class(Fx, {
   prepare: function(value) {

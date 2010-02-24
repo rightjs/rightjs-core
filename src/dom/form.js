@@ -5,7 +5,7 @@
  *   The basic principles of the module are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 function Form(options) {
   var options = options || {}, remote = options.remote,
