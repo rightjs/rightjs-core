@@ -7,7 +7,7 @@
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - jQuery    (http://jquery.com)        Copyright (C) John Resig
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Xhr = new Class(Observer, {
   extend: {
@@ -234,7 +234,7 @@ Xhr = new Class(Observer, {
       return JSON.parse(this.text);
     } catch(e) {
       // manual json consistancy check
-      if (self.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
+      if (window.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
         if (this.secureJSON) {
           throw "JSON parse error: "+this.text;
         } else {

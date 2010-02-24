@@ -1,7 +1,7 @@
 /**
  * The DOM Element unit handling
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Element = (function(old_Element) {
   
@@ -51,7 +51,7 @@ Element = (function(old_Element) {
   }
   
   return new_Element;
-})(self.Element);
+})(window.Element);
 
 
 $ext(Element, {
@@ -74,7 +74,7 @@ $ext(Element, {
     $ext(this.Methods, methods, dont_overwrite);
     
     try { // busting up the basic element prototypes
-      $ext((self.HTMLElement || this.parent).prototype, methods, dont_overwrite);
+      $ext((window.HTMLElement || this.parent).prototype, methods, dont_overwrite);
     } catch(e) {}
     
     return this;

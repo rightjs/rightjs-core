@@ -3,7 +3,7 @@
  *
  *   Keep them in one place so they were more compact
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 if (Browser.OLD) {
   // loads DOM element extensions for selected elements
@@ -43,7 +43,7 @@ if (Browser.OLD) {
       if (element && element.tagName && !element.set) {
         $ext(element, Element.Methods, true);
 
-        if (self.Form) {
+        if (window.Form) {
           switch(element.tagName) {
             case 'FORM':
               Form.ext(element);

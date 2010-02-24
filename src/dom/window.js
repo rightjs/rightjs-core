@@ -1,9 +1,9 @@
 /**
  * the window object extensions
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2009 Nikolay V. Nemshilov
  */
-$ext(self, (function() {
+$ext(window, (function() {
   var old_scroll = window.scrollTo;
   
 return {

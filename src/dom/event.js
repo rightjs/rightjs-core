@@ -7,9 +7,9 @@
  *   The additional method names are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Event = new Class(self.Event, {
+Event = new Class(window.Event, {
   extend: {
     /**
      * extends a native object with additional functionality

@@ -10,7 +10,7 @@
  *   - Sizzle    (http://sizzlejs.org)      Copyright (C) John Resig
  *   - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St.
+ * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 if (!document.querySelector) {
   Element.include((function() {
@@ -412,7 +412,7 @@ if (!document.querySelector) {
     $ext(document, dom_extension);
     
     // patching the $$ function to make it more efficient
-    self.$$ = function(css_rule) {
+    window.$$ = function(css_rule) {
       return select_all(document, css_rule || '*');
     };
     

@@ -1,7 +1,7 @@
 /**
  * this object will contain info about the current browser
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Browser = (function(agent) {
   return   {

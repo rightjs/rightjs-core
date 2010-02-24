@@ -1,7 +1,7 @@
 /**
  * DOM Element events handling methods
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Element.include((function() {
   var observer = Observer.create({}, 
@@ -26,7 +26,7 @@ Element.include((function() {
     '$2.w=function(){'+
       'var a=$A(arguments),e=($2.r&&$2.r!=="stopEvent")?a.shift():Event.ext(a[0],this);'+
       'return $2.f.apply(this,a.concat($2.a))};' + (
-        self.attachEvent ?
+        window.attachEvent ?
           '$2.w=$2.w.bind(this);this.attachEvent("on"+$2.n,$2.w);' :
           'this.addEventListener($2.n,$2.w,false);'
         )
@@ -36,7 +36,7 @@ Element.include((function() {
   hack('stopObserving',
     /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m, 
     '$1var r=$4;'+
-    'if(!r)' + (self.attachEvent ? 
+    'if(!r)' + (window.attachEvent ? 
       'this.detachEvent("on"+$2.n,$2.w);' :
       'this.removeEventListener($2.n,$2.w,false);'
     )+'$3 r'
