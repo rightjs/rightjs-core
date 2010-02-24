@@ -198,7 +198,7 @@ function $$(css_rule) {
  */
 function $w(string) {
   return string.trim().split(/\s+/);
-}
+};
 
 // we need to generate those functions in an anonymous scope
 (function() {

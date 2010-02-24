@@ -10,6 +10,11 @@ if (Browser.OLD) {
   $ = (function(old_function) {
     return function(id) {
       var element = old_function(id);
+      
+      // old IE browses match both, ID and NAME
+      if (element !== null && isString(id) && element.id !== id) 
+        element = $$('#'+id)[0];
+        
       return element ? Element.prepare(element) : element;
     }
   })($);
