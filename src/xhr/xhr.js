@@ -118,7 +118,7 @@ Xhr = new Class(Observer, {
     }
     
     if (method == 'get') {
-      url += (url.includes('?') ? '&' : '?') + data;
+      if (data) url += (url.includes('?') ? '&' : '?') + data;
       data = null;
     }
     
