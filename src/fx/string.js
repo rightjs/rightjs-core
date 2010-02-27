@@ -24,7 +24,7 @@ String.COLORS = {
   brown:   '#a52a2a'
 };
 
-$ext(String.prototype, {
+String.include({
   /**
    * converts a #XXX or rgb(X, X, X) sring into standard #XXXXXX color string
    *

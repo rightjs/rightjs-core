@@ -62,15 +62,17 @@ Event.delegate = function(options) {
  * ...
  * @return String this
  */
-String.prototype.behave = function(options) {
-  if (isString(options)) {
-    var hash = {}, args = $A(arguments);
-    hash[args.shift()] = args;
-    options = hash;
-  }
+String.include({
+  behave: function(options) {
+    if (isString(options)) {
+      var hash = {}, args = $A(arguments);
+      hash[args.shift()] = args;
+      options = hash;
+    }
   
-  for (var event in options) {
-    var hash = {}; hash[this] = options[event];
-    document.on(event, Event.delegate(hash));
+    for (var event in options) {
+      var hash = {}; hash[this] = options[event];
+      document.on(event, Event.delegate(hash));
+    }
   }
-};
+});
