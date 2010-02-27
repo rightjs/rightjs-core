@@ -261,8 +261,10 @@ function $w(string) {
     return item.uid || (item.uid = UID++);
   };
   
-  var i=0, natives = [Array, Function, Number, String];
-  for (; i < natives.length; i++) {
+  /**
+   * Generating methods for native units extending
+   */
+  for (var i=0, natives = [Array, Function, Number, String, Date]; i < natives.length; i++) {
     natives[i].include = function(module, dont_overwrite) {
       $ext(this.prototype, module, dont_overwrite);
       return this;
