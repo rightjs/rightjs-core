@@ -154,7 +154,9 @@ task :build do
   
   puts ' * Writting files'
   header = File.open('src/HEADER.js', 'r').read
-  header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
+  if !options.empty? && options != ['no-olds']
+    header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
+  end
   
   File.open("#{BUILD_DIR}/#{BUILD_FILE}-src.js", "w") do |file|
     file.write header
