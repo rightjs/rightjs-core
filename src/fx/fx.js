@@ -84,7 +84,7 @@ Fx = new Class(Observer, {
     this.steps  = (duration / 1000 * this.options.fps).ceil();
     this.number = 1;
     
-    this.cr.push(this); // adding this effect to the list of currently active
+    if (this.cr) this.cr.push(this); // adding this effect to the list of currently active
     
     return this.fire('start', this).startTimer();
   },
@@ -192,7 +192,7 @@ Fx = new Class(Observer, {
   // unregisters this effect out of the currently running list
   unreg: function() {
     var currents = this.cr;
-    currents.splice(currents.indexOf(this), 1);
+    if (currents) currents.splice(currents.indexOf(this), 1);
     return this;
   }
   
