@@ -44,7 +44,6 @@ $ext(Form, {
   }
 });
 
-Form.addMethods = Form.include;
 Form.include({
   /**
    * returns the form elements as an array of extended units

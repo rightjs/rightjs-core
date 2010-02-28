@@ -56,7 +56,7 @@
     });
   });
 })();
-Form.Element.addMethods = Form.Element.include;
+
 Form.Element.include({
   /**
    * uniform access to the element values

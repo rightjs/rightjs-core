@@ -97,7 +97,7 @@ Event = new Class(window.Event, {
  * @param Object methods
  * @return void
  */
-Event.addMethods = Event.include = function(methods) {
+Event.include = function(methods) {
   $ext(this.Methods, methods);
   
   try { // extending the events prototype

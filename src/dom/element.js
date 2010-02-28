@@ -82,6 +82,3 @@ $ext(Element, {
   
   Methods: {} // DO NOT Extend this object manually unless you really need it, use Element#include
 });
-
-// the old interface alias, NOTE will be nuked
-Element.addMethods = Element.include;
