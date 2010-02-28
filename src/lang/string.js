@@ -84,7 +84,7 @@ String.include({
    * @return String self (unchanged version with scripts still in their place)
    */
   evalScripts: function() {
-    $eval(this.extractScripts());
+    this.stripScripts(true);
     return this;
   },
   
