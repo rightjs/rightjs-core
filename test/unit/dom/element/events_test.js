@@ -132,6 +132,14 @@ var ElementEventsTest = TestCase.create({
     this.assertEqual([1,2,5,6], $A(args).slice(1));
   },
   
+  testFireWithListenerByName: function() {
+    this.el.on('boo', 'addClass', 'boo-hoo');
+    
+    this.el.fire('boo');
+    
+    this.assertEqual('boo-hoo', this.el.className);
+  },
+  
   testShortcuts: function() {
     $w('click contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup').each(function(event) {
       var submitted = false;

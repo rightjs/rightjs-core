@@ -44,7 +44,7 @@ Element.include((function() {
   
   hack('fire',
     /(\w+)\.f\.apply.*?\.concat\((\w+)\)\)/,
-    '$1.f.apply(this,[new Event($1.e,$2.shift())].concat($1.a).concat($2))'
+    '$1.f.apply(this,(($1.r&&$1.r!=="stopEvent")?[]:[new Event($1.e,$2.shift())]).concat($1.a).concat($2))'
   );
   
   // a simple events terminator method to be hooked like this.onClick('stopEvent');
