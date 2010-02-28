@@ -47,7 +47,10 @@ Fx = new Class(Observer, {
       Lin: function(i) {
         return i;
       }
-    }
+    },
+    
+    ch: [], // scheduled effects registries
+    cr: []  // currently running effects registries
   },
   
   /**
@@ -57,7 +60,12 @@ Fx = new Class(Observer, {
    */
   initialize: function(element, options) {
     this.$super(options);
-    this.element = $(element);
+    
+    if (this.element = element = $(element)) {
+      var uid = $uid(element);
+      this.ch = (Fx.ch[uid] = Fx.ch[uid] || []);
+      this.cr = (Fx.cr[uid] = Fx.cr[uid] || []);
+    }
   },
   
   /**
@@ -76,6 +84,8 @@ Fx = new Class(Observer, {
     this.steps  = (duration / 1000 * this.options.fps).ceil();
     this.number = 1;
     
+    this.cr.push(this); // adding this effect to the list of currently active
+    
     return this.fire('start', this).startTimer();
   },
   
@@ -85,16 +95,21 @@ Fx = new Class(Observer, {
    * @return Fx this
    */
   finish: function() {
-    return this.stopTimer().fire('finish').next();
+    return this.stopTimer().unreg().fire('finish').next();
   },
   
   /**
    * interrupts the transition
    *
+   * NOTE:
+   *   this method cancels all the scheduled effects
+   *   in the element chain
+   *
    * @return Fx this
    */
   cancel: function() {
-    return this.stopTimer().fire('cancel').next();
+    this.ch.clean();
+    return this.stopTimer().unreg().fire('cancel');
   },
   
   /**
@@ -135,12 +150,14 @@ Fx = new Class(Observer, {
       that.number ++;
     }
   },
-    
+  
+  // starts the effect timer
   startTimer: function() {
     this.timer = this.step.periodical((1000 / this.options.fps).round(), this);
     return this;
   },
   
+  // stops the effect timer
   stopTimer: function() {
     if (this.timer) {
       this.timer.stop();
@@ -151,31 +168,32 @@ Fx = new Class(Observer, {
   // handles effects queing
   // should return false if there's no queue and true if there is a queue
   queue: function(args) {
-    if (!this.element) return false;
-    if (this.$ch) return this.$ch = false;
+    var chain = this.ch, queue = this.options.queue;
+    
+    if (!chain || this.$ch)
+      return this.$ch = false;
 
-    var uid = $uid(this.element), chain;
-    Fx.$ch = Fx.$ch || [];
-    chain = (Fx.$ch[uid] = Fx.$ch[uid] || []);
-
-    if (this.options.queue)
+    if (queue)
       chain.push([args, this]);
     
-    this.next = function() {
-      var next = chain.shift(); next = chain[0];
-      if (next) {
-        next[1].$ch = true;
-        next[1].start.apply(next[1], next[0]);
-      }
-      return this;
-    };
-
-    return this.options.queue && chain[0][1] !== this;
+    return queue && chain[0][1] !== this;
   },
   
+  // calls for the next effect in the queue
   next: function() {
+    var chain = this.ch, next = chain.shift(), next = chain[0];
+    if (next) {
+      next[1].$ch = true;
+      next[1].start.apply(next[1], next[0]);
+    }
+    return this;
+  },
+  
+  // unregisters this effect out of the currently running list
+  unreg: function() {
+    var currents = this.cr;
+    currents.splice(currents.indexOf(this), 1);
     return this;
   }
-  
   
 });

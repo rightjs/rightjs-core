@@ -13,12 +13,22 @@ Element.include((function(methods) {
       old_scroll = methods.scrollTo;
 
 return {
+  /**
+   * Stops all the visual effects on the element
+   *
+   * @return Element this
+   */
+  stop: function() {
+    (Fx.cr[$uid(this)] || []).each('cancel');
+    return this;
+  },
 
   /**
    * hides the element with given visual effect
    *
    * @param String fx name
    * @param Object fx options
+   * @return Element this
    */
   hide: function(fx, options) {
     return fx ? this.fx(fx, ['out', options]) : old_hide.call(this);
@@ -29,6 +39,7 @@ return {
    *
    * @param String fx name
    * @param Object fx options
+   * @return Element this
    */
   show: function(fx, options) {
     return fx ? this.fx(fx, ['in', options]) : old_show.call(this);
