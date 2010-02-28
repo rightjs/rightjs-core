@@ -172,6 +172,28 @@ var ObserverTest = TestCase.create({
     this.assertFalse(o.observes('bar', 'method2'));
   },
   
+  testStopObservingWithHash: function() {
+    var f1 = function() { };
+    var f2 = function() { };
+    var events = {
+      foo: f1,
+      boo: f2
+    };
+    
+    var o = new Observer().on(events);
+    
+    this.assert(o.observes('foo', f1));
+    this.assert(o.observes('boo', f2));
+    
+    
+    o.stopObserving(events);
+    
+    this.assertFalse(o.observes('foo'));
+    this.assertFalse(o.observes('boo'));
+    this.assertFalse(o.observes(f1));
+    this.assertFalse(o.observes(f2));
+  },
+  
   testFire: function() {
     var o = new Observer();
     

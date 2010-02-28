@@ -60,7 +60,7 @@ Observer = new Class({
         default:
           if (isArray(callback)) {
             for (var i=0; i < callback.length; i++) {
-              this.observe.apply(this, [event].concat(
+              this.on.apply(this, [event].concat(
                 isArray(callback[i]) ? callback[i] : [callback[i]]
               ).concat(args));
             }
@@ -70,7 +70,7 @@ Observer = new Class({
     } else {
       // assuming it's a hash of key-value pairs
       for (var name in event) {
-        this.observe.apply(this, [name].concat(
+        this.on.apply(this, [name].concat(
           isArray(event[name]) ? event[name] : [event[name]]
         ).concat(args));
       }
@@ -92,17 +92,13 @@ Observer = new Class({
    * @retun boolean check result
    */
   observes: function(event, callback) {
-    if (this.$listeners) {
-      if (!isString(event)) { callback = event; event = null; }
-      if (isString(callback)) callback = this[callback];
-      
-      return this.$listeners.some(function(i) {
-        return (event && callback) ? i.e == event && i.f == callback :
-          event ? i.e == event : i.f == callback;
-      });
-    }
+    if (!isString(event)) { callback = event; event = null; }
+    if (isString(callback)) callback = this[callback];
     
-    return false;
+    return (this.$listeners || []).some(function(i) {
+      return (event && callback) ? i.e === event && i.f === callback :
+        event ? i.e === event : i.f === callback;
+    });
   },
   
   /**
@@ -116,11 +112,15 @@ Observer = new Class({
    * @return Observer self
    */
   stopObserving: function(event, callback) {
-    if (this.$listeners) {
+    if (isHash(event)) {
+      for (var key in event) {
+        this.stopObserving(key, event[key]);
+      }
+    } else {
       if (!isString(event)) { callback = event; event = null; }
       if (isString(callback)) callback = this[callback];
       
-      this.$listeners = this.$listeners.filter(function(i) {
+      this.$listeners = (this.$listeners || []).filter(function(i) {
         return (event && callback) ? (i.e !== event || i.f !== callback) :
           (event ? i.e !== event : i.f !== callback);
       }, this);
