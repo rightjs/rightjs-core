@@ -241,7 +241,7 @@ var SelectorTest = TestCase.create({
   },
   
   testPseudoMatch: function() {
-    if (Browser.IE8) return; // IE8 has problems with the native selectors
+    if (!Browser.OLD && Browser.IE) return; // IE8 has problems with the native selectors
     
     var div = $E('div').insertTo(this.container);
     

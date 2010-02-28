@@ -13,7 +13,6 @@ Browser = (function(agent) {
     Konqueror:    agent.indexOf('Konqueror') > -1,
 
     // marker for the browsers which don't give access to the HTMLElement unit
-    OLD:          agent.indexOf('MSIE 6') > -1 || agent.indexOf('MSIE 7') > -1,
-    IE8:          agent.indexOf('MSIE 8') > -1
+    OLD:          !!(window.attachEvent && !window.opera) && !document.querySelector
   }
 })(navigator.userAgent);

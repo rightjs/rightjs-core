@@ -21,25 +21,25 @@ Event = new Class(window.Event, {
     ext: function(event, bound_element) {
       if (!event.stop) {
         $ext(event, this.Methods, true);
+      }
+      
+      if (!event.target && event.srcElement) {
+        // faking the which button
+        event.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
         
-        if (!event.which) {
-          // faking the which button
-          event.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
-          
-          // faking the mouse position
-          var scrolls = window.scrolls();
+        // faking the mouse position
+        var scrolls = window.scrolls();
 
-          event.pageX = event.clientX + scrolls.x;
-          event.pageY = event.clientY + scrolls.y;
-          
-          // faking the target property  
-          event.target = $(event.srcElement) || bound_element;
-          
-          // faking the relatedTarget, currentTarget and other targets
-          event.relatedTarget = event.target === event.fromElement ? $(event.toElement) : event.target;
-          event.currentTarget = bound_element;
-          event.eventPhase    = 3; // bubbling phase
-        }
+        event.pageX = event.clientX + scrolls.x;
+        event.pageY = event.clientY + scrolls.y;
+        
+        // faking the target property  
+        event.target = $(event.srcElement) || bound_element;
+        
+        // faking the relatedTarget, currentTarget and other targets
+        event.relatedTarget = event.target === event.fromElement ? $(event.toElement) : event.target;
+        event.currentTarget = bound_element;
+        event.eventPhase    = 3; // bubbling phase
       }
       
       // Safari bug fix
