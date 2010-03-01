@@ -264,7 +264,7 @@ function $w(string) {
   /**
    * Generating methods for native units extending
    */
-  for (var i=0, natives = [Array, Function, Number, String, Date]; i < natives.length; i++) {
+  for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
     natives[i].include = function(module, dont_overwrite) {
       $ext(this.prototype, module, dont_overwrite);
       return this;
