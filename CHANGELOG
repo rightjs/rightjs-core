@@ -1,3 +1,16 @@
+2010-03-01 Nikolay V. Nemshilov
+  o Version 1.5.5 Release
+    * Native units `.include` methods support
+    * Observer#stopObserving hashes support
+    * Element#stop feature that stops the effects
+    * Event.behave method for events delegation
+    * Element#fire fix for by name references
+    * Deprecated `.addMethods` methods were nuked
+    * Got rid of the `undefined` and `self` references
+    * Old IE getElementById method fix
+    * IE8 events handling fixes
+    
+
 2010-02-06 Nikolay V. Nemshilov aka St.
   o Version 1.5.4 Release
     * Framesafe functions isArray, isHash
