@@ -30,4 +30,11 @@ if (!$E('p').getBoundingClientRect) {
       return {x: left, y: top};
     }
   });
+  
+  // Konq doesn't have the Form#elements reference
+  Form.include({
+    getElements: function() {
+      return this.select('input,select,textarea,button');
+    }
+  })
 }
