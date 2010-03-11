@@ -150,10 +150,11 @@ Element.include({
   /**
    * makes the window be scrolled to the element
    *
+   * @param Object fx options
    * @return Element self
    */
-  scrollThere: function() {
-    window.scrollTo(this);
+  scrollThere: function(options) {
+    window.scrollTo(this, options);
     return this;
   }
 });

@@ -1,10 +1,10 @@
 /**
  * the window object extensions
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 $ext(window, (function() {
-  var old_scroll = window.scrollTo;
+  var native_scroll = window.scrollTo;
   
 return {
     /**
@@ -38,19 +38,27 @@ return {
      *
      * @param mixed number left position, a hash position, element or a string element id
      * @param number top position
+     * @param Object fx options
      * @return window self
      */
-    scrollTo: function(left, top) {
+    scrollTo: function(left, top, fx_options) {
+      var left_pos = left, top_pos = top; // moving the values into new vars so they didn't get screwed later on
+      
       if(isElement(left) || (isString(left) && $(left))) {
         left = $(left).position();
       }
 
       if (isHash(left)) {
-        top  = left.y;
-        left = left.x;
+        top_pos  = left.y;
+        left_pos = left.x;
       }
       
-      old_scroll(left, top);
+      // checking if a smooth scroll was requested
+      if (isHash(fx_options = fx_options || top) && window.Fx) {
+        new Fx.Scroll(this, fx_options).start({x: left_pos, y: top_pos});
+      } else {
+        native_scroll(left_pos, top_pos);
+      }
 
       return this;
     }

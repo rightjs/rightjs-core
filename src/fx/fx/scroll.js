@@ -4,6 +4,12 @@
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 Fx.Scroll = new Class(Fx, {
+  
+  initialize: function(element, options) {
+    // swapping the actual scrollable when it's the window
+    this.$super(element.document ? element.document[Browser.WebKit ? 'body' : 'documentElement'] : element, options);
+  },
+  
   prepare: function(value) {
     this.before = {};
     this.after  = value;
