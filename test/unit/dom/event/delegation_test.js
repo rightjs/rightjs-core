@@ -95,7 +95,7 @@ var EventDelegationTest = TestCase.create({
     this.assert(document.observes('click', f));
     this.assertEqual([{'.some.css.rule': [c]}], args);
     
-    this.assertEqual({click: [f]}, connections);
+    this.assertEqual({click: f}, connections);
     
     Event.behave(".some.css.rule", 'mouseover', 'hide');
     
@@ -129,7 +129,7 @@ var EventDelegationTest = TestCase.create({
     this.assert(document.observes('click', f));
     this.assertEqual([{'.some.css.rule': c}], args[0]);
     
-    this.assert(document.observes('mouseover', f));
+    this.assert(document.observes('mouseout', f));
     this.assertEqual([{'.some.css.rule': 'hide'}], args[1]);
     
     this.assert(document.observes('mouseover', f));
@@ -143,6 +143,30 @@ var EventDelegationTest = TestCase.create({
     this.undoMock(Event, 'delegate');
   },
   
+  testStoppingDelegation: function() {
+    var f = function() {}, c = function() {};
+    
+    this.mock(Event, 'delegate', function() { return f; });
+    
+    var events = Event.behave(".some.css.rule", {
+      click: c,
+      mouseout: 'hide',
+      mouseover: ['addClass', 'some-class']
+    });
+    
+    this.assert(document.observes('click',     f));
+    this.assert(document.observes('mouseout',  f));
+    this.assert(document.observes('mouseover', f));
+    
+    document.stopObserving(events);
+    
+    this.assertFalse(document.observes('click', f));
+    this.assertFalse(document.observes('mouseout', f));
+    this.assertFalse(document.observes('mouseover', f));
+    
+    this.undoMock(Event, 'delegate');
+  },
+  
   testStringBehaveShortcut: function() {
     var args;
     this.mock(Event, 'behave', function() { args = $A(arguments); });
@@ -150,6 +174,8 @@ var EventDelegationTest = TestCase.create({
     ".some.css-rule".behave('addClass', 'foo');
     
     this.assertEqual(['.some.css-rule', 'addClass', 'foo'], args);
+    
+    this.undoMock(Event, 'behave');
   }
   
 });

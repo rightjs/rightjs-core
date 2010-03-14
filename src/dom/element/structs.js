@@ -129,7 +129,7 @@ Element.include({
    * @return Element self
    */
   update: function(content) {
-    if ((isString(content) || isNumber(content)) && this.tagName !== 'SELECT') {
+    if ((isString(content) || isNumber(content)) && !Element.insertions.wraps[this.tagName]) {
       var scripts;
       this.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
       if (scripts) $eval(scripts);

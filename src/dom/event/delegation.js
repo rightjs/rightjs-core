@@ -32,14 +32,16 @@ Event.extend({
       var target = event.target, css_rule, args, callback;
 
       for (css_rule in options) {
-        if ($(this).select(css_rule).include(event.target)) {
+        if ($(this).select(css_rule).include(target)) {
           args = options[css_rule];
           args = isArray(args) ? args : [args];
           callback = args[0];
           args = args.slice(1);
 
-          if (isString(callback)) target[callback].apply(target, args);
-          else callback.apply(target, [event].concat(args));
+          if (isString(callback))
+            target[callback].apply(target, args);
+          else
+            callback.apply(target, [event].concat(args));
         }
       }
     };
@@ -65,7 +67,8 @@ Event.extend({
    * @return Object with event handlers description the document.on() function will receive
    */
   behave: function(css_rule, options) {
-    var events = {}, hash = {}, args = $A(arguments).slice(1);
+    var events = {}, hash = {}, args = $A(arguments).slice(1),
+      focus = 'focus', blur = 'blur', focus_blur = [focus, blur];
     
     if (isString(options)) {
       hash[args.shift()] = args;
@@ -73,12 +76,32 @@ Event.extend({
     }
     
     for (var event in options) {
-      events[event] = events[event] || [];
       var hash = {}; hash[css_rule] = options[event];
-      events[event].push(Event.delegate(hash));
+      
+      if (Browser.IE) {
+        // fancy IE browsers have different names for bubbling versions of those events
+        if (event == focus) event = focus + 'in';
+        if (event == blur)  event = focus + 'out';
+      }
+      
+      events[event] = Event.delegate(hash);
+      
+      if (focus_blur.include(event) && !Browser.IE) {
+        // HACK! HACK! HACK!
+        // by default, method #on uses a non-captive events attachment
+        // but for focus and blur effects we need the opposite
+        // so we calling the method directly and pushing the listeners manually
+        
+        document.addEventListener(event, events[event], true);
+        
+        (document.$listeners = document.$listeners || []).push({
+          e: event, f: events[event], a: []
+        });
+        
+      } else {
+        document.on(event, events[event]);
+      }
     }
-    
-    document.on(events);
     
     return events;
   }
