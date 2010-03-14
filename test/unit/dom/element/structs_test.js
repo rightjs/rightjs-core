@@ -369,6 +369,14 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('<i></i><b></b><u></u>', this.el.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
   },
   
+  testUpdateSelect: function() {
+    var element = $E('select').update('<option value="o1">O1</option><option value="o2">O2</option>');
+    var options = $A(element.getElementsByTagName('option'));
+    
+    this.assertEqual(['o1','o2'], options.map('value'));
+    this.assertEqual(['O1','O2'], options.map('innerHTML'));
+  },
+  
   testInsertAndUpdateWithNumbers: function() {
     this.el.insert(2.2);
     this.assertEqual('2.2', this.el.innerHTML);
