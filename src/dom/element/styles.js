@@ -39,9 +39,9 @@ Element.include({
       
       if (key === 'opacity') {
         if (Browser.IE) {
-          this.style.filter = 'alpha(opacity='+ value * 100 +')';
+          this.style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
         } else {
-          this.style.opacity = value;
+          this.style.opacity = hash[key];
         }
       } else if (key === 'float') {
         c_key = Browser.IE ? 'styleFloat' : 'cssFloat';

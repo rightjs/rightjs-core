@@ -65,5 +65,23 @@ var FxMorphTest = TestCase.create({
     
     this.assertEqual('0px', this.el.getStyle('borderTopWidth'));
     this.assertEqual('solid', this.el.getStyle('borderTopStyle'));
+  },
+  
+  testOpacityProcessing: function() {
+    this.fx.start({opacity: 0.5});
+    
+    if (Browser.IE) {
+      this.assertEqual(['filter'], Object.keys(this.fx.before));
+      this.assertEqual(['filter'], Object.keys(this.fx.after));
+      
+      this.assertEqual([100], this.fx.before.filter);
+      this.assertEqual([50],  this.fx.after.filter);
+    } else {
+      this.assertEqual(['opacity'], Object.keys(this.fx.before));
+      this.assertEqual(['opacity'], Object.keys(this.fx.after));
+      
+      this.assertEqual([1],   this.fx.before.opacity);
+      this.assertEqual([0.5], this.fx.after.opacity);
+    }
   }
 })

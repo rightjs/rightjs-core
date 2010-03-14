@@ -7,7 +7,7 @@ Fx.Scroll = new Class(Fx, {
   
   initialize: function(element, options) {
     // swapping the actual scrollable when it's the window
-    this.$super(element.document ? element.document[Browser.WebKit ? 'body' : 'documentElement'] : element, options);
+    this.$super(element.prompt ? element.document[Browser.WebKit ? 'body' : 'documentElement'] : element, options);
   },
   
   prepare: function(value) {
