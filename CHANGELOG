@@ -1,3 +1,12 @@
+2010-03-15 Nikolay V. Nemshilov
+  o Version 1.5.6 Release
+    * Smooth scrolling support for the window object
+    * String#behave was moved to String#on
+    * Events delegation support for the `focus` and `blur` events
+    * IE SELECT and TABLE elements updating method fix
+    * IE opacity processing fixes
+    
+
 2010-03-01 Nikolay V. Nemshilov
   o Version 1.5.5 Release
     * Native units `.include` methods support
