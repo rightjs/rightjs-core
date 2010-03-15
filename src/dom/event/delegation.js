@@ -114,12 +114,12 @@ String.include({
    *
    * USAGE:
    *
-   *   "ul#main-menu li".behave("click", function() { alert('clicked'); });
-   *   "ul#main-menu li".behave("mouseover", "addClass", "hovered");
-   *   "ul#main-menu li".behave("mouseout", "removeClass", "hovered");
+   *   "ul#main-menu li".on("click", function() { alert('clicked'); });
+   *   "ul#main-menu li".on("mouseover", "addClass", "hovered");
+   *   "ul#main-menu li".on("mouseout", "removeClass", "hovered");
    *
    *   // or like that in a shash
-   *   "ul#main-menu li".behave({
+   *   "ul#main-menu li".on({
    *     click:     function() { alert('clicked'); },
    *     mouseover: ['addClass',    'hovered'],
    *     mouseout:  ['removeClass', 'hovered'],
@@ -129,8 +129,10 @@ String.include({
    * ...
    * @return String this
    */
-  behave: function() {
+  on: function() {
     Event.behave.apply(Event, [''+this].concat($A(arguments)));
     return this;
   }
 });
+
+$alias(String.prototype, {behave: 'on'});
