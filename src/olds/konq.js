@@ -6,7 +6,7 @@
 
 /**
  * manual position calculator, it works for Konqueror and also
- * old versions of Opera and FF, so we use a feature check in here
+ * for old versions of Opera and FF
  */
 if (!$E('p').getBoundingClientRect) {
   Element.include({
@@ -30,11 +30,4 @@ if (!$E('p').getBoundingClientRect) {
       return {x: left, y: top};
     }
   });
-  
-  // Konq doesn't have the Form#elements reference
-  Form.include({
-    getElements: function() {
-      return this.select('input,select,textarea,button');
-    }
-  })
 }

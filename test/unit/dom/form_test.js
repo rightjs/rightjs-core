@@ -18,48 +18,50 @@ var FormTest = TestCase.create({
   setForm: function() {
     return new Form({
       'html': ""+
-        "<p>"+
-          "<label>Name</label>"+
-          "<input type='text' name='name' value='Bob'/>"+
-        "</p>"+
-        "<p>"+
-          "<label>Password</label>"+
-          "<input type='password' name='password' value='secret'/>"+
-        "</p>"+
-        "<p>"+
-          "<label>Keep me</label>"+
-          "<input type='checkbox' name='keep_me' value='1'/>"+
-        "</p>"+
-        "<p>"+
-          "<label>Text:</label>"+
-          "<textarea name='text'>Boo boo boo</textarea>"+
-        "</p>"+
-        "<p>"+
-          "<label>Kinda:</label>"+
-          "<select name='kinda'>"+
-            "<option value='0'>Zero</option>"+
-            "<option value='1' selected='true'>Alpha</option>"+
-            "<option value='2'>Bravo</option>"+
-          "</select>"+
-        "</p>"+
-        "<p>"+
-          "<label>Items:</label>"+
-          "<select name='items' multiple='true'>"+
-            "<option value='1'>First</option>"+
-            "<option value='2' selected='true'>Second</option>"+
-            "<option value='3' selected='true'>Third</option>"+
-          "</select>"+
-        "</p>"+
-        "<p>"+
-          "<label>Who:</label>"+
-          "<input type='radio' name='who' value='bob' id='who-bob'/>"+
-          "<input type='radio' name='who' value='nik' id='who-nik'/>"+
-        "</p>"+
-        "<p>"+
-          "<input type='submit' value='Sumbit'/>"+
-          "<input type='reset' value='Reset'/>"+
-          "<input type='button' value='Cancel'/>"+
-        "</p>"+
+        "<fieldset>"+
+          "<p>"+
+            "<label>Name</label>"+
+            "<input type='text' name='name' value='Bob'/>"+
+          "</p>"+
+          "<p>"+
+            "<label>Password</label>"+
+            "<input type='password' name='password' value='secret'/>"+
+          "</p>"+
+          "<p>"+
+            "<label>Keep me</label>"+
+            "<input type='checkbox' name='keep_me' value='1'/>"+
+          "</p>"+
+          "<p>"+
+            "<label>Text:</label>"+
+            "<textarea name='text'>Boo boo boo</textarea>"+
+          "</p>"+
+          "<p>"+
+            "<label>Kinda:</label>"+
+            "<select name='kinda'>"+
+              "<option value='0'>Zero</option>"+
+              "<option value='1' selected='true'>Alpha</option>"+
+              "<option value='2'>Bravo</option>"+
+            "</select>"+
+          "</p>"+
+          "<p>"+
+            "<label>Items:</label>"+
+            "<select name='items' multiple='true'>"+
+              "<option value='1'>First</option>"+
+              "<option value='2' selected='true'>Second</option>"+
+              "<option value='3' selected='true'>Third</option>"+
+            "</select>"+
+          "</p>"+
+          "<p>"+
+            "<label>Who:</label>"+
+            "<input type='radio' name='who' value='bob' id='who-bob'/>"+
+            "<input type='radio' name='who' value='nik' id='who-nik'/>"+
+          "</p>"+
+          "<p>"+
+            "<input type='submit' value='Sumbit'/>"+
+            "<input type='reset' value='Reset'/>"+
+            "<input type='button' value='Cancel'/>"+
+          "</p>"+
+        "</fieldset>"+
       ""
     });
   },

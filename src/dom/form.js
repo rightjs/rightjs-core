@@ -51,7 +51,7 @@ Form.include({
    * @return Array of elements
    */
   getElements: function() {
-    return $A(this.elements).map($);
+    return this.select('input,button,select,textarea');
   },
   
   /**
