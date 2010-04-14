@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Cookie = new Class({
+var Cookie = new Class({
   include: Options,
   
   extend: {
@@ -54,8 +54,8 @@ Cookie = new Class({
    * @param mixed value
    * @return Cookie this
    */
-  set: function(value) {
-    var value = encodeURIComponent(value), options = this.options;
+  set: function(data) {
+    var value = encodeURIComponent(data), options = this.options;
     if (options.domain) value += '; domain=' + options.domain;
     if (options.path) value += '; path=' + options.path;
     if (options.duration){

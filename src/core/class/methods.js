@@ -83,7 +83,7 @@ return {
       module = clean_module(module, 'i');
 
       for (var key in module) {
-        ancestor = ancestors.first(function(proto) { return isFunction(proto[key]); });
+        ancestor = ancestors.first(function(proto) { return key in proto && isFunction(proto[key]); });
 
         this.prototype[key] = !ancestor ? module[key] :
           (function(name, method, super_method) {

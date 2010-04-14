@@ -1,7 +1,7 @@
 /**
  * the Xhr unit tests
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 var XhrTest = TestCase.create({
   name: 'XhrTest',
@@ -129,9 +129,11 @@ var XhrTest = TestCase.create({
   testCallbacksInvolvement: function() {
     this.mockAjax();
     
-    var create_index = request_index = complete_index = success_index = cancel_index = failure_index = index = 0;
+    var create_index, request_index, complete_index, success_index, cancel_index, failure_index, index;
     var create_obj, create_xhr, request_obj, request_xhr,
         complete_obj, complete_xhr, success_obj, success_xhr;
+        
+    create_index = request_index = complete_index = success_index = cancel_index = failure_index = index = 0
     
     var request = new Xhr('foo/bar', {
       onCreate:   function(obj, xhr) { create_obj   = obj; create_xhr   = xhr; create_index   = ++index;},
@@ -163,8 +165,12 @@ var XhrTest = TestCase.create({
   testCallbacksInCaseOfFailure: function() {
     this.mockAjax({status: 404});
     
-    var create_index = request_index = complete_index = success_index = cancel_index = failure_index = index = 0;
-    var failure_obj, failure_xhr;
+    var create_index, request_index, complete_index, success_index, cancel_index,
+        failure_index, index, failure_obj, failure_xhr, request_obj, request_xhr,
+        create_obj, create_xhr, complete_obj, complete_xhr, success_obj, success_xhr,
+        cancel_obj, cancel_xhr;
+    
+    create_index = request_index = complete_index = success_index = cancel_index = failure_index = index = 0
     
     var request = new Xhr('foo/bar', {
       onCreate:   function(obj, xhr) { create_obj   = obj; create_xhr   = xhr; create_index   = ++index;},
@@ -191,9 +197,10 @@ var XhrTest = TestCase.create({
   testGlobalCallbacksInvolvement: function() {
     this.mockAjax();
     
-    var create_index = request_index = complete_index = success_index = cancel_index = failure_index = index = 0;
-    var create_obj, create_xhr, request_obj, request_xhr,
-        complete_obj, complete_xhr, success_obj, success_xhr;
+    var create_index, request_index, complete_index, success_index, cancel_index, failure_index, index,
+        create_obj, create_xhr, request_obj, request_xhr, complete_obj, complete_xhr, success_obj, success_xhr;
+    
+    create_index = request_index = complete_index = success_index = cancel_index = failure_index = index = 0
     
     Xhr.onCreate(  function(obj, xhr) { create_obj   = obj; create_xhr   = xhr; create_index   = ++index;});
     Xhr.onRequest( function(obj, xhr) { request_obj  = obj; request_xhr  = xhr; request_index  = ++index;});

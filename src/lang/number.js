@@ -37,9 +37,9 @@ Number.include({
     return Math.abs(this);
   },
   
-  round: function(base) {
-    if (base) {
-      var base = Math.pow(10, base);
+  round: function(length) {
+    if (length) {
+      var base = Math.pow(10, length);
       return Math.round(this * base) / base;
     } else {
       return Math.round(this);

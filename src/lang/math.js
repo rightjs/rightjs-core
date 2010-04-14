@@ -20,8 +20,8 @@ $ext(Math, {
    * @param Integer maximum value
    * @return Float random between 0 and 1 if there's no arguments or an integer in the given range
    */
-  random: function(min, max) {
-    var rand = this._random();
+  random: function(i_min, i_max) {
+    var rand = this._random(), min = i_min, max = i_max;
     if (arguments.length == 0)
       return rand;
     

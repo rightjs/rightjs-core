@@ -1,7 +1,7 @@
 /**
  * The Class unit test-case
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 var ClassTest = TestCase.create({
   name: 'ClassTest',
@@ -40,7 +40,7 @@ var ClassTest = TestCase.create({
       var mixin = {};
       mixin[key] = 'replacement for '+key;
       klass.extend(mixin);
-      this.assertNotEqual(mixin[key], klass[key], "checking the '"+key+"' attribute skipping");
+      this.assert(!(key in klass) || mixin[key] !== klass[key], "checking the '"+key+"' attribute skipping");
     }, this);
   },
     
@@ -68,7 +68,7 @@ var ClassTest = TestCase.create({
       message: 'boo boo'
     });
     this.assertEqual('boo boo', Klass.boo);
-    this.assertNull(Klass.prototype.selfIncluded);
+    this.assertFalse('selfIncluded' in Klass.prototype);
     
     // same for the underscored version
     var Klass = new Class().include({
@@ -80,7 +80,7 @@ var ClassTest = TestCase.create({
       message: 'boo boo'
     });
     this.assertEqual('boo boo', Klass.prototype.boo);
-    this.assertNull(Klass.prototype.self_included);
+    this.assertFalse('self_included' in Klass.prototype);
   },
   
   testExtendedWithCallback: function() {
@@ -93,7 +93,7 @@ var ClassTest = TestCase.create({
       message: 'boo boo'
     });
     this.assertEqual('boo boo', Klass.boo);
-    this.assertNull(Klass.prototype.selfExtended);
+    this.assertFalse('selfExtended' in Klass.prototype);
     
     // same for the underscored version
     var Klass = new Class().extend({
@@ -105,7 +105,7 @@ var ClassTest = TestCase.create({
       message: 'boo boo'
     });
     this.assertEqual('boo boo', Klass.prototype.boo);
-    this.assertNull(Klass.prototype.self_extended);
+    this.assertFalse('self_extended' in Klass.prototype);
   },
   
   testNewWithConstructor: function() {
@@ -128,7 +128,7 @@ var ClassTest = TestCase.create({
       }
     });
     this.assertEqual('something', klass.smth);
-    this.assertNotEqual('something', klass.prototype['extend']);
+    this.assertFalse('extend' in klass.prototype);
   },
   
   testClassInlineExtendingWithSeveralModules: function() {

@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Element = (function(old_Element) {
+var Element = (function(old_Element) {
   
   // Element constructor options mapper
   var options_map = {

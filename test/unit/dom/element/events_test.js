@@ -1,7 +1,7 @@
 /**
  * The Element unit events related methods test-case
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 var ElementEventsTest = TestCase.create({
   name: 'ElementEventsTest',
@@ -111,7 +111,7 @@ var ElementEventsTest = TestCase.create({
   },
   
   testFireWithStop: function() {
-    var e1 = e2 = false;
+    var e1, e2; e1 = e2 = false;
     
     this.el.observe('click', function(e) { e1 = e; e.stop(); });
     this.el.observe('click', function(e) { e2 = e; });

@@ -1,7 +1,7 @@
 /**
  * The Options module unit-tests
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 
 var OptionsTest = TestCase.create({
@@ -86,7 +86,7 @@ var OptionsTest = TestCase.create({
     });
     
     this.assert(klass.observes('finish', the_function));
-    this.assertNull(klass.options.onFinish)
+    this.assertFalse('onFinish' in klass.options)
   },
   
   testCutOptions: function() {

@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Observer = new Class({
+var Observer = new Class({
   include: Options,
   
   /**
@@ -36,7 +36,7 @@ Observer = new Class({
     var args = $A(arguments), event = args.shift();
     
     if (isString(event)) {
-      if (!defined(this.$listeners)) this.$listeners = [];
+      if (!('$listeners' in this)) this.$listeners = [];
 
       var callback = args.shift(), name;
       switch (typeof callback) {
@@ -185,7 +185,7 @@ Observer = new Class({
     createShortcuts: function(object, names) {
       (names || []).each(function(name) {
         var method_name = 'on'+name.replace(/:/g, '_').camelize().capitalize();
-        if (!defined(object[method_name])) {
+        if (!(method_name in object)) {
           object[method_name] = function() {
             return this.on.apply(this, [name].concat($A(arguments)));
           };

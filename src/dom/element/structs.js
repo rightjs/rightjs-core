@@ -78,8 +78,8 @@ Element.include({
    */
   insert: function(content, position) {
     if (isHash(content)) {
-      for (var position in content) {
-        this.insert(content[position], position)
+      for (var pos in content) {
+        this.insert(content[pos], pos)
       }
     } else {
       var scripts, insertions = Element.insertions;

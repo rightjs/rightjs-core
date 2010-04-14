@@ -10,20 +10,20 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Options = {
+var Options = {
   /**
    * assigns the options by merging them with the default ones
    *
    * @param Object options
    * @return Object current instance
    */
-  setOptions: function(options) {
-    var options = this.options = Object.merge(Class.findSet(this, 'options'), options), match, key;
+  setOptions: function(opts) {
+    var options = this.options = Object.merge(Class.findSet(this, 'options'), opts), match, key;
     
     // hooking up the observer options
     if (isFunction(this.on)) {
       for (key in options) {
-        if (match = key.match(/on([A-Z][A-Za-z]+)/)) {
+        if ((match = key.match(/on([A-Z][A-Za-z]+)/))) {
           this.on(match[1].toLowerCase(), options[key]);
           delete(options[key]);
         }
@@ -41,8 +41,8 @@ Options = {
    * @param mixed iterable
    * @return Array of the arguments
    */
-  cutOptions: function(args) {
-    var args = $A(args);
+  cutOptions: function(in_args) {
+    var args = $A(in_args);
     this.setOptions(isHash(args.last()) ? args.pop() : {});
     return args;
   }

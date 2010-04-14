@@ -51,8 +51,9 @@ var Class = function() {
  */
 Class.findSet = function(object, property) {
   var upcased = property.toUpperCase(), capcased = property.capitalize(),
-    candidates = [object, object.constructor].concat(object.constructor.ancestors),
-    holder = candidates.first(function(o) { return o && (o[upcased] || o[capcased]) });
+    constructor = object.constructor, ancestors = 'ancestors',
+    candidates = [object, constructor].concat(ancestors in constructor ? constructor[ancestors] : []),
+    holder = candidates.first(function(o) { return o && (upcased in o || capcased in o) });
     
   return holder ? holder[upcased] || holder[capcased] : null;
 };

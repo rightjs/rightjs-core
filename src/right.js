@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-RightJS = {
+var RightJS = {
   version: "#{version}",
   modules: ["#{modules}"]
 };

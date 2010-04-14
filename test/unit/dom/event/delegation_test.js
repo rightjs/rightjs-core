@@ -37,13 +37,13 @@ var EventDelegationTest = TestCase.create({
     delegation.call(this.base, { target: this.node1 });
     
     this.assertEqual(1, this.node1.value);
-    this.assertSame(undefined, this.node2.value);
+    this.assertFalse('value' in this.node2);
     
     delete(this.node1.value);
     
     delegation.call(this.base, { target: this.node2 });
     
-    this.assertSame(undefined, this.node1.value);
+    this.assertFalse('value' in this.node1);
     this.assertEqual(2, this.node2.value);
   },
   
@@ -56,13 +56,13 @@ var EventDelegationTest = TestCase.create({
     delegation.call(this.base, { target: this.node1 });
     
     this.assertEqual([], this.node1.args);
-    this.assertSame(undefined, this.node2.args);
+    this.assertFalse('args' in this.node2);
     
     delete(this.node1.args);
     
     delegation.call(this.base, { target: this.node2 });
     
-    this.assertSame(undefined, this.node1.args);
+    this.assertFalse('args' in this.node1);
     this.assertEqual([], this.node2.args);
   },
   
@@ -75,13 +75,13 @@ var EventDelegationTest = TestCase.create({
     delegation.call(this.base, { target: this.node1 });
     
     this.assertEqual(['arg1', 'arg2', 'arg3'], this.node1.args);
-    this.assertSame(undefined, this.node2.args);
+    this.assertFalse('args' in this.node2);
     
     delete(this.node1.args);
     
     delegation.call(this.base, { target: this.node2 });
     
-    this.assertSame(undefined, this.node1.args);
+    this.assertFalse('args' in this.node1);
     this.assertEqual(['arg4', 'arg5', 'arg6'], this.node2.args);
   },
   

@@ -69,8 +69,8 @@
   //
   
   // prepares a correct callback function
-  function guess_callback(args, array) {
-    var callback = args[0], args = A_proto.slice.call(args, 1), scope = array;
+  function guess_callback(argsi, array) {
+    var callback = argsi[0], args = A_proto.slice.call(argsi, 1), scope = array;
     
     if (isString(callback)) {
       var attr = callback;
@@ -89,8 +89,10 @@
   // calls the given method with preprocessing the arguments
   function call_method(func, scope, args) {
     try {
-      return func.apply(scope, guess_callback(args, scope));
+      var result = func.apply(scope, guess_callback(args, scope));
     } catch(e) { if (!(e instanceof Break)) throw(e); }
+    
+    return result;
   };
   
   // checks the value as a boolean

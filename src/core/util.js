@@ -20,11 +20,11 @@
  * @param Boolean flag if the function should not overwrite intersecting values
  * @return Objecte extended destination object
  */
-function $ext(dest, src, dont_overwrite) { 
-  var src = src || {}, key;
+function $ext(dest, source, dont_overwrite) { 
+  var src = source || {}, key;
 
   for (key in src)
-    if (dont_overwrite !== true || typeof(dest[key]) === 'undefined')
+    if (!dont_overwrite || !(key in dest))
       dest[key] = src[key];
 
   return dest;
@@ -40,11 +40,14 @@ function $ext(dest, src, dont_overwrite) {
  * @return mixed first sucessfully executed function result or undefined by default
  */
 function $try() {
-  for (var i=0; i < arguments.length; i++) {
+  for (var i=0, result; i < arguments.length; i++) {
     try {
-      return arguments[i]();
+      result = arguments[i]();
+      break;
     } catch(e) {}
   }
+  
+  return result;
 };
 
 /** !#server
@@ -55,7 +58,7 @@ function $try() {
  */
 function $eval(text) {
   if (!isString(text) || text.blank()) return;
-  if (window.execScript) {
+  if ('execScript' in window) {
     window.execScript(text);
   } else {
     $E('script', {type: 'text/javascript', text: text}).insertTo(document.body);
@@ -201,9 +204,8 @@ function $w(string) {
 };
 
 // we need to generate those functions in an anonymous scope
-(function() {
-  var to_s = Object.prototype.toString, slice = Array.prototype.slice, UID = 1;
-  
+var isHash, isArray, $A, $uid;
+(function(to_s, slice, UID) {
   /**
    * checks if the given value is a hash-like object
    *
@@ -270,6 +272,6 @@ function $w(string) {
       return this;
     };
   }
-})();
+})(Object.prototype.toString, Array.prototype.slice, 1);
 
 

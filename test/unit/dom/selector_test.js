@@ -1,7 +1,7 @@
 /**
  * The Element unit common methods module test-case
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 var SelectorTest = TestCase.create({
   name: "SelectorTest",
@@ -37,8 +37,8 @@ var SelectorTest = TestCase.create({
     }
   },
   
-  assertMatchRule: function(css_rule, elements, message) {
-    var elements = elements instanceof Array ? elements : [elements];
+  assertMatchRule: function(css_rule, elementst, message) {
+    var elements = elementst instanceof Array ? elementst : [elementst];
     elements.each(function(element) {
       if (!element.match(css_rule)) {
         this.throw_problem("Element should match the rule '"+css_rule+"'", message);
@@ -46,8 +46,8 @@ var SelectorTest = TestCase.create({
     }, this);
   },
   
-  assertNotMatchRule: function(css_rule, elements, message) {
-    var elements = elements instanceof Array ? elements : [elements];
+  assertNotMatchRule: function(css_rule, elementst, message) {
+    var elements = elementst instanceof Array ? elementst : [elementst];
     elements.each(function(element) {
       if (element.match(css_rule)) {
         this.throw_problem("Element should not match the rule '"+css_rule+"'", message);

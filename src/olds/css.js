@@ -36,7 +36,7 @@ if (!document.querySelector) {
 
       // search for immiate sibling nodes
       '+': function(element, tag) {
-        while (element = element.nextSibling) {
+        while ((element = element.nextSibling)) {
           if (element.tagName)
             return (tag == '*' || element.tagName == tag) ? [element] : [];
         }
@@ -46,7 +46,7 @@ if (!document.querySelector) {
       // search for late sibling nodes
       '~': function(element, tag) {
         var result = [];
-        while (element = element.nextSibling)
+        while ((element = element.nextSibling))
           if (tag == '*' || element.tagName == tag)
             result.push(element);
         return result;
@@ -72,7 +72,7 @@ if (!document.querySelector) {
 
       'first-child': function(tag_name) {
         var node = this;
-        while (node = node.previousSibling) {
+        while ((node = node.previousSibling)) {
           if (node.tagName && (!tag_name || node.tagName == tag_name)) {
             return false;
           }
@@ -86,7 +86,7 @@ if (!document.querySelector) {
 
       'last-child': function(tag_name) {
         var node = this;
-        while (node = node.nextSibling) {
+        while ((node = node.nextSibling)) {
           if (node.tagName && (!tag_name || node.tagName == tag_name)) {
             return false;
           }
@@ -116,7 +116,7 @@ if (!document.querySelector) {
         if (number.includes('n')) {
           // parsing out the matching expression
           var a = b = 0;
-          if (m = number.match(/^([+-]?\d*)?n([+-]?\d*)?$/)) {
+          if ((m = number.match(/^([+-]?\d*)?n([+-]?\d*)?$/))) {
             a = m[1] == '-' ? -1 : parseInt(m[1], 10) || 1;
             b = parseInt(m[2], 10) || 0;
           }
@@ -189,14 +189,14 @@ if (!document.querySelector) {
         var i, t, c, a, p, v, m, desc = {};
         
         // grabbing the attributes 
-        while(m = atom.match(attrs_re)) {
+        while((m = atom.match(attrs_re))) {
           a = a || {};
           a[m[1]] = { o: m[2], v: m[5] || m[6] };
           atom = atom.replace(m[0], '');
         }
         
         // extracting the pseudos
-        if (m = atom.match(pseudo_re)) {
+        if ((m = atom.match(pseudo_re))) {
           p = m[1];
           v = m[3] == '' ? null : m[3];
           atom = atom.replace(m[0], '');
@@ -351,7 +351,7 @@ if (!document.querySelector) {
         chunker.lastIndex = 0;
         
         var rules = [], rule = [], rel = ' ', m, token;
-        while (m = chunker.exec(css_rule)) {
+        while ((m = chunker.exec(css_rule))) {
           token = m[1];
           
           if (token == '+' || token == '>' || token == '~') {

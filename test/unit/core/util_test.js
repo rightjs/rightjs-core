@@ -1,7 +1,7 @@
 /**
  * There are the util methods test-case
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 var UtilTest = TestCase.create({
   name: "UtilTest",
@@ -12,7 +12,7 @@ var UtilTest = TestCase.create({
     $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
       '" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
     
-    var array, object, doc;
+    var array, object, doc, und, nil;
     
     with (window.frames[id]) {
       array  = Array;

@@ -76,8 +76,8 @@ Element.include({
   },
   
   // cleans up the style value
-  _getStyle: function(style, key) {
-    var value, key = key.camelize();
+  _getStyle: function(style, in_key) {
+    var value, key = in_key.camelize();
     
     switch (key) {
       case 'opacity':

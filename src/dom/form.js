@@ -7,8 +7,8 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
-function Form(options) {
-  var options = options || {}, remote = options.remote,
+function Form(in_options) {
+  var options = in_options || {}, remote = options.remote,
     form = new Element('form', Object.without(options, 'remote'));
   
   if (remote) form.remotize();

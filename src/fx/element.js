@@ -116,9 +116,9 @@ return {
 // protected
 
   // runs an Fx on the element
-  fx: function(name, args) {
-    var args = $A(args).compact(), options = isHash(args.last()) ? args.pop() : {},
-        fx = new Fx[name.capitalize()](this, options);
+  fx: function(name, params) {
+    var args = $A(params).compact(), options = isHash(args.last()) ? args.pop() : {},
+      fx = new Fx[name.capitalize()](this, options);
     
     fx.start.apply(fx, args);
     

@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Fx = new Class(Observer, {
+var Fx = new Class(Observer, {
   extend: {
     EVENTS: $w('start finish cancel'),
     
@@ -61,7 +61,7 @@ Fx = new Class(Observer, {
   initialize: function(element, options) {
     this.$super(options);
     
-    if (this.element = element = $(element)) {
+    if ((this.element = element = $(element))) {
       var uid = $uid(element);
       this.ch = (Fx.ch[uid] = Fx.ch[uid] || []);
       this.cr = (Fx.cr[uid] = Fx.cr[uid] || []);

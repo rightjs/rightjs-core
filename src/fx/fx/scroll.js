@@ -14,8 +14,8 @@ Fx.Scroll = new Class(Fx, {
     this.before = {};
     this.after  = value;
     
-    if (defined(value.x)) this.before.x = this.element.scrollLeft;
-    if (defined(value.y)) this.before.y = this.element.scrollTop;
+    if ('x' in value) this.before.x = this.element.scrollLeft;
+    if ('y' in value) this.before.y = this.element.scrollTop;
   },
   
   render: function(delta) {

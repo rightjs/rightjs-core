@@ -28,7 +28,7 @@ Fx.Morph = new Class(Fx, (function() {
         bd_width = Border + direction + Width,
         bd_color = Border + direction + Color;
       
-      if (before[bd_style] != after[bd_style]) {
+      if (bd_style in before && before[bd_style] != after[bd_style]) {
         var style = this.element.style;
 
         if (before[bd_style] == 'none') {

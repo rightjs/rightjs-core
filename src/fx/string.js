@@ -35,7 +35,7 @@ String.include({
     
     if (match) {
       match = "#"+ match[1]+match[1]+match[2]+match[2]+match[3]+match[3];
-    } else if (match = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(this)) {
+    } else if ((match = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(this))) {
       match = "#"+ match.slice(1).map(function(bit) {
         bit = (bit-0).toString(16);
         return bit.length == 1 ? '0'+bit : bit;

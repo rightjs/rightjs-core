@@ -12,7 +12,7 @@
   var ready = object.fire.bind(object, 'ready');
   
   // IE and Konqueror browsers
-  if (typeof(document.readyState) !== 'undefined') {
+  if ('readyState' in document) {
     (function() {
       ['loaded','complete'].includes(document.readyState) ? ready() : arguments.callee.delay(50);
     })();

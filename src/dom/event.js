@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Event = new Class(window.Event, {
+var Event = new Class(window.Event, {
   extend: {
     /**
      * extends a native object with additional functionality

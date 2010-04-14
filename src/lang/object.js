@@ -81,7 +81,7 @@ $ext(Object, {
         i=0, length = filter.length;
     
     for (; i < length; i++) {
-      if (defined(object[filter[i]]))
+      if (filter[i] in object)
         copy[filter[i]] = object[filter[i]];
     }
     

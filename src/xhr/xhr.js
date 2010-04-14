@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Xhr = new Class(Observer, {
+var Xhr = new Class(Observer, {
   extend: {
     // supported events list
     EVENTS: $w('success failure complete request cancel create'),
@@ -84,8 +84,10 @@ Xhr = new Class(Observer, {
    */
   getHeader: function(name) {
     try {
-      return this.xhr.getResponseHeader(name);
+      var value = this.xhr.getResponseHeader(name);
     } catch(e) {}
+    
+    return value;
   },
   
   /**

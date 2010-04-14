@@ -1,7 +1,7 @@
 /**
  * The Observer unit tests
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 var ObserverTest = TestCase.create({
   name: 'ObserverTest',
@@ -195,10 +195,10 @@ var ObserverTest = TestCase.create({
   },
   
   testFire: function() {
-    var o = new Observer();
+    var o = new Observer(), e1, e2, e3, o1, o2, o3;
     
-    var e1 = e2 = e3 = false;
-    var o1 = o2 = o3 = null;
+    e1 = e2 = e3 = false;
+    o1 = o2 = o3 = null;
     
     o.observe('foo', function(e) { e1 = e; o1 = this; });
     o.observe('foo', function(e) { e2 = e; o2 = this; });
