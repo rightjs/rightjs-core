@@ -13,22 +13,6 @@
   } catch(e) { var input_classes = []; }
   
   Form.Element = {
-    /**
-     * IE browsers manual elements extending
-     *
-     * @param Element element
-     * @return Element extended element
-     */
-    ext: function(element) {
-      // highjack the native methods to be able to call them froum our wrappers
-      element._blur   = element.blur;
-      element._focus  = element.focus;
-      element._select = element.select;
-
-      return $ext(element, this.Methods);
-    },
-
-    // the methods container
     Methods: {},
 
     /**

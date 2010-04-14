@@ -17,16 +17,6 @@ function Form(options) {
 };
 
 $ext(Form, {
-  /**
-   * IE browsers manual elements extending
-   *
-   * @param Element form
-   * @return Form element
-   */
-  ext: function(element) {
-    return $ext(element, this.Methods);
-  },
-  
   Methods: {},
   
   /**

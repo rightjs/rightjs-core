@@ -51,14 +51,18 @@ if (Browser.OLD) {
         if (window.Form) {
           switch(element.tagName) {
             case 'FORM':
-              Form.ext(element);
+              $ext(element, Form.Methods);
               break;
 
             case 'INPUT':
             case 'SELECT':
             case 'BUTTON':
             case 'TEXTAREA':
-              Form.Element.ext(element);
+              $ext($alias(element, {
+                _blur:   'blur',
+                _focus:  'focus',
+                _select: 'select'
+              }), Form.Element.Methods);
               break;
           }
         }
