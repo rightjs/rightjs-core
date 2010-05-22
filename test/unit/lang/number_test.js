@@ -64,5 +64,15 @@ var NumberTest = TestCase.create({
   
   testFloor: function() {
     this.assert((4.6).floor() == 4);
+  },
+  
+  testMin: function() {
+    this.assertEqual(2.2, 2.2.min(2.1));
+    this.assertEqual(2.2, 2.1.min(2.2));
+  },
+  
+  testMax: function() {
+    this.assertEqual(2.2, 2.2.max(2.4));
+    this.assertEqual(2.2, 2.4.max(2.2));
   }
 });

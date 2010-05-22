@@ -47,5 +47,13 @@ Number.include({
   
   floor: function() {
     return Math.floor(this);
+  },
+  
+  min: function(value) {
+    return this < value ? value : this + 0;
+  },
+  
+  max: function(value) {
+    return this > value ? value : this + 0;
   }
 });
