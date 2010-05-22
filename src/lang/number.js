@@ -37,13 +37,8 @@ Number.include({
     return Math.abs(this);
   },
   
-  round: function(length) {
-    if (length) {
-      var base = Math.pow(10, length);
-      return Math.round(this * base) / base;
-    } else {
-      return Math.round(this);
-    }
+  round: function(size) {
+    return size ? parseFloat(this.toFixed(size)) : Math.round(this);
   },
   
   ceil: function() {
