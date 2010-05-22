@@ -418,5 +418,52 @@ var XhrTest = TestCase.create({
     this.assertSame(div, div.load('foo/bar'));
     this.assertEqual('response text', div.innerHTML);
     this.assertEqual(4444, window.____1);
+  },
+  
+  testRESTfulMethods: function() {
+    var xhr = new Xhr('/url'), method, url, data;
+    
+    xhr.createXhr = function() {
+      return {
+        open: function(m, u, a) {
+          method = m;
+          url    = u
+        },
+        setRequestHeader: function() {},
+        send: function(d) {
+          data = d;
+        }
+      }
+    };
+    
+    // testing the get request
+    xhr.method = 'GET';
+    xhr.send('some=data');
+    
+    this.assertEqual('get', method);
+    this.assertEqual('/url?some=data', url);
+    this.assertNull(data);
+    
+    // testing the post request
+    xhr.method = 'POST';
+    xhr.send('some=data');
+    
+    this.assertEqual('post', method);
+    this.assertEqual('/url', url);
+    this.assertEqual('some=data', data);
+    
+    xhr.method = 'PUT'; 
+    xhr.send('some=data');
+    
+    this.assertEqual('post', method);
+    this.assertEqual('/url?_method=put', url);
+    this.assertEqual('some=data', data);
+    
+    xhr.method = 'DELETE'; 
+    xhr.send('some=data');
+    
+    this.assertEqual('post', method);
+    this.assertEqual('/url?_method=delete', url);
+    this.assertEqual('some=data', data);
   }
 });
