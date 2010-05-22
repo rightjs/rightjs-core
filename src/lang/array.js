@@ -397,6 +397,34 @@ Array.include({
     }).sort(function(a, b) {
       return a.value > b.value ? 1 : a.value < b.value ? -1 : 0;
     }).map('item');
+  },
+  
+  /**
+   * Returns the minimal value on the list
+   *
+   * @return Number minimal value
+   */
+  min: function() {
+    return Math.min.apply(Math, this);
+  },
+  
+  /**
+   * Returns the maximal value
+   *
+   * @return Number maximal value
+   */
+  max: function() {
+    return Math.max.apply(Math, this);
+  },
+  
+  /**
+   * Returns a summ of all the items on the list
+   *
+   * @return Number a summ of values on the list
+   */
+  sum: function() {
+    for(var i=0,l=this.length,sum=0; i < l; sum += this[i++]);
+    return sum;
   }
 });
 

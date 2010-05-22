@@ -266,5 +266,17 @@ var ArrayTest = TestCase.create({
     
     this.assertEqual([{t:1}, {t:2}, {t:3}], b);
     this.assertEqual(b, c);
+  },
+  
+  testMin: function() {
+    this.assertEqual(22, [225, 100, 22].min());
+  },
+  
+  testMax: function() {
+    this.assertEqual(225, [225, 100, 22].max());
+  },
+  
+  testSum: function() {
+    this.assertEqual(127.7, [25.5, 100, 2.2].sum());
   }
 });
