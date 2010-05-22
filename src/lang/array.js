@@ -281,13 +281,11 @@ Array.include({
   merge: function() {
     for (var copy = this.clone(), arg, i=0, j, length = arguments.length; i < length; i++) {
       arg = arguments[i];
-      if (isArray(arg)) {
-        for (j=0; j < arg.length; j++) {
-          if (copy.indexOf(arg[j]) == -1)
-            copy.push(arg[j]);
-        }  
-      } else if (copy.indexOf(arg) == -1) {
-        copy.push(arg);
+      arg = isArray(arg) ? arg : [arg];
+      
+      for (j=0; j < arg.length; j++) {
+        if (copy.indexOf(arg[j]) == -1)
+          copy.push(arg[j]);
       }
     }
     return copy;
@@ -388,12 +386,12 @@ Array.include({
    * @return Array sorted copy
    */
   sortBy: function() {
-    var pair = guess_callback(arguments, this), a, b;
+    var pair = guess_callback(arguments, this), context = this;
     
     return this.sort(function(a, b) {
       return default_sort(
-        pair[0].call(pair[1], a),
-        pair[0].call(pair[1], b)
+        pair[0].call(pair[1], a, i, context),
+        pair[0].call(pair[1], b, i, context)
       );
     });
   },
