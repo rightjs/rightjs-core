@@ -9,58 +9,29 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 (function(A_proto) {
+  var build_loop = function(pre, body, ret) {
+    return eval('[function(c,s){'+
+      'for(var '+pre+'i=0,l=this.length;i<l;i++){'+
+        body.replace('_', 'c.call(s,this[i],i,this)') + 
+      '}' +
+      ret
+    +'}]')[0];
+  },
   
   // JavaScript 1.6 methods recatching up or faking
-  var for_each = A_proto.forEach || function(callback, scope) {
-    for (var i=0, length = this.length; i < length; i++)
-      callback.call(scope, this[i], i, this);
-  };
-  
-  var filter = A_proto.filter || function(callback, scope) {
-    for (var result=[], i=0, j=0, length = this.length; i < length; i++) {
-      if (callback.call(scope, this[i], i, this))
-        result[j++] = this[i];
-    }
-    return result;
-  };
-  
-  var map = A_proto.map || function(callback, scope) {
-    for (var result=[], i=0, length = this.length; i < length; i++) {
-      result[i] = callback.call(scope, this[i], i, this);
-    }
-    return result;
-  };
-  
-  var some = A_proto.some || function(callback, scope) {
-    for (var i=0, length = this.length; i < length; i++) {
-      if (callback.call(scope, this[i], i, this))
-        return true;
-    }
-    return false;
-  };
-  
-  var every = A_proto.every || function(callback, scope) {
-    for (var i=0, length = this.length; i < length; i++) {
-      if (!callback.call(scope, this[i], i, this))
-        return false;
-    }
-    return true;
-  };
-  
-  function first(callback, scope) {
-    for (var i=0, length = this.length; i < length; i++) {
-      if (callback.call(scope, this[i], i, this))
-        return this[i];
-    }
-    return this._$u; // <- undefined, see #191
-  };
+  for_each = A_proto.forEach || build_loop('', '_', ''),
+  filter   = A_proto.filter  || build_loop('r=[],j=0,', 'if(_)r[j++]=this[i]', 'return r'),
+  map      = A_proto.map     || build_loop('r=[],', 'r[i]=_', 'return r'),
+  some     = A_proto.some    || build_loop('', 'if(_)return true', 'return false'),
+  every    = A_proto.every   || build_loop('', 'if(!_)return false', 'return true'),
+  first    = build_loop('', 'if(_)return this[i]', 'return [][0]');
   
   function last(callback, scope) {
     for (var i=this.length-1; i > -1; i--) {
       if (callback.call(scope, this[i], i, this))
         return this[i];
     }
-    return this._$u; // <- undefined, see #191
+    return [][0]; // <- shorter undefined
   };
   
   
@@ -70,10 +41,10 @@
   
   // prepares a correct callback function
   function guess_callback(argsi, array) {
-    var callback = argsi[0], args = A_proto.slice.call(argsi, 1), scope = array;
+    var callback = argsi[0], args = A_proto.slice.call(argsi, 1), scope = array, attr;
     
     if (isString(callback)) {
-      var attr = callback;
+      attr = callback;
       if (array.length && isFunction(array[0][attr])) {
         callback = function(object) { return object[attr].apply(object, args); };
       } else {
@@ -314,7 +285,7 @@ Array.include({
    * @return Array filtered version
    */
   compact: function() {
-    return this.without(null, this._$u); // <- this._u === undefined, see #191
+    return this.without(null, [][0]); // <- shorter undefined
   },
   
   /**
@@ -386,12 +357,12 @@ Array.include({
    * @return Array sorted copy
    */
   sortBy: function() {
-    var pair = guess_callback(arguments, this), context = this;
+    var pair = guess_callback(arguments, this);
     
     return this.sort(function(a, b) {
       return default_sort(
-        pair[0].call(pair[1], a, i, context),
-        pair[0].call(pair[1], b, i, context)
+        pair[0].call(pair[1], a),
+        pair[0].call(pair[1], b)
       );
     });
   },
