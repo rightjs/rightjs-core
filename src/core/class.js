@@ -14,6 +14,14 @@ var Class = function() {
   
   // basic class object definition
   function klass() {
+    var prebind = 'prebind';
+    
+    if (prebind in this && isArray(this[prebind])) {
+      this[prebind].each(function(method) {
+        this[method] = this[method].bind(this);
+      }, this);
+    }
+    
     return this.initialize ? this.initialize.apply(this, arguments) : this;
   };
 

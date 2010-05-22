@@ -233,5 +233,21 @@ var ClassTest = TestCase.create({
     
     this.assertEqual('BA', new B().say());
     this.assertEqual('CBA', new C().say());
+  },
+  
+  testPrebindFeature: function() {
+    var A = new Class({
+      prebind: ['boo'],
+      
+      value: 'A value',
+      
+      boo: function() {
+        return this.value;
+      }
+    });
+   
+    var a = new A(), boo = a.boo;
+    
+    this.assertEqual(a.value, boo());
   }
 });
