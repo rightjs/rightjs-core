@@ -388,15 +388,14 @@ Array.include({
    * @return Array sorted copy
    */
   sortBy: function() {
-    var pair = guess_callback(arguments, this);
-    return this.map(function(item, i) {
-      return {
-        item: item,
-        value: pair[0].call(pair[1], item, i, this)
-      }
-    }).sort(function(a, b) {
-      return a.value > b.value ? 1 : a.value < b.value ? -1 : 0;
-    }).map('item');
+    var pair = guess_callback(arguments, this), a, b;
+    
+    return this.sort(function(a, b) {
+      return default_sort(
+        pair[0].call(pair[1], a),
+        pair[0].call(pair[1], b)
+      );
+    });
   },
   
   /**
