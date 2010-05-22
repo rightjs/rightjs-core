@@ -74,7 +74,7 @@ var ArrayTest = TestCase.create({
       list[i] = value * 2;
     }));
   },
-  /*
+  
   testEachWithBreak: function() {
     this.assertEqual([2,2,3,4], [1,2,3,4].each(function(value, i, list) {
       list[i] = value * 2;
@@ -106,7 +106,7 @@ var ArrayTest = TestCase.create({
       this.assertEqual([1,2,3], dummy.args);
       this.assertSame(dummy, dummy.context);
     }, this);
-  },*/
+  },
   
   testMap: function() {
     var a = [1,2,3,4];
@@ -244,6 +244,19 @@ var ArrayTest = TestCase.create({
     this.assertNotSame(a, b);
     this.assertNotEqual(a, b);
     this.assertEqual(a.sort(), b.sort());
+  },
+  
+  testSort: function() {
+    var a = [225, 100, 22];
+    var as = a.sort();
+    this.assertSame(a, as);
+    this.assertEqual([22, 100, 225], as);
+    
+    var b = ['as', 'bc', 'ad'];
+    var bs = b.sort();
+    
+    this.assertSame(b, bs);
+    this.assertEqual(['ad', 'as', 'bc'], bs);
   },
   
   testSortBy: function() {

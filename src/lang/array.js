@@ -100,6 +100,13 @@
     return !!i;
   };
   
+  // default sorting callback
+  function default_sort(a, b) {
+    return a > b ? 1 : a < b ? -1 : 0;
+  };
+  
+  var original_sort = A_proto.sort;
+  
 Array.include({
   /**
    * IE fix
@@ -361,6 +368,16 @@ Array.include({
     for (; i; j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x);
     
     return shuff;
+  },
+  
+  /**
+   * Default sort fix for numeric values
+   *
+   * @param Function callback
+   * @return Array self
+   */
+  sort: function(callback) {
+    return original_sort.apply(this, (callback || !isNumber(this[0])) ? arguments : [default_sort]);
   },
   
   /**
