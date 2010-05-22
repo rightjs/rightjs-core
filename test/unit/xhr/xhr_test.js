@@ -275,6 +275,20 @@ var XhrTest = TestCase.create({
     this.assertNull(window.____1);
   },
   
+  testScriptsAutoEvaluationOnEvalJSFalse: function() {
+    window.____1 = null;
+    this.mockAjax({
+      text: 'var ____1 = 1234;',
+      headers: { 'Content-type': 'text/javascript' }
+    });
+    
+    new Xhr('foo/bar', {
+      evalJS: false
+    }).send();
+    
+    this.assertNull(window.____1);
+  },
+  
   testScriptsForsedEvaluation: function() {
     window.____1 = null;
     this.mockAjax({text: 'var ____1 = 4321;'});

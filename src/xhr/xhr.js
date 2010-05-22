@@ -25,6 +25,7 @@ var Xhr = new Class(Observer, {
       async:        true,
       evalScripts:  false,
       evalResponse: false,
+      evalJS:       true,
       evalJSON:     true,
       secureJSON:   true,
       urlEncoded:   true,
@@ -221,7 +222,7 @@ var Xhr = new Class(Observer, {
   
   // called on success
   tryScripts: function(response) {
-    if (this.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) {
+    if (this.evalResponse || (this.evalJS && /(ecma|java)script/i.test(this.getHeader('Content-type')))) {
       $eval(this.text);
     } else if ((/json/).test(this.getHeader('Content-type')) && this.evalJSON) {
       this.json = this.responseJSON = this.sanitizedJSON();
