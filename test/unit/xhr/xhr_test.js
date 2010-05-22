@@ -73,7 +73,7 @@ var XhrTest = TestCase.create({
     this.assertEqual(false,     request.async);
     this.assertEqual(false,     request.evalScripts);
     this.assertEqual(false,     request.urlEncoded);
-    this.assertEqual(null,      request.spinner, 'xhr instance should skip global spinners');
+    this.assertEqual('spinner', request.spinner);
     this.assertEqual('bla=bla', request.params);
   },
   
@@ -419,4 +419,4 @@ var XhrTest = TestCase.create({
     this.assertEqual('response text', div.innerHTML);
     this.assertEqual(4444, window.____1);
   }
-})
+});

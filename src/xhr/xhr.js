@@ -57,13 +57,13 @@ var Xhr = new Class(Observer, {
     this.initCallbacks(); // system level callbacks should be initialized before the user callbacks
     
     this.url = url;
-    this.$super(options);
-    
+
     // copying some options to the instance level attributes
-    for (var key in Xhr.Options)
-      this[key] = this.options[key];
-      
-    this.initSpinner();
+    $ext(this.$super(options), this.options);
+    
+    // removing the local spinner if it's the same as the global one
+    if (Xhr.Options.spinner && $(this.spinner) === $(Xhr.Options.spinner))
+      this.spinner = null;
   },
   
   /**
@@ -107,7 +107,7 @@ var Xhr = new Class(Observer, {
    * @return Xhr self
    */
   send: function(params) {
-    var add_params = {}, url = this.url, method = this.method.toLowerCase(), key;
+    var add_params = {}, url = this.url, method = this.method.toLowerCase(), headers = this.headers, key, xhr;
     
     if (method == 'put' || method == 'delete') {
       add_params['_method'] = method;
@@ -116,7 +116,7 @@ var Xhr = new Class(Observer, {
     
     var data = this.prepareData(this.params, this.prepareParams(params), add_params);
     
-    if (this.urlEncoded && method == 'post' && !this.headers['Content-type']) {
+    if (this.urlEncoded && method == 'post' && !headers['Content-type']) {
       this.setHeader('Content-type', 'application/x-www-form-urlencoded;charset='+this.encoding);
     }
     
@@ -125,18 +125,18 @@ var Xhr = new Class(Observer, {
       data = null;
     }
     
-    this.xhr = this.createXhr();
+    xhr = this.xhr = this.createXhr();
     this.fire('create');
     
-    this.xhr.open(method, url, this.async);
+    xhr.open(method, url, this.async);
     
-    this.xhr.onreadystatechange = this.stateChanged.bind(this);
+    xhr.onreadystatechange = this.stateChanged.bind(this);
     
-    for (key in this.headers) {
-      this.xhr.setRequestHeader(key, this.headers[key]);
+    for (key in headers) {
+      xhr.setRequestHeader(key, headers[key]);
     }
     
-    this.xhr.send(data);
+    xhr.send(data);
     this.fire('request');
     
     if (!this.async) this.stateChanged();
@@ -162,11 +162,13 @@ var Xhr = new Class(Observer, {
    * @return Xhr self
    */
   cancel: function() {
-    if (!this.xhr || this.xhr.canceled) return this;
+    var xhr = this.xhr;
     
-    this.xhr.abort();
-    this.xhr.onreadystatechange = function() {};
-    this.xhr.canceled = true;
+    if (!xhr || xhr.canceled) return this;
+    
+    xhr.abort();
+    xhr.onreadystatechange = function() {};
+    xhr.canceled = true;
     
     return this.fire('cancel');
   },
@@ -179,7 +181,7 @@ var Xhr = new Class(Observer, {
   
   // creates new request instance
   createXhr: function() {
-    if (this.form && this.form.getElements().map('type').includes('file')) {
+    if (this.form && this.form.first('input[type=file]')) {
       return new Xhr.IFramed(this.form);
     } else try {
       return new XMLHttpRequest();
@@ -209,22 +211,26 @@ var Xhr = new Class(Observer, {
 
   // handles the state change
   stateChanged: function() {
-    if (this.xhr.readyState != 4 || this.xhr.canceled) return;
+    var xhr = this.xhr;
     
-    try { this.status = this.xhr.status;
+    if (xhr.readyState != 4 || xhr.canceled) return;
+    
+    try { this.status = xhr.status;
     } catch(e) { this.status = 0; }
     
-    this.text = this.responseText = this.xhr.responseText;
-    this.xml  = this.responseXML  = this.xhr.responseXML;
+    this.text = this.responseText = xhr.responseText;
+    this.xml  = this.responseXML  = xhr.responseXML;
     
     this.fire('complete').fire(this.successful() ? 'success' : 'failure');
   },
   
   // called on success
   tryScripts: function(response) {
-    if (this.evalResponse || (this.evalJS && /(ecma|java)script/i.test(this.getHeader('Content-type')))) {
+    var content_type = this.getHeader('Content-type');
+    
+    if (this.evalResponse || (this.evalJS && /(ecma|java)script/i.test(content_type))) {
       $eval(this.text);
-    } else if ((/json/).test(this.getHeader('Content-type')) && this.evalJSON) {
+    } else if (/json/.test(content_type) && this.evalJSON) {
       this.json = this.responseJSON = this.sanitizedJSON();
     } else if (this.evalScripts) {
       this.text.evalScripts();
@@ -266,40 +272,42 @@ var Xhr = new Class(Observer, {
     }, this);
   },
   
-  // inits the spinner
-  initSpinner: function() {
-    if (this.spinner)
-      this.spinner = $(this.spinner);
-      
-      if (Xhr.Options.spinner && this.spinner === $(Xhr.Options.spinner))
-        this.spinner = null;
-  },
-  
-  showSpinner: function() { if (this.spinner) this.spinner.show(this.spinnerFx, {duration: 100}); },
-  hideSpinner: function() { if (this.spinner) this.spinner.hide(this.spinnerFx, {duration: 100}); }
+  showSpinner: function() { Xhr.showSpinner.call(this, this); },
+  hideSpinner: function() { Xhr.hideSpinner.call(this, this); }
 });
-
-// creating the class level observer
-Observer.create(Xhr);
 
 // attaching the common spinner handling
-$ext(Xhr, {
+$ext(Observer.create(Xhr), {
   counter: 0,
-  showSpinner: function() {
-    if (this.Options.spinner) $(this.Options.spinner).show(this.Options.spinnerFx, {duration: 100});
+  
+  // shows the spinner
+  showSpinner: function(context) {
+    Xhr.trySpinner(context, 'show');
   },
-  hideSpinner: function() {
-    if (this.Options.spinner) $(this.Options.spinner).hide(this.Options.spinnerFx, {duration: 100});
+  
+  // hides the spinner
+  hideSpinner: function(context) {
+    Xhr.trySpinner(context, 'hide');
+  },
+  
+  trySpinner: function(context, method) {
+    var object = context || Xhr.Options, spinner = $(object.spinner);
+    if (spinner) spinner[method](object.spinnerFx, {duration: 100});
+  },
+  
+  // counts a request in
+  countIn: function() {
+    Xhr.counter ++;
+    Xhr.showSpinner();
+  },
+  
+  // counts a request out
+  countOut: function() {
+    Xhr.counter --;
+    if (Xhr.counter < 1) Xhr.hideSpinner();
   }
-});
-
-Xhr.onCreate(function() {
-  this.counter++;
-  this.showSpinner();
-}).onComplete(function() {
-  this.counter--;
-  if (this.counter < 1) this.hideSpinner();
-}).onCancel(function() {
-  this.counter--;
-  if (this.counter < 1) this.hideSpinner();
+}).on({
+  create:   'countIn',
+  complete: 'countOut',
+  cancel:   'countOut'
 });

@@ -39,5 +39,23 @@ var XhrIFramedTest = TestCase.create({
     this.assert(onready_called);
     this.assertEqual(4,   ixhr.readyState);
     this.assertEqual(200, ixhr.status);
+  },
+  
+  testXhrFormHookForSimpleForm: function() {
+    var xhr = new Xhr('/boo');
+    
+    xhr.form = new Form();
+    
+    this.assert(xhr.createXhr().constructor !== Xhr.IFramed);
+  },
+  
+  testXhrFormHookForFormWithFiles: function() {
+    var xhr = new Xhr('/boo');
+    
+    xhr.form = new Form({
+      html: '<input type="file" name="boo" />'
+    });
+    
+    this.assert(xhr.createXhr().constructor === Xhr.IFramed);
   }
 });

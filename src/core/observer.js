@@ -20,6 +20,7 @@ var Observer = new Class({
   initialize: function(options) {
     this.setOptions(options);    
     Observer.createShortcuts(this, Class.findSet(this, 'events'));
+    return this;
   },
   
   /**
