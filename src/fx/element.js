@@ -31,7 +31,7 @@ return {
    * @return Element this
    */
   hide: function(fx, options) {
-    return fx ? this.fx(fx, ['out', options]) : old_hide.call(this);
+    return (fx && this.visible()) ? this.fx(fx, ['out', options]) : old_hide.call(this);
   },
   
   /**
@@ -42,7 +42,7 @@ return {
    * @return Element this
    */
   show: function(fx, options) {
-    return fx ? this.fx(fx, ['in', options]) : old_show.call(this);
+    return (fx && this.hidden()) ? this.fx(fx, ['in', options]) : old_show.call(this);
   },
   
   /**
