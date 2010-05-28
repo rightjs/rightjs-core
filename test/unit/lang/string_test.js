@@ -62,21 +62,21 @@ var StringTest = TestCase.create({
   testCamelize: function() {
     this.assertEqual('asdfAsdfAsdf', 'asdf_asdf_asdf'.camelize());
     this.assertEqual('asdfAsdfAsdf', 'asdf-asdf-asdf'.camelize());
-    this.assertEqual('_asdfAsdfASDf', '_asdf_asdf_ASDf'.camelize());
+    this.assertEqual('AsdfAsdfASDf', '_asdf_asdf_ASDf'.camelize());
   },
   
   testUnderscored: function() {
     this.assertEqual('asdf_asdf_asdf', 'asdfAsdfAsdf'.underscored());
-    this.assertEqual('asdf_asdf_ASDF', 'asdfAsdfASDF'.underscored());
+    this.assertEqual('asdf_asdf_asdf', 'asdfAsdfASDF'.underscored());
     this.assertEqual('asdf_asdf_asdf', 'asdf-asdf-asdf'.underscored());
   },
 
   testCapitalize: function() {
     this.assertEqual('Asdf', 'asdf'.capitalize());
-    this.assertEqual('Asdf Asdf', 'asdf asdf'.capitalize());
-    this.assertEqual('Asdf-Asdf', 'asdf-asdf'.capitalize());
-    this.assertEqual('Мама Мыла Раму', 'мама мыла раму'.capitalize());
-    this.assertEqual('Мама-Мыла Раму', 'мама-мыла раму'.capitalize());
+    this.assertEqual('Asdf asdf', 'asdf asdf'.capitalize());
+    this.assertEqual('Asdf-asdf', 'asdf-asdf'.capitalize());
+    this.assertEqual('Мама мыла раму', 'мама мыла раму'.capitalize());
+    this.assertEqual('Мама-мыла раму', 'мама-мыла раму'.capitalize());
   },
   
   testIncludes: function() {

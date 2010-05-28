@@ -93,11 +93,9 @@ String.include({
    * @returns String camelized version
    */
   camelize: function() {
-    var prefix = this.match(/^(\-|_)+?/g) || ''; // <- keeps start dashes alive
-    return prefix + this.substr(prefix.length, this.length).replace(
-       /(\-|_)+?(\D)/g, function(match) {
-         return match.replace(/\-|_/, '').toUpperCase();
-      });
+    return this.replace(/(\-|_)+(.)?/g, function(match, dash, chr) {
+      return chr ? chr.toUpperCase() : '';
+    });
   },
   
   /**
@@ -105,9 +103,7 @@ String.include({
    * @return String underscored version
    */
   underscored: function() {
-    return this.replace(/([a-z0-9])([A-Z]+)/g, function(match, first, second) {
-      return first+"_"+(second.length > 1 ? second : second.toLowerCase());
-    }).replace(/\-/g, '_');
+    return this.replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/\-/g, '_').toLowerCase();
   },
 
   /**
@@ -116,9 +112,7 @@ String.include({
    * @return String captialised version
    */
   capitalize: function() {
-    return this.replace(/(^|\s|\-|_)[a-z\u00e0-\u00fe\u0430-\u045f]/g, function(match) {
-      return match.toUpperCase();
-    });
+    return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
   },
   
   /**
