@@ -10,6 +10,7 @@
 Element.include((function(methods) {
   var old_hide   = methods.hide,
       old_show   = methods.show,
+      old_remove = methods.remove,
       old_scroll = methods.scrollTo;
 
 return {
@@ -43,6 +44,19 @@ return {
    */
   show: function(fx, options) {
     return (fx && this.hidden()) ? this.fx(fx, ['in', options]) : old_show.call(this);
+  },
+  
+  /**
+   * Removes the element out of the DOM structure
+   *
+   * @param String fx name
+   * @param Object fx options
+   * @return Element this
+   */
+  remove: function(fx, options) {
+    return (fx && this.visible()) ? this.fx(fx, ['out', Object.merge(options, {
+      onFinish: old_remove.bind(this)
+    })]) : old_remove.call(this);
   },
   
   /**
