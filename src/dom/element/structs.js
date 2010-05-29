@@ -83,15 +83,15 @@ Element.include({
       }
     } else {
       var scripts, insertions = Element.insertions;
-      position = isString(position) ? position.toLowerCase() : 'bottom';
+      position = (position||'bottom').toLowerCase();
       
-      if (isString(content) || isNumber(content)) {
+      if (typeof(content) !== 'object') {
         content = (''+content).stripScripts(function(s) { scripts = s; });
       }
       
       insertions[position](this, content.tagName ? content :
         insertions.createFragment.call(
-          (position === 'bottom' || position === 'top' || !this.parentNode) ?
+          (position === 'bottom' || position === 'top') ?
             this : this.parentNode, content
         )
       );
@@ -129,7 +129,7 @@ Element.include({
    * @return Element self
    */
   update: function(content) {
-    if ((isString(content) || isNumber(content)) && !Element.insertions.wraps[this.tagName]) {
+    if (typeof(content) !== 'object' && !(this.tagName in Element.insertions.wraps)) {
       var scripts;
       this.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
       if (scripts) $eval(scripts);
@@ -208,26 +208,20 @@ Element.insertions = {
   
   after: function(target, content) {
     var parent = target.parentNode, sibling = target.nextSibling;
-    if (parent) {
-      sibling ? parent.insertBefore(content, sibling) : parent.appendChild(content);
-    }
+    sibling ? parent.insertBefore(content, sibling) : parent.appendChild(content);
   },
   
   before: function(target, content) {
-    if (target.parentNode) {
-      target.parentNode.insertBefore(content, target);
-    }
+    target.parentNode.insertBefore(content, target);
   },
   
   instead: function(target, content) {
-    if (target.parentNode) {
-      target.parentNode.replaceChild(content, target);
-    }
+    target.parentNode.replaceChild(content, target);
   },
   
   // converts any data into a html fragment unit
   createFragment: function(content) {
-    var fragment;
+    var fragment = document.createDocumentFragment();
     
     if (isString(content)) {
       var tmp = document.createElement('div'),
@@ -241,21 +235,14 @@ Element.insertions = {
         depth--;
       }
       
-      fragment = arguments.callee.call(this, tmp.childNodes);
-      
-    } else {
-      fragment = document.createDocumentFragment();
-      
-      if (isNode(content)) {
-        fragment.appendChild(content);
-      } else if (content && content.length) {
-        for (var i=0, length = content.length; i < length; i++) {
-          // in case of NodeList unit, the elements will be removed out of the list during the appends
-          // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
-          // then we always hit the first element of the stack
-          fragment.appendChild(content[content.length == length ? i : 0]);
-        }
-      }
+      content = tmp.childNodes;
+    }
+    
+    for (var i=0, length = content.length; i < length; i++) {
+      // in case of NodeList unit, the elements will be removed out of the list during the appends
+      // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
+      // then we always hit the first element of the stack
+      fragment.appendChild(content[content.length == length ? i : 0]);
     }
     
     return fragment;

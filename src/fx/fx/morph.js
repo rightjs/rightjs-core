@@ -103,13 +103,14 @@ return {
    * @return Object end style
    */
   _endStyle: function(style, keys) {
-    var dummy  = $(this.element.cloneNode(true))
+    var element = this.element, dummy  = $(element.cloneNode(true))
         .setStyle('position:absolute;z-index:-1;visibility:hidden')
-        .insertTo(this.element, 'before')
-        .setWidth(this.element.sizes().x)
-        .setStyle(style),
+        .setWidth(element.sizes().x)
+        .setStyle(style);
+        
+    if (element.parentNode) element.insert(dummy, 'before');
     
-    after  = this._cloneStyle(dummy, keys);
+    var after  = this._cloneStyle(dummy, keys);
     
     dummy.remove();
     
