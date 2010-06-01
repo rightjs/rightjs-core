@@ -120,6 +120,17 @@ var ElementDimensionsTest = TestCase.create({
     this.assertEqual(70, dims.left);
   },
   
+  testOverlaps: function() {
+    var dims = this.div.dimensions();
+    
+    this.assert(this.div.overlaps({x: dims.left + 1, y: dims.top + 1}));
+    
+    this.assertFalse(this.div.overlaps({x: dims.left - 1, y: dims.top + 1}));
+    this.assertFalse(this.div.overlaps({x: dims.left + 1, y: dims.top - 1}));
+    this.assertFalse(this.div.overlaps({x: dims.left + 1, y: dims.top + dims.height + 1}));
+    this.assertFalse(this.div.overlaps({x: dims.left + dims.width + 1, y: dims.top + 1}));
+  },
+  
   testSetWidth: function() {
     this.assertSame(this.div, this.div.setWidth(600));
     this.assertEqual(600, this.div.offsetWidth);

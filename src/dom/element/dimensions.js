@@ -60,6 +60,19 @@ Element.include({
   },
   
   /**
+   * Checks if the element overlaps the given position
+   *
+   * @param Object position {x: NNN, y: NNN}
+   * @return boolean check result
+   */
+  overlaps: function(target) {
+    var pos = this.position(), size = this.sizes();
+    
+    return target.x > pos.x && target.x < (pos.x + size.x)
+        && target.y > pos.y && target.y < (pos.y + size.y);
+  },
+  
+  /**
    * sets the width of the element in pixels
    *
    * NOTE: will double assign the size of the element, so it match the exact
