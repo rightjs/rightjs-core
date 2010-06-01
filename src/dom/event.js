@@ -123,6 +123,32 @@ Event.include({
   
   position: function() {
     return {x: this.pageX, y: this.pageY};
+  },
+  
+  /**
+   * Finds the element between the event target
+   * and the boundary element that matches the
+   * css-rule
+   *
+   * @param String css-rule
+   * @return Element element or null
+   */
+  find: function(css_rule) {
+    var target   = this.target,
+        targets  = [target].concat(target.parents()),
+        boundary = targets.indexOf(this.currentTarget),
+        search   = $$(css_rule);
+    
+    // limiting the targets list to the boundary element
+    console.log(targets)
+    if (boundary > -1) {
+      targets = targets.slice(0, boundary + 1);
+    }
+    console.log(targets);
+    
+    return targets.first(function(element) {
+      return search.include(element);
+    });
   }
 });
 
