@@ -11,7 +11,6 @@ var Element = (function(old_Element) {
     html:    ['innerHTML', 0],
     'class': ['className', 0],
     style:   ['setStyle',  1],
-    observe: ['on',        1],
     on:      ['on',        1]
   };
   

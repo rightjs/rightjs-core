@@ -6,27 +6,27 @@
 var ObserverTest = TestCase.create({
   name: 'ObserverTest',
   
-  testObserve: function() {
+  testOn: function() {
     var o = new Observer();
     var f1 = function() {};
     var f2 = function() {};
     var f3 = function() {};
     
-    this.assertSame(o, o.observe('foo', f1));
-    this.assertSame(o, o.observe('foo', f2));
-    this.assertSame(o, o.observe('bar', f3));
+    this.assertSame(o, o.on('foo', f1));
+    this.assertSame(o, o.on('foo', f2));
+    this.assertSame(o, o.on('bar', f3));
     
     this.assert(o.observes('foo', f1));
     this.assert(o.observes('foo', f2));
     this.assert(o.observes('bar', f3));
   },
   
-  testObserveHash: function() {
+  testOnHash: function() {
     var o = new Observer();
     var f1 = function() {};
     var f2 = function() {};
     
-    this.assertSame(o, o.observe({
+    this.assertSame(o, o.on({
       foo: f1, bar: f2
     }));
     
@@ -34,13 +34,13 @@ var ObserverTest = TestCase.create({
     this.assert(o.observes('bar', f2));
   },
   
-  testObserveHashWithSharedArgs: function() {
+  testOnHashWithSharedArgs: function() {
     var o = new Observer();
     var a1, a2, b1, b2;
     var f1 = function(a, b) { a1 = a; b1 = b; };
     var f2 = function(a, b) { a2 = a; b2 = b; };
     
-    o.observe({
+    o.on({
       foo: f1, bar: f2
     }, 'a', 'b');
     
@@ -53,25 +53,25 @@ var ObserverTest = TestCase.create({
     this.assertEqual('b', b2)
   },
   
-  testObserveArray: function() {
+  testOnArray: function() {
     var o = new Observer();
     var f1 = function() {};
     var f2 = function() {};
     
-    o.observe('foo', [f1, f2]);
+    o.on('foo', [f1, f2]);
     
     this.assert(o.observes('foo', f1));
     this.assert(o.observes('foo', f2))
   },
   
-  testObserveArrayByName: function() {
+  testOnArrayByName: function() {
     var a1, a2, b1, b2;
     
     var o = new Observer();
     o.foo = function(a, b) { a1 = a; b1 = b; };
     o.bar = function(a, b) { a2 = a; b2 = b; };
     
-    o.observe('some', ['foo', ['bar', 'a']], 'b').fire('some');
+    o.on('some', ['foo', ['bar', 'a']], 'b').fire('some');
     
     this.assertEqual('b', a1);
     this.assertEqual(undefined, b1);
@@ -85,9 +85,9 @@ var ObserverTest = TestCase.create({
     var f2 = function() {};
     var f3 = function() {};
     
-    o.observe('foo', f1);
-    o.observe('foo', f2);
-    o.observe('bar', f3);
+    o.on('foo', f1);
+    o.on('foo', f2);
+    o.on('bar', f3);
     
     this.assert(o.observes('foo'));
     this.assert(o.observes('bar'));
@@ -111,8 +111,8 @@ var ObserverTest = TestCase.create({
     o.method1 = function() {};
     o.method2 = function() {};
     
-    o.observe('foo', 'method1');
-    o.observe('bar', 'method2');
+    o.on('foo', 'method1');
+    o.on('bar', 'method2');
     
     this.assert(o.observes('foo', 'method1'));
     this.assert(o.observes('bar', 'method2'));
@@ -126,8 +126,8 @@ var ObserverTest = TestCase.create({
     var f1 = function() {};
     var f2 = function() {};
     
-    o.observe('foo', f1);
-    o.observe('foo', f2);
+    o.on('foo', f1);
+    o.on('foo', f2);
     
     // test remove by function
     this.assertSame(o, o.stopObserving('foo', f2));
@@ -144,7 +144,7 @@ var ObserverTest = TestCase.create({
     this.assertFalse(o.observes('foo', f2));
         
     // trying unsubscribe function just by the function call
-    o.observe('foo', f1);
+    o.on('foo', f1);
     this.assert(o.observes(f1));
     this.assertSame(o, o.stopObserving(f1));
     this.assertFalse(o.observes(f1));
@@ -155,8 +155,8 @@ var ObserverTest = TestCase.create({
     o.method1 = function() {};
     o.method2 = function() {};
     
-    o.observe('foo', 'method1');
-    o.observe('bar', 'method2');
+    o.on('foo', 'method1');
+    o.on('bar', 'method2');
     
     this.assert(o.observes('foo', 'method1'));
     this.assert(o.observes('bar', 'method2'));
@@ -200,9 +200,9 @@ var ObserverTest = TestCase.create({
     e1 = e2 = e3 = false;
     o1 = o2 = o3 = null;
     
-    o.observe('foo', function(e) { e1 = e; o1 = this; });
-    o.observe('foo', function(e) { e2 = e; o2 = this; });
-    o.observe('bar', function(e) { e3 = e; o3 = this; });
+    o.on('foo', function(e) { e1 = e; o1 = this; });
+    o.on('foo', function(e) { e2 = e; o2 = this; });
+    o.on('bar', function(e) { e3 = e; o3 = this; });
     
     this.assertSame(o, o.fire('foo', 'e'));
     
@@ -232,9 +232,9 @@ var ObserverTest = TestCase.create({
     var f2 = function() {};
     var f3 = function() {};
     
-    o.observe('foo', f1);
-    o.observe('foo', f2);
-    o.observe('bar', f3);
+    o.on('foo', f1);
+    o.on('foo', f2);
+    o.on('bar', f3);
     
     this.assertEqual([f1, f2], o.listeners('foo'));
     this.assertEqual([f3], o.listeners('bar'));

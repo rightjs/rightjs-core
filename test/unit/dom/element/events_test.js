@@ -17,7 +17,7 @@ var ElementEventsTest = TestCase.create({
 
   testObserve: function() {
     var wired = false, context = null;
-    this.assertSame(this.el, this.el.observe('click', function() { wired = true; context = this; }));
+    this.assertSame(this.el, this.el.on('click', function() { wired = true; context = this; }));
     this.fireClick(this.el);
     this.assert(wired);
 
@@ -27,8 +27,8 @@ var ElementEventsTest = TestCase.create({
   testObserve_nameVariations: function() {
     var clicked = false;
     var hovered = false;
-    this.el.observe('onclick', function() { clicked = true; });
-    this.el.observe('onMouseOver', function() { hovered = true; });
+    this.el.on('onclick', function() { clicked = true; });
+    this.el.on('onMouseOver', function() { hovered = true; });
     
     this.fireClick(this.el);
     this.fireMouseOver(this.el);
@@ -41,7 +41,7 @@ var ElementEventsTest = TestCase.create({
     var clicked = false;
     var hovered = false;
     
-    this.assertSame(this.el, this.el.observe({
+    this.assertSame(this.el, this.el.on({
       click:     function() {clicked = true},
       mouseover: function() {hovered = true}
     }));
@@ -56,7 +56,7 @@ var ElementEventsTest = TestCase.create({
   testObserves: function() {
     var func = function() {}
         
-    this.el.observe('click', func);
+    this.el.on('click', func);
     
     this.assert(this.el.observes('click'));
     this.assert(this.el.observes('click', func));
@@ -64,7 +64,7 @@ var ElementEventsTest = TestCase.create({
     this.assertFalse(this.el.observes('mouseover'));
     this.assertFalse(this.el.observes('click', function() {}));
     
-    this.el.observe('mouseover', function() {});
+    this.el.on('mouseover', function() {});
   },
   
   testStopObserving: function() {
@@ -74,8 +74,8 @@ var ElementEventsTest = TestCase.create({
     var func1 = function() {clicked1 = true;};
     var func2 = function() {clicked2 = true;};
     
-    this.el.observe('click', func1);
-    this.el.observe('click', func2);
+    this.el.on('click', func1);
+    this.el.on('click', func2);
     
     this.assertSame(this.el, this.el.stopObserving('click', func1));
     
@@ -102,7 +102,7 @@ var ElementEventsTest = TestCase.create({
   
   testFire: function() {
     var clicked = false, event = null;
-    this.el.observe('click', function(e) { event = e; clicked = true; });
+    this.el.on('click', function(e) { event = e; clicked = true; });
     
     this.assertSame(this.el, this.el.fire('click'));
     
@@ -113,8 +113,8 @@ var ElementEventsTest = TestCase.create({
   testFireWithStop: function() {
     var e1, e2; e1 = e2 = false;
     
-    this.el.observe('click', function(e) { e1 = e; e.stop(); });
-    this.el.observe('click', function(e) { e2 = e; });
+    this.el.on('click', function(e) { e1 = e; e.stop(); });
+    this.el.on('click', function(e) { e2 = e; });
     
     this.el.fire('click');
     
@@ -125,7 +125,7 @@ var ElementEventsTest = TestCase.create({
   testFireArgumentsByPassing: function() {
     var args, event;
     
-    this.el.observe('click', function(e) { event = e; args = arguments; }, 1, 2);
+    this.el.on('click', function(e) { event = e; args = arguments; }, 1, 2);
     this.el.fire('click', {a:3, b:4}, 5, 6);
     
     this.assertSame(event, args[0]);

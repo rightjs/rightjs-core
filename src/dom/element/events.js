@@ -5,7 +5,7 @@
  */
 Element.include((function() {
   var observer = Observer.create({}, 
-    $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
+    Element.EVENTS = $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
   ), attach = 'attachEvent' in window;
   
   //
@@ -31,7 +31,6 @@ Element.include((function() {
           'this.addEventListener($2.n,$2.w,false);'
         )
   );
-  observer.observe = observer.on;
   
   hack('stopObserving',
     /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m, 
@@ -53,7 +52,7 @@ Element.include((function() {
   $ext(window,   observer);
   $ext(document, observer);
   
-  Observer.createShortcuts(window, $w('blur focus scroll'));
+  Observer.createShortcuts(window, $w('blur focus scroll resize'));
   
   return observer;
 })());

@@ -44,7 +44,7 @@ var ElementTest = TestCase.create({
   
   testInstanceWithEvents: function() {
     var el = new Element('div', {
-      observe: {
+      on: {
         click: function() {}
       }
     });
