@@ -81,7 +81,7 @@ Element.include({
     
     switch (key) {
       case 'opacity':
-        value = !Browser.IE ? style[key] :
+        value = !Browser.IE ? style[key].replace(',', '.') :
           ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
         break;
         

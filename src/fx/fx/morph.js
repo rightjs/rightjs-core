@@ -125,8 +125,16 @@ return {
    * @return Hash of styles
    */
   _cloneStyle: function(element, keys) {
-    for (var i=0, len = keys.length, style = element.computedStyles(), clean = {}; i < len; i++)
-      clean[keys[i]] = style[keys[i]];
+    for (var i=0, len = keys.length, style = element.computedStyles(), clean = {}, key; i < len; i++) {
+      key = keys[i];
+      clean[key] = style[key];
+      
+      // libwebkit bug fix for in case of languages pack applied
+      if (key === 'opacity') {
+        clean[key] = clean[key].replace(',', '.');
+      }
+    }
+      
     
     return clean;
   },
