@@ -5,7 +5,7 @@
  */
 Element.include((function() {
   var observer = Observer.create({}, 
-    Element.EVENTS = $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup')
+    String._addShorts($w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'))
   ), attach = 'attachEvent' in window;
   
   //

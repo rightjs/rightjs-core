@@ -63,7 +63,7 @@ function $eval(text) {
   } else {
     $E('script', {type: 'text/javascript', text: text}).insertTo(document.body);
   }
-}
+};
 
 /**
  * throws an exception to break iterations throw a callback

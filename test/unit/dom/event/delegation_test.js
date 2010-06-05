@@ -167,15 +167,33 @@ var EventDelegationTest = TestCase.create({
     this.undoMock(Event, 'delegate');
   },
   
-  testStringBehaveShortcut: function() {
+  testStringOnShortcut: function() {
     var args;
     this.mock(Event, 'behave', function() { args = $A(arguments); });
     
-    ".some.css-rule".behave('addClass', 'foo');
+    ".some.css-rule".on('addClass', 'foo');
     
     this.assertEqual(['.some.css-rule', 'addClass', 'foo'], args);
     
     this.undoMock(Event, 'behave');
+  },
+  
+  testStringOnNamedShortcuts: function() {
+    var args = null, rule = ".some.css-stuff", dummy = function() {};
+    
+    // mocking the 'on' method
+    var old_method = String.prototype.on;
+    String.prototype.on = function() { args = $A(arguments); };
+    
+    $w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup' +
+      ' disable enable focus blur change submit reset focus'
+    ).each(function(name) {
+      this.assert(rule['on'+ name.capitalize()], "checking shortcut presence '"+ 'on'+ name.capitalize() + "'");
+      rule['on'+ name.capitalize()](dummy);
+      this.assertEqual([name, dummy], args, "checking shortcut for '"+ name + "'");
+    }, this);
+    
+    String.prototype.on = old_method;
   }
   
 });

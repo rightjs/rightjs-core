@@ -134,4 +134,4 @@ Form.Element.include({
 });
 
 // creating the common event shortcuts
-Form.Element.include(Observer.createShortcuts({}, $w('disable enable focus blur change')), true);
+Form.Element.include(Observer.createShortcuts({}, String._addShorts($w('disable enable focus blur change'))), true);

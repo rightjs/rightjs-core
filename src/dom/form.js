@@ -123,5 +123,5 @@ Form.include({
 });
 
 // creating the shortcuts
-Form.include(Observer.createShortcuts({}, $w('submit reset focus')), true);
+Form.include(Observer.createShortcuts({}, String._addShorts($w('submit reset focus'))), true);
 
