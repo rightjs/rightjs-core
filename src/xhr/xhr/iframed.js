@@ -5,6 +5,8 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 Xhr.IFramed = new Class({
+  include: Xhr.Dummy,
+  
   /**
    * constructor
    *
@@ -23,16 +25,17 @@ Xhr.IFramed = new Class({
   
   send: function() {
     // stubbing the onsubmit method so it allowed us to submit the form
-    var old_onsubmit = this.form.onsubmit,
-        old_target   = this.form.target;
+    var form         = this.form,
+        old_onsubmit = form.onsubmit,
+        old_target   = form.target;
     
-    this.form.onsubmit = function() {};
-    this.form.target   = this.iframe.id;
+    form.onsubmit = function() {};
+    form.target   = this.iframe.id;
     
-    this.form.submit();
+    form.submit();
     
-    this.form.onsubmit = old_onsubmit;
-    this.form.target   = old_target;
+    form.onsubmit = old_onsubmit;
+    form.target   = old_target;
   },
   
   onLoad: function() {
@@ -44,11 +47,5 @@ Xhr.IFramed = new Class({
     } catch(e) { }
     
     this.onreadystatechange();
-  },
-  
-  // dummy API methods
-  open:               function() {},
-  abort:              function() {},
-  setRequestHeader:   function() {},
-  onreadystatechange: function() {}
+  }
 });

@@ -32,7 +32,8 @@ var Xhr = new Class(Observer, {
       spinner:      null,
       spinnerFx:    'fade',
       params:       null,
-      iframed:      false
+      iframed:      false,
+      jsonp:        false
     },
     
     /**
@@ -181,7 +182,9 @@ var Xhr = new Class(Observer, {
   
   // creates new request instance
   createXhr: function() {
-    if (this.form && this.form.first('input[type=file]')) {
+    if (this.jsonp) {
+      return new Xhr.JSONP(this);
+    } else if (this.form && this.form.first('input[type=file]')) {
       return new Xhr.IFramed(this.form);
     } else try {
       return new XMLHttpRequest();

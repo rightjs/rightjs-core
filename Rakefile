@@ -78,7 +78,9 @@ JS_SOURCES = {
     xhr/xhr
     xhr/form
     xhr/element
-    xhr/iframed
+    xhr/xhr/dummy
+    xhr/xhr/iframed
+    xhr/xhr/jsonp
   },
   
   :fx => %w{

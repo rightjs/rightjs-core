@@ -38,7 +38,8 @@ var tests = {
   WindowTest:            'dom/window_test',
                           
   XhrTest:               'xhr/xhr_test',
-  XhrIFramedTest:        'xhr/xhr_iframed_test',
+  XhrIFramedTest:        'xhr/xhr/iframed_test',
+  XhrJSONPTest:          'xhr/xhr/jsonp_test',
                           
   FxTest:                'fx/fx_test',
   FxMorphTest:           'fx/fx/morph_test'
