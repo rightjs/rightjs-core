@@ -140,11 +140,9 @@ Event.include({
         search   = $$(css_rule);
     
     // limiting the targets list to the boundary element
-    console.log(targets)
     if (boundary > -1) {
       targets = targets.slice(0, boundary + 1);
     }
-    console.log(targets);
     
     return targets.first(function(element) {
       return search.include(element);
