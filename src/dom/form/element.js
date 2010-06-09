@@ -7,39 +7,38 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
-(function() {
-  // trying to get the input element classes list
-  try { var input_classes = [HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement, HTMLButtonElement];
-  } catch(e) { var input_classes = []; }
-  
-  Form.Element = {
-    Methods: {},
 
-    /**
-     * Extends the Form.Element methods
-     *
-     * @param Object methods list
-     * @return void
-     */
-    include: function(methods, dont_overwrite) {
-      $ext(this.Methods, methods, dont_overwrite);
+// trying to get the input element classes list
+try { var input_classes = [HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement, HTMLButtonElement];
+} catch(e) { var input_classes = []; }
 
-      // extending the input element prototypes
-      input_classes.each(function(klass) {
-        $ext(klass.prototype, methods, dont_overwrite);
-      });
-    }
-  };
+Form.Element = {
+  Methods: {},
 
-  // creating the blur, focus and select methods aliases
-  input_classes.each(function(klass) {
-    $alias(klass.prototype, {
-      _blur:   'blur',
-      _focus:  'focus',
-      _select: 'select'
+  /**
+   * Extends the Form.Element methods
+   *
+   * @param Object methods list
+   * @return void
+   */
+  include: function(methods, dont_overwrite) {
+    $ext(this.Methods, methods, dont_overwrite);
+
+    // extending the input element prototypes
+    input_classes.each(function(klass) {
+      $ext(klass.prototype, methods, dont_overwrite);
     });
+  }
+};
+
+// creating the blur, focus and select methods aliases
+input_classes.each(function(klass) {
+  $alias(klass.prototype, {
+    _blur:   'blur',
+    _focus:  'focus',
+    _select: 'select'
   });
-})();
+});
 
 Form.Element.include({
   /**
@@ -134,4 +133,4 @@ Form.Element.include({
 });
 
 // creating the common event shortcuts
-Form.Element.include(Observer.createShortcuts({}, String._addShorts($w('disable enable focus blur change'))), true);
+Form.Element.include(Observer.createShortcuts({}, String_addShorts($w('disable enable focus blur change'))), true);

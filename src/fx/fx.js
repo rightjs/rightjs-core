@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Fx = new Class(Observer, {
+var Fx = RightJS.Fx = new Class(Observer, {
   extend: {
     EVENTS: $w('start finish cancel'),
     

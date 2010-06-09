@@ -7,13 +7,13 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Element.include((function(methods) {
-  var old_hide   = methods.hide,
-      old_show   = methods.show,
-      old_remove = methods.remove,
-      old_scroll = methods.scrollTo;
-
-return {
+var methods    = Element.Methods,
+    old_hide   = methods.hide,
+    old_show   = methods.show,
+    old_remove = methods.remove,
+    old_scroll = methods.scrollTo;
+     
+Element.include({
   /**
    * Stops all the visual effects on the element
    *
@@ -139,4 +139,4 @@ return {
     return this;
   }
   
-}})(Element.Methods));
+});

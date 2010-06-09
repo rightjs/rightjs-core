@@ -7,17 +7,17 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
-[window, document].each(function(object) {
+[WIN, DOC].each(function(object) {
   Observer.createShortcuts(object, ['ready']);
   var ready = object.fire.bind(object, 'ready');
   
   // IE and Konqueror browsers
-  if ('readyState' in document) {
+  if ('readyState' in DOC) {
     (function() {
-      ['loaded','complete'].includes(document.readyState) ? ready() : arguments.callee.delay(50);
+      ['loaded','complete'].includes(DOC.readyState) ? ready() : arguments.callee.delay(50);
     })();
   } else {
-    document.addEventListener('DOMContentLoaded', ready, false);
+    DOC.addEventListener('DOMContentLoaded', ready, false);
   }
   
 });

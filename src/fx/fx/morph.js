@@ -7,64 +7,64 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Fx.Morph = new Class(Fx, (function() {
-  // a list of common style names to compact the code a bit
-  var Color = 'Color', Style = 'Style', Width = 'Width', Bg = 'background',
-      Border = 'border', Pos = 'Position', BgColor = Bg + Color,
-      directions = $w('Top Left Right Bottom');
-  
-  
-  // adds variants to the style names list
-  function add_variants(keys, key, variants) {
-    for (var i=0; i < variants.length; i++)
-      keys.push(key + variants[i]);
-  };
-  
-  // adjusts the border-styles
-  function check_border_styles(before, after) {
-    for (var i=0; i < 4; i++) {
-      var direction = directions[i],
-        bd_style = Border + direction + Style,
-        bd_width = Border + direction + Width,
-        bd_color = Border + direction + Color;
-      
-      if (bd_style in before && before[bd_style] != after[bd_style]) {
-        var style = this.element.style;
 
-        if (before[bd_style] == 'none') {
-          style[bd_width] = '0px';
-        }
+// a list of common style names to compact the code a bit
+var Color = 'Color', Style = 'Style', Width = 'Width', Bg = 'background',
+    Border = 'border', Pos = 'Position', BgColor = Bg + Color,
+    directions = $w('Top Left Right Bottom');
 
-        style[bd_style] = after[bd_style];
-        if (this._transp(before[bd_color])) {
-          style[bd_color] = this.element.getStyle(Color);
-        }
+
+// adds variants to the style names list
+function add_variants(keys, key, variants) {
+  for (var i=0; i < variants.length; i++)
+    keys.push(key + variants[i]);
+};
+
+// adjusts the border-styles
+function check_border_styles(before, after) {
+  for (var i=0; i < 4; i++) {
+    var direction = directions[i],
+      bd_style = Border + direction + Style,
+      bd_width = Border + direction + Width,
+      bd_color = Border + direction + Color;
+    
+    if (bd_style in before && before[bd_style] != after[bd_style]) {
+      var style = this.element.style;
+
+      if (before[bd_style] == 'none') {
+        style[bd_width] = '0px';
+      }
+
+      style[bd_style] = after[bd_style];
+      if (this._transp(before[bd_color])) {
+        style[bd_color] = this.element.getStyle(Color);
       }
     }
-  };
-  
-  // parses the style hash into a processable format
-  function parse_style(values) {
-    var result = {}, re = /[\d\.\-]+/g, m, key, value, i;
-    
-    for (key in values) {
-      m = values[key].match(re);
-      value = m.map('toFloat');
-      value.t = values[key].split(re);
-      value.r = value.t[0] === 'rgb(';
+  }
+};
 
-      if (value.t.length == 1) value.t.unshift('');
-      
-      for (i=0; i < value.length; i++) {
-        value.t.splice(i*2 + 1, 0, value[i]);
-      }
-      result[key] = value;
-    }
-    
-    return result;
-  };
+// parses the style hash into a processable format
+function parse_style(values) {
+  var result = {}, re = /[\d\.\-]+/g, m, key, value, i;
   
-return {
+  for (key in values) {
+    m = values[key].match(re);
+    value = m.map('toFloat');
+    value.t = values[key].split(re);
+    value.r = value.t[0] === 'rgb(';
+
+    if (value.t.length == 1) value.t.unshift('');
+    
+    for (i=0; i < value.length; i++) {
+      value.t.splice(i*2 + 1, 0, value[i]);
+    }
+    result[key] = value;
+  }
+  
+  return result;
+};
+ 
+Fx.Morph = new Class(Fx, {
 
 // protected  
 
@@ -229,5 +229,5 @@ return {
     return color === 'transparent' || color === 'rgba(0, 0, 0, 0)';
   }
   
-}})());
+});
 

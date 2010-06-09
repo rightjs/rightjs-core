@@ -34,7 +34,7 @@ Function.include({
   bindAsEventListener: function() {
     var args = $A(arguments), scope = args.shift(), func = this;
     return function(event) {
-      return func.apply(scope, [event || window.event].concat(args).concat($A(arguments)));
+      return func.apply(scope, [event].concat(args).concat($A(arguments)));
     };
   },
 
@@ -73,9 +73,9 @@ Function.include({
    */
   delay: function() {
     var args  = $A(arguments), timeout = args.shift(),
-        timer = new Number(window.setTimeout(this.bind.apply(this, [this].concat(args)), timeout));
+        timer = new Number(setTimeout(this.bind.apply(this, [this].concat(args)), timeout));
 
-    timer.cancel = function() { window.clearTimeout(this); };
+    timer.cancel = function() { clearTimeout(this); };
 
     return timer;
   },
@@ -90,9 +90,9 @@ Function.include({
    */
   periodical: function() {
     var args  = $A(arguments), timeout = args.shift(),
-        timer = new Number(window.setInterval(this.bind.apply(this, [this].concat(args)), timeout));
+        timer = new Number(setInterval(this.bind.apply(this, [this].concat(args)), timeout));
 
-    timer.stop = function() { window.clearInterval(this); };
+    timer.stop = function() { clearInterval(this); };
 
     return timer;
   },

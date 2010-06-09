@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
-function Form(in_options) {
+var Form = RightJS.Form = function(in_options) {
   var options = in_options || {}, remote = options.remote,
     form = new Element('form', Object.without(options, 'remote'));
   
@@ -123,5 +123,5 @@ Form.include({
 });
 
 // creating the shortcuts
-Form.include(Observer.createShortcuts({}, String._addShorts($w('submit reset focus'))), true);
+Form.include(Observer.createShortcuts({}, String_addShorts($w('submit reset focus'))), true);
 

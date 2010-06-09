@@ -221,11 +221,11 @@ Element.insertions = {
   
   // converts any data into a html fragment unit
   createFragment: function(content) {
-    var fragment = document.createDocumentFragment();
+    var fragment = DOC.createDocumentFragment();
     
     if (isString(content)) {
-      var tmp = document.createElement('div'),
-          wrap = Element.insertions.wraps[this.tagName] || ['', '', 0],
+      var tmp   = DOC.createElement('div'),
+          wrap  = Element.insertions.wraps[this.tagName] || ['', '', 0],
           depth = wrap[2];
           
       tmp.innerHTML = wrap[0] + content + wrap[1];

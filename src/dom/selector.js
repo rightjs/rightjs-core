@@ -6,17 +6,17 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Element.include((function() {
-  /**
-   * Native css-selectors include the current element into the search context
-   * and as we actually search only inside of the element we add it's tag
-   * as a scope for the search
-   */
-  function stub_rule(css_rule, tag) {
-    return css_rule ? css_rule.replace(/(^|,)/g, '$1'+ tag + ' ') : '*';
-  };
-  
-return {
+
+/**
+ * Native css-selectors include the current element into the search context
+ * and as we actually search only inside of the element we add it's tag
+ * as a scope for the search
+ */
+function stub_rule(css_rule, tag) {
+  return css_rule ? css_rule.replace(/(^|,)/g, '$1'+ tag + ' ') : '*';
+};
+ 
+Element.include({
   /**
    * Extracts the first element matching the css-rule,
    * or just any first element if no css-rule was specified
@@ -56,10 +56,10 @@ return {
     
     return result;
   }
-}})());
+});
 
 // document-level hooks
-$ext(document, {
+$ext(DOC, {
   first: function(css_rule) {
     return this.querySelector(css_rule);
   },

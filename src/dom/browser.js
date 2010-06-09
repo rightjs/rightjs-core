@@ -3,17 +3,16 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Browser = (function(agent, win, attEv, opera) {
-  
-  return   {
-    IE:           attEv in win && !(opera in win),
-    Opera:        opera in win,
-    WebKit:       agent.indexOf('AppleWebKit/') > -1,
-    Gecko:        agent.indexOf('Gecko') > -1 && agent.indexOf('KHTML') < 0,
-    MobileSafari: /Apple.*Mobile.*Safari/.test(agent),
-    Konqueror:    agent.indexOf('Konqueror') > -1,
+var agent = navigator.userAgent, looks_like_ie = 'attachEvent' in WIN, looks_like_opera = 'opera' in WIN,
 
-    // marker for the browsers which don't give access to the HTMLElement unit
-    OLD:          attEv in win && !(opera in win) && !document.querySelector
-  }
-})(navigator.userAgent, window, 'attachEvent', 'opera');
+Browser = {
+  IE:           looks_like_ie && !looks_like_opera,
+  Opera:        looks_like_opera,
+  WebKit:       agent.include('AppleWebKit/'),
+  Gecko:        agent.include('Gecko') && !agent.include('KHTML'),
+  MobileSafari: /Apple.*Mobile.*Safari/.test(agent),
+  Konqueror:    agent.include('Konqueror'),
+
+  // marker for the browsers which don't give access to the HTMLElement unit
+  OLD:          looks_like_ie && !looks_like_opera && !DOC.querySelector
+};

@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Cookie = new Class({
+var Cookie = RightJS.Cookie = new Class({
   include: Options,
   
   extend: {

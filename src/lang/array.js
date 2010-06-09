@@ -8,75 +8,74 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-(function(A_proto) {
-  var build_loop = function(pre, body, ret) {
-    return eval('[function(c,s){'+
-      'for(var '+pre+'i=0,l=this.length;i<l;i++){'+
-        body.replace('_', 'c.call(s,this[i],i,this)') + 
-      '}' +
-      ret
-    +'}]')[0];
-  },
+var A_proto = Array.prototype,
+  original_sort = A_proto.sort,
+
+build_loop = function(pre, body, ret) {
+  return eval('[function(c,s){'+
+    'for(var '+pre+'i=0,l=this.length;i<l;i++){'+
+      body.replace('_', 'c.call(s,this[i],i,this)') + 
+    '}' +
+    ret
+  +'}]')[0];
+},
   
-  // JavaScript 1.6 methods recatching up or faking
-  for_each = A_proto.forEach || build_loop('', '_', ''),
-  filter   = A_proto.filter  || build_loop('r=[],j=0,', 'if(_)r[j++]=this[i]', 'return r'),
-  map      = A_proto.map     || build_loop('r=[],', 'r[i]=_', 'return r'),
-  some     = A_proto.some    || build_loop('', 'if(_)return true', 'return false'),
-  every    = A_proto.every   || build_loop('', 'if(!_)return false', 'return true'),
-  first    = build_loop('', 'if(_)return this[i]', 'return [][0]');
+// JavaScript 1.6 methods recatching up or faking
+for_each = A_proto.forEach || build_loop('', '_', ''),
+filter   = A_proto.filter  || build_loop('r=[],j=0,', 'if(_)r[j++]=this[i]', 'return r'),
+map      = A_proto.map     || build_loop('r=[],', 'r[i]=_', 'return r'),
+some     = A_proto.some    || build_loop('', 'if(_)return true', 'return false'),
+every    = A_proto.every   || build_loop('', 'if(!_)return false', 'return true'),
+first    = build_loop('', 'if(_)return this[i]', 'return [][0]'),
+last     = function(callback, scope) {
+  for (var i=this.length-1; i > -1; i--) {
+    if (callback.call(scope, this[i], i, this))
+      return this[i];
+  }
+  return UNDEF;
+};
   
-  function last(callback, scope) {
-    for (var i=this.length-1; i > -1; i--) {
-      if (callback.call(scope, this[i], i, this))
-        return this[i];
-    }
-    return [][0]; // <- shorter undefined
-  };
   
+//
+// RightJS callbacks magick preprocessing
+//
+
+// prepares a correct callback function
+function guess_callback(argsi, array) {
+  var callback = argsi[0], args = A_proto.slice.call(argsi, 1), scope = array, attr;
   
-  //
-  // RightJS callbacks magick preprocessing
-  //
-  
-  // prepares a correct callback function
-  function guess_callback(argsi, array) {
-    var callback = argsi[0], args = A_proto.slice.call(argsi, 1), scope = array, attr;
-    
-    if (isString(callback)) {
-      attr = callback;
-      if (array.length && isFunction(array[0][attr])) {
-        callback = function(object) { return object[attr].apply(object, args); };
-      } else {
-        callback = function(object) { return object[attr]; };
-      }
+  if (isString(callback)) {
+    attr = callback;
+    if (array.length && isFunction(array[0][attr])) {
+      callback = function(object) { return object[attr].apply(object, args); };
     } else {
-      scope = args[0];
+      callback = function(object) { return object[attr]; };
     }
-    
-    return [callback, scope];
-  };
+  } else {
+    scope = args[0];
+  }
   
-  // calls the given method with preprocessing the arguments
-  function call_method(func, scope, args) {
-    try {
-      var result = func.apply(scope, guess_callback(args, scope));
-    } catch(e) { if (!(e instanceof Break)) throw(e); }
-    
-    return result;
-  };
+  return [callback, scope];
+};
+
+// calls the given method with preprocessing the arguments
+function call_method(func, scope, args) {
+  try {
+    var result = func.apply(scope, guess_callback(args, scope));
+  } catch(e) { if (!(e instanceof Break)) throw(e); }
   
-  // checks the value as a boolean
-  function boolean_check(i) {
-    return !!i;
-  };
-  
-  // default sorting callback
-  function default_sort(a, b) {
-    return a > b ? 1 : a < b ? -1 : 0;
-  };
-  
-  var original_sort = A_proto.sort;
+  return result;
+};
+
+// checks the value as a boolean
+function boolean_check(i) {
+  return !!i;
+};
+
+// default sorting callback
+function default_sort(a, b) {
+  return a > b ? 1 : a < b ? -1 : 0;
+};
   
 Array.include({
   /**
@@ -285,7 +284,7 @@ Array.include({
    * @return Array filtered version
    */
   compact: function() {
-    return this.without(null, [][0]); // <- shorter undefined
+    return this.without(null, UNDEF);
   },
   
   /**
@@ -401,6 +400,3 @@ $alias(A_proto, {
   all: 'every',
   any: 'some'
 });
-
-})(Array.prototype);
-

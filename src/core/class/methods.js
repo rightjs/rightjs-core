@@ -5,16 +5,15 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-Class.Methods = (function() {
-  var commons = $w('selfExtended self_extended selfIncluded self_included'),
-      extend  = commons.concat($w('prototype parent extend include')),
-      include = commons.concat(['constructor']);
-  
-  function clean_module(module, what) {
-    return Object.without.apply(Object, [module].concat(what == 'e' ? extend : include));
-  };
-  
-return {
+var commons = $w('selfExtended self_extended selfIncluded self_included'),
+    extend  = commons.concat($w('prototype parent extend include')),
+    include = commons.concat(['constructor']);
+
+function clean_module(module, what) {
+  return Object.without.apply(Object, [module].concat(what == 'e' ? extend : include));
+};
+
+Class.Methods = {
   /**
    * Makes the class get inherited from another one
    *
@@ -100,4 +99,4 @@ return {
 
     return this;
   }
-}})();
+};

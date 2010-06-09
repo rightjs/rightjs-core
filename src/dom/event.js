@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Event = new Class(window.Event, {
+var Event = RightJS.Event = new Class(WIN.Event, {
   extend: {
     /**
      * extends a native object with additional functionality
@@ -28,7 +28,7 @@ var Event = new Class(window.Event, {
         event.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
         
         // faking the mouse position
-        var scrolls = window.scrolls();
+        var scrolls = WIN.scrolls();
 
         event.pageX = event.clientX + scrolls.x;
         event.pageY = event.clientY + scrolls.y;

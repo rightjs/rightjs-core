@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Observer = new Class({
+var Observer = RightJS.Observer = new Class({
   include: Options,
   
   /**

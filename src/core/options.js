@@ -10,7 +10,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Options = {
+var Options = RightJS.Options = {
   /**
    * assigns the options by merging them with the default ones
    *

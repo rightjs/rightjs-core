@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Xhr = new Class(Observer, {
+var Xhr = RightJS.Xhr = new Class(Observer, {
   extend: {
     // supported events list
     EVENTS: $w('success failure complete request cancel create'),

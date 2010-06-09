@@ -3,55 +3,52 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Element = (function(old_Element) {
+ // Element constructor options mapper
+var options_map = {
+  id:      ['id',        0],
+  html:    ['innerHTML', 0],
+  'class': ['className', 0],
+  style:   ['setStyle',  1],
+  on:      ['on',        1]
+},
+
+// preserving the old Element class
+old_Element = WIN.Element,
+
+// defining the new Element object
+Element = RightJS.Element = function(tag, options) {
+  var element = DOC.createElement(tag);
   
-  // Element constructor options mapper
-  var options_map = {
-    id:      ['id',        0],
-    html:    ['innerHTML', 0],
-    'class': ['className', 0],
-    style:   ['setStyle',  1],
-    on:      ['on',        1]
-  };
-  
-  function new_Element(tag, options) {
-    var element = document.createElement(tag);
-    
-    if (options) {
-      for (var key in options) {
-        if (options_map[key]) {
-          if (options_map[key][1]) element[options_map[key][0]](options[key]);
-          else element[options_map[key][0]] = options[key];
-        } else {
-          element.set(key, options[key]);
-        }
+  if (options) {
+    for (var key in options) {
+      if (options_map[key]) {
+        if (options_map[key][1]) element[options_map[key][0]](options[key]);
+        else element[options_map[key][0]] = options[key];
+      } else {
+        element.set(key, options[key]);
       }
     }
-    
-    return element;
-  };
-  
-  
-  if (Browser.IE) {
-    //
-    // IE browsers have a bug with checked input elements
-    // and we kinda hacking the Element constructor so that
-    // it affected IE browsers only
-    //
-    new_Element = eval('['+new_Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
-      '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
-    )+']')[0];
   }
   
-  // connecting the old Element instance to the new one for IE browsers
-  if (old_Element) {
-    $ext(new_Element, old_Element);
-    new_Element.parent = old_Element;
-  }
-  
-  return new_Element;
-})(window.Element);
+  return element;
+};
 
+if (Browser.IE) {
+  //
+  // IE browsers have a bug with checked input elements
+  // and we kinda hacking the Element constructor so that
+  // it affected IE browsers only
+  //
+  Element = eval('['+Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
+    '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
+  )+']')[0];
+}
+
+// connecting the old Element instance to the new one for IE browsers
+if (old_Element) {
+  $ext(Element, old_Element);
+  Element.parent = old_Element;
+}
 
 $ext(Element, {
   /**

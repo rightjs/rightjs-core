@@ -9,13 +9,12 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Class = function() {
-  var args = $A(arguments), properties = args.pop() || {}, parent = args.pop();
+var Class = RightJS.Class = function() {
+  var args = $A(arguments), properties = args.pop() || {},
+    parent = args.pop(), prebind = 'prebind';
   
   // basic class object definition
   function klass() {
-    var prebind = 'prebind';
-    
     if (prebind in this && isArray(this[prebind])) {
       this[prebind].each(function(method) {
         this[method] = this[method].bind(this);
