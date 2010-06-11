@@ -78,7 +78,7 @@ $eval = RightJS.$eval = function(text) {
  * @throws Break
  */
 $break = RightJS.$break = function() {
-  throw new Break();
+  throw new RightJS.Break();
 },
 
 /**
@@ -112,7 +112,7 @@ $alias = RightJS.$alias = function(object, names) {
  * @param mixed value
  * @return boolean check result
  */
-defined = RightJS.defined = function (value) {
+defined = RightJS.defined = function(value) {
   return typeof(value) !== 'undefined';
 },
 

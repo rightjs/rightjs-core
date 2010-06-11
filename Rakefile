@@ -139,15 +139,19 @@ task :build do
     source += File.open("src/olds/loader.js", "r").read
   end
     
-  desc = File.open('src/right.js', 'r').read
+  desc = File.read('src/right.js')
   desc.gsub! '#{version}', RIGHTJS_VERSION
   desc.gsub! '#{modules}', modules.join('", "')
   
   source = desc + source
   
+  # loading up the layout
+  layout = File.read('src/layout.js').split('#{source_code}')
+  source = layout[0] + source + layout[1]
+  
+  
   # joining muli-lined strings
   source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
-  
   
   minified = FrontCompiler.new.compact_js(source)
   

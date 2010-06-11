@@ -39,7 +39,7 @@ if (Browser.IE) {
   // and we kinda hacking the Element constructor so that
   // it affected IE browsers only
   //
-  Element = eval('['+Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
+  Element = RightJS.Element = eval('['+Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
     '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
   )+']')[0];
 }

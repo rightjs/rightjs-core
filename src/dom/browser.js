@@ -5,7 +5,7 @@
  */
 var agent = navigator.userAgent, looks_like_ie = 'attachEvent' in WIN, looks_like_opera = 'opera' in WIN,
 
-Browser = {
+Browser = RightJS.Browser = {
   IE:           looks_like_ie && !looks_like_opera,
   Opera:        looks_like_opera,
   WebKit:       agent.include('AppleWebKit/'),

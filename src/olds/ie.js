@@ -5,22 +5,22 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
-if (Browser.OLD) {
+if (RightJS.Browser.OLD) {
   // loads DOM element extensions for selected elements
-  $ = (function(old_function) {
+  $ = RightJS.$ = (function(old_function) {
     return function(id) {
       var element = old_function(id);
       
       // old IE browses match both, ID and NAME
-      if (element !== null && isString(id) && element.id !== id) 
-        element = $$('#'+id)[0];
+      if (element !== null && RightJS.isString(id) && element.id !== id) 
+        element = RightJS.$$('#'+id)[0];
         
-      return element ? Element.prepare(element) : element;
+      return element ? RightJS.Element.prepare(element) : element;
     }
-  })($);
+  })(RightJS.$);
   
   
-  $ext(document, {
+  RightJS.$ext(document, {
     /**
      * Overloading the native method to extend the new elements as it is
      * in all the other browsers
@@ -30,14 +30,14 @@ if (Browser.OLD) {
      */
     createElement: (function(old_method) {
       return function(tag) {
-        return Element.prepare(old_method(tag));
+        return RightJS.Element.prepare(old_method(tag));
       }
     })(document.createElement)
   });
   
   
   
-  $ext(Element, {
+  RightJS.$ext(RightJS.Element, {
     /**
      * IE browsers manual elements extending
      *
@@ -46,23 +46,23 @@ if (Browser.OLD) {
      */
     prepare: function(element) {
       if (element && element.tagName && !element.set) {
-        $ext(element, Element.Methods, true);
+        RightJS.$ext(element, RightJS.Element.Methods, true);
 
-        if (window.Form) {
+        if (RightJS.Form) {
           switch(element.tagName) {
             case 'FORM':
-              $ext(element, Form.Methods);
+              RightJS.$ext(element, RightJS.Form.Methods);
               break;
 
             case 'INPUT':
             case 'SELECT':
             case 'BUTTON':
             case 'TEXTAREA':
-              $ext($alias(element, {
+              RightJS.$ext(RightJS.$alias(element, {
                 _blur:   'blur',
                 _focus:  'focus',
                 _select: 'select'
-              }), Form.Element.Methods);
+              }), RightJS.Form.Element.Methods);
               break;
           }
         }
@@ -71,12 +71,12 @@ if (Browser.OLD) {
     }
   });
   
-  Element.include((function() {
-    var old_collect = Element.Methods.rCollect;
+  RightJS.Element.include((function() {
+    var old_collect = RightJS.Element.Methods.rCollect;
     
     return {
       rCollect: function(attr, css_rule) {
-        return old_collect.call(this, attr, css_rule).each(Element.prepare);
+        return old_collect.call(this, attr, css_rule).each(RightJS.Element.prepare);
       }
     }
   })());

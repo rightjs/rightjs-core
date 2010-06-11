@@ -13,14 +13,14 @@
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 if (!document.querySelector) {
-  Element.include((function() {
+  RightJS.Element.include((function() {
     /**
      * The token searchers collection
      */
     var search = {
       // search for any descendant nodes
       ' ': function(element, tag) {
-        return $A(element.getElementsByTagName(tag));
+        return RightJS.$A(element.getElementsByTagName(tag));
       },
 
       // search for immidate descendant nodes
@@ -140,7 +140,7 @@ if (!document.querySelector) {
 
     // protected
       index: function(number, matchers, tag_name) {
-        number = isString(number) ? number.toInt() : number;
+        number = RightJS.isString(number) ? number.toInt() : number;
         var node = this, count = 0;
         while ((node = node.previousSibling)) {
           if (node.tagName && (!tag_name || node.tagName == tag_name) && ++count > number) return false;
@@ -387,7 +387,7 @@ if (!document.querySelector) {
       for (var i=0, length = selectors.length; i < length; i++)
         result = result.concat(selectors[i](element));
       
-      if (Browser.OLD) result.forEach(Element.prepare);
+      if (RightJS.Browser.OLD) result.forEach(RightJS.Element.prepare);
       
       return result;
     };
@@ -409,10 +409,10 @@ if (!document.querySelector) {
     };
     
     // replacing the document-level search methods
-    $ext(document, dom_extension);
+    RightJS.$ext(document, dom_extension);
     
     // patching the $$ function to make it more efficient
-    window.$$ = function(css_rule) {
+    $$ = RightJS.$$ = function(css_rule) {
       return select_all(document, css_rule || '*');
     };
     

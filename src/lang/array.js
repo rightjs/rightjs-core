@@ -62,7 +62,7 @@ function guess_callback(argsi, array) {
 function call_method(func, scope, args) {
   try {
     var result = func.apply(scope, guess_callback(args, scope));
-  } catch(e) { if (!(e instanceof Break)) throw(e); }
+  } catch(e) { if (!(e instanceof RightJS.Break)) throw(e); }
   
   return result;
 };

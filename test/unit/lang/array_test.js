@@ -78,7 +78,7 @@ var ArrayTest = TestCase.create({
   testEachWithBreak: function() {
     this.assertEqual([2,2,3,4], [1,2,3,4].each(function(value, i, list) {
       list[i] = value * 2;
-      $break();
+      RightJS.$break();
     }));
   },
   

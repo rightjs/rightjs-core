@@ -8,8 +8,8 @@
  * manual position calculator, it works for Konqueror and also
  * for old versions of Opera and FF
  */
-if (!$E('p').getBoundingClientRect) {
-  Element.include({
+if (!RightJS.$E('p').getBoundingClientRect) {
+  RightJS.Element.include({
     position: function() {
       var left = this.offsetLeft, top = this.offsetTop, position = this.getStyle('position'),
         parent = this.parentNode, body = this.ownerDocument.body;

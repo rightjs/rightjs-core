@@ -27,8 +27,8 @@ $ext(WIN, {
       off_x = 'pageXOffset', off_y = 'pageYOffset',
       scr_x = 'scrollLeft',  scr_y = 'scrollTop';
     
-    return off_x in this ? {x: this[off_x], y: this[off_y]} :
-      scr_x in body ? {x: body[scr_x], y: body[scr_y]} :
+    return (this[off_x] || this[off_y]) ? {x: this[off_x], y: this[off_y]} :
+      (body[scr_x] || body[scr_x]) ? {x: body[scr_x], y: body[scr_y]} :
       {x: html[scr_x], y: html[scr_y]};
   },
 
