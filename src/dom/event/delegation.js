@@ -61,9 +61,9 @@ Event.extend({
    *   });
    *
    * @param String css-rule
-   * @param mixed String event name or a Hash of events
-   * @param mixed Function callback or String method name
-   * @param mixed optional curried arguments
+   * @param event_name mixed String event name or a Hash of events
+   * @param callback mixed Function callback or String method name
+   * @param arguments mixed optional curried arguments
    * @return Object with event handlers description the document.on() function will receive
    */
   behave: function(css_rule, options) {

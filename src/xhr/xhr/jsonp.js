@@ -30,8 +30,8 @@ Xhr.JSONP = new Class({
   /**
    * saving the url and method for the further use
    *
-   * @param String request method
-   * @param String request url address
+   * @param method String request method
+   * @param address String request url address
    * @param Boolean async request marker
    * @return void
    */ 

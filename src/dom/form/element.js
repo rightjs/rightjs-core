@@ -9,8 +9,9 @@
  */
 
 // trying to get the input element classes list
-try { var input_classes = [HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement, HTMLButtonElement];
-} catch(e) { var input_classes = []; }
+var input_classes = [];
+try { input_classes = [HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement, HTMLButtonElement];
+} catch(e) {}
 
 Form.Element = {
   Methods: {},

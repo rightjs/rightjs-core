@@ -186,8 +186,8 @@ Element.include({
   /**
    * recursively collects nodes by pointer attribute name
    *
-   * @param String pointer attribute name
-   * @param String optional css-atom rule
+   * @param name String pointer attribute name
+   * @param rule String optional css-atom rule
    * @return Array found elements
    */
   rCollect: function(attr, css_rule) {

@@ -62,8 +62,8 @@ Element.include({
   /**
    * runs the Fx.Morth effect to the given style
    *
-   * @param Object style or a String class names
-   * @param Object optional effect options
+   * @param style Object style
+   * @param options Object optional effect options
    * @return Element self
    */
   morph: function(style, options) {
@@ -73,8 +73,8 @@ Element.include({
   /**
    * highlights the element
    *
-   * @param String start color
-   * @param String optional end color
+   * @param start String start color
+   * @param end String optional end color
    * @param Object effect options
    * @return Element self
    */
@@ -106,8 +106,8 @@ Element.include({
   /**
    * Starts the smooth scrolling effect
    *
-   * @param Object {x: NNN, y: NNN} where to scroll
-   * @param Object fx-options
+   * @param position Object {x: NNN, y: NNN} where to scroll
+   * @param options Object fx-options
    * @return Element this
    */
   scroll: function(value, options) {

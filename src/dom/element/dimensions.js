@@ -110,8 +110,8 @@ Element.include({
    * NOTE: will double assign the size of the element, so it match the exact
    *       size including any possible borders and paddings
    *
-   * @param Integer width in pixels or {x: 10, y: 20} like object
-   * @param Integer height
+   * @param width Integer width in pixels or {x: 10, y: 20} like object
+   * @param height Integer height
    * @return Element self
    */
   resize: function(width, height) {
@@ -125,8 +125,8 @@ Element.include({
   /**
    * sets the element position (against the window corner)
    *
-   * @param Number left position in pixels or an object like {x: 10, y: 20}
-   * @param Number top position in pixels
+   * @param left Number left position in pixels or an object like {x: 10, y: 20}
+   * @param top Number top position in pixels
    * @return Element self
    */
   moveTo: function(left, top) {
@@ -144,8 +144,8 @@ Element.include({
   /**
    * sets the scroll position
    *
-   * @param Integer left scroll px or an object like {x: 22, y: 33}
-   * @param Integer top scroll px
+   * @param left Integer left scroll px or an object like {x: 22, y: 33}
+   * @param top Integer top scroll px
    * @return Element self
    */
   scrollTo: function(left, top) {

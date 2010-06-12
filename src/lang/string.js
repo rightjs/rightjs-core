@@ -35,7 +35,7 @@ String.include({
    */
   trim: String.prototype.trim || function() {
     var str = this.replace(/^\s\s*/, ''), i = str.length;
-    while (/\s/.test(str.charAt(--i)));
+    while (/\s/.test(str.charAt(--i))) {;}
     return str.slice(0, i + 1);
   },
   

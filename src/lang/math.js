@@ -17,8 +17,8 @@ var Math_old_random = Math.random;
  *   Math.random(10);  // returns an integer between 0 and 10
  *   Math.random(1,4); // returns an integer between 1 and 4
  *
- * @param Integer minimum value if there's two arguments and maximum value if there's only one
- * @param Integer maximum value
+ * @param min Integer minimum value if there's two arguments and maximum value if there's only one
+ * @param max Integer maximum value
  * @return Float random between 0 and 1 if there's no arguments or an integer in the given range
  */
 Math.random = function(i_min, i_max) {

@@ -70,8 +70,8 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
   /**
    * sets a header 
    *
-   * @param String header name
-   * @param String header value
+   * @param name String header name
+   * @param value String header value
    * @return Xhr self
    */
   setHeader: function(name, value) {

@@ -169,8 +169,8 @@ Fx.Morph = new Class(Fx, {
   /**
    * cleans up and optimizies the styles
    *
-   * @param Object before
-   * @param Object after
+   * @param before Object before
+   * @param after Object after
    * @return void
    */
   _cleanStyles: function(before, after) {

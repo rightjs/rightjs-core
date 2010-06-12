@@ -96,8 +96,8 @@ $ext(Object, {
    *      if there is some keys introspections, the last object wins.
    *      all non-object arguments will be omitted
    *
-   * @param Object object
-   * @param Object mixing
+   * @param first Object object
+   * @param second Object mixing
    * ......
    * @return Object merged object
    */

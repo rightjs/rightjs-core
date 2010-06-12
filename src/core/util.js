@@ -12,7 +12,7 @@
 /**
  * Some top-level variables to shortify the things
  */
-var WIN = window, DOC = document, HTML = document.documentElement, UID = 1,
+var WIN = window, DOC = document, HTML = DOC.documentElement, UID = 1,
     UNDEF = undefined, to_s = Object.prototype.toString, slice = Array.prototype.slice,
  
 /**
@@ -21,10 +21,10 @@ var WIN = window, DOC = document, HTML = document.documentElement, UID = 1,
  * NOTE: the third optional argument tells if the existing values
  *       of the first object should _NOT_ get updated by the values of the second object
  *
- * @param Object destintation object
- * @param Object source object
+ * @param oritinal Object destintation object
+ * @param source Object source object
  * @param Boolean flag if the function should not overwrite intersecting values
- * @return Objecte extended destination object
+ * @return Object extended destination object
  */
 $ext = RightJS.$ext = function(dest, source, dont_overwrite) { 
   var src = source || {}, key;
@@ -84,8 +84,8 @@ $break = RightJS.$break = function() {
 /**
  * generates aliases for the object properties
  *
- * @param Object object
- * @param Object aliases hash
+ * @param object Object object
+ * @param names Object aliases hash
  * @return Object the extended objects
  */
 $alias = RightJS.$alias = function(object, names) {

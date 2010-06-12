@@ -333,7 +333,7 @@ Array.include({
   shuffle: function() {
     var shuff = this.clone(), j, x, i = shuff.length;
     
-    for (; i; j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x);
+    for (; i; j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x) {;}
     
     return shuff;
   },
@@ -390,7 +390,7 @@ Array.include({
    * @return Number a summ of values on the list
    */
   sum: function() {
-    for(var i=0,l=this.length,sum=0; i < l; sum += this[i++]);
+    for(var i=0,l=this.length,sum=0; i < l; sum += this[i++]) {;}
     return sum;
   }
 });

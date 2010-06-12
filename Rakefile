@@ -18,7 +18,7 @@ require 'fileutils'
 require 'rubygems'
 require 'front_compiler'
 
-RIGHTJS_VERSION = '1.5.6'
+RIGHTJS_VERSION = 'two.o.o'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
@@ -105,6 +105,22 @@ JS_SOURCES = {
 task :default => :build
 
 task :build do
+  def write_and_compress(file_name, header, source)
+    # writting the source file
+    File.open(file_name, "w") do |f|
+      f.write header
+      f.write source
+    end
+    
+    # creating the compressed version
+    min_file_name = file_name.gsub('-src', '');
+    File.open(min_file_name, "w") do |f|
+      f.write header
+    end
+    
+    system "java -jar lib/google-compiler.jar --js=#{file_name} >> #{min_file_name}"
+  end
+  
   ### parsing the options
   options = ((ENV['OPTIONS'] || '').split('=').last || '').split(/\s*,\s*/)
   
@@ -128,7 +144,7 @@ task :build do
   BUILD_OPTIONS.each do |package|
     unless options.include?("no-#{package}")
       JS_SOURCES[package.to_sym].each do |file|
-        source += File.open("src/#{file}.js", "r").read + "\n\n"
+        source += File.read("src/#{file}.js") + "\n\n"
       end
       modules << package
     end
@@ -136,7 +152,7 @@ task :build do
   
   # hooking up the olds patch loader if necessary
   if options.include?('no-olds')
-    source += File.open("src/olds/loader.js", "r").read
+    source += File.read("src/olds/loader.js")
   end
     
   desc = File.read('src/right.js')
@@ -150,65 +166,32 @@ task :build do
   source = layout[0] + source + layout[1]
   
   
-  # joining muli-lined strings
-  source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
-  
-  minified = FrontCompiler.new.compact_js(source)
-  
-  
   ### writting the files
-  
   puts ' * Writting files'
   header = File.open('src/HEADER.js', 'r').read
   if !options.empty? && options != ['no-olds']
     header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
   end
   
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}-src.js", "w") do |file|
-    file.write header
-    file.write source
-  end
+  write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-src.js", header, source)
   
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}-min.js", "w") do |file|
-    file.write header
-    file.write minified
-  end
-  
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}.js", "w") do |file|
-    file.write header
-    file.write minified.create_self_build
-  end
   
   ### building the olds patch file
   if options.include?('no-olds')
     puts ' * Building the olds patch file'
   
-    olds_source = ''
-    JS_SOURCES[:olds].each do |file|
-      olds_source += File.open("src/#{file}.js", "r").read + "\n\n"
-    end
+    olds_source = JS_SOURCES[:olds].collect do |file|
+      File.read("src/#{file}.js")
+    end.join("\n\n")
     
-    olds_source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
-  
-    olds_header = File.open("src/HEADER.olds.js", 'r').read
-    olds_minified = FrontCompiler.new.compact_js(olds_source)
-  
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js", "w") do |file|
-      file.write olds_header
-      file.write olds_source
-    end
-  
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-min.js", "w") do |file|
-      file.write olds_header
-      file.write olds_minified
-    end
-  
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds.js", "w") do |file|
-      file.write olds_header
-      file.write olds_minified.create_self_build
-    end
+    write_and_compress(
+      "#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js",
+      File.read("src/HEADER.olds.js"),
+      olds_source
+    )
   end
-  
+
+=begin
   ### creating the server build
   if options.include?('server')
     puts ' * Creating the server-side build'
@@ -229,5 +212,6 @@ task :build do
       file.write File.read("src/core/server.js")
     end
   end
-  
+=end
+
 end

@@ -16,8 +16,8 @@ Fx.Highlight = new Class(Fx.Morph, {
   /**
    * starts the transition
    *
-   * @param String the hightlight color
-   * @param String optional fallback color
+   * @param high String the hightlight color
+   * @param back String optional fallback color
    * @return self
    */
   prepare: function(start, end) {
