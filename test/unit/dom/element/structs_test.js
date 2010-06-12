@@ -377,6 +377,14 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual(['O1','O2'], options.map('innerHTML'));
   },
   
+  testUpdateSelectWithSelectedOptions: function() {
+    var e1 = $E('select').update('<option selected="true" value="1">1</option><option value="2">2</option>');
+    var e2 = $E('select').update('<option value="1">1</option><option selected="true" value="2">2</option>');
+    
+    this.assertEqual('1', e1.value);
+    this.assertEqual('2', e2.value);
+  },
+  
   testInsertAndUpdateWithNumbers: function() {
     this.el.insert(2.2);
     this.assertEqual('2.2', this.el.innerHTML);

@@ -95,6 +95,14 @@ Element.include({
             this : this.parentNode, content
         )
       );
+      
+      // FF doesn't marks selected options correctly
+      if (this.tagName === 'SELECT') {
+        $A(this.getElementsByTagName('option')).each(function(option) {
+          option.selected = option.hasAttribute('selected');
+        });
+      }
+      
       if (scripts) $eval(scripts);
     }
     return this;
