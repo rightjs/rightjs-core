@@ -21,14 +21,14 @@ Fx.Highlight = new Class(Fx.Morph, {
    * @return self
    */
   prepare: function(start, end) {
-    var end_color = end || this.element.getStyle('backgroundColor');
+    var element = this.element, style = element.style, end_color = end || element.getStyle('backgroundColor');
     
     if (this._transp(end_color)) {
-      this.onFinish(function() { this.element.style.backgroundColor = 'transparent'; });
-      end_color = this._getBGColor(this.element);
+      this.onFinish(function() { style.backgroundColor = 'transparent'; });
+      end_color = this._getBGColor(element);
     }
     
-    this.element.style.backgroundColor = (start || this.options.color);
+    style.backgroundColor = (start || this.options.color);
     
     return this.$super({backgroundColor: end_color});
   }

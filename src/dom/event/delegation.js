@@ -92,14 +92,14 @@ Event.extend({
         // but for focus and blur effects we need the opposite
         // so we calling the method directly and pushing the listeners manually
 
-        document.addEventListener(event, events[event], true);
+        DOC.addEventListener(event, events[event], true);
 
-        (document.$listeners = document.$listeners || []).push({
+        (DOC.$listeners = DOC.$listeners || []).push({
           e: event, f: events[event], a: []
         });
 
       } else {
-        document.on(event, events[event]);
+        DOC.on(event, events[event]);
       }
     }
 
@@ -137,7 +137,7 @@ String.include({
 // builds a list of String#onEvent shortucts
 function String_addShorts(events) {
   return events.each(function(name) {
-    String.prototype['on'+name.capitalize()] = function() {
+    String[PROTO]['on'+name.capitalize()] = function() {
       return this.on.apply(this, [name].concat($A(arguments)));
     };
   });

@@ -33,7 +33,7 @@ String.include({
    *
    * @return String trimmed version
    */
-  trim: String.prototype.trim || function() {
+  trim: String[PROTO].trim || function() {
     var str = this.replace(/^\s\s*/, ''), i = str.length;
     while (/\s/.test(str.charAt(--i))) {;}
     return str.slice(0, i + 1);
@@ -171,4 +171,4 @@ String.include({
   
 });
 
-$alias(String.prototype, {include: 'includes'});
+$alias(String[PROTO], {include: 'includes'});

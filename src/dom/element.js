@@ -70,7 +70,7 @@ $ext(Element, {
     $ext(this.Methods, methods, dont_overwrite);
     
     try { // busting up the basic element prototypes
-      $ext((window.HTMLElement || this.parent).prototype, methods, dont_overwrite);
+      $ext((WIN.HTMLElement || this.parent)[PROTO], methods, dont_overwrite);
     } catch(e) {}
     
     return this;

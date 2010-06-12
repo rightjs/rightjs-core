@@ -29,7 +29,7 @@ $ext(Form, {
     $ext(Form.Methods, methods, dont_overwrite);
     
     try { // trying to extend the form element prototype
-      $ext(HTMLFormElement.prototype, methods, dont_overwrite);
+      $ext(HTMLFormElement[PROTO], methods, dont_overwrite);
     } catch(e) {}
   }
 });

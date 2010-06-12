@@ -168,7 +168,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     if (!xhr || xhr.canceled) return this;
     
     xhr.abort();
-    xhr.onreadystatechange = function() {};
+    xhr.onreadystatechange = dummy();
     xhr.canceled = true;
     
     return this.fire('cancel');
@@ -246,7 +246,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
       return JSON.parse(this.text);
     } catch(e) {
       // manual json consistancy check
-      if (window.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
+      if (WIN.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
         if (this.secureJSON) {
           throw "JSON parse error: "+this.text;
         } else {

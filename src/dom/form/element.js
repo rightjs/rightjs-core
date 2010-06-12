@@ -27,14 +27,14 @@ Form.Element = {
 
     // extending the input element prototypes
     input_classes.each(function(klass) {
-      $ext(klass.prototype, methods, dont_overwrite);
+      $ext(klass[PROTO], methods, dont_overwrite);
     });
   }
 };
 
 // creating the blur, focus and select methods aliases
 input_classes.each(function(klass) {
-  $alias(klass.prototype, {
+  $alias(klass[PROTO], {
     _blur:   'blur',
     _focus:  'focus',
     _select: 'select'

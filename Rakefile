@@ -118,7 +118,7 @@ task :build do
       f.write header
     end
     
-    system "java -jar lib/google-compiler.jar --js=#{file_name} >> #{min_file_name}"
+    system "java -jar lib/google-compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js=#{file_name} >> #{min_file_name}"
   end
   
   ### parsing the options

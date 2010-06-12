@@ -3,12 +3,12 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-var RightJS = (function(Object, Array, String, Function) {
+var RightJS = (function(Object, Array, String, Function, Number, Math) {
   
 #{source_code}
 
 // globalizing the top-level variables
-$ext(window, Object.without(RightJS, 'version', 'modules'));
+$ext(WIN, Object.without(RightJS, 'version', 'modules'));
   
 return RightJS;
-})(Object, Array, String, Function);
+})(Object, Array, String, Function, Number, Math);

@@ -6,7 +6,7 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 var commons = $w('selfExtended self_extended selfIncluded self_included'),
-    extend  = commons.concat($w('prototype parent extend include')),
+    extend  = commons.concat($w(PROTO+' parent extend include')),
     include = commons.concat(['constructor']);
 
 function clean_module(module, what) {
@@ -22,10 +22,10 @@ Class.Methods = {
    */
   inherit: function(parent) {
     // handling the parent class assign
-    if (parent && parent.prototype) {
-      var s_klass = function() {};
-      s_klass.prototype = parent.prototype;
-      this.prototype = new s_klass;
+    if (parent && parent[PROTO]) {
+      var s_klass = dummy();
+      s_klass[PROTO] = parent[PROTO];
+      this[PROTO] = new s_klass;
       this.parent = parent;
     }
 
@@ -36,7 +36,7 @@ Class.Methods = {
       parent = parent.parent;
     }
 
-    return this.prototype.constructor = this;
+    return this[PROTO].constructor = this;
   },
 
   /**
@@ -84,7 +84,7 @@ Class.Methods = {
       for (var key in module) {
         ancestor = ancestors.first(function(proto) { return key in proto && isFunction(proto[key]); });
 
-        this.prototype[key] = !ancestor ? module[key] :
+        this[PROTO][key] = !ancestor ? module[key] :
           (function(name, method, super_method) {
             return function() {
               this.$super = super_method;

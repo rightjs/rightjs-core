@@ -6,7 +6,7 @@
 Xhr.JSONP = new Class({
   include: Xhr.Dummy,
   
-  prefix: 'rightjs_jsonp_',
+  prefix: 'jsonp',
   
   /**
    * Constructor
@@ -47,7 +47,7 @@ Xhr.JSONP = new Class({
    * @return void
    */
   send: function(data) {
-    window[this.name] = this.finish.bind(this);
+    WIN[this.name] = this.finish.bind(this);
     
     this.script.set('src', this.url + (this.url.include('?') ? '&' : '?') + this.param + "&" + data)
       .insertTo($$('script').last(), 'after');

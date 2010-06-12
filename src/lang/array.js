@@ -8,8 +8,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var A_proto = Array.prototype,
-  original_sort = A_proto.sort,
+var original_sort = A_proto.sort,
 
 build_loop = function(pre, body, ret) {
   return eval('[function(c,s){'+
@@ -42,7 +41,7 @@ last     = function(callback, scope) {
 
 // prepares a correct callback function
 function guess_callback(argsi, array) {
-  var callback = argsi[0], args = A_proto.slice.call(argsi, 1), scope = array, attr;
+  var callback = argsi[0], args = slice.call(argsi, 1), scope = array, attr;
   
   if (isString(callback)) {
     attr = callback;

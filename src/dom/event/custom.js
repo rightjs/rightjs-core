@@ -5,6 +5,6 @@
  */
 Event.Custom = function(name, options) {
   this.type = name;
-  this.stop = function() {};
+  this.stop = dummy();
   $ext(this, options || {});
 };

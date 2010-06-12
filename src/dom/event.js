@@ -101,7 +101,7 @@ Event.include = function(methods) {
   $ext(this.Methods, methods);
   
   try { // extending the events prototype
-    $ext(Event.parent.prototype, methods, true);
+    $ext(Event.parent[PROTO], methods, true);
   } catch(e) {};
 };
 

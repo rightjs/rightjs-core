@@ -26,14 +26,14 @@ var Cookie = RightJS.Cookie = new Class({
     
     // checks if the cookies are enabled
     enabled: function() {
-      document.cookie = "__t=1";
-      return document.cookie.indexOf("__t=1")!=-1;
+      DOC.cookie = "__t=1";
+      return DOC.cookie.indexOf("__t=1")!=-1;
     },
     
     // some basic options
     Options: {
       secure:   false,
-      document: document
+      document: DOC
     }
   },
   

@@ -12,14 +12,14 @@ Form.include({
   /**
    * sends the form via xhr request
    *
-   * @params Options xhr request options
+   * @param Options xhr request options
    * @return Form this
    */
   send: function(options) {
     options = options || {};
     options['method'] = options['method'] || this.method || 'post';
     
-    new Xhr(this.get('action') || document.location.href, options
+    new Xhr(this.get('action') || DOC.location.href, options
       ).onRequest(this.disable.bind(this)
       ).onComplete(this.enable.bind(this)).send(this);
     
@@ -50,7 +50,7 @@ Form.include({
    * @return Form this
    */
   unremotize: function() {
-    this.onsubmit = function() {};
+    this.onsubmit = dummy();
     this.remote   = false;
     return this;
   }

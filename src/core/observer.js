@@ -172,7 +172,7 @@ var Observer = RightJS.Observer = new Class({
      * @return Object extended object
      */
     create: function(object, events) {
-      $ext(object, Object.without(this.prototype, 'initialize', 'setOptions'), true);
+      $ext(object, Object.without(this[PROTO], 'initialize', 'setOptions'), true);
       return this.createShortcuts(object, events || Class.findSet(object, 'events'));
     },
     

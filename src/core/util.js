@@ -13,7 +13,9 @@
  * Some top-level variables to shortify the things
  */
 var WIN = window, DOC = document, HTML = DOC.documentElement, UID = 1,
-    UNDEF = undefined, to_s = Object.prototype.toString, slice = Array.prototype.slice,
+    UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
+    to_s = Object[PROTO].toString, slice = A_proto.slice,
+    dummy = function() { return function() {}; },
  
 /**
  * extends the first object with the keys and values of the second one
@@ -272,7 +274,7 @@ if (isHash(HTML)) {
  */
 for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
   natives[i].include = function(module, dont_overwrite) {
-    $ext(this.prototype, module, dont_overwrite);
+    $ext(this[PROTO], module, dont_overwrite);
     return this;
   };
 }
