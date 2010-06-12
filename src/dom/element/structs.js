@@ -95,6 +95,14 @@ Element.include({
             this : this.parentNode, content
         )
       );
+      
+      // FF doesn't marks selected options correctly with a textual content
+      if (this.tagName === 'SELECT' && isString(content)) {
+        $A(this.getElementsByTagName('option')).each(function(option) {
+          option.selected = !!option.getAttribute('selected');
+        });
+      }
+      
       if (scripts) $eval(scripts);
     }
     return this;
