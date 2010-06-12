@@ -96,10 +96,10 @@ Element.include({
         )
       );
       
-      // FF doesn't marks selected options correctly
-      if (this.tagName === 'SELECT') {
+      // FF doesn't marks selected options correctly with a textual content
+      if (this.tagName === 'SELECT' && isString(content)) {
         $A(this.getElementsByTagName('option')).each(function(option) {
-          option.selected = option.hasAttribute('selected');
+          option.selected = !!option.getAttribute('selected');
         });
       }
       
