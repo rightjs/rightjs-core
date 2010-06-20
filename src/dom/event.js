@@ -20,7 +20,7 @@ var Event = RightJS.Event = new Class(WIN.Event, {
      */
     ext: function(event, bound_element) {
       if (!event.stop) {
-        $ext(event, this.Methods, true);
+        $ext(event, Event.Methods, true);
       }
       
       if (!event.target && event.srcElement) {

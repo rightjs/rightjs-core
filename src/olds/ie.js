@@ -20,64 +20,56 @@ if (RightJS.Browser.OLD) {
   })(RightJS.$);
   
   
-  RightJS.$ext(document, {
-    /**
-     * Overloading the native method to extend the new elements as it is
-     * in all the other browsers
-     *
-     * @param String tag name
-     * @return Element
-     */
-    createElement: (function(old_method) {
-      return function(tag) {
-        return RightJS.Element.prepare(old_method(tag));
-      }
-    })(document.createElement)
-  });
+  /**
+   * Overloading the native method to extend the new elements as it is
+   * in all the other browsers
+   *
+   * @param String tag name
+   * @return Element
+   */
+  document.createElement = (function(old_method) {
+    return function(tag) {
+      return RightJS.Element.prepare(old_method(tag));
+    }
+  })(document.createElement);
   
-  
-  
-  RightJS.$ext(RightJS.Element, {
-    /**
-     * IE browsers manual elements extending
-     *
-     * @param Element
-     * @return Element
-     */
-    prepare: function(element) {
-      if (element && element.tagName && !element.set) {
-        RightJS.$ext(element, RightJS.Element.Methods, true);
+  /**
+   * IE browsers manual elements extending
+   *
+   * @param Element
+   * @return Element
+   */
+  RightJS.Element.prepare = function(element) {
+    if (element && element.tagName && !element.set) {
+      RightJS.$ext(element, RightJS.Element.Methods, true);
 
-        if (RightJS.Form) {
-          switch(element.tagName) {
-            case 'FORM':
-              RightJS.$ext(element, RightJS.Form.Methods);
-              break;
+      if (RightJS.Form) {
+        switch(element.tagName) {
+          case 'FORM':
+            RightJS.$ext(element, RightJS.Form.Methods);
+            break;
 
-            case 'INPUT':
-            case 'SELECT':
-            case 'BUTTON':
-            case 'TEXTAREA':
-              RightJS.$ext(RightJS.$alias(element, {
-                _blur:   'blur',
-                _focus:  'focus',
-                _select: 'select'
-              }), RightJS.Form.Element.Methods);
-              break;
-          }
+          case 'INPUT':
+          case 'SELECT':
+          case 'BUTTON':
+          case 'TEXTAREA':
+            RightJS.$ext(RightJS.$alias(element, {
+              _blur:   'blur',
+              _focus:  'focus',
+              _select: 'select'
+            }), RightJS.Form.Element.Methods);
+            break;
         }
       }
-      return element;
     }
-  });
+    return element;
+  };
   
-  RightJS.Element.include((function() {
-    var old_collect = RightJS.Element.Methods.rCollect;
-    
+  RightJS.Element.include((function(old_collect) {
     return {
       rCollect: function(attr, css_rule) {
         return old_collect.call(this, attr, css_rule).each(RightJS.Element.prepare);
       }
     }
-  })());
+  })(RightJS.Element.Methods.rCollect));
 }

@@ -45,9 +45,9 @@ Element.include({
    * @return Object dimensions (top, left, width, height, scrollLeft, scrollTop)
    */
   dimensions: function() {
-    var sizes    = this.sizes();
-    var scrolls  = this.scrolls();
-    var position = this.position();
+    var sizes    = this.sizes(),
+        scrolls  = this.scrolls(),
+        position = this.position();
     
     return {
       top:        position.y,

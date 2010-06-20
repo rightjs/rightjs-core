@@ -170,45 +170,32 @@ if (!document.querySelector) {
     var atoms_cache = {};
     function build_atom(atom) {
       if (!atoms_cache[atom]) {
-        //
-        // HACK HACK HACK
-        //
-        // I use those tiny variable names, case I'm gonna be nougty
-        // and generate the matching function nasty way via evals and strings
-        // and as the code will be compacted, the real variable names will be lost
-        // unless they shortified to the minimum
-        //
-        // Here what the real variable names are
-        //  i - for 'id' string
-        //  t - for 'tag' name
-        //  c - for 'classes' list
-        //  a - for 'attributes' hash
-        //  p - for 'pseudo' string
-        //  v - for 'value_of_pseudo'
-        //  
-        var i, t, c, a, p, v, m, desc = {};
+        var id, tag, classes, attrs, pseudo, values_of_pseudo, match, func, desc = {};
         
         // grabbing the attributes 
-        while((m = atom.match(attrs_re))) {
-          a = a || {};
-          a[m[1]] = { o: m[2], v: m[5] || m[6] };
-          atom = atom.replace(m[0], '');
+        while((match = atom.match(attrs_re))) {
+          attrs = attrs || {};
+          attrs[match[1]] = { o: match[2], v: match[5] || match[6] };
+          atom = atom.replace(match[0], '');
         }
         
         // extracting the pseudos
-        if ((m = atom.match(pseudo_re))) {
-          p = m[1];
-          v = m[3] == '' ? null : m[3];
-          atom = atom.replace(m[0], '');
+        if ((match = atom.match(pseudo_re))) {
+          pseudo = match[1];
+          values_of_pseudo = match[3] == '' ? null : match[3];
+          atom = atom.replace(match[0], '');
         }
         
         // getting all the other options
-        i = (atom.match(id_re) || [1, null])[1];
-        t = (atom.match(tag_re) || '*').toString().toUpperCase();
-        c = (atom.match(class_re) || [1, ''])[1].split('.').without('');
+        id      = (atom.match(id_re)    || [1, null])[1];
+        tag     = (atom.match(tag_re)   || '*').toString().toUpperCase();
+        classes = (atom.match(class_re) || [1, ''])[1].split('.').without('');
         
-        desc.tag = t;
+        desc.tag = tag;
         
+        //
+        // HACK HACK HACK
+        //
         // building the matcher function
         //
         // NOTE: we kinda compile a cutom filter function in here 
@@ -216,21 +203,22 @@ if (!document.querySelector) {
         //       that will make only this atom checks and will filter
         //       a list of elements in a single call
         //
-        if (i || c.length || a || p) {
+        if (id || classes.length || attrs || pseudo) {
           var filter = 'function(y){'+
-            'var e,r=[];'+
-            'for(var z=0,x=y.length;z<x;z++){'+
+            'var e,r=[],z=0,x=y.length;'+
+            'for(;z<x;z++){'+
               'e=y[z];_f_'+
             '}return r}';
+            
           var patch_filter = function(code) {
             filter = filter.replace('_f_', code + '_f_');
           };
           
           // adding the ID check conditions
-          if (i) patch_filter('if(e.id!=i)continue;');
+          if (id) patch_filter('if(e.id!=i)continue;');
           
           // adding the classes matching code
-          if (c.length) patch_filter(
+          if (classes.length) patch_filter(
             'if(e.className){'+
               'var n=e.className.split(" ");'+
               'if(n.length==1&&c.indexOf(n[0])==-1)continue;'+
@@ -244,9 +232,9 @@ if (!document.querySelector) {
           );
           
           // adding the attributes matching conditions
-          if (a) patch_filter(
-            'var p,o,v,b=false;'+
-            'for (var k in a){p=e.getAttribute(k)||"";o=a[k].o;v=a[k].v;'+
+          if (attrs) patch_filter(
+            'var p,o,v,k,b=false;'+
+            'for (k in a){p=e.getAttribute(k)||"";o=a[k].o;v=a[k].v;'+
               'if('+
                 '(o=="="&&p!=v)||'+
                 '(o=="*="&&!p.includes(v))||'+
@@ -259,12 +247,24 @@ if (!document.querySelector) {
           );
           
           // adding the pseudo matchers check
-          if (p && pseudos[p]) {
-            var s = pseudos;
-            patch_filter('if(!s[p].call(e,v,s))continue;');
+          if (pseudo in pseudos) {
+            patch_filter('if(!S[P].call(e,V,S))continue;');
           }
 
-          desc.filter = eval('['+ filter.replace('_f_', 'r.push(e)') +']')[0];
+          //
+          // HACK HACK HACK
+          //
+          // Here we separate the names space from the outside
+          // and inside of the function, so that when this thing
+          // is optimized by the code compiler, it kept the necessary
+          // variable names intackt
+          //
+          desc.filter = eval(
+            "[function(i,t,c,a,P,V,S,s){return eval('['+s+']')[0]}]"
+          )[0](
+            id,tag,classes,attrs,pseudo,values_of_pseudo,pseudos,
+            filter.replace('_f_', 'r.push(e)')
+          );
         }
         
         atoms_cache[atom] = desc;
@@ -400,7 +400,7 @@ if (!document.querySelector) {
     // the previous dom-selection methods replacement
     var dom_extension = {
       first: function(css_rule) {
-        return this.select(css_rule).first();
+        return this.select(css_rule)[0];
       },
       
       select: function(css_rule) {

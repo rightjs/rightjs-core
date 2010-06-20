@@ -15,8 +15,6 @@
 
 require 'rake'
 require 'fileutils'
-require 'rubygems'
-require 'front_compiler'
 
 RIGHTJS_VERSION = 'two.o.o'
 
@@ -105,6 +103,7 @@ JS_SOURCES = {
 task :default => :build
 
 task :build do
+  
   def write_and_compress(file_name, header, source)
     # writting the source file
     File.open(file_name, "w") do |f|
@@ -118,7 +117,7 @@ task :build do
       f.write header
     end
     
-    system "java -jar lib/google-compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js=#{file_name} >> #{min_file_name}"
+    system "java -jar lib/google-compiler.jar --js=#{file_name} >> #{min_file_name}"
   end
   
   ### parsing the options
@@ -149,11 +148,6 @@ task :build do
       modules << package
     end
   end
-  
-  # hooking up the olds patch loader if necessary
-  if options.include?('no-olds')
-    source += File.read("src/olds/loader.js")
-  end
     
   desc = File.read('src/right.js')
   desc.gsub! '#{version}', RIGHTJS_VERSION
@@ -164,6 +158,15 @@ task :build do
   # loading up the layout
   layout = File.read('src/layout.js').split('#{source_code}')
   source = layout[0] + source + layout[1]
+  
+  # hooking up the olds patch loader if necessary
+  if options.include?('no-olds')
+    source << "\n\n"+ File.read("src/olds/loader.js")
+    
+    # using the namespaced $ and $$ calls so that they could be
+    # overwritten in the olds module patch
+    source.gsub!(/([^a-z\d\_\.\$])(\${1,2}\()/, '\1RightJS.\2')
+  end
   
   
   ### writting the files

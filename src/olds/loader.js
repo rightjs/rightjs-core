@@ -9,10 +9,9 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
-if (!DOC.querySelector) {
-  DOC.write('<scr'+'ipt src="' +
-    RightJS.$A(DOC.getElementsByTagName('script')).last()
+if (!document.querySelector) {
+  document.write('<script src="' +
+    RightJS.$A(document.getElementsByTagName('script')).last()
       .src.replace(/(^|\/)(right)([^\/]+)$/, '$1$2-olds$3') +
-  '"></scr'+'ipt>');
+  '"></script>');
 }
- 

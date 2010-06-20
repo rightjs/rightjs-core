@@ -75,7 +75,7 @@ Class.Methods = {
    * @return Class the klass
    */
   include: function() {
-    var ancestors = this.ancestors.map('prototype'), ancestor;
+    var ancestors = this.ancestors.map(PROTO), ancestor;
 
     $A(arguments).filter(isHash).each(function(module) {
       var callback = module.selfIncluded || module.self_included;

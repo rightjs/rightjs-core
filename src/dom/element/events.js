@@ -5,7 +5,7 @@
  */
 var Element_observer = Observer.create({}, 
   String_addShorts($w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'))
-), attach = 'attachEvent' in WIN;
+), attach = 'attachEvent' in WIN, REvent = 'RightJS.Event';
 
 //
 // HACK HACK HACK
@@ -20,10 +20,10 @@ function hack_observer(name, re, text) {
 hack_observer('on', 
   /(\$listeners\.push\((\w+?)\);)/,
   
-  '$1$2.e=Event.cleanName($2.e);$2.n=Event.realName($2.e);'+
+  '$1$2.e='+ REvent +'.cleanName($2.e);$2.n='+ REvent +'.realName($2.e);'+
   
   '$2.w=function(){'+
-    'var a=$A(arguments),e=($2.r&&$2.r!=="stopEvent")?a.shift():Event.ext(a[0],this);'+
+    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():'+ REvent +'.ext(a[0],this);'+
     'return $2.f.apply(this,a.concat($2.a))};' + (
       attach ?
         '$2.w=$2.w.bind(this);this.attachEvent("on"+$2.n,$2.w);' :
@@ -42,7 +42,7 @@ hack_observer('stopObserving',
 
 hack_observer('fire',
   /(\w+)\.f\.apply.*?\.concat\((\w+)\)\)/,
-  '$1.f.apply(this,(($1.r&&$1.r!=="stopEvent")?[]:[new Event($1.e,$2.shift())]).concat($1.a).concat($2))'
+  '$1.f.apply(this,(($1.r&&$1.r!=="stopEvent")?[]:[new '+ REvent +'($1.e,$2.shift())]).concat($1.a).concat($2))'
 );
 
 // a simple events terminator method to be hooked like this.onClick('stopEvent');
