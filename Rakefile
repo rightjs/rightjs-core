@@ -134,7 +134,7 @@ task :build do
   
   ### compiling the source code
   
-  puts ' * Compiling the sources'
+  puts ' * Composing the final file'
   build = ''
   source = ''
   modules = []
@@ -170,7 +170,7 @@ task :build do
   
   
   ### writting the files
-  puts ' * Writting files'
+  puts ' * Creating the basic build'
   header = File.open('src/HEADER.js', 'r').read
   if !options.empty? && options != ['no-olds']
     header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
@@ -194,12 +194,11 @@ task :build do
     )
   end
 
-=begin
   ### creating the server build
   if options.include?('server')
     puts ' * Creating the server-side build'
     
-    source = JS_SOURCES[:core].collect do |file|
+    source = File.read("src/right.js") + JS_SOURCES[:core].collect do |file|
       File.read("src/#{file}.js")
     end.join("\n\n")
     
@@ -207,14 +206,18 @@ task :build do
     source.gsub! '#{modules}', 'core'
     
     # removing dom related util methods and hacks
+    source.gsub! /\n\/\/\s+!#server:begin.+?\/\/\s+!#server:end\n/m, ''
     source.gsub! /\/\*\*\s+!#server.+?(?=\/\*\*)/m, ''
+    source.gsub! /\n[^\n]+\/\/\s*!#server\s*\n/m, ''
+    
+    # loading up the layout
+    layout = File.read('src/layout.server.js').split('#{source_code}')
+    source = layout[0] + source + layout[1]
     
     File.open("#{BUILD_DIR}/#{BUILD_FILE}-server.js", "w") do |file|
       file.write File.read("src/HEADER.server.js")
       file.write source
-      file.write File.read("src/core/server.js")
     end
   end
-=end
 
 end

@@ -12,10 +12,12 @@
 /**
  * Some top-level variables to shortify the things
  */
-var WIN = window, DOC = document, HTML = DOC.documentElement, UID = 1,
-    UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
-    to_s = Object[PROTO].toString, slice = A_proto.slice,
-    dummy = function() { return function() {}; },
+var 
+WIN = window, DOC = document, HTML = DOC.documentElement, UID = 1, // !#server
+UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
+to_s = Object[PROTO].toString, slice = A_proto.slice,
+dummy = function() { return function() {}; },
+    
  
 /**
  * extends the first object with the keys and values of the second one
