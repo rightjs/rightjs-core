@@ -25,7 +25,7 @@ return {
    * @return Element matching node or null
    */
   first: function(css_rule) {
-    return this.querySelector(stub_rule(css_rule, this.tagName));
+    return Element.prepare(this.querySelector(stub_rule(css_rule, this.tagName)));
   },
   
   /**
@@ -35,7 +35,7 @@ return {
    * @return Array of elements
    */
   select: function(css_rule) {
-    return $A(this.querySelectorAll(stub_rule(css_rule, this.tagName)));
+    return Element.prepareAll($A(this.querySelectorAll(stub_rule(css_rule, this.tagName))));
   },
   
   /**

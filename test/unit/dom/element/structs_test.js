@@ -436,5 +436,45 @@ var ElementStructsTest = TestCase.create({
     
     this.el.innerHTML = 'asdf';
     this.assertFalse(this.el.empty());
+  },
+  
+  testAnotherFrameAccess: function() {
+    var id = 'elements_checks_iframe';
+    
+    $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
+      '" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
+    
+    var doc = window.frames[id].document;
+    doc.open();
+    doc.write(
+      '<html><body>'+
+        '<div id="test">'+
+          '<div class="that">one</div>'+
+          '<div class="that">two</div>'+
+          '<div class="another">three</div>'+
+          '<div class="last">last one</div>'+
+        '</div>'+
+      '</body></html>'
+    );
+    doc.close();
+    
+    // grabbing the elements
+    var e = $(doc.getElementById('test'));
+    
+    // checking that the element was automatically extended
+    this.assert('set' in e);
+    
+    var that_divs = e.select('div.that');
+    this.assertEqual(['one', 'two'], that_divs.map('innerHTML'));
+    this.assert(that_divs[0].set && that_divs[1].set, 'both elements should be extended');
+    
+    var another = e.first('div.another');
+    this.assertEqual('three', another.innerHTML);
+    this.assert('set' in another, 'the third element should be extended');
+    
+    var last = another.next();
+    this.assertEqual('last one', last.innerHTML);
+    this.assert('set' in last, 'the last element should be extended');
   }
 });
+

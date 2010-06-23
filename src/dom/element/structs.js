@@ -191,7 +191,7 @@ Element.include({
    * @return Array found elements
    */
   rCollect: function(attr, css_rule) {
-    var node = this, result = [];
+    var node = this, result = [], first;
 
     while ((node = node[attr])) {
       if (node.tagName && (!css_rule || $(node).match(css_rule))) {
@@ -199,7 +199,7 @@ Element.include({
       }
     }
     
-    return result;
+    return Element.prepareAll(result);
   }
 });
 

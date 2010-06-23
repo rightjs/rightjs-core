@@ -180,7 +180,7 @@ function $E(tag_name, options) {
  * @return Element or null
  */
 function $(element) {
-  return typeof(element) === 'string' ? document.getElementById(element) : element;
+  return Element.prepare(typeof(element) === 'string' ? document.getElementById(element) : element);
 };
 
 /** !#server

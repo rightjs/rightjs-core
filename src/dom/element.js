@@ -79,5 +79,49 @@ $ext(Element, {
     return this;
   },
   
-  Methods: {} // DO NOT Extend this object manually unless you really need it, use Element#include
+  Methods: {}, // DO NOT Extend this object manually unless you really need it, use Element#include
+  
+  /**
+   * manual elements extending, in case of elements from another frames
+   *
+   * @param Element
+   * @return Element
+   */
+  prepare: function(element) {
+    if (element && !('set' in element)) {
+      $ext(element, Element.Methods, true);
+
+      if ('Form' in window) {
+        switch(element.tagName) {
+          case 'FORM':
+            $ext(element, Form.Methods);
+            break;
+
+          case 'INPUT':
+          case 'SELECT':
+          case 'BUTTON':
+          case 'TEXTAREA':
+            $ext($alias(element, {
+              _blur:   'blur',
+              _focus:  'focus',
+              _select: 'select'
+            }), Form.Element.Methods);
+            break;
+        }
+      }
+    }
+    
+    return element;
+  },
+  
+  /**
+   * Checks if the elements on the list need to be prepared
+   * and prepares them all
+   *
+   * @param Array list of raw elements
+   * @return Array list of prepared elements
+   */
+  prepareAll: function(list) {
+    return !list[0] || 'set' in list[0] ? list : list.map(Element.prepare);
+  }
 });
