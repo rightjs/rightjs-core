@@ -120,9 +120,7 @@ $ext(Object, {
   toQueryString: function(object) {
     var tokens = [], key, value;
     for (key in object) {
-      value = object[key];
-      if (!isArray(value)) value = [value];
-      tokens.push(key+'='+value.map(encodeURIComponent).join(','));
+      tokens.push(key+'='+encodeURIComponent(object[key]));
     }
     return tokens.join('&');
   }
