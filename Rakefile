@@ -122,9 +122,9 @@ task :build do
   
   ### parsing the options
   options = ((ENV['OPTIONS'] || '').split('=').last || '').split(/\s*,\s*/)
+  options.reject!{ |o| o == 'no-olds'} if options.include?('safe')
   
   ### preparing the directories
-  
   unless options == ['server'] or !File.exists?(BUILD_DIR)
     puts ' * Creating the build dir'
     FileUtils.rm_rf BUILD_DIR
@@ -171,12 +171,23 @@ task :build do
   
   ### writting the files
   puts ' * Creating the basic build'
-  header = File.open('src/HEADER.js', 'r').read
+  header = File.read('src/HEADER.js')
   if !options.empty? && options != ['no-olds']
     header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
   end
   
   write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-src.js", header, source)
+  
+  ### creating the safe-mode build
+  puts ' * Creating the safe-mode build'
+  header = File.read('src/HEADER.safe.js')
+  source = File.read("#{BUILD_DIR}/#{BUILD_FILE}.js")
+  layout = File.read('src/layout.safe.js').split('#{source_code}')
+  
+  source = source.gsub(/\A\s*\/\*.*?\*\/\s*/m, '').gsub("\n", '')
+  source = layout[0] + "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'")}'" + layout[1]
+  
+  write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-safe-src.js", header, source)
   
   
   ### building the olds patch file
