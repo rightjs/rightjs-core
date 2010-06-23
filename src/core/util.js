@@ -210,7 +210,7 @@ $E = RightJS.$E = function(tag_name, options) {
  * @return Element or null
  */
 $ = RightJS.$ = function(element) {
-  return typeof(element) === 'string' ? DOC.getElementById(element) : element;
+  return Element.prepare(typeof(element) === 'string' ? document.getElementById(element) : element);
 },
 
 /** !#server

@@ -28,7 +28,7 @@ var ElementEventsTest = TestCase.create({
     var clicked = false;
     var hovered = false;
     this.el.on('onclick', function() { clicked = true; });
-    this.el.on('onMouseOver', function() { hovered = true; });
+    this.el.on('onmouseover', function() { hovered = true; });
     
     this.fireClick(this.el);
     this.fireMouseOver(this.el);

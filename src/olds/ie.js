@@ -32,44 +32,4 @@ if (RightJS.Browser.OLD) {
       return RightJS.Element.prepare(old_method(tag));
     }
   })(document.createElement);
-  
-  /**
-   * IE browsers manual elements extending
-   *
-   * @param Element
-   * @return Element
-   */
-  RightJS.Element.prepare = function(element) {
-    if (element && element.tagName && !element.set) {
-      RightJS.$ext(element, RightJS.Element.Methods, true);
-
-      if (RightJS.Form) {
-        switch(element.tagName) {
-          case 'FORM':
-            RightJS.$ext(element, RightJS.Form.Methods);
-            break;
-
-          case 'INPUT':
-          case 'SELECT':
-          case 'BUTTON':
-          case 'TEXTAREA':
-            RightJS.$ext(RightJS.$alias(element, {
-              _blur:   'blur',
-              _focus:  'focus',
-              _select: 'select'
-            }), RightJS.Form.Element.Methods);
-            break;
-        }
-      }
-    }
-    return element;
-  };
-  
-  RightJS.Element.include((function(old_collect) {
-    return {
-      rCollect: function(attr, css_rule) {
-        return old_collect.call(this, attr, css_rule).each(RightJS.Element.prepare);
-      }
-    }
-  })(RightJS.Element.Methods.rCollect));
 }
