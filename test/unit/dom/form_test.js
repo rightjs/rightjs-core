@@ -169,10 +169,21 @@ var FormTest = TestCase.create({
     if (Browser.Konqueror) return;
     var form = this.setForm();
     var result = document.querySelector ? 
-      'name=Bob&password=secret&text=Boo%20boo%20boo&kinda=1&items=2%2C3' :
+      'name=Bob&password=secret&text=Boo%20boo%20boo&kinda=1&items=2,3' :
       'name=Bob&password=secret&kinda=1&items=2%2C3&text=Boo%20boo%20boo';
       
     this.assertEqual(result, form.serialize());
+  },
+  
+  testSerializeWithArrays: function() {
+    var form = new Form({
+      'html': '' +
+        '<input type="hidden" name="test[]" value="one" />'+
+        '<input type="hidden" name="test[]" value="two" />'+
+        '<input type="hidden" name="test[]" value="ten" />'
+    });
+    
+    this.assertEqual({'test[]': ['one', 'two', 'ten']}, form.values());
   }
 });
 
