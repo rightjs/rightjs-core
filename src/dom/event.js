@@ -56,7 +56,6 @@ var Event = new Class(window.Event, {
      * @return String fixed event name
      */
     cleanName: function(name) {
-      name = name.toLowerCase();
       name = name.substr(0,2) === 'on' ? name.slice(2) : name;
       name = name === 'rightclick'  ? 'contextmenu' : name;
       return name;
