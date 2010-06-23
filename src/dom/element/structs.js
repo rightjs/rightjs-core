@@ -265,7 +265,8 @@ Element.insertions = {
   }
 };
 $alias(Element.insertions.wraps, {
-  THEAD: 'TBODY',
-  TFOOT: 'TBODY',
-  TH:    'TD'
+  OPTGROUP: 'SELECT',
+  THEAD:    'TBODY',
+  TFOOT:    'TBODY',
+  TH:       'TD'
 });

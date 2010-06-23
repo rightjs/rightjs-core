@@ -393,6 +393,15 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('1', e3.value);
   },
   
+  testUpdateOptgroup: function() {
+    var element = $E('select').update('<optgroup label="Boos"></optgroup>');
+    $(element.getElementsByTagName('optgroup')[0])
+      .update('<option>O1</option><option>O2</option>');
+    
+    var options = $A(element.getElementsByTagName('option'));
+    this.assertEqual(['O1','O2'], options.map('innerHTML'));
+  },
+  
   testInsertAndUpdateWithNumbers: function() {
     this.el.insert(2.2);
     this.assertEqual('2.2', this.el.innerHTML);
