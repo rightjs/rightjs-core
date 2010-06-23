@@ -42,5 +42,6 @@ var ObjectTest = TestCase.create({
   
   testToQueryString: function() {
     this.assertEqual('a=a&b=b&c=%25%23%3F', Object.toQueryString({a:'a', b:'b', c:'%#?'}));
+    this.assertEqual('a[]=1%2C2%2C3', Object.toQueryString({'a[]': [1,2,3]}));
   }
 });

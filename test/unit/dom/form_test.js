@@ -173,6 +173,17 @@ var FormTest = TestCase.create({
       'name=Bob&password=secret&kinda=1&items=2%2C3&text=Boo%20boo%20boo';
       
     this.assertEqual(result, form.serialize());
+  },
+  
+  testSerializeWithArrays: function() {
+    var form = new Form({
+      'html': '' +
+        '<input type="hidden" name="test[]" value="1" />'+
+        '<input type="hidden" name="test[]" value="2" />'+
+        '<input type="hidden" name="test[]" value="3" />'
+    });
+    
+    this.assertEqual({'test[]': ['1', '2', '3']}, form.values());
   }
 });
 

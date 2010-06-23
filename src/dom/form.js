@@ -102,11 +102,17 @@ Form.include({
    * @return Object values
    */
   values: function() {
-    var values = {};
+    var values = {}, value, name;
     
     this.inputs().each(function(input) {
-      if (!input.disabled && input.name && (!['checkbox', 'radio'].includes(input.type) || input.checked))
-        values[input.name] = input.getValue();
+      name = input.name;
+      if (!input.disabled && name && (!['checkbox', 'radio'].includes(input.type) || input.checked)) {
+        value = input.getValue();
+        if (name.endsWith('[]'))
+          value = (values[name] || []).concat([value]);
+        
+        values[name] = value;
+      }
     });
     
     return values;
