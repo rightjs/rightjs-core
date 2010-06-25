@@ -5,7 +5,8 @@
  */
 var tests = [
   'core_test',
-  'lang_test'
+  'lang_test',
+  'dom_test'
 ];
 
 for (var i=0, names=[]; i < tests.length; i++) {

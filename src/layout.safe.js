@@ -4,6 +4,12 @@
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 var RightJS = (function(src) {
+  // premassaging the source code, swapping the document reference where needed
+  src = src
+    // making it search in this document by default
+    .replace(/(\.\$=.+?\{.+?)([a-z]+)(\.getElementById.+?\})/,  '$1parent.document$3')
+    .replace(/(\.\$\$=.+?\{.+?)([a-z]+)(\.querySelector.+?\})/, '$1parent.document$3')
+    .replace(/(\.\$\$=[^{}]+?\{[^}]+?\()(document)(,[^}]+?\})/, '$1parent.document$3');
   
   // building the frame sandbox
   var frame_id = '__rightjs_condom', window = self, document = window.document;
