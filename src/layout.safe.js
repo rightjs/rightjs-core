@@ -3,16 +3,20 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-var RightJS = (function(src) {
+var RightJS = (function(window, src) {
   // premassaging the source code, swapping the document reference where needed
   src = src
     // making it search in this document by default
     .replace(/(\.\$=.+?\{.+?)([a-z]+)(\.getElementById.+?\})/,  '$1parent.document$3')
     .replace(/(\.\$\$=.+?\{.+?)([a-z]+)(\.querySelector.+?\})/, '$1parent.document$3')
-    .replace(/(\.\$\$=[^{}]+?\{[^}]+?\()(document)(,[^}]+?\})/, '$1parent.document$3');
+    .replace(/(\.\$\$=[^{}]+?\{[^}]+?\()([a-z]+)(,[^}]+?\})/,   '$1parent.document$3')
+    
+    // building the inside types conversion methods
+    + 'RightJS.$N=function(v){return new Number(v)};'
+    + 'RightJS.$S=function(v){return new String(v)}';
   
   // building the frame sandbox
-  var frame_id = '__rightjs_condom', window = self, document = window.document;
+  var frame_id = '__rightjs_condom', document = window.document;
   if ('attachEvent' in window) {
     document.write('<iframe name="'+ frame_id +'" style="display:none"></iframe>');
   } else {
@@ -38,16 +42,16 @@ var RightJS = (function(src) {
   
   // transferring the object references from the sandbox into local variable
   var RightJS = win.RightJS;
-  var natives = ['String', 'Array', 'Function', 'Math', 'Number', 'Object', 'RegExp', 'Date'];
+  var natives = 'Number,String,Array,Function,Math,Object,RegExp,Date'.split(',');
   for (var i=0; i < natives.length; i++) {
     RightJS[natives[i]] = win[natives[i]];
   }
   
-  // building the access proxy
+  // building the access and types conversion proxy
   var proxy = function(value) {
     switch (typeof value) {
-      case 'number':   return new RightJS.Number(value);
-      case 'string':   return new RightJS.String(value);
+      case 'number':   return RightJS.$N(value);
+      case 'string':   return RightJS.$S(value);
       case 'function': return RightJS.$ext(value, RightJS.Function.Methods);
       case 'object':
         if (RightJS.isArray(value))
@@ -77,4 +81,4 @@ var RightJS = (function(src) {
   
   return RightJS.$ext(proxy, RightJS);
   
-})(#{source_code});
+})(window, #{source_code});
