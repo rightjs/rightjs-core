@@ -4,7 +4,8 @@
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 var tests = [
-  'core_test'
+  'core_test',
+  'lang_test'
 ];
 
 for (var i=0, names=[]; i < tests.length; i++) {

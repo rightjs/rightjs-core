@@ -33,7 +33,28 @@ var RightJS = (function(src) {
   
   // building the access proxy
   var proxy = function(value) {
+    switch (typeof value) {
+      case 'number':   return new RightJS.Number(value);
+      case 'string':   return new RightJS.String(value);
+      case 'function': return RightJS.$ext(value, RightJS.Function.Methods);
+      case 'object':
+        if (RightJS.isArray(value))
+          return RightJS.$A(value);
+    }
     
+    return value;
+  };
+  
+  // loads up the native class extensions
+  proxy.civilize = function() {
+    for (var i=0; i < natives.length; i++) {
+      if ('include' in natives[i]) {
+        window[natives[i]].include = natives[i].include;
+        if ('Methods' in natives[i]) {
+          window[natives[i]].include(natives[i].Methods);
+        }
+      }
+    }
   };
   
   

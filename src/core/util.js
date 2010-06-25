@@ -275,7 +275,9 @@ if (isHash(HTML)) {
  * Generating methods for native units extending
  */
 for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
+  natives[i].Methods = {};
   natives[i].include = function(module, dont_overwrite) {
+    $ext(this.Methods, module, dont_overwrite);
     $ext(this[PROTO], module, dont_overwrite);
     return this;
   };
