@@ -24,11 +24,17 @@ var RightJS = (function(src) {
   
   // puttin the code into the frame
   var win = window.frames[frame_id];
-  var doc = win.document;
   
-  doc.open();
-  doc.write('<html><head><script>'+ src +'</script></head></html>');
-  doc.close();
+  if ('execScript' in win) {
+    win.execScript(src);
+  } else {
+    var doc = win.document;
+    doc.open();doc.write('<html></html>'); doc.close();
+    
+    var script = document.createElement('script');
+    script.text = src;
+    doc.body.appendChild(script);
+  }
   
   // transferring the object references from the sandbox into local variable
   var RightJS = win.RightJS;
