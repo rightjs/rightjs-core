@@ -178,16 +178,19 @@ task :build do
   
   write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-src.js", header, source)
   
+  
   ### creating the safe-mode build
-  puts ' * Creating the safe-mode build'
-  header = File.read('src/HEADER.safe.js')
-  source = File.read("#{BUILD_DIR}/#{BUILD_FILE}.js")
-  layout = File.read('src/layout.safe.js').split('#{source_code}')
-  
-  source = source.gsub(/\A\s*\/\*.*?\*\/\s*/m, '').gsub("\n", '')
-  source = layout[0] + "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'")}'" + layout[1]
-  
-  write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-safe-src.js", header, source)
+  if options.include?('safe')
+    puts ' * Creating the safe-mode build'
+    header = File.read('src/HEADER.safe.js')
+    source = File.read("#{BUILD_DIR}/#{BUILD_FILE}.js")
+    layout = File.read('src/layout.safe.js').split('#{source_code}')
+    
+    source = source.gsub(/\A\s*\/\*.*?\*\/\s*/m, '').gsub("\n", '')
+    source = layout[0] + "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'")}'" + layout[1]
+    
+    write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-safe-src.js", header, source)
+  end
   
   
   ### building the olds patch file
