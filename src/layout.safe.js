@@ -46,6 +46,28 @@ var RightJS = (function(window, src) {
   for (var i=0; i < natives.length; i++) {
     RightJS[natives[i]] = win[natives[i]];
   }
+  RightJS.context = win;
+  
+  // building the document and window access proxies
+  var dom_proxies = { window: {}, document: {} };
+  RightJS.$A(['window', 'document']).each(function(name) {
+    var this_object = eval(name), that_object = win[name];
+    for (var key in that_object) {
+      try {
+        if (key.substr(0,2) == 'on' || RightJS.Observer.prototype[key] ||
+          (name == 'document' && (key == 'first' || key == 'select')) ||
+          (name == 'window' && (key == 'sizes' || key == 'scrolls' || key == 'scrollTo'))
+        ) {
+          console.log(key, that_object[key].toString())
+          that_object[key] = dom_proxies[name][key] = (function(func, context) {
+            return function() {
+              return func.call(context, arguments);
+            }
+          })(that_object[key], this_object);
+        }
+      } catch (e) {}
+    }
+  });
   
   // building the access and types conversion proxy
   var proxy = function(value) {
@@ -56,6 +78,13 @@ var RightJS = (function(window, src) {
       case 'object':
         if (RightJS.isArray(value))
           return RightJS.$A(value);
+    }
+    
+    // providing the document and window proxies
+    if (value === window) {
+      value = dom_proxies.window;
+    } else if (value === document) {
+      value = dom_proxies.document;
     }
     
     return value;

@@ -46,5 +46,16 @@ var DomTest = TestCase.create({
     this.assert(els instanceof RightJS.Array);
     this.assertEqual(3, els.length);
     this.assertEqual(['two', 'three', 'four'], [].concat(els.map('innerHTML')));
+  },
+  
+  testEvents: function() {
+    this.assert('onClick' in this.el);
+    
+    var ev;
+    this.el.onClick(function(e) { ev = e; });
+    
+    this.fireClick(this.el);
+    
+    this.assert('stop' in ev);
   }
 });
