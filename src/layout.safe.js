@@ -58,7 +58,6 @@ var RightJS = (function(window, src) {
           (name == 'document' && (key == 'first' || key == 'select')) ||
           (name == 'window' && (key == 'sizes' || key == 'scrolls' || key == 'scrollTo'))
         ) {
-          console.log(key, that_object[key].toString())
           that_object[key] = dom_proxies[name][key] = (function(func, context) {
             return function() {
               return func.call(context, arguments);
