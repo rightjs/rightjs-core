@@ -57,10 +57,12 @@ JS_SOURCES = {
     dom/element/dimensions
     dom/element/events
 
-    dom/selector
     
+    dom/document
     dom/window
     dom/ready
+    
+    dom/selector
   },
   
   :cookie => %w{
@@ -69,7 +71,6 @@ JS_SOURCES = {
   
   :form => %w{
     dom/form
-    dom/form/element
   },
   
   :xhr => %w{

@@ -32,13 +32,13 @@ var scripts = [
   'dom/element/dimensions',
   'dom/element/events',
   
-  'dom/selector',
-  
   'dom/form',
-  'dom/form/element',
   
+  'dom/document',
   'dom/window',
   'dom/ready',
+  
+  'dom/selector',
   
   'xhr/xhr',
   'xhr/form',
