@@ -43,7 +43,7 @@ Xhr.IFramed = new Class({
     this.readyState   = 4;
     
     try {
-      this.responseText = WIN[this.iframe.id].document.documentElement.innerHTML;
+      this.responseText = window[this.iframe.id].document.documentElement.innerHTML;
     } catch(e) { }
     
     this.onreadystatechange();

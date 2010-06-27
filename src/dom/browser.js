@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var agent = navigator.userAgent, looks_like_ie = 'attachEvent' in WIN, looks_like_opera = 'opera' in WIN,
+var agent = navigator.userAgent, looks_like_ie = 'attachEvent' in window, looks_like_opera = 'opera' in window,
 
 Browser = RightJS.Browser = {
   IE:           looks_like_ie && !looks_like_opera,
@@ -14,5 +14,5 @@ Browser = RightJS.Browser = {
   Konqueror:    agent.include('Konqueror'),
 
   // marker for the browsers which don't give access to the HTMLElement unit
-  OLD:          looks_like_ie && !looks_like_opera && !DOC.querySelector
+  OLD:          looks_like_ie && !looks_like_opera && !document.querySelector
 };

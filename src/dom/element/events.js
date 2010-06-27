@@ -5,7 +5,7 @@
  */
 var Element_observer = Observer.create({}, 
   String_addShorts($w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'))
-), attach = 'attachEvent' in WIN, REvent = 'RightJS.Event';
+), attach = 'attachEvent' in window, REvent = 'RightJS.Event';
 
 //
 // HACK HACK HACK
@@ -49,11 +49,11 @@ hack_observer('fire',
 Element_observer.stopEvent = function(e) { e.stop(); };
 
 // loading up the observer to the document and window objects
-$ext(WIN, Element_observer);
-$ext(DOC, Element_observer);
+$ext(window, Element_observer);
+$ext(document, Element_observer);
 
 // couple more shortcuts for the window
-Observer.createShortcuts(WIN, $w('blur focus scroll resize'));
+Observer.createShortcuts(window, $w('blur focus scroll resize'));
 
 // loading the observer interface into the Element object
 Element.include(Element_observer);

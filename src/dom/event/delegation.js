@@ -92,14 +92,14 @@ Event.extend({
         // but for focus and blur effects we need the opposite
         // so we calling the method directly and pushing the listeners manually
 
-        DOC.addEventListener(event, events[event], true);
+        document.addEventListener(event, events[event], true);
 
-        (DOC.$listeners = DOC.$listeners || []).push({
+        (document.$listeners = document.$listeners || []).push({
           e: event, f: events[event], a: []
         });
 
       } else {
-        DOC.on(event, events[event]);
+        document.on(event, events[event]);
       }
     }
 

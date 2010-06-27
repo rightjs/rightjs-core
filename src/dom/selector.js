@@ -59,7 +59,7 @@ Element.include({
 });
 
 // document-level hooks
-$ext(DOC, {
+$ext(document, {
   first: function(css_rule) {
     return this.querySelector(css_rule);
   },

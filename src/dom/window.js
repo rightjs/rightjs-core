@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var native_scroll = WIN.scrollTo;
+var native_scroll = window.scrollTo;
 
-$ext(WIN, {
+$ext(window, {
   /**
    * returns the inner-sizes of the window
    *

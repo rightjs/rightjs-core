@@ -13,7 +13,7 @@
  * Some top-level variables to shortify the things
  */
 var 
-WIN = window, DOC = document, HTML = DOC.documentElement, UID = 1, // !#server
+document_E = 'documentElement', HTML = document[document_E], UID = 1, // !#server
 UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
@@ -68,8 +68,8 @@ $try = RightJS.$try = function() {
  */
 $eval = RightJS.$eval = function(text) {
   if (!isString(text) || text.blank()) return;
-  if ('execScript' in WIN) {
-    WIN.execScript(text);
+  if ('execScript' in window) {
+    window.execScript(text);
   } else {
     $E('script', {type: 'text/javascript', text: text}).insertTo(HTML);
   }
@@ -210,7 +210,7 @@ $E = RightJS.$E = function(tag_name, options) {
  * @return Element or null
  */
 $ = RightJS.$ = function(element) {
-  return Element.prepare(typeof(element) === 'string' ? DOC.getElementById(element) : element);
+  return Element.prepare(typeof(element) === 'string' ? document.getElementById(element) : element);
 },
 
 /** !#server
@@ -220,7 +220,7 @@ $ = RightJS.$ = function(element) {
  * @return Array matching elements list
  */
 $$ = RightJS.$$ = function (css_rule) {
-  return $A(DOC.querySelectorAll(css_rule));
+  return $A(document.querySelectorAll(css_rule));
 },
 
 /**
