@@ -257,6 +257,26 @@ $A = RightJS.$A = function(it) {
  */
 $uid = RightJS.$uid = function(item) {
   return item.uid || (item.uid = UID++);
+},
+
+/**
+ * Makes a class to support the .include()
+ * calls the same as the Class unit does
+ *
+ * @param Object klass
+ * @return Object the klass
+ */
+make_extensible = function(Klass) {
+  Klass.include = function() {
+    var args = arguments, i=0;
+    for (; i < args.length; i++) {
+      if (isHash(args[i])) {
+        Klass.Methods = $ext(Klass[PROTO], args[i]);
+      }
+    }
+    return Klass;
+  };
+  return Klass;
 };
 
 
@@ -275,10 +295,5 @@ if (isHash(HTML)) {
  * Generating methods for native units extending
  */
 for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
-  natives[i].Methods = {};
-  natives[i].include = function(module, dont_overwrite) {
-    $ext(this.Methods, module, dont_overwrite);
-    $ext(this[PROTO], module, dont_overwrite);
-    return this;
-  };
+  make_extensible(natives[i]);
 }

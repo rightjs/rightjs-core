@@ -4,29 +4,13 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 
-// Element constructor options mapper
-var element_arguments_map = {
-  id:      'id',
-  html:    'innerHTML',
-  'class': 'className'
-},
-
-element_methods_map = {
-  style:   'setStyle',
-  on:      'on'
-}
-
-// caching the element instances to boos the things up
-elements_cache = {},
-
-// defining the new Element object
-Element = RightJS.Element = function(element, options) {
+RightJS.Element = function Element(element, options) {
   if (typeof element === 'string') {
     // building the element
     element = (element in elements_cache ? elements_cache[element] :
       (elements_cache[element] = document.createElement(element))
     ).cloneNode(false);
-    
+  
     // applying the options
     if (options) {
       for (var key in options) {
@@ -43,45 +27,36 @@ Element = RightJS.Element = function(element, options) {
   
   // saving the raw elemnt reference
   this._ = element;
-};
+},
+
+// Element constructor options mapper
+element_arguments_map = {
+  id:      'id',
+  html:    'innerHTML',
+  'class': 'className'
+},
+
+element_methods_map = {
+  style:   'setStyle',
+  on:      'on'
+}
+
+// caching the element instances to boos the things up
+elements_cache = {};
 
 if (Browser.IE) {
-  // preserving the old Element class
-  var old_Element = window.Element;
-  $ext(Element, old_Element);
-  Element.parent = old_Element;
-  
-  //
+    //
   // IE browsers have a bug with checked input elements
   // and we kinda hacking the Element constructor so that
   // it affected IE browsers only
   //
-  Element = RightJS.Element = eval('['+Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
+  Element = eval('['+Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
     '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
   )+']')[0];
+  
+  // preserving the old Element class
+  var old_Element = window.Element;
+  $ext(Element, old_Element).parent = old_Element;
 }
 
-$ext(Element, {
-  /**
-   * registeres the methods on the custom element methods list
-   * will add them to prototype and register at the Element.Methods hash
-   * 
-   * USAGE:
-   *  Element.include({
-   *    foo: function(bar) {}
-   *  });
-   *
-   *  $(element).foo(bar);
-   *
-   * @param Object new methods list
-   * @param Boolean flag if the method should keep the existing methods alive
-   * @return Element the global Element object
-   */
-  include: function(methods, dont_overwrite) {
-    this.Methods = $ext(this.prototype, methods, dont_overwrite);
-    
-    return this;
-  },
-  
-  Methods: {} // DO NOT Extend this object manually, use Element#include
-});
+make_extensible(Element);

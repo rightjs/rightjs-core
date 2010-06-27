@@ -7,20 +7,16 @@
  *
  * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
-var Form = RightJS.Form = function(in_options) {
+RightJS.Form = function Form(in_options) {
   var options = in_options || {}, remote = 'remote' in options,
     form = new Element('form', Object.without(options, 'remote'));
   
   if (remote) form.remotize();
   
   return form;
-},
-
-Element_isForm = function(element) {
-  return element._.tagName === 'FORM';
 };
 
-Element.include({
+(Form.include = Element.include)({
   /**
    * returns the form elements as an array of extended units
    *
@@ -179,6 +175,9 @@ Element.include({
   }
 });
 
-// creating the shortcuts
-Element.include(Observer.createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable change'))), true);
+function Element_isForm(element) {
+  return element._.tagName === 'FORM';
+};
 
+// creating the shortcuts
+Form.include(Observer.createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable change'))));

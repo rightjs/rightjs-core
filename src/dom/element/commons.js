@@ -138,7 +138,5 @@ Element.include({
   radio: function(effect, options) {
     this.siblings().each('hide', effect, options);
     return this.show();
-  },
-  
-  _: null // defining the key in the prototype so it was assigned faster
+  }
 });

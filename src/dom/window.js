@@ -3,18 +3,12 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Window = RightJS.Window = new Class({
-  /**
-   * Basic constructor
-   *
-   * @param window the dom-window object
-   * @return Window the window wrapper
-   */
-  initialize: function(window) {
-    this._ = window;
-    this.d = window.document;
-  },
-  
+RightJS.Window = function Window(window) {
+  this._ = window;
+  this.d = window.document;
+};
+
+make_extensible(Window).include({
   /**
    * returns the inner-sizes of the window
    *
