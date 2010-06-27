@@ -3,17 +3,26 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var native_scroll = window.scrollTo;
-
-$ext(window, {
+var Window = RightJS.Window = new Class({
+  /**
+   * Basic constructor
+   *
+   * @param window the dom-window object
+   * @return Window the window wrapper
+   */
+  initialize: function(window) {
+    this._ = window;
+    this.d = window.document;
+  },
+  
   /**
    * returns the inner-sizes of the window
    *
    * @return Object x: d+, y: d+
    */
   sizes: function() {
-    var html = this.document.documentElement;
-    return this.innerWidth ? {x: this.innerWidth, y: this.innerHeight} :
+    var win = this._, html = this.d[DOC_E];
+    return win.innerWidth ? {x: win.innerWidth, y: win.innerHeight} :
       {x: html.clientWidth, y: html.clientHeight};
   },
 
@@ -23,11 +32,11 @@ $ext(window, {
    * @return Object x: d+, y: d+
    */
   scrolls: function() {
-    var doc = this.document, body = doc.body, html = doc.documentElement,
+    var win = this._, doc = this.d, body = doc.body, html = doc[DOC_E],
       off_x = 'pageXOffset', off_y = 'pageYOffset',
       scr_x = 'scrollLeft',  scr_y = 'scrollTop';
     
-    return (this[off_x] || this[off_y]) ? {x: this[off_x], y: this[off_y]} :
+    return (win[off_x] || win[off_y]) ? {x: win[off_x], y: win[off_y]} :
       (body[scr_x] || body[scr_x]) ? {x: body[scr_x], y: body[scr_y]} :
       {x: html[scr_x], y: html[scr_y]};
   },
@@ -41,10 +50,10 @@ $ext(window, {
    * @return window self
    */
   scrollTo: function(left, top, fx_options) {
-    var left_pos = left, top_pos = top; // moving the values into new vars so they didn't get screwed later on
+    var left_pos = left, top_pos = top, element = $(left); // moving the values into new vars so they didn't get screwed later on
     
-    if(isElement(left) || (isString(left) && $(left))) {
-      left = $(left).position();
+    if(isElement(element)) {
+      left = element.position();
     }
 
     if (isHash(left)) {
@@ -56,7 +65,7 @@ $ext(window, {
     if (isHash(fx_options = fx_options || top) && RightJS.Fx) {
       new Fx.Scroll(this, fx_options).start({x: left_pos, y: top_pos});
     } else {
-      native_scroll(left_pos, top_pos);
+      this._.scrollTo(left_pos, top_pos);
     }
 
     return this;
