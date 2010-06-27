@@ -5,36 +5,22 @@
  *   The basic principles of the module are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
 var Form = RightJS.Form = function(in_options) {
-  var options = in_options || {}, remote = options.remote,
+  var options = in_options || {}, remote = 'remote' in options,
     form = new Element('form', Object.without(options, 'remote'));
   
   if (remote) form.remotize();
   
   return form;
+},
+
+Element_isForm = function(element) {
+  return element._.tagName === 'FORM';
 };
 
-$ext(Form, {
-  Methods: {},
-  
-  /**
-   * Extends the form functionality
-   *
-   * @param Object methods hash
-   * @return void
-   */
-  include: function(methods, dont_overwrite) {
-    $ext(Form.Methods, methods, dont_overwrite);
-    
-    try { // trying to extend the form element prototype
-      $ext(HTMLFormElement[PROTO], methods, dont_overwrite);
-    } catch(e) {}
-  }
-});
-
-Form.include({
+Element.include({
   /**
    * returns the form elements as an array of extended units
    *
@@ -51,7 +37,7 @@ Form.include({
    */
   inputs: function() {
     return this.getElements().filter(function(input) {
-      return !['submit', 'button', 'reset', 'image', null].includes(input.type);
+      return !['submit', 'button', 'reset', 'image', null].includes(input._.type);
     });
   },
   
@@ -61,8 +47,14 @@ Form.include({
    * @return Form this
    */
   focus: function() {
-    var first = this.inputs().first(function(input) { return input.type != 'hidden'; });
-    if (first) first.focus();
+    var element = this._;
+    
+    if (Element_isForm(this)) {
+      element = this.inputs().first(function(input) { return input._.type != 'hidden'; });
+    }
+    
+    if (element) element.focus();
+    
     return this.fire('focus');
   },
   
@@ -72,8 +64,23 @@ Form.include({
    * @return Form this
    */
   blur: function() {
-    this.getElements().each('blur');
+    if (Element_isForm(this)) {
+      this.getElements().each('blur');
+    } else {
+      this._.blur();
+    }
+    
     return this.fire('blur');
+  },
+  
+  /**
+   * focuses on the element and selects its content
+   *
+   * @return Element this
+   */
+  select: function() {
+    this._.select();
+    return this.focus();
   },
   
   /**
@@ -82,7 +89,12 @@ Form.include({
    * @return Form this
    */
   disable: function() {
-    this.getElements().each('disable');
+    if (Element_isForm(this)) {
+      this.getElements().each('disable');
+    } else {
+      this._.disabled = true;
+    }
+    
     return this.fire('disable');
   },
   
@@ -92,8 +104,46 @@ Form.include({
    * @return Form this
    */
   enable: function() {
-    this.getElements().each('enable');
+    if (Element_isForm(this)) {
+      this.getElements().each('enable');
+    } else {
+      this._.disabled = false;
+    }
+    
     return this.fire('enable');
+  },
+  
+  /**
+   * uniform access to the element values
+   *
+   * @return String element value
+   */
+  getValue: function() {
+    if (this._.type === 'select-multiple') {
+      return $A(this._.getElementsByTagName('option')).map(function(option) {
+        return option.selected ? option.value : null;
+      }).compact();
+    } else {
+      return this._.value;
+    }
+  },
+
+  /**
+   * uniform accesss to set the element value
+   *
+   * @param String value
+   * @return Element this
+   */
+  setValue: function(value) {
+    if (this._.type == 'select-multiple') {
+      value = $A(isArray(value) ? value : [value]).map(String);
+      $A(this._.getElementsByTagName('option')).each(function(option) {
+        option.selected = value.includes(option.value);
+      });
+    } else {
+      this._.value = value;
+    }
+    return this;
   },
   
   /**
@@ -102,12 +152,13 @@ Form.include({
    * @return Object values
    */
   values: function() {
-    var values = {}, value, name;
+    var values = {}, value, name, element;
     
-    this.inputs().each(function(input) {
-      name = input.name;
+    this.inputs().each(function(element) {
+      input = element._;
+      name  = input.name;
       if (!input.disabled && name && (!['checkbox', 'radio'].includes(input.type) || input.checked)) {
-        value = input.getValue();
+        value = element.getValue();
         if (name.endsWith('[]'))
           value = (values[name] || []).concat([value]);
         
@@ -129,5 +180,5 @@ Form.include({
 });
 
 // creating the shortcuts
-Form.include(Observer.createShortcuts({}, String_addShorts($w('submit reset focus'))), true);
+Element.include(Observer.createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable change'))), true);
 

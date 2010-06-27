@@ -72,7 +72,7 @@ Element.include({
    */
   computedStyles: function() {
     var element = this._;
-    //     old IE,              IE8,                 W3C
+    //     old IE,                 IE8,                    W3C
     return element.currentStyle || element.runtimeStyle || element.ownerDocument.defaultView.getComputedStyle(element, null) || {};
   },
   
