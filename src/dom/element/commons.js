@@ -18,12 +18,14 @@ Element.include({
   set: function(hash, value) {
     if (typeof(hash) === 'string') { var val = {}; val[hash] = value; hash = val; }
     
+    var key, element = this._;
+    
     for (var key in hash) {
       // some attributes are not available as properties
-      if (!(key in this)) {
-        this.setAttribute(key, ''+hash[key]);
+      if (!(key in element)) {
+        element.setAttribute(key, ''+hash[key]);
       }
-      this[key] = hash[key];
+      element[key] = hash[key];
     }
       
     return this;
@@ -36,7 +38,7 @@ Element.include({
    * @return mixed value
    */
   get: function(name) {
-    var value = this[name] || this.getAttribute(name);
+    var element = this._, value = element[name] || element.getAttribute(name);
     return value === '' ? null : value;
   },
   
@@ -57,7 +59,7 @@ Element.include({
    * @return Element self
    */
   erase: function(name) {
-    this.removeAttribute(name);
+    this._.removeAttribute(name);
     return this;
   },
   
@@ -69,7 +71,7 @@ Element.include({
    * @return boolean check result
    */
   hidden: function() {
-    return this.getStyle('display') == 'none';
+    return this.getStyle('display') === 'none';
   },
   
   /**
@@ -89,8 +91,11 @@ Element.include({
    * @return Element self
    */
   hide: function(effect, options) {
-    this._$pd = this.getStyle('display');
-    this.style.display = 'none';
+    if (this.visible()) {
+      this._d = this.getStyle('display');
+      this._.style.display = 'none';
+    }
+    
     return this;
   },
   
@@ -102,11 +107,13 @@ Element.include({
    * @return Element self
    */
   show: function(effect, options) {
-    if (this.getStyle('display') == 'none') {
+    if (this.hidden()) {
       // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
-      var value = this.tagName == 'DIV' ? 'block' : 'inline';
-      this.style.display = this._$pd == 'none' ? value : this._$pd || value;
+      var element = this._, value = element.tagName == 'DIV' ? 'block' : 'inline';
+      
+      element.style.display = this._d == 'none' ? value : this._d || value;
     }
+    
     return this;
   },
   
@@ -131,5 +138,7 @@ Element.include({
   radio: function(effect, options) {
     this.siblings().each('hide', effect, options);
     return this.show();
-  }
+  },
+  
+  _: null // defining the key in the prototype so it was assigned faster
 });

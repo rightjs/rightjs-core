@@ -11,7 +11,7 @@ Element.include({
    * @return Object {x: NNN, y: NNN}
    */
   sizes: function() {
-    return { x: this.offsetWidth, y: this.offsetHeight };
+    return { x: this._.offsetWidth, y: this._.offsetHeight };
   },
   
   /**
@@ -22,7 +22,7 @@ Element.include({
    * @return Object {x: NNN, y: NNN}
    */
   position: function() {
-    var rect = this.getBoundingClientRect(), doc = this.ownerDocument.documentElement, scrolls = window.scrolls();
+    var rect = this._.getBoundingClientRect(), doc = this._.ownerDocument.documentElement, scrolls = window.scrolls();
     
     return {
       x: rect.left + scrolls.x - doc.clientLeft,
@@ -36,7 +36,7 @@ Element.include({
    * @return Object {x: NNN, y: NNN}
    */
   scrolls: function() {
-    return { x: this.scrollLeft, y: this.scrollTop };
+    return { x: this._.scrollLeft, y: this._.scrollTop };
   },
   
   /**
@@ -66,7 +66,7 @@ Element.include({
    * @return boolean check result
    */
   overlaps: function(target) {
-    var pos = this.position(), size = this.sizes();
+    var pos = this._.position(), size = this._.sizes();
     
     return target.x > pos.x && target.x < (pos.x + size.x)
         && target.y > pos.y && target.y < (pos.y + size.y);
@@ -82,9 +82,9 @@ Element.include({
    * @return Element self
    */
   setWidth: function(width_px) {
-    var style = this.style, property = 'offsetWidth';
+    var style = this._.style;
     style.width = width_px + 'px';
-    style.width = (2 * width_px - this[property]) + 'px';
+    style.width = (2 * width_px - this._.offsetWidth) + 'px';
     return this;
   },
   
@@ -98,9 +98,9 @@ Element.include({
    * @return Element self
    */
   setHeight: function(height_px) {
-    var style = this.style, property = 'offsetHeight';
+    var style = this._.style;
     style.height = height_px + 'px';
-    style.height = (2 * height_px - this[property]) + 'px';
+    style.height = (2 * height_px - this._.offsetHeight) + 'px';
     return this;
   },
   
@@ -154,8 +154,8 @@ Element.include({
       left = left.x;
     }
     
-    this.scrollLeft = left;
-    this.scrollTop  = top;
+    this._.scrollLeft = left;
+    this._.scrollTop  = top;
     
     return this;
   },

@@ -17,7 +17,7 @@
  */
 Element.include({
   parent: function(css_rule) {
-    return css_rule ? this.parents(css_rule)[0] : $(this.parentNode);
+    return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode);
   },
   
   parents: function(css_rule) {
@@ -26,7 +26,7 @@ Element.include({
   
   subNodes: function(css_rule) {
     return this.select(css_rule).filter(function(element) {
-      return element.parentNode === this;
+      return element.parentNode === this._;
     }, this);
   },
   
@@ -56,8 +56,9 @@ Element.include({
    * @return Element self
    */
   remove: function() {
-    if (this.parentNode) {
-      this.parentNode.removeChild(this);
+    var element = this._, parent = element.parentNode;
+    if (parent) {
+      parent.removeChild(element);
     }
     return this;
   },
@@ -82,29 +83,30 @@ Element.include({
         this.insert(content[pos], pos)
       }
     } else {
-      var scripts, insertions = Element.insertions;
+      var scripts, element = this._;
       position = (position||'bottom').toLowerCase();
       
       if (typeof(content) !== 'object') {
         content = (''+content).stripScripts(function(s) { scripts = s; });
       }
       
-      insertions[position](this, content.tagName ? content :
-        insertions.createFragment.call(
+      Element_insertions[position](element, content.tagName ? content :
+        Element_createFragment.call(
           (position === 'bottom' || position === 'top') ?
-            this : this.parentNode, content
+            element : element.parentNode, content
         )
       );
       
       // FF doesn't marks selected options correctly with a textual content
-      if (this.tagName === 'SELECT' && isString(content)) {
-        $A(this.getElementsByTagName('option')).each(function(option) {
+      if (element.tagName === 'SELECT' && isString(content)) {
+        $A(element.getElementsByTagName('option')).each(function(option) {
           option.selected = !!option.getAttribute('selected');
         });
       }
       
       if (scripts) $eval(scripts);
     }
+    
     return this;
   },
   
@@ -137,9 +139,9 @@ Element.include({
    * @return Element self
    */
   update: function(content) {
-    if (typeof(content) !== 'object' && !(this.tagName in Element.insertions.wraps)) {
+    if (typeof(content) !== 'object' && !(this._.tagName in Element_wraps)) {
       var scripts;
-      this.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
+      this._.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
       if (scripts) $eval(scripts);
     } else {
       this.clean().insert(content);
@@ -148,15 +150,25 @@ Element.include({
   },
   
   /**
+   * Returns the html content of the elemnt
+   *
+   * @return String html content
+   */
+  html: function() {
+    return this._.innerHTML;
+  },
+  
+  /**
    * wraps the element with the given element
    *
    * @param Element wrapper
    * @return Element self
    */
-  wrap: function(element) {
-    if (this.parentNode) {
-      this.parentNode.replaceChild(element, this);
-      element.appendChild(this);
+  wrap: function(wrapper) {
+    var element = this._, parent = element.parentNode;
+    if (parent) {
+      parent.replaceChild(wrapper, element);
+      wrapper.appendChild(element);
     }
     return this;
   },
@@ -167,8 +179,8 @@ Element.include({
    * @return Element self
    */
   clean: function() {
-    while (this.firstChild) {
-      this.removeChild(this.firstChild);
+    while (this._.firstChild) {
+      this._.removeChild(this._.firstChild);
     }
     
     return this;
@@ -180,7 +192,7 @@ Element.include({
    * @return boolean check result
    */
   empty: function() {
-    return this.innerHTML.blank();
+    return this.html().blank();
   },
 
   /**
@@ -191,21 +203,21 @@ Element.include({
    * @return Array found elements
    */
   rCollect: function(attr, css_rule) {
-    var node = this, result = [], first;
+    var node = this._, result = [], first;
 
     while ((node = node[attr])) {
       if (node.tagName && (!css_rule || $(node).match(css_rule))) {
-        result.push(node);
+        result.push(new Element(node));
       }
     }
     
-    return Element.prepareAll(result);
+    return result;
   }
 });
 
 // list of insertions handling functions
 // NOTE: each of the methods will be called in the contects of the current element
-Element.insertions = {
+var Element_insertions = {
   bottom: function(target, content) {
     target.appendChild(content);
   },
@@ -225,16 +237,17 @@ Element.insertions = {
   
   instead: function(target, content) {
     target.parentNode.replaceChild(content, target);
-  },
+  }
+},
   
-  // converts any data into a html fragment unit
-  createFragment: function(content) {
-    var fragment = DOC.createDocumentFragment();
+// converts any data into a html fragment unit
+Element_createFragment: function(content) {
+  var fragment = document.createDocumentFragment();
     
-    if (isString(content)) {
-      var tmp   = DOC.createElement('div'),
-          wrap  = Element.insertions.wraps[this.tagName] || ['', '', 0],
-          depth = wrap[2];
+  if (isString(content)) {
+    var tmp   = document.createElement('div'),
+        wrap  = Element_wraps[this.tagName] || ['', '', 0],
+        depth = wrap[2];
           
       tmp.innerHTML = wrap[0] + content + wrap[1];
       
@@ -254,17 +267,22 @@ Element.insertions = {
     }
     
     return fragment;
-  },
-  
-  wraps: {
-    TABLE:  ['<table>',                '</table>',                   1],
-    TBODY:  ['<table><tbody>',         '</tbody></table>',           2],
-    TR:     ['<table><tbody><tr>',     '</tr></tbody></table>',      3],
-    TD:     ['<table><tbody><tr><td>', '</td></tr></tbody></table>', 4],
-    SELECT: ['<select>',               '</select>',                  1]
+  }
+},
+
+// the element insertion wrappers list
+Element_wraps_t1 = '<table><tbody>',
+Element_wraps_t2 = '</tbody></table>',
+Element_wraps = {
+    TABLE:  ['<table>',                   '</table>',                    1],
+    TBODY:  [Element_wraps_t1,            Element_wraps_t2,              2],
+    TR:     [Element_wraps_t1+'<tr>',     '</tr>'+Element_wraps_t2,      3],
+    TD:     [Element_wraps_t1+'<tr><td>', '</td></tr>'+Element_wraps_t2, 4],
+    SELECT: ['<select>',                  '</select>',                   1]
   }
 };
-$alias(Element.insertions.wraps, {
+
+$alias(Element_wraps, {
   OPTGROUP: 'SELECT',
   THEAD:    'TBODY',
   TFOOT:    'TBODY',

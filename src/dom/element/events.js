@@ -26,8 +26,8 @@ hack_observer('on',
     'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():'+ REvent +'.ext(a[0],this);'+
     'return $2.f.apply(this,a.concat($2.a))};' + (
       attach ?
-        '$2.w=$2.w.bind(this);this.attachEvent("on"+$2.n,$2.w);' :
-        'this.addEventListener($2.n,$2.w,false);'
+        '$2.w=$2.w.bind(this);this._.attachEvent("on"+$2.n,$2.w);' :
+        'this._.addEventListener($2.n,$2.w,false);'
       )
 );
 
@@ -35,8 +35,8 @@ hack_observer('stopObserving',
   /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m, 
   '$1var r=$4;'+
   'if(!r)' + (attach ? 
-    'this.detachEvent("on"+$2.n,$2.w);' :
-    'this.removeEventListener($2.n,$2.w,false);'
+    'this._.detachEvent("on"+$2.n,$2.w);' :
+    'this._.removeEventListener($2.n,$2.w,false);'
   )+'$3 r'
 );
 

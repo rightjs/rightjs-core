@@ -20,7 +20,7 @@ Element.include({
    * @return Element self
    */
   setStyle: function(hash, value) {
-    var key, c_key, style = {};
+    var key, c_key, style = {}, element_style = this._.style;
     
     if (value) { style[hash] = value; hash = style; }
     else if(isString(hash)) {
@@ -35,19 +35,19 @@ Element.include({
     
     
     for (key in hash) {
-      c_key = key.indexOf('-') != -1 ? key.camelize() : key;
+      c_key = key.indexOf('-') < 0 ? key : key.camelize();
       
       if (key === 'opacity') {
         if (Browser.IE) {
-          this.style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
+          element_style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
         } else {
-          this.style.opacity = hash[key];
+          element_style.opacity = hash[key];
         }
       } else if (key === 'float') {
         c_key = Browser.IE ? 'styleFloat' : 'cssFloat';
       }
       
-      this.style[c_key] = hash[key];
+      element_style[c_key] = hash[key];
     }
     
     return this;
@@ -62,7 +62,7 @@ Element.include({
    * @return String style value or null if not set
    */
   getStyle: function(key) {
-    return this._getStyle(this.style, key) || this._getStyle(this.computedStyles(), key);
+    return this._getStyle(this._.style, key) || this._getStyle(this.computedStyles(), key);
   },
   
   /**
@@ -71,8 +71,9 @@ Element.include({
    * @return Object/CSSDefinition computed styles
    */
   computedStyles: function() {
+    var element = this._;
     //     old IE,              IE8,                 W3C
-    return this.currentStyle || this.runtimeStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
+    return element.currentStyle || element.runtimeStyle || element.ownerDocument.defaultView.getComputedStyle(element, null) || {};
   },
   
   // cleans up the style value
@@ -107,7 +108,7 @@ Element.include({
    * @return boolean check result
    */
   hasClass: function(name) {
-    return (' '+this.className+' ').indexOf(' '+name+' ') != -1;
+    return (' '+this._.className+' ').indexOf(' '+name+' ') != -1;
   },
   
   /**
@@ -117,7 +118,7 @@ Element.include({
    * @return Element self
    */
   setClass: function(class_name) {
-    this.className = class_name;
+    this._.className = class_name;
     return this;
   },
 
@@ -128,9 +129,9 @@ Element.include({
    * @return Element self
    */
   addClass: function(name) {
-    var testee = ' '+this.className+' ';
+    var testee = ' '+this._.className+' ';
     if (testee.indexOf(' '+name+' ') == -1) {
-      this.className += (testee === '  ' ? '' : ' ') + name;
+      this._.className += (testee === '  ' ? '' : ' ') + name;
     }
     return this;
   },
@@ -142,7 +143,7 @@ Element.include({
    * @return Element self
    */
   removeClass: function(name) {
-    this.className = (' '+this.className+' ').replace(' '+name+' ', ' ').trim();
+    this._.className = (' '+this._.className+' ').replace(' '+name+' ', ' ').trim();
     return this;
   },
   
