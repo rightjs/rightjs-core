@@ -13,7 +13,7 @@
  * as a scope for the search
  */
 function stub_rule(css_rule, tag) {
-  tag = contex._.tagName;
+  tag = tag._.tagName;
   return !css_rule || !tag ? '*' : css_rule.replace(/(^|,)/g, '$1'+ tag + ' ');
 };
 
@@ -36,7 +36,7 @@ function stub_rule(css_rule, tag) {
    * @return Array of elements
    */
   select: function(css_rule) {
-    return $A(this._.querySelectorAll(stub_rule(css_rule, this)))).map($);
+    return $A(this._.querySelectorAll(stub_rule(css_rule, this))).map($);
   }
 });
  

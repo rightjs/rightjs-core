@@ -4,13 +4,15 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 
-RightJS.Element = function Element(element, options) {
+var Element = RightJS.Element = function(element, options) {
   if (typeof element === 'string') {
     // building the element
     element = (element in elements_cache ? elements_cache[element] :
       (elements_cache[element] = document.createElement(element))
     ).cloneNode(false);
-  
+    
+    this._ = element;
+    
     // applying the options
     if (options) {
       for (var key in options) {
@@ -19,7 +21,7 @@ RightJS.Element = function Element(element, options) {
         } else if (key in element_methods_map) {
           element[element_methods_map[key]](options[key]);
         } else {
-          element.set(key, options[key]);
+          this.set(key, options[key]);
         }
       }
     }

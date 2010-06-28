@@ -250,19 +250,19 @@ var UtilTest = TestCase.create({
     return el;
   },
   
-  test_$_Search: function() {
+  test_$_ID_Search: function() {
     var el = this.getFreshNode();
     
-    this.assertSame(el, $(el.id));
+    this.assertSame(el, $('#'+el.id));
     this.assertNotNull(el['hasClass']);
   },
   
-  test_$$: function() {
+  test_$_CSS_Search: function() {
     var el = this.getFreshNode();
     el.className = 'some-weird-class';
     
-    this.assertEqual([], $$('div.something-non-existing'));
-    //this.assert($$('div.some-weird-class') == [el]);
+    this.assertEqual([], $('div.something-non-existing'));
+//    this.assert($('div.some-weird-class') == [el]);
   },
   
   test_$w: function() {

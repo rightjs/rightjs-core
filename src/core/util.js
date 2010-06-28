@@ -211,7 +211,7 @@ $E = RightJS.$E = function(tag_name, options) {
  */
 $ = RightJS.$ = function(element) {
   if (typeof element === 'string') {
-    var match = /^#([\w\-]+)$/.exec(element);
+    var match = /^#([^ ,]+)$/.exec(element);
     element = match !== null ? document.getElementById(match[1]) : $(document).select(element);
   }
   

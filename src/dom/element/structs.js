@@ -78,6 +78,7 @@ Element.include({
    * @return Element self
    */
   insert: function(content, position) {
+    if ('_' in content) content = content._;
     if (isHash(content)) {
       for (var pos in content) {
         this.insert(content[pos], pos)
@@ -241,7 +242,7 @@ var Element_insertions = {
 },
   
 // converts any data into a html fragment unit
-Element_createFragment: function(content) {
+Element_createFragment = function(content) {
   var fragment = document.createDocumentFragment();
     
   if (isString(content)) {
@@ -249,37 +250,36 @@ Element_createFragment: function(content) {
         wrap  = Element_wraps[this.tagName] || ['', '', 0],
         depth = wrap[2];
           
-      tmp.innerHTML = wrap[0] + content + wrap[1];
-      
-      while (depth > 0) {
-        tmp = tmp.firstChild;
-        depth--;
-      }
-      
-      content = tmp.childNodes;
+    tmp.innerHTML = wrap[0] + content + wrap[1];
+    
+    while (depth > 0) {
+      tmp = tmp.firstChild;
+      depth--;
     }
     
-    for (var i=0, length = content.length; i < length; i++) {
-      // in case of NodeList unit, the elements will be removed out of the list during the appends
-      // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
-      // then we always hit the first element of the stack
-      fragment.appendChild(content[content.length == length ? i : 0]);
-    }
-    
-    return fragment;
+    content = tmp.childNodes;
   }
+  
+  for (var i=0, length = content.length; i < length; i++) {
+    // in case of NodeList unit, the elements will be removed out of the list during the appends
+    // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
+    // then we always hit the first element of the stack
+    fragment.appendChild(content[content.length == length ? i : 0]);
+  }
+  
+  return fragment;
 },
+
 
 // the element insertion wrappers list
 Element_wraps_t1 = '<table><tbody>',
 Element_wraps_t2 = '</tbody></table>',
 Element_wraps = {
-    TABLE:  ['<table>',                   '</table>',                    1],
-    TBODY:  [Element_wraps_t1,            Element_wraps_t2,              2],
-    TR:     [Element_wraps_t1+'<tr>',     '</tr>'+Element_wraps_t2,      3],
-    TD:     [Element_wraps_t1+'<tr><td>', '</td></tr>'+Element_wraps_t2, 4],
-    SELECT: ['<select>',                  '</select>',                   1]
-  }
+  TABLE:  ['<table>',                   '</table>',                    1],
+  TBODY:  [Element_wraps_t1,            Element_wraps_t2,              2],
+  TR:     [Element_wraps_t1+'<tr>',     '</tr>'+Element_wraps_t2,      3],
+  TD:     [Element_wraps_t1+'<tr><td>', '</td></tr>'+Element_wraps_t2, 4],
+  SELECT: ['<select>',                  '</select>',                   1]
 };
 
 $alias(Element_wraps, {

@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-RightJS.Window = function Window(window) {
+var Window = RightJS.Window = function(window) {
   this._ = window;
   this.d = window.document;
 };

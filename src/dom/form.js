@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
-RightJS.Form = function Form(in_options) {
+var Form = RightJS.Form = function(in_options) {
   var options = in_options || {}, remote = 'remote' in options,
     form = new Element('form', Object.without(options, 'remote'));
   

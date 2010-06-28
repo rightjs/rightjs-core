@@ -12,7 +12,7 @@ if (RightJS.Browser.OLD) {
       var element = old_function(id), match = !RightJS.isString(id) || /^#([\w\-]+)/.exec(id);
       
       // old IE browses match both, ID and NAME
-      if (element !== null && match !== null && element._.id !== match[1]) {
+      if (element !== null && match !== null && element._.id !== match[1])
         element = RightJS.$(document).first(id);
         
       return element;
