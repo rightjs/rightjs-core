@@ -13,10 +13,11 @@
  * as a scope for the search
  */
 function stub_rule(css_rule, tag) {
-  return css_rule ? css_rule.replace(/(^|,)/g, '$1'+ tag + ' ') : '*';
+  tag = contex._.tagName;
+  return !css_rule || !tag ? '*' : css_rule.replace(/(^|,)/g, '$1'+ tag + ' ');
 };
- 
-Element.include({
+
+[Element, Document].each('include', {
   /**
    * Extracts the first element matching the css-rule,
    * or just any first element if no css-rule was specified
@@ -25,7 +26,7 @@ Element.include({
    * @return Element matching node or null
    */
   first: function(css_rule) {
-    return Element.prepare(this.querySelector(stub_rule(css_rule, this.tagName)));
+    return $(this._.querySelector(stub_rule(css_rule, this)));
   },
   
   /**
@@ -35,9 +36,11 @@ Element.include({
    * @return Array of elements
    */
   select: function(css_rule) {
-    return Element.prepareAll($A(this.querySelectorAll(stub_rule(css_rule, this.tagName))));
-  },
-  
+    return $A(this._.querySelectorAll(stub_rule(css_rule, this)))).map($);
+  }
+});
+ 
+Element.include({
   /**
    * checks if the element matches this css-rule
    *
@@ -55,16 +58,5 @@ Element.include({
     if (!parent) this.remove();
     
     return result;
-  }
-});
-
-// document-level hooks
-$ext(document, {
-  first: function(css_rule) {
-    return this.querySelector(css_rule);
-  },
-  
-  select: function(css_rule) {
-    return $A(this.querySelectorAll(css_rule));
   }
 });

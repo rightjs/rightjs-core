@@ -6,3 +6,9 @@
 var Document = RightJS.Document = function(document) {
   this._ = document;
 };
+
+make_extensible(Document).include({
+  byId: function(id) {
+    return this._.getElementById(id);
+  }
+});

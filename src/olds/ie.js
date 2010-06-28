@@ -9,27 +9,13 @@ if (RightJS.Browser.OLD) {
   // loads DOM element extensions for selected elements
   $ = RightJS.$ = (function(old_function) {
     return function(id) {
-      var element = old_function(id);
+      var element = old_function(id), match = !RightJS.isString(id) || /^#([\w\-]+)/.exec(id);
       
       // old IE browses match both, ID and NAME
-      if (element !== null && RightJS.isString(id) && element.id !== id) 
-        element = RightJS.$$('#'+id)[0];
+      if (element !== null && match !== null && element._.id !== match[1]) {
+        element = RightJS.$(document).first(id);
         
-      return element ? RightJS.Element.prepare(element) : element;
+      return element;
     }
   })(RightJS.$);
-  
-  
-  /**
-   * Overloading the native method to extend the new elements as it is
-   * in all the other browsers
-   *
-   * @param String tag name
-   * @return Element
-   */
-  document.createElement = (function(old_method) {
-    return function(tag) {
-      return RightJS.Element.prepare(old_method(tag));
-    }
-  })(document.createElement);
 }

@@ -13,7 +13,7 @@
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
 if (!document.querySelector) {
-  RightJS.Element.include((function() {
+  (function(RightJS) {
     /**
      * The token searchers collection
      */
@@ -408,15 +408,8 @@ if (!document.querySelector) {
       }
     };
     
-    // replacing the document-level search methods
-    RightJS.$ext(document, dom_extension);
-    
-    // patching the $$ function to make it more efficient
-    $$ = RightJS.$$ = function(css_rule) {
-      return select_all(document, css_rule || '*');
-    };
-    
-    // sending the extension to the Element#include
-    return dom_extension;
-  })());
+    // hooking up the rightjs wrappers with the new methods
+    RightJS.Element.include(dom_extension);
+    RightJS.Document.include(dom_extension);
+  })(RightJS);
 }

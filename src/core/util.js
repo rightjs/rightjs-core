@@ -210,17 +210,19 @@ $E = RightJS.$E = function(tag_name, options) {
  * @return Element or null
  */
 $ = RightJS.$ = function(element) {
-  return Element.prepare(typeof(element) === 'string' ? document.getElementById(element) : element);
-},
-
-/** !#server
- * searches for elements in the document which matches the given css-rule
- *
- * @param String css-rule
- * @return Array matching elements list
- */
-$$ = RightJS.$$ = function (css_rule) {
-  return $A(document.querySelectorAll(css_rule));
+  if (typeof element === 'string') {
+    var match = /^#([\w\-]+)$/.exec(element);
+    element = match !== null ? document.getElementById(match[1]) : $(document).select(element);
+  }
+  
+  if ('tagName' in element)
+    element = new Element(element);
+  else if (element === window)
+    element = new Window(element);
+  else if (element === document)
+    element = new Document(element);
+    
+  return element;
 },
 
 /**
@@ -267,11 +269,13 @@ $uid = RightJS.$uid = function(item) {
  * @return Object the klass
  */
 make_extensible = function(Klass) {
+  Klass.Methods = {};
   Klass.include = function() {
     var args = arguments, i=0;
     for (; i < args.length; i++) {
       if (isHash(args[i])) {
-        Klass.Methods = $ext(Klass[PROTO], args[i]);
+        $ext(Klass.Methods, args[i]);
+        $ext(Klass[PROTO], args[i]);
       }
     }
     return Klass;
