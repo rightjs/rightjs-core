@@ -159,7 +159,8 @@ isNumber = RightJS.isNumber = function(value) {
  * @return boolean check result
  */
 isHash = RightJS.isHash = function(value) {
-  return to_s.call(value) === '[object Object]';
+  return to_s.call(value) === '[object Object]' &&
+    !('_' in value); // <- don't react on the dom-wrappers
 },
 
 /**
@@ -211,15 +212,15 @@ $E = RightJS.$E = function(tag_name, options) {
  */
 $ = RightJS.$ = function(element) {
   if (typeof element === 'string') {
-    var match = /^#([^ ,]+)$/.exec(element);
+    var match = /^#([\w\-]+)$/.exec(element);
     element = match !== null ? document.getElementById(match[1]) : $(document).select(element);
   }
   
-  if ('tagName' in element)
+  if (element.nodeType === 1)
     element = new Element(element);
-  else if (element === window)
+  else if (element.window === element)
     element = new Window(element);
-  else if (element === document)
+  else if (element.nodeType === 9)
     element = new Document(element);
     
   return element;
@@ -291,7 +292,8 @@ if (isHash(HTML)) {
   isHash = RightJS.isHash = function(value) {
     return to_s.call(value) === '[object Object]' &&
       value !== null && typeof(value) !== 'undefined' &&
-      typeof(value.hasOwnProperty) !== 'undefined';
+      typeof(value.hasOwnProperty) !== 'undefined' &&
+      !('_' in value); // <- skips the dom-wrappers
   };
 }
 
@@ -301,3 +303,4 @@ if (isHash(HTML)) {
 for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
   make_extensible(natives[i]);
 }
+

@@ -77,36 +77,31 @@ Element.include({
    * @param String position to insert  top/bottom/before/after/instead
    * @return Element self
    */
-  insert: function(content, position) {
+  insert: function(content, position) {    
     if ('_' in content) content = content._;
-    if (isHash(content)) {
-      for (var pos in content) {
-        this.insert(content[pos], pos)
-      }
-    } else {
-      var scripts, element = this._;
-      position = (position||'bottom').toLowerCase();
-      
-      if (typeof(content) !== 'object') {
-        content = (''+content).stripScripts(function(s) { scripts = s; });
-      }
-      
-      Element_insertions[position](element, content.tagName ? content :
-        Element_createFragment.call(
-          (position === 'bottom' || position === 'top') ?
-            element : element.parentNode, content
-        )
-      );
-      
-      // FF doesn't marks selected options correctly with a textual content
-      if (element.tagName === 'SELECT' && isString(content)) {
-        $A(element.getElementsByTagName('option')).each(function(option) {
-          option.selected = !!option.getAttribute('selected');
-        });
-      }
-      
-      if (scripts) $eval(scripts);
+    
+    var scripts, element = this._;
+    position = (position||'bottom').toLowerCase();
+    
+    if (typeof(content) !== 'object') {
+      content = (''+content).stripScripts(function(s) { scripts = s; });
     }
+    
+    Element_insertions[position](element, content.tagName ? content :
+      Element_createFragment.call(
+        (position === 'bottom' || position === 'top') ?
+          element : element.parentNode, content
+      )
+    );
+    
+    // FF doesn't marks selected options correctly with a textual content
+    if (element.tagName === 'SELECT' && isString(content)) {
+      $A(element.getElementsByTagName('option')).each(function(option) {
+        option.selected = !!option.getAttribute('selected');
+      });
+    }
+    
+    if (scripts) $eval(scripts);
     
     return this;
   },

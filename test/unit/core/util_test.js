@@ -189,7 +189,6 @@ var UtilTest = TestCase.create({
   
   test_isElement: function() {
     this.assert(isElement(document.createElement('div')));
-    this.assert(isElement(new Element('span')));
     this.assert(isElement(document.body));
     
     this.assertFalse(isElement(1));
@@ -199,13 +198,13 @@ var UtilTest = TestCase.create({
     this.assertFalse(isElement(null));
     this.assertFalse(isElement(false));
     this.assertFalse(isElement(function() {}));
+    this.assertFalse(isElement(new Element('span')));
     this.assertFalse(isElement(document.createTextNode('asdfasdfasd')));
   },
   
   testIsNode: function() {
     this.assert(isNode(document.createElement('div')));
     this.assert(isNode(document.createTextNode('asdfasdf')));
-    this.assert(isNode(new Element('div')));
     
     this.assertFalse(isElement(1));
     this.assertFalse(isElement({}));
@@ -214,6 +213,7 @@ var UtilTest = TestCase.create({
     this.assertFalse(isElement(null));
     this.assertFalse(isElement(false));
     this.assertFalse(isElement(function() {}));
+    this.assertFalse(isNode(new Element('div')));
   },
   
   test_$A: function() {
@@ -224,16 +224,18 @@ var UtilTest = TestCase.create({
   
   test_$E: function() {
     var div = $E('div', {id: 'div-id'});
-    this.assert(isElement(div));
-    this.assertEqual('DIV', div.tagName);
-    this.assertEqual('div-id', div.id);
+    this.assert(isElement(div._));
+    this.assert(div instanceof RightJS.Element);
+    this.assertEqual('DIV', div._.tagName);
+    this.assertEqual('div-id', div._.id);
   },
   
   test_$_Extending: function() {
     var el = document.createElement('div');
+    var wrap = $(el);
     
-    this.assertSame(el, $(el));
-    this.assertNotNull(el['hasClass'], "check if the object was prepared");
+    this.assert(wrap instanceof RightJS.Element);
+    this.assertSame(el, wrap._);
   },
   
   getFreshNode: function() {
@@ -252,17 +254,35 @@ var UtilTest = TestCase.create({
   
   test_$_ID_Search: function() {
     var el = this.getFreshNode();
+    var wrap = $('#'+ el.id);
     
-    this.assertSame(el, $('#'+el.id));
-    this.assertNotNull(el['hasClass']);
+    this.assert(wrap instanceof RightJS.Element);
+    this.assertSame(el, wrap._);
   },
   
   test_$_CSS_Search: function() {
     var el = this.getFreshNode();
     el.className = 'some-weird-class';
     
-    this.assertEqual([], $('div.something-non-existing'));
-//    this.assert($('div.some-weird-class') == [el]);
+    var res1 = $('div.something-non-existing');
+    var res2 = $('div.some-weird-class');
+    
+    this.assertEqual([], res1);
+    this.assertEqual(1, res2.length);
+    
+    this.assert(res2[0] instanceof RightJS.Element);
+    this.assertSame(el, res2[0]._);
+  },
+  
+  test_$_window_access: function() {
+    var wrap = $(window);
+    
+    this.assert(wrap instanceof RightJS.Window);
+  },
+  
+  test_$_document_access: function() {
+    var d = $(document);
+    this.assert(d instanceof RightJS.Document);
   },
   
   test_$w: function() {

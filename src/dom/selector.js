@@ -14,7 +14,8 @@
  */
 function stub_rule(css_rule, tag) {
   tag = tag._.tagName;
-  return !css_rule || !tag ? '*' : css_rule.replace(/(^|,)/g, '$1'+ tag + ' ');
+  css_rule = css_rule || '*';
+  return tag ? css_rule.replace(/(^|,)/g, '$1'+ tag + ' ') : css_rule;
 };
 
 [Element, Document].each('include', {
