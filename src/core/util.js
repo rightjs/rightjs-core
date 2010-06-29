@@ -212,8 +212,9 @@ $E = RightJS.$E = function(tag_name, options) {
  */
 $ = RightJS.$ = function(element) {
   if (typeof element === 'string') {
-    var match = /^#([\w\-]+)$/.exec(element);
-    element = match !== null ? document.getElementById(match[1]) : $(document).select(element);
+    var hash = element[0], id = element.substr(1);
+    element = (hash === '#' && /^[\w\-]+$/.test(id)) ?
+      document.getElementById(id) : $(document).select(element);
   }
   
   if (element.nodeType === 1)
