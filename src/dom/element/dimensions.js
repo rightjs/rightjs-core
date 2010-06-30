@@ -6,6 +6,25 @@
  */
 Element.include({
   /**
+   * Returns the reference to this element document
+   *
+   * @return RightJS.Document
+   */
+  doc: function() {
+    return $(this._.ownerDocument);
+  },
+  
+  /**
+   * Returns the reference to this elements window
+   *
+   * @return RightJS.Window
+   */
+  win: function() {
+    var doc = this.document()._;
+    return $(doc.defaultView || doc.parentWindow);
+  },
+  
+  /**
    * Returns the element sizes as a hash
    *
    * @return Object {x: NNN, y: NNN}
@@ -22,11 +41,13 @@ Element.include({
    * @return Object {x: NNN, y: NNN}
    */
   position: function() {
-    var rect = this._.getBoundingClientRect(), doc = this._.ownerDocument.documentElement, scrolls = window.scrolls();
+    var rect    = this._.getBoundingClientRect(),
+        html    = this.doc()._[DOC_E],
+        scrolls = this.win().scrolls();
     
     return {
-      x: rect.left + scrolls.x - doc.clientLeft,
-      y: rect.top  + scrolls.y - doc.clientTop
+      x: rect.left + scrolls.x - html.clientLeft,
+      y: rect.top  + scrolls.y - html.clientTop
     };
   },
   
@@ -167,7 +188,7 @@ Element.include({
    * @return Element self
    */
   scrollThere: function(options) {
-    window.scrollTo(this, options);
+    this.win().scrollTo(this, options);
     return this;
   }
 });

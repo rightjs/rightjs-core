@@ -13,7 +13,7 @@
  * Some top-level variables to shortify the things
  */
 var 
-document_E = 'documentElement', HTML = document[document_E], UID = 1, // !#server
+DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1, // !#server
 UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
