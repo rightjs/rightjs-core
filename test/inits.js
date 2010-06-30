@@ -21,6 +21,8 @@ var scripts = [
   'dom/browser',
   'dom/cookie',
   
+  'dom/wrapper',
+  
   'dom/event',
   'dom/event/custom',
   'dom/event/delegation',

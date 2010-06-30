@@ -17,7 +17,7 @@ DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1, // !#server
 UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
-    
+Wrapper = dummy(), // !#server the dom-wrappers parent class reference
  
 /**
  * extends the first object with the keys and values of the second one
@@ -160,7 +160,7 @@ isNumber = RightJS.isNumber = function(value) {
  */
 isHash = RightJS.isHash = function(value) {
   return to_s.call(value) === '[object Object]' &&
-    !('_' in value); // <- don't react on the dom-wrappers
+    !(value instanceof Wrapper); // <- don't react on the dom-wrappers
 },
 
 /**
@@ -294,7 +294,7 @@ if (isHash(HTML)) {
     return to_s.call(value) === '[object Object]' &&
       value !== null && typeof(value) !== 'undefined' &&
       typeof(value.hasOwnProperty) !== 'undefined' &&
-      !('_' in value); // <- skips the dom-wrappers
+      !(value instanceof Wrapper); // <- skips the dom-wrappers
   };
 }
 

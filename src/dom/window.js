@@ -1,14 +1,14 @@
 /**
  * the window object extensions
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-var Window = RightJS.Window = function(window) {
+var Window = RightJS.Window = BuildWrapper(function(window) {
   this._ = window;
   this.d = window.document;
-};
+});
 
-make_extensible(Window).include({
+Window.include({
   /**
    * returns the inner-sizes of the window
    *

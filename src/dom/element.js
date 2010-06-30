@@ -20,20 +20,19 @@ element_methods_map = {
 },
 
 // caching the element instances to boos the things up
-elements_cache = {};
+elements_cache = {},
 
-// NOTE: DON'T add the 'var' in front of the Element,
-//       or IE will loose the reference to the old Element object
-Element = RightJS.Element = function(element, options) {
+// the elements building function
+element_build = function(element, options) {
+  // building the element
   if (typeof element === 'string') {
-    // building the element
-    element = (element in elements_cache ? elements_cache[element] :
+    element = (elements_cache[element] ||
       (elements_cache[element] = document.createElement(element))
     ).cloneNode(false);
   }
   
   this._ = element;
-
+  
   // applying the options
   if (options) {
     for (var key in options) {
@@ -54,13 +53,15 @@ if (Browser.IE) {
   // and we kinda hacking the Element constructor so that
   // it affected IE browsers only
   //
-  Element = eval('['+Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
+  element_build = eval('['+element_build.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
     '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
   )+']')[0];
 }
 
+// NOTE: DON'T add the 'var' in front of the Element,
+//       or IE will loose the reference to the old Element object
+Element = RightJS.Element = BuildWrapper(element_build);
+
 if (old_Element) {
   $ext(Element, old_Element).parent = old_Element;
 }
-
-make_extensible(Element);

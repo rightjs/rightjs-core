@@ -9,7 +9,7 @@ var UtilTest = TestCase.create({
   beforeAll: function() {
     var id = 'datatypes_checks_iframe';
     
-    $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
+    window._d = $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
       '" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
     
     var array, object, doc, und, nil;

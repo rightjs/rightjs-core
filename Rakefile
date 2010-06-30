@@ -45,6 +45,7 @@ JS_SOURCES = {
   
   :dom => %w{
     dom/browser
+    dom/wrapper
     
     dom/event
     dom/event/custom
@@ -56,7 +57,6 @@ JS_SOURCES = {
     dom/element/commons
     dom/element/dimensions
     dom/element/events
-
     
     dom/document
     dom/window
