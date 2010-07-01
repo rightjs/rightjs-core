@@ -13,11 +13,11 @@
  * Some top-level variables to shortify the things
  */
 var 
-DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1, // !#server
 UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
-Wrapper = dummy(), // !#server the dom-wrappers parent class reference
+DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1, // !#server
+Wrapper = dummy(), Wrapper_Cache = [], UID_KEY = '_rid',    // !#server
  
 /**
  * extends the first object with the keys and values of the second one
@@ -260,7 +260,7 @@ $A = RightJS.$A = function(it) {
  * @return Integer uniq id
  */
 $uid = RightJS.$uid = function(item) {
-  return item.uid || (item.uid = UID++);
+  return item[UID_KEY] || (item[UID_KEY] = UID++);
 },
 
 /**
