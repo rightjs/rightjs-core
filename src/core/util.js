@@ -212,9 +212,7 @@ $E = RightJS.$E = function(tag_name, options) {
  */
 $ = RightJS.$ = function(element) {
   if (typeof element === 'string') {
-    var hash = element[0], id = element.substr(1);
-    element = (hash === '#' && /^[\w\-]+$/.test(id)) ?
-      document.getElementById(id) : $(document).select(element);
+    element = document.getElementById(element);
   }
   
   if (element[UID_KEY] && Wrappers_Cache[element[UID_KEY]])
@@ -227,6 +225,16 @@ $ = RightJS.$ = function(element) {
     element = new Document(element);
     
   return element;
+},
+
+/** !#server
+ * Searches for all matching elements in the document
+ *
+ * @param String css-rule
+ * @return Array elements list
+ */
+$$ = RightJS.$$ = function(css_rule) {
+  return $(document).select(css_rule);
 },
 
 /**

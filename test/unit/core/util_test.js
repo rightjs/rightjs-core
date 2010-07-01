@@ -238,6 +238,20 @@ var UtilTest = TestCase.create({
     this.assertSame(el, wrap._);
   },
   
+  test_$_DocumentAccess: function() {
+    var doc = $(document);
+    
+    this.assert(doc instanceof RightJS.Document);
+    this.assertSame(document, doc._);
+  },
+  
+  test_$_WindowAccess: function() {
+    var win = $(window);
+    
+    this.assert(win instanceof RightJS.Window);
+    this.assertSame(window, win._);
+  },
+  
   test_$_SingleInstance: function() {
     var el = document.createElement('div');
     var wrap1 = $(el);
@@ -272,18 +286,18 @@ var UtilTest = TestCase.create({
   
   test_$_ID_Search: function() {
     var el = this.getFreshNode();
-    var wrap = $('#'+ el.id);
+    var wrap = $(el.id);
     
     this.assert(wrap instanceof RightJS.Element);
     this.assertSame(el, wrap._);
   },
   
-  test_$_CSS_Search: function() {
+  test_$$_Search: function() {
     var el = this.getFreshNode();
     el.className = 'some-weird-class';
     
-    var res1 = $('div.something-non-existing');
-    var res2 = $('div.some-weird-class');
+    var res1 = $$('div.something-non-existing');
+    var res2 = $$('div.some-weird-class');
     
     this.assertEqual([], res1);
     this.assertEqual(1, res2.length);
