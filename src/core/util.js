@@ -17,7 +17,7 @@ UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
 DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1, // !#server
-Wrapper = dummy(), Wrapper_Cache = [], UID_KEY = '_rid',    // !#server
+Wrapper = dummy(), Wrappers_Cache = [], UID_KEY = '_rid',    // !#server
  
 /**
  * extends the first object with the keys and values of the second one
@@ -217,7 +217,9 @@ $ = RightJS.$ = function(element) {
       document.getElementById(id) : $(document).select(element);
   }
   
-  if (element.nodeType === 1)
+  if (element[UID_KEY] && Wrappers_Cache[element[UID_KEY]])
+    element = Wrappers_Cache[element[UID_KEY]];
+  else if (element.nodeType === 1)
     element = new Element(element);
   else if (element.window === element)
     element = new Window(element);

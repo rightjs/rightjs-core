@@ -238,6 +238,24 @@ var UtilTest = TestCase.create({
     this.assertSame(el, wrap._);
   },
   
+  test_$_SingleInstance: function() {
+    var el = document.createElement('div');
+    var wrap1 = $(el);
+    var wrap2 = $(el);
+    
+    this.assertSame(wrap1, wrap2);
+    
+    var doc1 = $(document);
+    var doc2 = $(document);
+    
+    this.assertSame(doc1, doc2, "checking the document single access");
+    
+    var win1 = $(window);
+    var win2 = $(window);
+    
+    this.assertSame(win1, win2, "checking the window single access");
+  },
+  
   getFreshNode: function() {
     var id = 'some-testing-div-id';
     var el = document.getElementById(id);

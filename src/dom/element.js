@@ -31,20 +31,29 @@ element_build = function(element, options) {
     ).cloneNode(false);
   }
   
-  this._ = element;
+  // checking the wrappers cache to enforce a single instance
+  var uid = element[UID_KEY] || (element[UID_KEY] = UID++);
   
-  // applying the options
-  if (options) {
-    for (var key in options) {
-      if (key in element_arguments_map) {
-        element[element_arguments_map[key]] = options[key];
-      } else if (key in element_methods_map) {
-        element[element_methods_map[key]](options[key]);
-      } else {
-        this.set(key, options[key]);
+  if (!(uid in Wrappers_Cache)) {
+    Wrappers_Cache[uid] = this;
+    
+    this._ = element;
+
+    // applying the options
+    if (options) {
+      for (var key in options) {
+        if (key in element_arguments_map) {
+          element[element_arguments_map[key]] = options[key];
+        } else if (key in element_methods_map) {
+          element[element_methods_map[key]](options[key]);
+        } else {
+          this.set(key, options[key]);
+        }
       }
     }
   }
+
+  return Wrappers_Cache[uid];
 };
 
 if (Browser.IE) {
@@ -65,3 +74,8 @@ Element = RightJS.Element = BuildWrapper(element_build);
 if (old_Element) {
   $ext(Element, old_Element).parent = old_Element;
 }
+
+// predefine the uniq id key in the prototype to boost up future assignments
+try {
+  HTMLElement[PROTO][UID_KEY] = false;
+} catch(e) {}

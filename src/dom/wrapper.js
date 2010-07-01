@@ -19,7 +19,7 @@ Wrapper[PROTO]._ = null; // predefining the key to speed up the assignment
  * @return Wrapper class
  */
 var BuildWrapper = function(Klass) {
-  Klass.prototype = new Wrapper;
+  Klass[PROTO] = new Wrapper;
   make_extensible(Klass);
   return Klass;
 };
