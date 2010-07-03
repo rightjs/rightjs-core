@@ -15,14 +15,14 @@ var SelectorTest = TestCase.create({
   },
   
   assertSelect: function(css_rule, block, elements, message) {
-    var selected = block.select(css_rule);
+    var selected = $(block).select(css_rule).map('_');
     if (!this.util.equal(selected, elements)) {
       this.throw_unexp(elements, selected, message || "Trying '"+css_rule+"'");
     }
   },
   
   assertNotSelect: function(css_rule, block, elements, message) {
-    var selected = block.select(css_rule);
+    var selected = $(block).select(css_rule).map('_');
     elements.each(function(element) {
       if (selected.includes(element)) {
         this.throw_problem('It should not select the element: '+this.util.to_s(element), message);
@@ -31,7 +31,7 @@ var SelectorTest = TestCase.create({
   },
   
   assertFirst: function(css_rule, block, element, message) {
-    var first = block.first(css_rule);
+    var first = $(block).first(css_rule)._;
     if (first != element) {
       this.throw_unexp(element, first, message || "Trying first '"+css_rule+"'");
     }
@@ -40,7 +40,7 @@ var SelectorTest = TestCase.create({
   assertMatchRule: function(css_rule, elementst, message) {
     var elements = elementst instanceof Array ? elementst : [elementst];
     elements.each(function(element) {
-      if (!element.match(css_rule)) {
+      if (!$(element).match(css_rule)) {
         this.throw_problem("Element should match the rule '"+css_rule+"'", message);
       }
     }, this);
@@ -49,7 +49,7 @@ var SelectorTest = TestCase.create({
   assertNotMatchRule: function(css_rule, elementst, message) {
     var elements = elementst instanceof Array ? elementst : [elementst];
     elements.each(function(element) {
-      if (element.match(css_rule)) {
+      if ($(element).match(css_rule)) {
         this.throw_problem("Element should not match the rule '"+css_rule+"'", message);
       }
     }, this);
@@ -176,8 +176,7 @@ var SelectorTest = TestCase.create({
   },
   
   testIdMatch: function() {
-    var element = $E('div').insertTo(this.container);
-    element.id = 'some';
+    var element = $E('div', {id: 'some'}).insertTo(this.container);
     
     this.assertMatchRule('#some', element);
     this.assertNotMatchRule('#other', element);
@@ -192,8 +191,7 @@ var SelectorTest = TestCase.create({
   },
   
   testClassMatch: function() {
-    var element = $E('div').insertTo(this.container);
-    element.className = 'boo foo';
+    var element = $E('div', {'class': 'boo foo'}).insertTo(this.container);
     
     this.assertMatchRule('.boo', element);
     this.assertMatchRule('.foo', element);
@@ -206,9 +204,10 @@ var SelectorTest = TestCase.create({
   },
   
   testAttrsMatch: function() {
-    var element = $E('input').insertTo(this.container);
-    element.title = 'title';
-    element.name  = 'name';
+    var element = $E('input', {
+      title: 'title',
+      name:  'name'
+    }).insertTo(this.container);
     
     this.assertMatchRule('input[title="title"]', element);
     this.assertMatchRule('input[name="name"]', element);
@@ -218,7 +217,7 @@ var SelectorTest = TestCase.create({
     this.assertNotMatchRule('input[title="title"][value="something"]', element);
     this.assertNotMatchRule('input[name="name"][value="something"]', element);
     
-    element.title = 'somevalue';
+    element._.title = 'somevalue';
     
     this.assertMatchRule('input[title*="some"]', element);
     this.assertMatchRule('input[title*="value"]', element);
@@ -231,11 +230,11 @@ var SelectorTest = TestCase.create({
     this.assertNotMatchRule('input[title$="some"]', element);
         
     this.assertNotMatchRule('input[title~="some"]', element);
-    element.title = "some value";
+    element._.title = "some value";
     this.assertMatchRule('input[title~="some"]', element);
     this.assertMatchRule('input[title~="value"]', element);
     
-    element.setAttribute('lang', "en-EN");
+    element._.setAttribute('lang', "en-EN");
     this.assertMatchRule('input[lang|="en"]', element);
     this.assertNotMatchRule('input[lang|="ru"]', element);
   },
@@ -246,26 +245,26 @@ var SelectorTest = TestCase.create({
     var div = $E('div').insertTo(this.container);
     
     this.assertMatchRule('*:empty', div);
-    div.innerHTML = 'something';
+    div._.innerHTML = 'something';
     this.assertNotMatchRule('*:empty', div);
     
     var element = $E('input', {type: 'checkbox'});
-    div.appendChild(element);
+    div.insert(element);
     
     this.assertNotMatchRule('input:checked', element);
-    element.checked = true;
+    element._.checked = true;
     if (!Browser.Opera && !Browser.OLD) // opera doesn't get it somehow
       this.assertMatchRule('input:checked', element);
     
     this.assertNotMatchRule('input:disabled', element);
-    element.disabled = true;
+    element._.disabled = true;
     if (!Browser.Opera) // opera doesn't get it somehow
       this.assertMatchRule('input:disabled', element);
     
     this.assertMatchRule('*:only-child', element);
     
     var element2 = document.createElement('input');
-    div.appendChild(element2);
+    div.insert(element2);
     
     this.assertNotMatchRule('*:only-child', element);
     this.assertNotMatchRule('*:only-child', element2);
@@ -283,7 +282,7 @@ var SelectorTest = TestCase.create({
     this.assertNotMatchRule('*:nth-child(2)', element);
     
     var element3 = document.createElement('div');
-    div.appendChild(element3);
+    div.insert(element3);
     
     // trying some 'n' pseudo variations
     this.assertMatchRule('*:nth-child(n)', element);
@@ -329,7 +328,7 @@ var SelectorTest = TestCase.create({
         
     // testing pseudo selectors with types
     var element4 = document.createElement('div');
-    div.appendChild(element4);
+    div.insert(element4);
     
     this.assertMatchRule('*:first-of-type', element);
     this.assertMatchRule('*:first-of-type', element3);
@@ -342,7 +341,7 @@ var SelectorTest = TestCase.create({
     this.assertNotMatchRule('*:last-of-type', element3);
     
     var element5 = document.createElement('textarea');
-    div.appendChild(element5);
+    div.insert(element5);
     
     this.assertMatchRule('*:only-of-type', element5);
     this.assertNotMatchRule('*:only-of-type', element);
