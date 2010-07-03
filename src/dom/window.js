@@ -54,7 +54,7 @@ Window.include({
   scrollTo: function(left, top, fx_options) {
     var left_pos = left, top_pos = top, element = $(left); // moving the values into new vars so they didn't get screwed later on
     
-    if(isElement(element)) {
+    if(element && '_' in element) {
       left = element.position();
     }
 
