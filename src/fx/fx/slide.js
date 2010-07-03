@@ -20,10 +20,10 @@ Fx.Slide = new Class(Fx.Twin, {
     
     this.styles = {};
     $w('overflow height width marginTop marginLeft').each(function(key) {
-      this.styles[key] = element.style[key];
+      this.styles[key] = element._.style[key];
     }, this);
 
-    element.style.overflow = 'hidden';
+    element._.style.overflow = 'hidden';
     this.onFinish('_getBack').onCancel('_getBack');
 
     return this.$super(this._getStyle(this.options.direction));
@@ -50,7 +50,7 @@ Fx.Slide = new Class(Fx.Twin, {
       }
 
     } else if (this.how == 'in') {
-      var element_style = this.element.style;
+      var element_style = this.element._.style;
       
       if (['top', 'bottom'].includes(direction)) {
         style.height = sizes.y + 'px';

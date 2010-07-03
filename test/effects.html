@@ -61,7 +61,7 @@
     <script>
       function run_test(link) {
         try {
-          eval($(link).prev('textarea').value);
+          eval($(link).prev('textarea')._.value);
         } catch(e) {
           alert(e.message);
         }
@@ -70,7 +70,7 @@
       };
       function reset_test(link) {
         var block = $(link).prev('div.test-container').first('div.testee');
-        block.replace($E('div', {'class': block.className, html: block.innerHTML, id: block.id}));
+        block.replace($E('div', {'class': block._.className, html: block._.innerHTML, id: block._.id}));
         return false;
       }
     </script>
@@ -137,7 +137,7 @@
       <script type="text/javascript">
         var props_test = $('props-test');
         for (var i=0; i < 64; i++)
-          props_test.innerHTML += '&nbsp;'+i;
+          props_test._.innerHTML += '&nbsp;'+i;
       </script>
     </p>
     

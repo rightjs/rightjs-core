@@ -43,7 +43,7 @@ var FxMorphTest = TestCase.create({
   },
   
   testNamedColorsRecognition: function() {
-    this.el.style.color = 'black';
+    this.el._.style.color = 'black';
     this.fx.start({
       color: 'yellow'
     });
@@ -53,7 +53,7 @@ var FxMorphTest = TestCase.create({
   },
   
   testDashedKeysHandling: function() {
-    this.el.style.backgroundColor = '#FFF';
+    this.el._.style.backgroundColor = '#FFF';
     this.fx.start({'background-color': '#DDD'});
     
     this.assertEqual([255, 255, 255], this.fx.before.backgroundColor);
@@ -84,4 +84,4 @@ var FxMorphTest = TestCase.create({
       this.assertEqual([0.5], this.fx.after.opacity);
     }
   }
-})
+});
