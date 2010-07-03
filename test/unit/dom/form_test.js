@@ -11,8 +11,8 @@ var FormTest = TestCase.create({
       id: 'my-form'
     });
     
-    this.assertEqual('FORM', form.tagName);
-    this.assertEqual('my-form', form.id);
+    this.assertEqual('FORM', form._.tagName);
+    this.assertEqual('my-form', form._.id);
   },
   
   setForm: function() {
@@ -72,7 +72,7 @@ var FormTest = TestCase.create({
     this.assertEqual(11, form.getElements().length);
     
     form.getElements().each(function(element) {
-      this.assert(element['getValue']);
+      this.assert('getValue' in element, "elements should be wrapped");
     }, this);
   },
   
@@ -88,7 +88,7 @@ var FormTest = TestCase.create({
     this.assertSame(form, form.focus());
     
     if (Browser.Konqueror) return;
-    this.assert(form.name.focused);
+    this.assert($(form._.name).focused);
   },
   
   testBlur: function() {
@@ -108,7 +108,7 @@ var FormTest = TestCase.create({
     this.assertSame(form, form.disable());
     
     form.inputs().each(function(element) {
-      this.assert(element.disabled);
+      this.assert(element._.disabled);
     }, this);
   },
   
@@ -118,7 +118,7 @@ var FormTest = TestCase.create({
     this.assertSame(form, form.enable());
     
     form.getElements().each(function(element) {
-      this.assertFalse(element.disabled);
+      this.assertFalse(element._.disabled);
     }, this);
   },
   
@@ -126,13 +126,13 @@ var FormTest = TestCase.create({
     if (Browser.Konqueror) return;
     var form = this.setForm();
     var result = document.querySelector ? {
-      name: 'Bob',
+      name:     'Bob',
       password: 'secret',
       text:     'Boo boo boo',
       kinda:    '1',
       items:    ['2', '3']
     } : {
-      name: 'Bob',
+      name:     'Bob',
       password: 'secret',
       kinda:    '1',
       items:    ['2', '3'],
@@ -141,8 +141,8 @@ var FormTest = TestCase.create({
     
     this.assertEqual(result, form.values());
     
-    form.keep_me.checked = true;
-    form.first('#who-bob').checked = true;
+    form._.keep_me.checked = true;
+    form.first('#who-bob')._.checked = true;
     
     var result = document.querySelector ? {
       name:     'Bob',

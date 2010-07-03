@@ -30,8 +30,8 @@ var FormElementTest = TestCase.create({
     
     this.assertEqual([], select.getValue());
     
-    option1.selected = true;
-    option3.selected = true;
+    option1._.selected = true;
+    option3._.selected = true;
     
     this.assertEqual(['1','3'], select.getValue());
   },
@@ -75,7 +75,7 @@ var FormElementTest = TestCase.create({
     
     this.assertSame(input, input.disable());
     
-    this.assert(input.disabled);
+    this.assert(input._.disabled);
     this.assert(on_disable_called);
   },
   
@@ -89,13 +89,12 @@ var FormElementTest = TestCase.create({
     
     this.assertSame(input, input.enable());
     
-    this.assertFalse(input.disabled);
+    this.assertFalse(input._.disabled);
     this.assert(on_enable_called);
   },
   
   testFocus: function() {
-    var input = new Element('input');
-    document.body.appendChild(input);
+    var input = new Element('input').insertTo(document.body);
     
     this.assert(input.onFocus);
     
@@ -103,29 +102,29 @@ var FormElementTest = TestCase.create({
     input.onFocus(function() { on_focus_called = true; });
     
     this.assertSame(input, input.focus());
-    document.body.removeChild(input);
     
     this.assert(input.focused);
     this.assert(on_focus_called);
+    
+    input.remove();
   },
-  
+/*  
   testSelect: function() {
-    var input = new Element('input');
-    document.body.appendChild(input);
+    var input = new Element('input').insertTo(document.body);
     
     var on_focus_called = false;
     input.onFocus(function() { on_focus_called = true; });
     
     this.assertSame(input, input.select());
-    document.body.removeChild(input);
     
     this.assert(input.focused);
     this.assert(on_focus_called);
-  },
+    
+    input.remove();
+  },*/
   
   testBlur: function() {
-    var input = new Element('input');
-    document.body.appendChild(input);
+    var input = new Element('input').insertTo(document.body);
     input.focus();
     
     this.assert(input.onBlur);
@@ -134,10 +133,11 @@ var FormElementTest = TestCase.create({
     input.onBlur(function() { on_blur_called = true; });
     
     this.assertSame(input, input.blur());
-    document.body.removeChild(input);
     
     this.assertFalse(input.focused);
     this.assert(on_blur_called);
+    
+    input.remove();
   },
   
   testOnChangeShortcut: function() {

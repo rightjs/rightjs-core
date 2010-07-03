@@ -22,8 +22,13 @@ var Form = RightJS.Form = function(in_options) {
    *
    * @return Array of elements
    */
-  getElements: function() {
+  elements: function() {
     return this.select('input,button,select,textarea');
+  },
+  
+  // DEPRECATED
+  getElements: function() {
+    return this.elements();
   },
   
   /**
@@ -47,6 +52,8 @@ var Form = RightJS.Form = function(in_options) {
     
     if (Element_isForm(this)) {
       element = this.inputs().first(function(input) { return input._.type != 'hidden'; });
+    } else {
+      this.focused = true;
     }
     
     if (element) element.focus();
@@ -64,6 +71,7 @@ var Form = RightJS.Form = function(in_options) {
       this.getElements().each('blur');
     } else {
       this._.blur();
+      this.focused = false;
     }
     
     return this.fire('blur');
@@ -74,10 +82,10 @@ var Form = RightJS.Form = function(in_options) {
    *
    * @return Element this
    */
-  select: function() {
-    this._.select();
-    return this.focus();
-  },
+//  select: function() {
+//    this._.select();
+//    return this.focus();
+//  },
   
   /**
    * disables all the elements on the form
