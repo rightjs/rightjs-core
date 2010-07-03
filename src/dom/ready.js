@@ -5,19 +5,28 @@
  *   The basic principles of the module are originated from
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
-[window, document].each(function(object) {
-  Observer.createShortcuts(object, ['ready']);
-  var ready = object.fire.bind(object, 'ready');
+[Window, Document].each(function(object) {
+  var proto = object[PROTO], old_on = proto.on, ready = proto.fire.bind(object, 'ready');
   
-  // IE and Konqueror browsers
-  if ('readyState' in document) {
-    (function() {
-      ['loaded','complete'].includes(document.readyState) ? ready() : arguments.callee.delay(50);
-    })();
-  } else {
-    document.addEventListener('DOMContentLoaded', ready, false);
-  }
+  // redefining the observer method to catch up
+  proto.on = function(name) {
+    if (name == 'ready') {
+      var document = this._, document = document.nodeType == 9 ? document : document.document;
+      
+      // IE and Konqueror browsers
+      if ('readyState' in document) {
+        (function() {
+          ['loaded','complete'].includes(document.readyState) ? ready() : arguments.callee.delay(50);
+        })();
+      } else {
+        document.addEventListener('DOMContentLoaded', ready, false);
+      }
+      
+    }
+    return old_on.apply(this, arguments);
+  };
   
+  Observer.createShortcuts(proto, ['ready']);
 });

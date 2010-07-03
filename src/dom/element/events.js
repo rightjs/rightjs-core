@@ -50,12 +50,8 @@ Element_observer.stopEvent = function(e) { e.stop(); };
 
 // loading the observer interface into the Element object
 Element.include(Element_observer);
-
-// loading up the observer to the document and window objects
-$ext(window, Element_observer);
-$ext(document, Element_observer);
+Document.include(Element_observer);
+Window.include(Element_observer);
 
 // couple more shortcuts for the window
-Observer.createShortcuts(window, $w('scroll resize'));
-
-
+Observer.createShortcuts(Window[PROTO], $w('scroll resize'));

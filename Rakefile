@@ -47,6 +47,9 @@ JS_SOURCES = {
     dom/browser
     dom/wrapper
     
+    dom/document
+    dom/window
+    
     dom/event
     dom/event/delegation
 
@@ -57,10 +60,7 @@ JS_SOURCES = {
     dom/element/dimensions
     dom/element/events
     
-    dom/document
-    dom/window
     dom/ready
-    
     dom/selector
   },
   

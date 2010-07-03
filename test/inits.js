@@ -23,6 +23,9 @@ var scripts = [
   
   'dom/wrapper',
   
+  'dom/document',
+  'dom/window',
+  
   'dom/event',
   'dom/event/delegation',
   
@@ -35,10 +38,7 @@ var scripts = [
   
   'dom/form',
   
-  'dom/document',
-  'dom/window',
   'dom/ready',
-  
   'dom/selector',
   
   'xhr/xhr',
