@@ -45,7 +45,7 @@ element_build = function(element, options) {
         if (key in element_arguments_map) {
           element[element_arguments_map[key]] = options[key];
         } else if (key in element_methods_map) {
-          element[element_methods_map[key]](options[key]);
+          this[element_methods_map[key]](options[key]);
         } else {
           this.set(key, options[key]);
         }

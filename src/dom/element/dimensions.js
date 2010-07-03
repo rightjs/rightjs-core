@@ -87,7 +87,7 @@ Element.include({
    * @return boolean check result
    */
   overlaps: function(target) {
-    var pos = this._.position(), size = this._.sizes();
+    var pos = this.position(), size = this.sizes();
     
     return target.x > pos.x && target.x < (pos.x + size.x)
         && target.y > pos.y && target.y < (pos.y + size.y);

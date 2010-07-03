@@ -8,7 +8,7 @@ var ElementEventsTest = TestCase.create({
   
   setUp: function() {
     this.el = new Element('div');
-    document.body.appendChild(this.el);
+    document.body.appendChild(this.el._);
   },
   
   tearDown: function() {
@@ -18,7 +18,7 @@ var ElementEventsTest = TestCase.create({
   testObserve: function() {
     var wired = false, context = null;
     this.assertSame(this.el, this.el.on('click', function() { wired = true; context = this; }));
-    this.fireClick(this.el);
+    this.fireClick(this.el._);
     this.assert(wired);
 
     this.assertSame(this.el, context);
@@ -30,8 +30,8 @@ var ElementEventsTest = TestCase.create({
     this.el.on('onclick', function() { clicked = true; });
     this.el.on('onmouseover', function() { hovered = true; });
     
-    this.fireClick(this.el);
-    this.fireMouseOver(this.el);
+    this.fireClick(this.el._);
+    this.fireMouseOver(this.el._);
     
     this.assert(clicked);
     this.assert(hovered);
@@ -46,8 +46,8 @@ var ElementEventsTest = TestCase.create({
       mouseover: function() {hovered = true}
     }));
     
-    this.fireClick(this.el);
-    this.fireMouseOver(this.el);
+    this.fireClick(this.el._);
+    this.fireMouseOver(this.el._);
     
     this.assert(clicked);
     this.assert(hovered);
@@ -79,7 +79,7 @@ var ElementEventsTest = TestCase.create({
     
     this.assertSame(this.el, this.el.stopObserving('click', func1));
     
-    this.fireClick(this.el);
+    this.fireClick(this.el._);
     
     this.assertFalse(clicked1, "didn't call the first function");
     this.assert(clicked2);
@@ -92,7 +92,7 @@ var ElementEventsTest = TestCase.create({
     
     this.assertSame(this.el, this.el.stopObserving('click'));
     
-    this.fireClick(this.el);
+    this.fireClick(this.el._);
     
     this.assertFalse(clicked1, "assuring didn't call the first function");
     this.assertFalse(clicked2, "assuring didn't call the second function");
@@ -137,7 +137,7 @@ var ElementEventsTest = TestCase.create({
     
     this.el.fire('boo');
     
-    this.assertEqual('boo-hoo', this.el.className);
+    this.assertEqual('boo-hoo', this.el._.className);
   },
   
   testShortcuts: function() {
@@ -167,21 +167,21 @@ var ElementEventsTest = TestCase.create({
     this.el.on('mouseout', 'removeClass', 'test-class');
     this.el.on('click', 'stopEvent');
     
-    this.fireMouseOver(this.el);
-    this.fireMouseOut(this.el);
-    this.fireClick(this.el);
+    this.fireMouseOver(this.el._);
+    this.fireMouseOut(this.el._);
+    this.fireClick(this.el._);
     
     this.assertEqual(['test-class'], add_class_args);
     this.assertEqual(['test-class'], remove_class_args);
     this.assertEqual(1, stop_event_args.length);
-    this.assertEqual("click", stop_event_args[0].type);
+    this.assertEqual("click", stop_event_args[0]._.type);
   },
   
   testW3CEventProperties: function() {
     var e = null;
     
     this.el.on('click', function(ev) { e = ev; });
-    this.fireClick(this.el);
+    this.fireClick(this.el._);
     
     this.assertSame(this.el, e.target, "testing target");
     this.assertEqual(1, e.which)

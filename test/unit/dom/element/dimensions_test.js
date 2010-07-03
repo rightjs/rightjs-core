@@ -133,16 +133,16 @@ var ElementDimensionsTest = TestCase.create({
   
   testSetWidth: function() {
     this.assertSame(this.div, this.div.setWidth(600));
-    this.assertEqual(600, this.div.offsetWidth);
+    this.assertEqual(600, this.div._.offsetWidth);
     
-    this.assertEqual(240, this.div.offsetHeight);
+    this.assertEqual(240, this.div._.offsetHeight);
   },
   
   testSetHeight: function() {
     this.assertSame(this.div, this.div.setHeight(600));
-    this.assertEqual(600, this.div.offsetHeight);
+    this.assertEqual(600, this.div._.offsetHeight);
     
-    this.assertEqual(400, this.div.offsetWidth);
+    this.assertEqual(400, this.div._.offsetWidth);
   },
   
   testResize: function() {

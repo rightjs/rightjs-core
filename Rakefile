@@ -48,7 +48,6 @@ JS_SOURCES = {
     dom/wrapper
     
     dom/event
-    dom/event/custom
     dom/event/delegation
 
     dom/element

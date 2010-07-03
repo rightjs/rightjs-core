@@ -23,10 +23,10 @@ hack_observer('on',
   '$1$2.e='+ REvent +'.cleanName($2.e);$2.n='+ REvent +'.realName($2.e);'+
   
   '$2.w=function(){'+
-    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():'+ REvent +'.ext(a[0],this);'+
-    'return $2.f.apply(this,a.concat($2.a))};' + (
+    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new '+ REvent +'(a[0],this);'+
+    'return $2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
       attach ?
-        '$2.w=$2.w.bind(this);this._.attachEvent("on"+$2.n,$2.w);' :
+        'this._.attachEvent("on"+$2.n,$2.w);' :
         'this._.addEventListener($2.n,$2.w,false);'
       )
 );
@@ -48,12 +48,14 @@ hack_observer('fire',
 // a simple events terminator method to be hooked like this.onClick('stopEvent');
 Element_observer.stopEvent = function(e) { e.stop(); };
 
+// loading the observer interface into the Element object
+Element.include(Element_observer);
+
 // loading up the observer to the document and window objects
 $ext(window, Element_observer);
 $ext(document, Element_observer);
 
 // couple more shortcuts for the window
-Observer.createShortcuts(window, $w('blur focus scroll resize'));
+Observer.createShortcuts(window, $w('scroll resize'));
 
-// loading the observer interface into the Element object
-Element.include(Element_observer);
+

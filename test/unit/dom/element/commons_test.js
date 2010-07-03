@@ -1,7 +1,7 @@
 /**
  * The Element unit common methods module test-case
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var ElementCommonsTest = TestCase.create({
   name: 'ElementCommonsTest',
@@ -12,7 +12,7 @@ var ElementCommonsTest = TestCase.create({
   
   testSetSimple: function() {
     this.assertSame(this.el, this.el.set('id', 'some-id'));
-    this.assertEqual('some-id', this.el.id);
+    this.assertEqual('some-id', this.el._.id);
   },
   
   testSetHash: function() {
@@ -21,77 +21,77 @@ var ElementCommonsTest = TestCase.create({
       'title': 'foo bar'
     }));
     
-    this.assertEqual('another-id', this.el.id);
-    this.assertEqual('foo bar', this.el.title);
+    this.assertEqual('another-id', this.el._.id);
+    this.assertEqual('foo bar', this.el._.title);
   },
   
   testSetCustom: function() {
     this.el.set('data-boo', 'boo');
-    this.assertEqual('boo', this.el['data-boo']);
-    this.assertEqual('boo', this.el.getAttribute('data-boo'));
+    this.assertEqual('boo', this.el._['data-boo']);
+    this.assertEqual('boo', this.el._.getAttribute('data-boo'));
   },
   
   testSetLabelFor: function() {
     var label = $E('label', {'for': 'boo'});
-    this.assertEqual('boo', label.getAttribute('for'));
+    this.assertEqual('boo', label._.getAttribute('for'));
   },
   
   testGet: function() {
-    this.el.id = 'something';
-    this.assertEqual(this.el.id, this.el.get('id'));
+    this.el._.id = 'something';
+    this.assertEqual(this.el._.id, this.el.get('id'));
     this.assertNull(this.el.get('title'));
   },
   
   testHas: function() {
-    this.el.id = 'something';
+    this.el._.id = 'something';
     this.assert(this.el.has('id'));
     this.assertFalse(this.el.has('title'));
   },
   
   testErase: function() {
-    this.el.id = 'somethig';
+    this.el._.id = 'somethig';
     this.assertSame(this.el, this.el.erase('id'));
     this.assertFalse(this.el.has('id'));
   },
   
   testHidden: function() {
     this.assertFalse(this.el.hidden());
-    this.el.style.display = 'none';
+    this.el._.style.display = 'none';
     this.assert(this.el.hidden());
   },
   
   testVisible: function() {
     this.assert(this.el.visible());
-    this.el.style.display = 'none';
+    this.el._.style.display = 'none';
     this.assertFalse(this.el.visible());
   },
   
   testHide: function() {
-    this.assertVisible(this.el);
+    this.assertVisible(this.el._);
     this.assertSame(this.el, this.el.hide());
-    this.assertHidden(this.el);
+    this.assertHidden(this.el._);
   },
   
   testShow: function() {
-    this.el.style.display = 'none';
-    this.assertHidden(this.el)
+    this.el._.style.display = 'none';
+    this.assertHidden(this.el._)
     this.assertSame(this.el, this.el.show());
-    this.assertVisible(this.el);
+    this.assertVisible(this.el._);
   },
   
   testHideShowPrevDisplayRestoration: function() {
-    this.el.style.display = 'inline';
+    this.el._.style.display = 'inline';
     this.el.hide();
     this.el.show();
-    this.assertStyle(this.el, {display: 'inline'});
+    this.assertStyle(this.el._, {display: 'inline'});
   },
   
   testToggle: function() {
-    this.assertVisible(this.el);
+    this.assertVisible(this.el._);
     this.assertSame(this.el, this.el.toggle());
-    this.assertHidden(this.el);
+    this.assertHidden(this.el._);
     this.assertSame(this.el, this.el.toggle());
-    this.assertVisible(this.el);
+    this.assertVisible(this.el._);
   },
   
   testRadio: function() {
@@ -100,23 +100,23 @@ var ElementCommonsTest = TestCase.create({
     var div2  = new Element('div');
     var div3  = new Element('div');
     
-    block.appendChild(div1);
-    block.appendChild(div2);
-    block.appendChild(div3);
+    block.appendChild(div1._);
+    block.appendChild(div2._);
+    block.appendChild(div3._);
     
     this.assertSame(div1, div1.radio());
-    this.assertVisible(div1, 'div1');
-    this.assertHidden(div2);
-    this.assertHidden(div3);
+    this.assertVisible(div1._, 'div1');
+    this.assertHidden(div2._);
+    this.assertHidden(div3._);
     
     this.assertSame(div2, div2.radio());
-    this.assertVisible(div2, 'div2');
-    this.assertHidden(div1);
-    this.assertHidden(div3);
+    this.assertVisible(div2._, 'div2');
+    this.assertHidden(div1._);
+    this.assertHidden(div3._);
     
     this.assertSame(div3, div3.radio());
-    this.assertVisible(div3, 'div3');
-    this.assertHidden(div2);
-    this.assertHidden(div1);
+    this.assertVisible(div3._, 'div3');
+    this.assertHidden(div2._);
+    this.assertHidden(div1._);
   }
 })

@@ -26,7 +26,7 @@ Element.include({
   
   subNodes: function(css_rule) {
     return this.select(css_rule).filter(function(element) {
-      return element.parentNode === this._;
+      return element._.parentNode === this._;
     }, this);
   },
   
@@ -78,13 +78,13 @@ Element.include({
    * @return Element self
    */
   insert: function(content, position) {    
-    if ('_' in content) content = content._;
-    
     var scripts, element = this._;
     position = (position||'bottom').toLowerCase();
     
     if (typeof(content) !== 'object') {
       content = (''+content).stripScripts(function(s) { scripts = s; });
+    } else if (content && '_' in content) {
+      content = content._;
     }
     
     Element_insertions[position](element, content.tagName ? content :
@@ -255,11 +255,12 @@ Element_createFragment = function(content) {
     content = tmp.childNodes;
   }
   
-  for (var i=0, length = content.length; i < length; i++) {
+  for (var i=0, length = content.length, node; i < length; i++) {
     // in case of NodeList unit, the elements will be removed out of the list during the appends
     // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
     // then we always hit the first element of the stack
-    fragment.appendChild(content[content.length == length ? i : 0]);
+    node = content[content.length == length ? i : 0];
+    fragment.appendChild(node instanceof Element ? node._ : node);
   }
   
   return fragment;

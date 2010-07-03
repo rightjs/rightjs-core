@@ -1,7 +1,7 @@
 /**
  * The Element class styles related module functionality test
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 document.write('<st'+'yle>div.test---1234{font-size: 14px; display:none;}</st'+'yle>');
 var ElementStylesTest = TestCase.create({
@@ -13,7 +13,7 @@ var ElementStylesTest = TestCase.create({
   
   testSetStyleWithKeyValue: function() {
     this.assertSame(this.el, this.el.setStyle('fontSize', '14px'));
-    this.assertStyle(this.el, {fontSize: '14px'});
+    this.assertStyle(this.el._, {fontSize: '14px'});
   },
   
   testSetStyleAsHash: function() {
@@ -24,7 +24,7 @@ var ElementStylesTest = TestCase.create({
     }
     
     this.assertSame(this.el, this.el.setStyle(style));
-    this.assertStyle(this.el, style);
+    this.assertStyle(this.el._, style);
   },
   
   testGetStyleWithElementLevelStyles: function() {
@@ -38,8 +38,8 @@ var ElementStylesTest = TestCase.create({
   },
   
   testGetStyleWithCSSLevelStyles: function() {
-    this.el.className = 'test---1234';
-    document.body.appendChild(this.el);
+    this.el._.className = 'test---1234';
+    document.body.appendChild(this.el._);
     
     this.assertEqual('14px', this.el.getStyle('font-size'));
     this.assertEqual('none', this.el.getStyle('display'));
@@ -49,9 +49,9 @@ var ElementStylesTest = TestCase.create({
     this.el.setStyle('opacity', 0.4);
     
     if (Browser.IE) {
-      this.assertEqual('alpha(opacity=40)', this.el.style['filter']);
+      this.assertEqual('alpha(opacity=40)', this.el._.style.filter);
     } else {
-      this.assertEqual('0.4', this.el.style['opacity']);
+      this.assertEqual('0.4', this.el._.style.opacity);
     }
   },
   
@@ -64,7 +64,7 @@ var ElementStylesTest = TestCase.create({
   testSetFloatStyle: function() {
     this.el.setStyle('float', 'right');
     
-    this.assertEqual('right', this.el.style[Browser.IE ? 'styleFloat' : 'cssFloat']);
+    this.assertEqual('right', this.el._.style[Browser.IE ? 'styleFloat' : 'cssFloat']);
   },
   
   testGetFloatStyle: function() {
@@ -75,20 +75,20 @@ var ElementStylesTest = TestCase.create({
   
   testAssignStyleAsString: function() {
     this.el.setStyle('display: block; font-size: 12px');
-    this.assertEqual('block', this.el.style.display);
-    this.assertEqual('12px',  this.el.style.fontSize);
+    this.assertEqual('block', this.el._.style.display);
+    this.assertEqual('12px',  this.el._.style.fontSize);
   },
   
   testHasClass: function() {
     this.assert(!this.el.hasClass('foo'));
     this.assert(!this.el.hasClass('boo'));
     
-    this.el.className = 'foo';
+    this.el._.className = 'foo';
     
     this.assert( this.el.hasClass('foo'));
     this.assert(!this.el.hasClass('boo'));
     
-    this.el.className = 'foo boo';
+    this.el._.className = 'foo boo';
     
     this.assert(this.el.hasClass('foo'));
     this.assert(this.el.hasClass('boo'));
@@ -96,43 +96,43 @@ var ElementStylesTest = TestCase.create({
   
   testSetClass: function() {
     this.assertSame(this.el, this.el.setClass('foo bar'));
-    this.assertEqual('foo bar', this.el.className);
+    this.assertEqual('foo bar', this.el._.className);
   },
   
   testAddClass: function() {
-    this.assertHasNoClassName(this.el, 'foo');
-    this.assertHasNoClassName(this.el, 'boo');
+    this.assertHasNoClassName(this.el._, 'foo');
+    this.assertHasNoClassName(this.el._, 'boo');
     
     this.el.addClass('foo');
     
-    this.assertHasClassName(this.el, 'foo');
-    this.assertHasNoClassName(this.el, 'boo');
+    this.assertHasClassName(this.el._, 'foo');
+    this.assertHasNoClassName(this.el._, 'boo');
     
     this.assertSame(this.el, this.el.addClass('boo'), "check if the method returns the element again");
     
-    this.assertHasClassName(this.el, 'foo');
-    this.assertHasClassName(this.el, 'boo');
+    this.assertHasClassName(this.el._, 'foo');
+    this.assertHasClassName(this.el._, 'boo');
     
     this.el.addClass('boo');
-    this.assertEqual('foo boo', this.el.className, "check if the class was not added twice");
+    this.assertEqual('foo boo', this.el._.className, "check if the class was not added twice");
   },
   
   testRemoveClass: function() {
-    this.el.className = 'foo boo';
+    this.el._.className = 'foo boo';
       
     this.el.removeClass('foo');
-    this.assertEqual('boo', this.el.className);
+    this.assertEqual('boo', this.el._.className);
     
     this.assertSame(this.el, this.el.removeClass('boo'), "check if the method returns the element again");
-    this.assertEqual('', this.el.className);
+    this.assertEqual('', this.el._.className);
   },
   
   testToggleClass: function() {
     this.el.toggleClass('foo');
-    this.assertHasClassName(this.el, 'foo');
+    this.assertHasClassName(this.el._, 'foo');
     
     this.assertSame(this.el, this.el.toggleClass('foo'));
-    this.assertHasNoClassName(this.el, 'foo');
+    this.assertHasNoClassName(this.el._, 'foo');
   },
   
   testRadioClass: function() {

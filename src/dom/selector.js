@@ -51,7 +51,7 @@ Element.include({
    * @return Boolean check result
    */
   match: function(css_rule) {
-    var result, parent = this.tagName === 'HTML' ? this.ownerDocument : this.parents().last();
+    var result, parent = this._.tagName === 'HTML' ? this._.ownerDocument : this.parents().last();
     
     // if it's a single node putting it into the context
     result = $(parent || $E('p').insert(this)).select(css_rule).include(this);

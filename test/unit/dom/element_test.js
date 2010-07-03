@@ -1,24 +1,33 @@
 /**
  * The Element class unit-test
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var ElementTest = TestCase.create({
   name: 'ElementTest',
   
   testInstance: function() {
-    this.assertEqual('DIV',   new Element('div').tagName);
-    this.assertEqual('TABLE', new Element('table').tagName);
+    this.assertEqual('DIV',   new Element('div')._.tagName);
+    this.assertEqual('TABLE', new Element('table')._.tagName);
+  },
+  
+  testInstanceCaching: function() {
+    var div = document.createElement('div');
+    var el1 = new Element(div);
+    var el2 = new Element(div);
+    
+    this.assertSame(el1, el2);
+    this.assertInstanceOf(RightJS.Element, el1);
   },
   
   testInstanceWithClass: function() {
     this.assertEqual('foo bla', new Element('div', {
       'class': 'foo bla'
-    }).className);
+    })._.className);
     
     this.assertEqual('foo bla', new Element('div', {
       'class': 'foo bla'
-    }).className);
+    })._.className);
   },
   
   testInstanceWithStyle: function() {
@@ -29,14 +38,14 @@ var ElementTest = TestCase.create({
     }
     this.assertStyle(new Element('div', {
       style: style
-    }), style);
+    })._, style);
   },
   
   testInstanceWithAttributes: function() {
     var el = new Element('div', {
       id: 'el-id',
       title: 'el-title'
-    });
+    })._;
     
     this.assertEqual('el-id', el.id);
     this.assertEqual('el-title', el.title);
@@ -52,20 +61,10 @@ var ElementTest = TestCase.create({
     this.assert(el.observes('click'));
   },
   
-  testInstanceWithShorterEvents: function() {
-    var el = new Element('div', {
-      on: {
-        click: function() {}
-      }
-    });
-    
-    this.assert(el.observes('click'));
-  },
-  
   testInstanceWithHtml: function() {
     var el = new Element('div', {
       html: "inner html"
-    });
+    })._;
     
     this.assertEqual('inner html', el.innerHTML);
   },
@@ -75,7 +74,7 @@ var ElementTest = TestCase.create({
       type: 'checkbox',
       name: 'box1',
       checked: true
-    });
+    })._;
     
     this.assertEqual('checkbox', box1.type);
     this.assertEqual('box1',     box1.name);
@@ -85,7 +84,7 @@ var ElementTest = TestCase.create({
       type: 'radio',
       name: 'box2',
       checked: true
-    });
+    })._;
     
     this.assertEqual('radio', box2.type);
     this.assertEqual('box2',  box2.name);
@@ -95,7 +94,7 @@ var ElementTest = TestCase.create({
       this.assertEqual(
         '<INPUT type=checkbox CHECKED name=box1>'+
         '<INPUT type=radio CHECKED name=box2>',
-        $E('div').insert([box1, box2]).innerHTML
+        $E('div').insert([box1, box2])._.innerHTML
       );
     }
   },
