@@ -405,7 +405,7 @@ var XhrTest = TestCase.create({
     var request = new Xhr('foo/bar');
     
     this.assertSame(request, request.update(div));
-    this.assertEqual('response text', div.innerHTML);
+    this.assertEqual('response text', div._.innerHTML);
     this.assertEqual(4444, window.____1);
   },
   
@@ -416,7 +416,7 @@ var XhrTest = TestCase.create({
     var div = new Element('div');
     
     this.assertSame(div, div.load('foo/bar'));
-    this.assertEqual('response text', div.innerHTML);
+    this.assertEqual('response text', div._.innerHTML);
     this.assertEqual(4444, window.____1);
   },
   

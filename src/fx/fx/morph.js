@@ -29,7 +29,7 @@ function check_border_styles(before, after) {
       bd_color = Border + direction + Color;
     
     if (bd_style in before && before[bd_style] != after[bd_style]) {
-      var style = this.element.style;
+      var style = this.element._.style;
 
       if (before[bd_style] == 'none') {
         style[bd_width] = '0px';
@@ -37,7 +37,7 @@ function check_border_styles(before, after) {
 
       style[bd_style] = after[bd_style];
       if (this._transp(before[bd_color])) {
-        style[bd_color] = this.element.getStyle(Color);
+        style[bd_color] = this.element._.getStyle(Color);
       }
     }
   }
@@ -81,7 +81,7 @@ Fx.Morph = new Class(Fx, {
   },
   
   render: function(delta) {
-    var before, after, value, style = this.element.style, key, i;
+    var before, after, value, style = this.element._.style, key, i;
     for (key in this.after) {
       before = this.before[key];
       after  = this.after[key];
@@ -103,7 +103,7 @@ Fx.Morph = new Class(Fx, {
    * @return Object end style
    */
   _endStyle: function(style, keys) {
-    var element = this.element, dummy  = $(element.cloneNode(true))
+    var element = this.element, dummy  = $(element._.cloneNode(true))
         .setStyle('position:absolute;z-index:-1;visibility:hidden')
         .setWidth(element.sizes().x)
         .setStyle(style);

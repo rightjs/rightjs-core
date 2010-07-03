@@ -14,10 +14,10 @@ var XhrJSONPTest = TestCase.create({
     });
     
     this.assert(xhr.script);
-    this.assertEqual('SCRIPT', xhr.script.tagName);
-    this.assertEqual('text/javascript', xhr.script.type);
-    this.assertEqual('utf-8', xhr.script.charset);
-    this.assert(xhr.script.async);
+    this.assertEqual('SCRIPT', xhr.script._.tagName);
+    this.assertEqual('text/javascript', xhr.script._.type);
+    this.assertEqual('utf-8', xhr.script._.charset);
+    this.assert(xhr.script._.async);
     
     this.assert(xhr.name.startsWith(xhr.prefix));
     this.assert(xhr.name != xhr.prefix);
@@ -32,8 +32,8 @@ var XhrJSONPTest = TestCase.create({
       async:    false
     });
     
-    this.assertEqual('cp1251', xhr.script.charset);
-    this.assertFalse(xhr.script.async);
+    this.assertEqual('cp1251', xhr.script._.charset);
+    this.assertFalse(xhr.script._.async);
     this.assertEqual('some_name='+xhr.name, xhr.param);
   },
   
@@ -51,7 +51,7 @@ var XhrJSONPTest = TestCase.create({
     
     this.assertEqual(
       url + "?" + xhr.param +"&some=data",
-      xhr.script.src
+      xhr.script._.src
     );
     
     // checking the global callback presence
