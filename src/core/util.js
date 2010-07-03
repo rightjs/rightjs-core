@@ -215,14 +215,16 @@ $ = RightJS.$ = function(element) {
     element = document.getElementById(element);
   }
   
-  if (element[UID_KEY] && Wrappers_Cache[element[UID_KEY]])
-    element = Wrappers_Cache[element[UID_KEY]];
-  else if (element.nodeType === 1)
-    element = new Element(element);
-  else if (element.window === element)
-    element = new Window(element);
-  else if (element.nodeType === 9)
-    element = new Document(element);
+  if (element) {
+    if (element[UID_KEY] && Wrappers_Cache[element[UID_KEY]])
+      element = Wrappers_Cache[element[UID_KEY]];
+    else if (element.nodeType === 1)
+      element = new Element(element);
+    else if (element.window === element)
+      element = new Window(element);
+    else if (element.nodeType === 9)
+      element = new Document(element);
+  }
     
   return element;
 },
@@ -288,6 +290,15 @@ make_extensible = function(Klass) {
       if (isHash(args[i])) {
         $ext(Klass.Methods, args[i]);
         $ext(Klass[PROTO], args[i]);
+      }
+    }
+    return Klass;
+  };
+  Klass.extend = function() {
+    var args = arguments, i=0;
+    for (;i < args.length; i++) {
+      if (isHash(args[i])) {
+        $ext(Klass, args[i]);
       }
     }
     return Klass;

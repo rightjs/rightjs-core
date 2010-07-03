@@ -72,7 +72,7 @@ if (Browser.IE) {
 Element = RightJS.Element = BuildWrapper(element_build);
 
 if (old_Element) {
-  $ext(Element, old_Element).parent = old_Element;
+  Element.extend(old_Element).parent = old_Element;
 }
 
 // predefine the uniq id key in the prototype to boost up future assignments
