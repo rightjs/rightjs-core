@@ -16,7 +16,7 @@
 require 'rake'
 require 'fileutils'
 
-RIGHTJS_VERSION = 'two.o.o'
+RIGHTJS_VERSION = '2.0.0-beta'
 
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
