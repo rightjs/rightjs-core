@@ -1,11 +1,6 @@
 /**
  * The manual css-selector feature implementation
  *
- * NOTE: this will define the standard css-selectors interface
- *       with the same names as native css-selectors implementation
- *       the actual public Element level methods for the feature
- *       is in the dom/selector.js file
- *
  * Credits:
  *   - Sizzle    (http://sizzlejs.org)      Copyright (C) John Resig
  *   - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
@@ -387,8 +382,6 @@ if (!document.querySelector) {
       for (var i=0, length = selectors.length; i < length; i++)
         result = result.concat(selectors[i](element));
       
-      if (RightJS.Browser.OLD) result.forEach(RightJS.Element.prepare);
-      
       return result;
     };
     
@@ -404,7 +397,7 @@ if (!document.querySelector) {
       },
       
       select: function(css_rule) {
-        return select_all(this, css_rule || '*');
+        return select_all(this._, css_rule || '*').map(RightJS.$);
       }
     };
     

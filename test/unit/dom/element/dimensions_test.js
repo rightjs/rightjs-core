@@ -43,6 +43,14 @@ var ElementDimensionsTest = TestCase.create({
     window.scrollTo(0,0);
   },
   
+  testDocReference: function() {
+    this.assertSame($(document), this.div.doc());
+  },
+  
+  testWinReference: function() {
+    this.assertSame($(window), this.div.win());
+  },
+  
   testSize: function() {
     this.assertEqual({x: 400, y: 240}, this.div.sizes());
   },

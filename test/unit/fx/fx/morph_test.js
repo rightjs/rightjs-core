@@ -27,10 +27,6 @@ var FxMorphTest = TestCase.create({
       color: '#FFF'
     });
     
-    console.log(this.el.computedStyles());
-    console.log(this.fx.before);
-    console.log(this.fx.after);
-    
     this.assertEqual([0], this.fx.before.height);
     this.assertEqual([0,0,0], this.fx.before.color);
     

@@ -36,7 +36,7 @@ Event = RightJS.Event = BuildWrapper(function(event, bound_element) {
   
   if (!('target' in event) && 'srcElement' in event) {
     // grabbin the IE properties
-    this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1
+    this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
     
     // faking the target property  
     this.target = $(event.srcElement) || bound_element;
@@ -47,7 +47,7 @@ Event = RightJS.Event = BuildWrapper(function(event, bound_element) {
     
     // faking the mouse position
     var scrolls = this.target.win().scrolls();
-
+    
     event.pageX = event.clientX + scrolls.x;
     event.pageY = event.clientY + scrolls.y;
   } else if (event.target && event.target.nodeType === 3) {

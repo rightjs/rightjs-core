@@ -9,11 +9,12 @@ if (RightJS.Browser.OLD) {
   // loads DOM element extensions for selected elements
   $ = RightJS.$ = (function(old_function) {
     return function(id) {
-      var element = old_function(id), match = !RightJS.isString(id) || /^#([\w\-]+)/.exec(id);
+      var element = old_function(id), match = RightJS.isString(id) ? /^#([\w\-]+)$/.exec(id) : null;
       
       // old IE browses match both, ID and NAME
-      if (element !== null && match !== null && element._.id !== match[1])
+      if (element instanceof RightJS.Element && match !== null && element._.id !== match[1]) {
         element = RightJS.$(document).first(id);
+      }
         
       return element;
     }

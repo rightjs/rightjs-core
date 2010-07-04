@@ -17,7 +17,7 @@ UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
 DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1, // !#server
-Wrapper = dummy(), Wrappers_Cache = [], UID_KEY = '_rid',    // !#server
+Wrapper = dummy(), Wrappers_Cache = [], UID_KEY = '_rid'+ new Date().getTime(),    // !#server
  
 /**
  * extends the first object with the keys and values of the second one
@@ -212,7 +212,7 @@ $E = RightJS.$E = function(tag_name, options) {
  */
 $ = RightJS.$ = function(element) {
   if (typeof element === 'string') {
-    var hash = element[0], id = element.substr(1);
+    var hash = element.charAt(0), id = element.substr(1);
     element = (hash === '#' && /^[\w\-]+$/.test(id)) ?
       document.getElementById(id) : $(document).select(element);
   }
@@ -222,12 +222,12 @@ $ = RightJS.$ = function(element) {
       element = Wrappers_Cache[element[UID_KEY]];
     else if (element.nodeType === 1)
       element = new Element(element);
-    else if (element.window === element)
+    else if (element.window == element)
       element = new Window(element);
     else if (element.nodeType === 9)
       element = new Document(element);
   }
-    
+  
   return element;
 },
 
@@ -317,4 +317,3 @@ if (isHash(HTML)) {
 for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
   make_extensible(natives[i]);
 }
-

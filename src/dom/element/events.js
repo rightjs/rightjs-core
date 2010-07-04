@@ -24,7 +24,7 @@ hack_observer('on',
   
   '$2.w=function(){'+
     'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new '+ REvent +'(a[0],this);'+
-    'return $2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
+    '$2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
       attach ?
         'this._.attachEvent("on"+$2.n,$2.w);' :
         'this._.addEventListener($2.n,$2.w,false);'

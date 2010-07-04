@@ -291,58 +291,64 @@ var ElementStructsTest = TestCase.create({
     }, this);
   },
   
+  _html: function(el) {
+    var element = el || this.el;
+    element = '_' in element ? element._ : element;
+    return element.innerHTML.toLowerCase().replace(/\s+</mg, "<").replace(/\s+_rid[^=]+="\d+"/mg, '')
+  },
+  
   testInsert: function() {
     this.assertSame(this.el, this.el.insert("<div></div><script>self['____test'] = 2;</script>"));
-    this.assertEqual('<div></div>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<div></div>', this._html());
     this.assertEqual(2, self['____test']);
     self['____test'] = null;
     
     this.assertSame(this.el, this.el.insert(document.createElement('span'), 'bottom'));
-    this.assertEqual('<div></div><span></span>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<div></div><span></span>', this._html());
     
     this.el.insert(new Element('b'), 'top');
-    this.assertEqual('<b></b><div></div><span></span>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><div></div><span></span>', this._html());
     
     this.el.first('div').insert('<blockquote></blockquote><cite></cite>', 'before');
     this.assertEqual(
       '<b></b><blockquote></blockquote><cite></cite><div></div><span></span>',
-      this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+      this._html()
     );
     
     this.el.first('blockquote').insert([new Element('i'), new Element('u')], 'after');
     this.assertEqual(
       '<b></b><blockquote></blockquote><i></i><u></u><cite></cite><div></div><span></span>',
-      this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+      this._html()
     );
     
     this.el.first('b').insert('some string', 'instead');
     this.assertEqual(
       'some string<blockquote></blockquote><i></i><u></u><cite></cite><div></div><span></span>',
-      this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+      this._html()
     );
   },
   
   testInsertTable: function() {
     var el = $E('table').insert('<tr><td>test</td></tr>');
     this.assertEqual('<tbody><tr><td>test</td></tr></tbody>',
-      el._.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+      this._html(el)
     );
     
     el.first('tr').insert('<tr><td>another</td></tr>', 'after');
     this.assertEqual('<tbody><tr><td>test</td></tr><tr><td>another</td></tr></tbody>',
-      el._.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+      this._html(el)
     );
     
     el.first('tr').insert('<tr><td>more</td></tr>', 'before');
     this.assertEqual('<tbody><tr><td>more</td></tr><tr><td>test</td></tr><tr><td>another</td></tr></tbody>',
-      el._.innerHTML.toLowerCase().replace(/\s+</mg, "<")
+      this._html(el)
     );
   },
   
   testInsertOptions: function() {
     var el = $E('select').insert('<option>test</option>');
     this.assertEqual('<option>test</option>',
-      el._.innerHTML.toLowerCase().replace(/\s+</mg, "<").replace(' selected', '') // <- IE fix
+      this._html(el).replace(' selected', '') // <- IE fix
     )
   },
   
@@ -361,31 +367,31 @@ var ElementStructsTest = TestCase.create({
     this.el._.innerHTML = '<b></b><div></div><span></span>';
     this.el.first('div').replace('<ul></ul><ul></ul><script>self["____test"]=4;</script>');
     
-    this.assertEqual('<b></b><ul></ul><ul></ul><span></span>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><ul></ul><ul></ul><span></span>', this._html());
     this.assertEqual(4, self['____test']);
     self['____test'] = null;
     
     this.assertSame(this.el.first('ul'), this.el.first('ul').replace(document.createElement('cite')));
-    this.assertEqual('<b></b><cite></cite><ul></ul><span></span>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><cite></cite><ul></ul><span></span>', this._html());
     
     this.el.first('span').replace([$E('div'), $E('u')]);
-    this.assertEqual('<b></b><cite></cite><ul></ul><div></div><u></u>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><cite></cite><ul></ul><div></div><u></u>', this._html());
     
     this.el.first('div').replace('div string');
-    this.assertEqual('<b></b><cite></cite><ul></ul>div string<u></u>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<b></b><cite></cite><ul></ul>div string<u></u>', this._html());
   },
   
   testUpdate: function() {
     this.el.update('<div></div><script>self["____test"] = 8;</script>');
-    this.assertEqual('<div></div>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<div></div>', this._html());
     this.assertEqual(8, self['____test']);
     self['____test'] = null;
     
     this.assertSame(this.el, this.el.update(document.createElement('span')));
-    this.assertEqual('<span></span>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<span></span>', this._html());
     
     this.el.update([$E('i'), $E('b'), $E('u')]);
-    this.assertEqual('<i></i><b></b><u></u>', this.el._.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<i></i><b></b><u></u>', this._html());
   },
   
   testUpdateSelect: function() {
@@ -436,7 +442,7 @@ var ElementStructsTest = TestCase.create({
     div.appendChild(this.el._)
     this.assertSame(this.el, this.el.wrap(p));
     
-    this.assertEqual('<p><div></div></p>', div.innerHTML.toLowerCase().replace(/\s+</mg, "<"));
+    this.assertEqual('<p><div></div></p>', this._html(div));
   },
   
   testClean: function() {

@@ -20,7 +20,7 @@ Element.include({
    * @return RightJS.Window
    */
   win: function() {
-    var doc = this.document()._;
+    var doc = this.doc()._;
     return $(doc.defaultView || doc.parentWindow);
   },
   

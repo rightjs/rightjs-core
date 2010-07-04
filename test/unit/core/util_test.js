@@ -9,7 +9,7 @@ var UtilTest = TestCase.create({
   beforeAll: function() {
     var id = 'datatypes_checks_iframe';
     
-    window._d = $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
+    $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
       '" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
     
     var array, object, doc, und, nil;
@@ -304,17 +304,6 @@ var UtilTest = TestCase.create({
     
     this.assert(res2[0] instanceof RightJS.Element);
     this.assertSame(el, res2[0]._);
-  },
-  
-  test_$_window_access: function() {
-    var wrap = $(window);
-    
-    this.assert(wrap instanceof RightJS.Window);
-  },
-  
-  test_$_document_access: function() {
-    var d = $(document);
-    this.assert(d instanceof RightJS.Document);
   },
   
   test_$w: function() {

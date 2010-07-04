@@ -92,9 +92,9 @@ var ElementTest = TestCase.create({
     
     if (Browser.OLD) {
       this.assertEqual(
-        '<INPUT type=checkbox CHECKED name=box1>'+
-        '<INPUT type=radio CHECKED name=box2>',
-        $E('div').insert([box1, box2])._.innerHTML
+        '<INPUT type=checkbox CHECKED value=on name=box1>'+
+        '<INPUT type=radio CHECKED value=on name=box2>',
+        $E('div').insert([box1, box2])._.innerHTML.replace(/\s+_rid[^=]+="\d+"/mg, '')
       );
     }
   },
