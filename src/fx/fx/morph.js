@@ -81,12 +81,12 @@ Fx.Morph = new Class(Fx, {
   },
   
   render: function(delta) {
-    var before, after, value, style = this.element._.style, key, i;
+    var before, after, value, style = this.element._.style, key, i, l;
     for (key in this.after) {
       before = this.before[key];
       after  = this.after[key];
       
-      for (i=0; i < after.length; i++) {
+      for (i=0, l = after.length; i < l; i++) {
         value = before[i] + (after[i] - before[i]) * delta;
         if (after.r) value = Math.round(value);
         after.t[i*2 + 1] = value;
@@ -127,14 +127,13 @@ Fx.Morph = new Class(Fx, {
   _cloneStyle: function(element, keys) {
     for (var i=0, len = keys.length, style = element.computedStyles(), clean = {}, key; i < len; i++) {
       key = keys[i];
-      clean[key] = style[key];
+      clean[key] = ''+ style[key];
       
       // libwebkit bug fix for in case of languages pack applied
       if (key === 'opacity') {
         clean[key] = clean[key].replace(',', '.');
       }
     }
-      
     
     return clean;
   },
@@ -179,7 +178,7 @@ Fx.Morph = new Class(Fx, {
     for (key in after) {
       // checking the height/width options
       if ((key == 'width' || key == 'height') && before[key] == 'auto') {
-        before[key] = this.element['offset'+key.capitalize()] + 'px';
+        before[key] = this.element._['offset'+key.capitalize()] + 'px';
       }
     }
     
