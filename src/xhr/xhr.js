@@ -111,7 +111,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     var add_params = {}, url = this.url, method = this.method.toLowerCase(), headers = this.headers, key, xhr;
     
     if (method == 'put' || method == 'delete') {
-      url += (url.includes('?') ? '&' : '?') + '_method='+ method;
+      add_params._method = method;
       method = 'post';
     }
     

@@ -456,14 +456,14 @@ var XhrTest = TestCase.create({
     xhr.send('some=data');
     
     this.assertEqual('post', method);
-    this.assertEqual('/url?_method=put', url);
-    this.assertEqual('some=data', data);
+    this.assertEqual('/url', url);
+    this.assertEqual('some=data&_method=put', data);
     
     xhr.method = 'DELETE'; 
     xhr.send('some=data');
     
     this.assertEqual('post', method);
-    this.assertEqual('/url?_method=delete', url);
-    this.assertEqual('some=data', data);
+    this.assertEqual('/url', url);
+    this.assertEqual('some=data&_method=delete', data);
   }
 });
