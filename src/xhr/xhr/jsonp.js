@@ -50,7 +50,7 @@ Xhr.JSONP = new Class({
     window[this.name] = this.finish.bind(this);
     
     this.script.set('src', this.url + (this.url.include('?') ? '&' : '?') + this.param + "&" + data)
-      .insertTo($$('script').last(), 'after');
+      .insertTo($('script').last(), 'after');
   },
   
   /**

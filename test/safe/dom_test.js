@@ -41,7 +41,7 @@ var DomTest = TestCase.create({
   },
   
   testFindByCss: function() {
-    var els = RightJS.$$('#test-div div.one div');
+    var els = RightJS.$('#test-div div.one div');
     
     this.assert(els instanceof RightJS.Array);
     this.assertEqual(3, els.length);

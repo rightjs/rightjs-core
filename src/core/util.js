@@ -212,7 +212,9 @@ $E = RightJS.$E = function(tag_name, options) {
  */
 $ = RightJS.$ = function(element) {
   if (typeof element === 'string') {
-    element = document.getElementById(element);
+    var hash = element[0], id = element.substr(1);
+    element = (hash === '#' && /^[\w\-]+$/.test(id)) ?
+      document.getElementById(id) : $(document).select(element);
   }
   
   if (element) {
@@ -227,16 +229,6 @@ $ = RightJS.$ = function(element) {
   }
     
   return element;
-},
-
-/** !#server
- * Searches for all matching elements in the document
- *
- * @param String css-rule
- * @return Array elements list
- */
-$$ = RightJS.$$ = function(css_rule) {
-  return $(document).select(css_rule);
 },
 
 /**

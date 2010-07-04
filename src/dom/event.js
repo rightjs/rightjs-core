@@ -126,7 +126,7 @@ Event.include({
     var target   = this.target,
         targets  = [target].concat(target.parents()),
         boundary = targets.indexOf(this.currentTarget),
-        search   = $$(css_rule);
+        search   = $(css_rule);
     
     // limiting the targets list to the boundary element
     if (boundary > -1) {
