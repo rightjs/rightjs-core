@@ -16,5 +16,7 @@ for (var i=0, names=[]; i < tests.length; i++) {
 }
 
 window.onload = function() {
-  eval('new TestSuite('+names.join(',')+').run()');
-}
+  setTimeout(function() {
+    eval('new TestSuite('+names.join(',')+').run()');
+  }, 50)
+};

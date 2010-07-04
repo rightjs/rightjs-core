@@ -186,8 +186,8 @@ task :build do
     source = File.read("#{BUILD_DIR}/#{BUILD_FILE}.js")
     layout = File.read('src/layout.safe.js').split('#{source_code}')
     
-    source = source.gsub(/\A\s*\/\*.*?\*\/\s*/m, '').gsub("\n", '')
-    source = layout[0] + "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'")}'" + layout[1]
+    source = source.gsub(/\A\s*\/\*.*?\*\/\s*/m, '').strip
+    source = layout[0] + "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'").gsub("\n", " '+\n'")}'" + layout[1]
     
     write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-safe-src.js", header, source)
   end
