@@ -92,22 +92,22 @@ var EventDelegationTest = TestCase.create({
     
     var connections = Event.behave(".some.css.rule", 'click', c);
     
-    this.assert(document.observes('click', f));
+    this.assert($(document).observes('click', f));
     this.assertEqual([{'.some.css.rule': [c]}], args);
     
     this.assertEqual({click: f}, connections);
     
     Event.behave(".some.css.rule", 'mouseover', 'hide');
     
-    this.assert(document.observes('mouseover', f));
+    this.assert($(document).observes('mouseover', f));
     this.assertEqual([{'.some.css.rule': ['hide']}], args);
     
     Event.behave(".some.css.rule", 'mouseout', 'addClass', 'some-class');
     
-    this.assert(document.observes('mouseover', f));
+    this.assert($(document).observes('mouseover', f));
     this.assertEqual([{'.some.css.rule': ['addClass', 'some-class']}], args);
     
-    document
+    $(document)
       .stopObserving('click', f)
       .stopObserving('mouseout', f)
       .stopObserving('mouseover', f)
@@ -126,16 +126,16 @@ var EventDelegationTest = TestCase.create({
       mouseover: ['addClass', 'some-class']
     });
     
-    this.assert(document.observes('click', f));
+    this.assert($(document).observes('click', f));
     this.assertEqual([{'.some.css.rule': c}], args[0]);
     
-    this.assert(document.observes('mouseout', f));
+    this.assert($(document).observes('mouseout', f));
     this.assertEqual([{'.some.css.rule': 'hide'}], args[1]);
     
-    this.assert(document.observes('mouseover', f));
+    this.assert($(document).observes('mouseover', f));
     this.assertEqual([{'.some.css.rule': ['addClass', 'some-class']}], args[2]);
     
-    document
+    $(document)
       .stopObserving('click', f)
       .stopObserving('mouseout', f)
       .stopObserving('mouseover', f)
@@ -154,15 +154,15 @@ var EventDelegationTest = TestCase.create({
       mouseover: ['addClass', 'some-class']
     });
     
-    this.assert(document.observes('click',     f));
-    this.assert(document.observes('mouseout',  f));
-    this.assert(document.observes('mouseover', f));
+    this.assert($(document).observes('click',     f));
+    this.assert($(document).observes('mouseout',  f));
+    this.assert($(document).observes('mouseover', f));
     
-    document.stopObserving(events);
+    $(document).stopObserving(events);
     
-    this.assertFalse(document.observes('click', f));
-    this.assertFalse(document.observes('mouseout', f));
-    this.assertFalse(document.observes('mouseover', f));
+    this.assertFalse($(document).observes('click', f));
+    this.assertFalse($(document).observes('mouseout', f));
+    this.assertFalse($(document).observes('mouseover', f));
     
     this.undoMock(Event, 'delegate');
   },

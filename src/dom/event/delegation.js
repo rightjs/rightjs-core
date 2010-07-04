@@ -29,6 +29,7 @@ Event.extend({
    */
   delegate: function(options) {
     return function(event) {
+      event = event instanceof Event ? event : new Event(event);
       var target = event.target, css_rule, args, callback;
 
       for (css_rule in options) {
@@ -94,12 +95,12 @@ Event.extend({
 
         document.addEventListener(event, events[event], true);
 
-        (document.$listeners = document.$listeners || []).push({
+        ($(document).$listeners = $(document).$listeners || []).push({
           e: event, f: events[event], a: []
         });
 
       } else {
-        document.on(event, events[event]);
+        $(document).on(event, events[event]);
       }
     }
 
