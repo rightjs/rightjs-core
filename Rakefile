@@ -36,8 +36,6 @@ JS_SOURCES = {
     lang/regexp
 
     core/class
-    core/class/methods
-
     core/options
     core/observer
     core/break

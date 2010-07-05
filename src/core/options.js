@@ -18,7 +18,7 @@ var Options = RightJS.Options = {
    * @return Object current instance
    */
   setOptions: function(opts) {
-    var options = this.options = Object.merge(Class.findSet(this, 'options'), opts), match, key;
+    var options = this.options = Object.merge(Class_findSet(this, 'options'), opts), match, key;
     
     // hooking up the observer options
     if (isFunction(this.on)) {

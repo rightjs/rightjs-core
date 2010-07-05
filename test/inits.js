@@ -12,7 +12,6 @@ var scripts = [
   'lang/regexp',
   
   'core/class',
-  'core/class/methods',
   
   'core/options',
   'core/observer',
