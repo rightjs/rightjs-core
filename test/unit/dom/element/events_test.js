@@ -24,19 +24,6 @@ var ElementEventsTest = TestCase.create({
     this.assertSame(this.el, context);
   },
   
-  testObserve_nameVariations: function() {
-    var clicked = false;
-    var hovered = false;
-    this.el.on('onclick', function() { clicked = true; });
-    this.el.on('onmouseover', function() { hovered = true; });
-    
-    this.fireClick(this.el._);
-    this.fireMouseOver(this.el._);
-    
-    this.assert(clicked);
-    this.assert(hovered);
-  },
-  
   testObserve_aHash: function() {
     var clicked = false;
     var hovered = false;

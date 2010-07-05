@@ -147,7 +147,6 @@ Event.extend(old_Event, {
    * @return String fixed event name
    */
   cleanName: function(name) {
-    name = name.substr(0,2) === 'on' ? name.slice(2) : name;
     name = name === 'rightclick'  ? 'contextmenu' : name;
     return name;
   },
