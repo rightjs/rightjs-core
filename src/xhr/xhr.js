@@ -280,7 +280,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
 });
 
 // attaching the common spinner handling
-$ext(Observer.create(Xhr), {
+$ext(Observer_create(Xhr), {
   counter: 0,
   
   // shows the spinner

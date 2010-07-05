@@ -188,4 +188,4 @@ function Element_isForm(element) {
 };
 
 // creating the shortcuts
-Form.include(Observer.createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable change'))));
+Form.include(Observer_createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable change'))));

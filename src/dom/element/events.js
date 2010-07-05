@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Element_observer = Observer.create({}, 
+var Element_observer = Observer_create({}, 
   String_addShorts($w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'))
 ), attach = 'attachEvent' in window, REvent = 'RightJS.Event';
 
@@ -54,4 +54,4 @@ Document.include(Element_observer);
 Window.include(Element_observer);
 
 // couple more shortcuts for the window
-Observer.createShortcuts(Window[PROTO], $w('blur focus scroll resize'));
+Observer_createShortcuts(Window[PROTO], $w('blur focus scroll resize'));

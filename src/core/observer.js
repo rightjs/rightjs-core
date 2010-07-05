@@ -19,7 +19,7 @@ var Observer = RightJS.Observer = new Class({
    */
   initialize: function(options) {
     this.setOptions(options);    
-    Observer.createShortcuts(this, Class_findSet(this, 'events'));
+    Observer_createShortcuts(this, Class_findSet(this, 'events'));
     return this;
   },
   
@@ -161,39 +161,37 @@ var Observer = RightJS.Observer = new Class({
     }, this);
     
     return this;
-  },
-  
-  extend: {
-    /**
-     * adds an observer functionality to any object
-     *
-     * @param Object object
-     * @param Array optional events list to build shortcuts
-     * @return Object extended object
-     */
-    create: function(object, events) {
-      $ext(object, Object.without(this[PROTO], 'initialize', 'setOptions'), true);
-      return this.createShortcuts(object, events || Class_findSet(object, 'events'));
-    },
-    
-    /**
-     * builds shortcut methods to wire/fire events on the object
-     *
-     * @param Object object to extend
-     * @param Array list of event names
-     * @return Object extended object
-     */
-    createShortcuts: function(object, names) {
-      (names || []).each(function(name) {
-        var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g, function(match, pre, chr) { return chr.toUpperCase() });
-        if (!(method_name in object)) {
-          object[method_name] = function() {
-            return this.on.apply(this, [name].concat($A(arguments)));
-          };
-        }
-      });
-      
-      return object;
-    }
   }
-});
+}),
+
+/**
+ * adds an observer functionality to any object
+ *
+ * @param Object object
+ * @param Array optional events list to build shortcuts
+ * @return Object extended object
+ */
+Observer_create = Observer.create =  function(object, events) {
+  $ext(object, Object.without(Observer[PROTO], 'initialize', 'setOptions'), true);
+  return Observer_createShortcuts(object, events || Class_findSet(object, 'events'));
+},
+
+/**
+ * builds shortcut methods to wire/fire events on the object
+ *
+ * @param Object object to extend
+ * @param Array list of event names
+ * @return Object extended object
+ */
+Observer_createShortcuts = Observer.createShortcuts = function(object, names) {
+  (names || []).each(function(name) {
+    var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g, function(match, pre, chr) { return chr.toUpperCase() });
+    if (!(method_name in object)) {
+      object[method_name] = function() {
+        return this.on.apply(this, [name].concat($A(arguments)));
+      };
+    }
+  });
+  
+  return object;
+};

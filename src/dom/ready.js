@@ -30,5 +30,5 @@
     return old_on.apply(this, arguments);
   };
   
-  Observer.createShortcuts(proto, ['ready']);
+  Observer_createShortcuts(proto, ['ready']);
 });
