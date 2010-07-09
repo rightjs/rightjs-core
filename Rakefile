@@ -68,6 +68,7 @@ JS_SOURCES = {
   
   :form => %w{
     dom/form
+    dom/form/element
   },
   
   :xhr => %w{

@@ -3,17 +3,9 @@
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-var Window = RightJS.Window = BuildWrapper(function(window) {
-  var uid = $uid(window);
-  
-  if (!Wrappers_Cache[uid]) {
-    this._ = window;
-    this.d = window.document;
-    
-    Wrappers_Cache[uid] = this;
-  }
-  
-  return Wrappers_Cache[uid];
+var Window = RightJS.Window = new Wrapper(function(window) {
+  this._ = window;
+  this.d = window.document;
 });
 
 Window.include({

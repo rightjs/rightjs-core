@@ -7,16 +7,22 @@
  *
  * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
-var Form = RightJS.Form = function(in_options) {
-  var options = in_options || {}, remote = 'remote' in options,
-    form = new Element('form', Object.without(options, 'remote'));
-  
-  if (remote) form.remotize();
-  
-  return form;
-};
 
-(Form.include = Element.include)({
+var Form = RightJS.Form = new Wrapper(Element, function(in_options) {
+  var options = in_options || {}, remote = 'remote' in options;
+    
+  if (isHash(options)) {
+    element_constructor.call(this, 'form', Object.without(options, 'remote'));
+  } else {
+    this._ = options;
+  }
+  
+  if (remote) this.remotize();
+});
+
+Element_wrappers.FORM = Form;
+
+Form.include({
   /**
    * returns the form elements as an array of extended units
    *
@@ -37,7 +43,7 @@ var Form = RightJS.Form = function(in_options) {
    * @return Array of elements
    */
   inputs: function() {
-    return this.getElements().filter(function(input) {
+    return this.elements().filter(function(input) {
       return !['submit', 'button', 'reset', 'image', null].includes(input._.type);
     });
   },
@@ -48,13 +54,9 @@ var Form = RightJS.Form = function(in_options) {
    * @return Form this
    */
   focus: function() {
-    var element = this._;
-    
-    if (Element_isForm(this)) {
-      element = this.inputs().first(function(input) { return input._.type != 'hidden'; });
-    } else {
-      this.focused = true;
-    }
+    var element = this.inputs().first(function(input) {
+      return input._.type !== 'hidden';
+    });
     
     if (element) element.focus();
     
@@ -67,25 +69,9 @@ var Form = RightJS.Form = function(in_options) {
    * @return Form this
    */
   blur: function() {
-    if (Element_isForm(this)) {
-      this.getElements().each('blur');
-    } else {
-      this._.blur();
-      this.focused = false;
-    }
-    
+    this.elements().each('blur');
     return this.fire('blur');
   },
-  
-  /**
-   * focuses on the element and selects its content
-   *
-   * @return Element this
-   */
-//  select: function() {
-//    this._.select();
-//    return this.focus();
-//  },
   
   /**
    * disables all the elements on the form
@@ -93,12 +79,7 @@ var Form = RightJS.Form = function(in_options) {
    * @return Form this
    */
   disable: function() {
-    if (Element_isForm(this)) {
-      this.getElements().each('disable');
-    } else {
-      this._.disabled = true;
-    }
-    
+    this.elements().each('disable');
     return this.fire('disable');
   },
   
@@ -108,46 +89,8 @@ var Form = RightJS.Form = function(in_options) {
    * @return Form this
    */
   enable: function() {
-    if (Element_isForm(this)) {
-      this.getElements().each('enable');
-    } else {
-      this._.disabled = false;
-    }
-    
+    this.elements().each('enable');
     return this.fire('enable');
-  },
-  
-  /**
-   * uniform access to the element values
-   *
-   * @return String element value
-   */
-  getValue: function() {
-    if (this._.type === 'select-multiple') {
-      return $A(this._.getElementsByTagName('option')).map(function(option) {
-        return option.selected ? option.value : null;
-      }).compact();
-    } else {
-      return this._.value;
-    }
-  },
-
-  /**
-   * uniform accesss to set the element value
-   *
-   * @param String value
-   * @return Element this
-   */
-  setValue: function(value) {
-    if (this._.type == 'select-multiple') {
-      value = $A(isArray(value) ? value : [value]).map(String);
-      $A(this._.getElementsByTagName('option')).each(function(option) {
-        option.selected = value.includes(option.value);
-      });
-    } else {
-      this._.value = value;
-    }
-    return this;
   },
   
   /**
@@ -183,9 +126,5 @@ var Form = RightJS.Form = function(in_options) {
   }
 });
 
-function Element_isForm(element) {
-  return element._.tagName === 'FORM';
-};
-
 // creating the shortcuts
-Form.include(Observer_createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable change'))));
+Form.include(Observer_createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable'))));

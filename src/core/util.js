@@ -16,8 +16,8 @@ var
 UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
-DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1, // !#server
-Wrapper = dummy(), Wrappers_Cache = [], UID_KEY = '_rid'+ new Date().getTime(),    // !#server
+DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1,  // !#server
+Wrappers_Cache = [], UID_KEY = '_rid'+ new Date().getTime(), // !#server
  
 /**
  * extends the first object with the keys and values of the second one
@@ -159,8 +159,7 @@ isNumber = RightJS.isNumber = function(value) {
  * @return boolean check result
  */
 isHash = RightJS.isHash = function(value) {
-  return to_s.call(value) === '[object Object]' &&
-    !(value instanceof Wrapper); // <- don't react on the dom-wrappers
+  return to_s.call(value) === '[object Object]';
 },
 
 /**
@@ -194,17 +193,6 @@ isNode = RightJS.isNode = function(value) {
 },
 
 /** !#server
- * shortcut to instance new elements
- *
- * @param String tag name
- * @param object options
- * @return Element instance
- */
-$E = RightJS.$E = function(tag_name, options) {
-  return new Element(tag_name, options);
-},
-
-/** !#server
  * searches an element by id and/or extends it with the framework extentions
  *
  * @param String element id or Element to extend
@@ -212,23 +200,52 @@ $E = RightJS.$E = function(tag_name, options) {
  */
 $ = RightJS.$ = function(element) {
   if (typeof element === 'string') {
-    var hash = element.charAt(0), id = element.substr(1);
-    element = (hash === '#' && /^[\w\-]+$/.test(id)) ?
-      document.getElementById(id) : $(document).select(element);
+    element = document.getElementById(element);
   }
   
   if (element) {
-    if (element[UID_KEY] && Wrappers_Cache[element[UID_KEY]])
+    if (UID_KEY in element && Wrappers_Cache[element[UID_KEY]])
       element = Wrappers_Cache[element[UID_KEY]];
-    else if (element.nodeType === 1)
-      element = new Element(element);
-    else if (element.window == element)
-      element = new Window(element);
-    else if (element.nodeType === 9)
-      element = new Document(element);
+    else {
+      if (element.nodeType === 1)
+        element = new Element(element);
+      else if (element.window == element)
+        element = new Window(element);
+      else if (element.nodeType === 9)
+        element = new Document(element);
+      
+      // storing the element in the cache
+      if ('_' in element) {
+        element._[UID_KEY] = element._[UID_KEY] || UID++;
+        Wrappers_Cache[element._[UID_KEY]] = element;
+      }
+    }
   }
   
   return element;
+},
+
+/** !#server
+ * Finds all the elements in the document by the given css_rule
+ *
+ * @param String element
+ * @param Object optional context
+ * @return Array select result
+ */
+$$ = RightJS.$$ = function(css_rule, context) {
+  return $(context || document).select(css_rule);
+},
+
+/** !#server
+ * shortcut to instance new elements
+ *
+ * @param String tag name
+ * @param object options
+ * @return Element instance
+ */
+$E = RightJS.$E = function(tag_name, options) {
+  var element = new Element(tag_name, options);
+  return Wrappers_Cache[element._[UID_KEY] = UID++] = element;
 },
 
 /**
@@ -265,39 +282,7 @@ $A = RightJS.$A = function(it) {
  */
 $uid = RightJS.$uid = function(item) {
   return item[UID_KEY] || (item[UID_KEY] = UID++);
-},
-
-/**
- * Makes a class to support the .include()
- * calls the same as the Class unit does
- *
- * @param Object klass
- * @return Object the klass
- */
-make_extensible = function(Klass) {
-  Klass.Methods = {};
-  Klass.include = function() {
-    var args = arguments, i=0;
-    for (; i < args.length; i++) {
-      if (isHash(args[i])) {
-        $ext(Klass.Methods, args[i]);
-        $ext(Klass[PROTO], args[i]);
-      }
-    }
-    return Klass;
-  };
-  Klass.extend = function() {
-    var args = arguments, i=0;
-    for (;i < args.length; i++) {
-      if (isHash(args[i])) {
-        $ext(Klass, args[i]);
-      }
-    }
-    return Klass;
-  };
-  return Klass;
 };
-
 
 /** !#server
  * Internet Explorer needs some additional mumbo-jumbo in here
@@ -306,8 +291,7 @@ if (isHash(HTML)) {
   isHash = RightJS.isHash = function(value) {
     return to_s.call(value) === '[object Object]' &&
       value !== null && typeof(value) !== 'undefined' &&
-      typeof(value.hasOwnProperty) !== 'undefined' &&
-      !(value instanceof Wrapper); // <- skips the dom-wrappers
+      typeof(value.hasOwnProperty) !== 'undefined';
   };
 }
 
@@ -315,5 +299,11 @@ if (isHash(HTML)) {
  * Generating methods for native units extending
  */
 for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
-  make_extensible(natives[i]);
+  natives[i].include = function() {
+    for (var i=0, args = arguments; i < args.length; i++) {
+      if (isHash(args[i])) {
+        $ext(this[PROTO], args[i]);
+      }
+    }
+  }
 }

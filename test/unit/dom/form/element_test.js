@@ -108,7 +108,7 @@ var FormElementTest = TestCase.create({
     
     input.remove();
   },
-/*  
+  
   testSelect: function() {
     var input = new Element('input').insertTo(document.body);
     
@@ -121,7 +121,7 @@ var FormElementTest = TestCase.create({
     this.assert(on_focus_called);
     
     input.remove();
-  },*/
+  },
   
   testBlur: function() {
     var input = new Element('input').insertTo(document.body);

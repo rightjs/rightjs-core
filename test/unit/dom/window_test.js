@@ -25,7 +25,9 @@ var WindowTest = TestCase.create({
     this.assert(win instanceof RightJS.Window);
     this.assertSame(window, win._);
     
-    this.assertSame(win, $(window));
+    var win2 = new Window(window);
+    this.assertNotSame(win, win2);
+    this.assertSame(win._, win2._);
   },
   
   testSizes: function() {

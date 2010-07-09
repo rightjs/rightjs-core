@@ -7,7 +7,7 @@ var ElementEventsTest = TestCase.create({
   name: 'ElementEventsTest',
   
   setUp: function() {
-    this.el = new Element('div');
+    this.el = $E('div');
     document.body.appendChild(this.el._);
   },
   

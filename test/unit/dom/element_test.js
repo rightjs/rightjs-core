@@ -16,8 +16,35 @@ var ElementTest = TestCase.create({
     var el1 = new Element(div);
     var el2 = new Element(div);
     
-    this.assertSame(el1, el2);
+    this.assertNotSame(el1, el2);
+    this.assertSame(el1._, el2._);
     this.assertInstanceOf(RightJS.Element, el1);
+    this.assertInstanceOf(RightJS.Element, el2);
+  },
+  
+  testInstanceFormTypeCasting: function() {
+    var form = new Element('form', {
+      on: {
+        submit: function() {}
+      }
+    });
+    
+    this.assert(form instanceof RightJS.Form);
+    this.assert(form instanceof RightJS.Element);
+    this.assert(form.observes('submit'));
+  },
+  
+  testInstanceFormElementTypeCasting: function() {
+    var input = new Element('input', {
+      on: {
+        change: function() {}
+      }
+    });
+    
+    this.assert(input instanceof RightJS.Form.Element);
+    this.assert(input instanceof RightJS.Element);
+    
+    this.assert(input.observes('change'));
   },
   
   testInstanceWithClass: function() {
@@ -112,8 +139,8 @@ var ElementTest = TestCase.create({
       ___bar: bar
     }));
     
-    this.assertSame(Element.Methods.___foo, foo);
-    this.assertSame(Element.Methods.___bar, bar);
+    this.assertSame(Element.prototype.___foo, foo);
+    this.assertSame(Element.prototype.___bar, bar);
     
     var div = new Element('div');
     

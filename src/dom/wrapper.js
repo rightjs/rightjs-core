@@ -8,18 +8,17 @@
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 
-// !NOTE the class itself is defined in the core/util.js file
-//       because we needed a reference to it in there
-Wrapper[PROTO]._ = null; // predefining the key to speed up the assignment
-
-/**
- * Building the dom-wrapper with a caching system
- * The idea is to keep a single wrapper instance all the time
- *
- * @return Wrapper class
- */
-var BuildWrapper = function(Klass) {
-  Klass[PROTO] = new Wrapper;
-  make_extensible(Klass);
-  return Klass;
+var Wrapper = function(parent, klass) {
+  if (!klass) {
+    klass  = parent;
+    parent = null;
+  }
+  
+  // hooking up the class extension tools
+  $ext(klass, Class_Methods).inherit(parent);
+  
+  // predefining the raw object reference
+  klass[PROTO]._ = null;
+  
+  return klass;
 };

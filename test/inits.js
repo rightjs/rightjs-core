@@ -36,6 +36,7 @@ var scripts = [
   'dom/element/events',
   
   'dom/form',
+  'dom/form/element',
   
   'dom/ready',
   'dom/selector',

@@ -19,7 +19,7 @@ Xhr.IFramed = new Class({
     var id = 'xhr_frame_'+Math.random().toString().split('.').last();
     $E('div').insertTo(HTML).update('<iframe name="'+id+'" id="'+id+'" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
     
-    this.iframe = $('#'+ id);
+    this.iframe = $(id);
     this.iframe.on('load', this.onLoad.bind(this));
   },
   

@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var methods    = Element.Methods,
+var methods    = Element.prototype,
     old_hide   = methods.hide,
     old_show   = methods.show,
     old_remove = methods.remove,

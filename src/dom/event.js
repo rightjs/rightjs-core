@@ -9,8 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-var old_Event = window.Event;
-Event = RightJS.Event = BuildWrapper(function(event, bound_element) {
+var Event = RightJS.Event = new Wrapper(function(event, bound_element) {
   if (typeof event === 'string') {
     // TODO replace with something real
     
@@ -18,7 +17,7 @@ Event = RightJS.Event = BuildWrapper(function(event, bound_element) {
     event = {type: event};
     
     // applying the options
-    if (isHash(bound_element))
+    if (isHash(bound_element) && !(bound_element instanceof Element))
       $ext(this, bound_element);
   }
   
@@ -139,7 +138,7 @@ Event.include({
   }
 });
 
-Event.extend(old_Event, {
+Event.extend({
   /**
    * cleans up the event name
    *
