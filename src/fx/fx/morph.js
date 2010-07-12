@@ -108,7 +108,7 @@ Fx.Morph = new Class(Fx, {
         .setWidth(element.sizes().x)
         .setStyle(style);
         
-    if (element.parentNode) element.insert(dummy, 'before');
+    if (element._.parentNode) element.insert(dummy, 'before');
     
     var after  = this._cloneStyle(dummy, keys);
     
