@@ -47,8 +47,8 @@ var Event = RightJS.Event = new Wrapper(function(event, bound_element) {
     // faking the mouse position
     var scrolls = this.target.win().scrolls();
     
-    event.pageX = event.clientX + scrolls.x;
-    event.pageY = event.clientY + scrolls.y;
+    this.pageX = event.clientX + scrolls.x;
+    this.pageY = event.clientY + scrolls.y;
   } else if (event.target && event.target.nodeType === 3) {
     // Safari fix
     this.target = $(event.target.parentNode);
