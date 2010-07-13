@@ -155,7 +155,7 @@ task :build do
   source = desc + source
   
   # loading up the layout
-  layout = File.read('src/layout.js').split('#{source_code}')
+  layout = File.read('dist/layout.js').split('#{source_code}')
   source = layout[0] + source + layout[1]
   
   # hooking up the olds patch loader if necessary
@@ -170,7 +170,7 @@ task :build do
   
   ### writting the files
   puts ' * Creating the basic build'
-  header = File.read('src/HEADER.js')
+  header = File.read('dist/HEADER.js')
   if !options.empty? && options != ['no-olds']
     header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
   end
@@ -181,9 +181,9 @@ task :build do
   ### creating the safe-mode build
   if options.include?('safe')
     puts ' * Creating the safe-mode build'
-    header = File.read('src/HEADER.safe.js')
+    header = File.read('dist/HEADER.safe.js')
     source = File.read("#{BUILD_DIR}/#{BUILD_FILE}.js")
-    layout = File.read('src/layout.safe.js').split('#{source_code}')
+    layout = File.read('dist/layout.safe.js').split('#{source_code}')
     
     source = source.gsub(/\A\s*\/\*.*?\*\/\s*/m, '').strip
     source = layout[0] + "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'").gsub("\n", " '+\n'")}'" + layout[1]
@@ -202,7 +202,7 @@ task :build do
     
     write_and_compress(
       "#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js",
-      File.read("src/HEADER.olds.js"),
+      File.read("dist/HEADER.olds.js"),
       olds_source
     )
   end
@@ -224,11 +224,11 @@ task :build do
     source.gsub! /\n[^\n]+\/\/\s*!#server\s*\n/m, ''
     
     # loading up the layout
-    layout = File.read('src/layout.server.js').split('#{source_code}')
+    layout = File.read('dist/layout.server.js').split('#{source_code}')
     source = layout[0] + source + layout[1]
     
     File.open("#{BUILD_DIR}/#{BUILD_FILE}-server.js", "w") do |file|
-      file.write File.read("src/HEADER.server.js")
+      file.write File.read("dist/HEADER.server.js")
       file.write source
     end
   end
