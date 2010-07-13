@@ -209,10 +209,12 @@ $ = RightJS.$ = function(element) {
     else {
       if (element.nodeType === 1)
         element = new Element(element);
-      else if (element.window == element)
-        element = new Window(element);
+      else if (isElement(element.target))
+        element = new Event(element);
       else if (element.nodeType === 9)
         element = new Document(element);
+      else if (element.window == element)
+        element = new Window(element);
       
       // storing the element in the cache
       if ('_' in element) {

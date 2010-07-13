@@ -237,6 +237,14 @@ var UtilTest = TestCase.create({
     this.assertSame(el, wrap._);
   },
   
+  test_$_EventAccess: function() {
+    var event = {target: document.createElement('div')};
+    var wrap  = $(event);
+    
+    this.assert(wrap instanceof RightJS.Event);
+    this.assertSame(event, wrap._);
+  },
+  
   test_$_DocumentAccess: function() {
     var doc = $(document);
     
