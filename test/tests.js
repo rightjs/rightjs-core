@@ -32,7 +32,7 @@ var tests = {
   SelectorTest:          'dom/selector_test',
                           
   FormTest:              'dom/form_test',
-  FormElementTest:       'dom/form/element_test',
+  InputTest:             'dom/input_test',
                           
   DomReadyTest:          'dom/ready_test',
   WindowTest:            'dom/window_test',

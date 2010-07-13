@@ -1,18 +1,54 @@
 /**
- * The Form.Element unit tests
+ * The Input unit tests
  *
  * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
-var FormElementTest = TestCase.create({
-  name: 'FormElementTest',
+var InputTest = TestCase.create({
+  name: 'InputTest',
+  
+  testInstanceWithTag: function() {
+    var input  = new Input('input');
+    var button = new Input('button');
+    var textar = new Input('textarea');
+    var select = new Input('select');
+    
+    this.assert(input  instanceof Input);
+    this.assert(button instanceof Input);
+    this.assert(textar instanceof Input);
+    this.assert(select instanceof Input);
+    
+    this.assertEqual('INPUT',    input._.tagName);
+    this.assertEqual('BUTTON',   button._.tagName);
+    this.assertEqual('TEXTAREA', textar._.tagName);
+    this.assertEqual('SELECT',   select._.tagName);
+  },
+  
+  testInstanceWithoutTag: function() {
+    var input  = new Input();
+    var chck   = new Input({type: 'checkbox'});
+    var radio  = new Input({type: 'radio'});
+    var hidd   = new Input({type: 'hidden'});
+    var butt   = new Input({type: 'button'});
+    var texta  = new Input({type: 'textarea'});
+    var select = new Input({type: 'select'});
+    
+    this.assertEqual('INPUT',    input._.tagName);
+    this.assertEqual('TEXTAREA', texta._.tagName);
+    this.assertEqual('SELECT',   select._.tagName);
+    
+    this.assertEqual('checkbox', chck._.type);
+    this.assertEqual('radio',    radio._.type);
+    this.assertEqual('hidden',   hidd._.type);
+    this.assertEqual('button',   butt._.type);
+  },
   
   testGetValue: function() {
     var inputs = [], value = 'the element value';
     $w('text password hidden checkbox radio submit button').each(function(type) {
-      inputs.push(new Element('input', { type:  type, value: value }));
+      inputs.push(new Input({ type:  type, value: value }));
     });
-    inputs.push(new Element('textarea', {value: value}));
-    inputs.push(new Element('select').insert(new Element('option', {selected: true, value: value})));
+    inputs.push(new Input('textarea', {value: value}));
+    inputs.push(new Input('select').insert(new Element('option', {selected: true, value: value})));
     
     inputs.each(function(input) {
       this.assertEqual(value, input.getValue(), 'Checking '+input.tagName);
@@ -22,7 +58,7 @@ var FormElementTest = TestCase.create({
   testGetValueFromMultiSelect: function() {
     if (navigator.userAgent.indexOf('MSIE 6') != -1) return;
     
-    var select  = new Element('select', {multiple: true});
+    var select  = new Input('select', {multiple: true});
     var option1 = new Element('option', {value: 1});
     var option2 = new Element('option', {value: 2});
     var option3 = new Element('option', {value: 3});
@@ -39,10 +75,10 @@ var FormElementTest = TestCase.create({
   testSetValue: function() {
     var inputs = [];
     $w('text password hidden checkbox radio submit button').each(function(type) {
-      inputs.push(new Element('input', { type:  type}));
+      inputs.push(new Input({ type:  type}));
     });
-    inputs.push(new Element('textarea'));
-    inputs.push(new Element('select').insert(new Element('option', {selected: true, value: 'value'})));
+    inputs.push(new Input('textarea'));
+    inputs.push(new Input('select').insert(new Input('option', {selected: true, value: 'value'})));
     
     inputs.each(function(input) {
       this.assertSame(input, input.setValue('value'));
@@ -53,7 +89,7 @@ var FormElementTest = TestCase.create({
   testSetValueForMultiSelect: function() {
     if (navigator.userAgent.indexOf('MSIE 6') != -1) return;
     
-    var select  = new Element('select', {multiple: true});
+    var select  = new Input('select', {multiple: true});
     var option1 = new Element('option', {value: 1});
     var option2 = new Element('option', {value: 2});
     var option3 = new Element('option', {value: 3});
@@ -66,7 +102,7 @@ var FormElementTest = TestCase.create({
   },
   
   testDisable: function() {
-    var input = new Element('input');
+    var input = new Input();
     
     this.assert(input.onDisable);
     
@@ -80,7 +116,7 @@ var FormElementTest = TestCase.create({
   },
   
   testEnable: function() {
-    var input = new Element('input', {disabled: true});
+    var input = new Input({disabled: true});
     
     this.assert(input.onEnable);
     
@@ -94,7 +130,7 @@ var FormElementTest = TestCase.create({
   },
   
   testFocus: function() {
-    var input = new Element('input').insertTo(document.body);
+    var input = new Input().insertTo(document.body);
     
     this.assert(input.onFocus);
     
@@ -110,7 +146,7 @@ var FormElementTest = TestCase.create({
   },
   
   testSelect: function() {
-    var input = new Element('input').insertTo(document.body);
+    var input = new Input().insertTo(document.body);
     
     var on_focus_called = false;
     input.onFocus(function() { on_focus_called = true; });
@@ -124,7 +160,7 @@ var FormElementTest = TestCase.create({
   },
   
   testBlur: function() {
-    var input = new Element('input').insertTo(document.body);
+    var input = new Input().insertTo(document.body);
     input.focus();
     
     this.assert(input.onBlur);
@@ -141,7 +177,7 @@ var FormElementTest = TestCase.create({
   },
   
   testOnChangeShortcut: function() {
-    var input = new Element('input');
+    var input = new Input();
     var f = function() {};
     input.onChange(f);
     

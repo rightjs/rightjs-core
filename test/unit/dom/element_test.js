@@ -41,7 +41,7 @@ var ElementTest = TestCase.create({
       }
     });
     
-    this.assert(input instanceof RightJS.Form.Element);
+    this.assert(input instanceof RightJS.Input);
     this.assert(input instanceof RightJS.Element);
     
     this.assert(input.observes('change'));

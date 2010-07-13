@@ -3,7 +3,19 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-Form.Element = new Wrapper(Element, function(element, options) {
+var Input = RightJS.Input = new Wrapper(Element, function(element, options) {
+  // type to tag name conversion
+  if (!element || isHash(element)) {
+    options = element || {};
+    
+    if (/textarea|select/.test(options.type || '')) {
+      element = options.type;
+      delete(options.type);
+    } else {
+      element = 'input';
+    }
+  }
+  
   if (typeof element === 'string') {
     element_constructor.call(this, element, options);
   } else {
@@ -15,17 +27,17 @@ Form.Element = new Wrapper(Element, function(element, options) {
 Element_wrappers.INPUT    = 
 Element_wrappers.BUTTON   =
 Element_wrappers.SELECT   =
-Element_wrappers.TEXTAREA = Form.Element;
+Element_wrappers.TEXTAREA = Input;
 
 // hookin up the input methods
-Form.Element.include({
+Input.include({
   /**
    * uniform access to the element values
    *
    * @return String element value
    */
   getValue: function() {
-    if (this._.type === 'select-multiple') {
+    if (this._.type == 'select-multiple') {
       return $A(this._.getElementsByTagName('option')).map(function(option) {
         return option.selected ? option.value : null;
       }).compact();
@@ -116,4 +128,4 @@ Form.Element.include({
 });
 
 // creating the shortcuts
-Form.Element.include(Observer_createShortcuts({}, String_addShorts($w('focus blur disable enable change'))));
+Input.include(Observer_createShortcuts({}, String_addShorts($w('focus blur disable enable change'))));
