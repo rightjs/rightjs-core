@@ -142,11 +142,22 @@ var ElementTest = TestCase.create({
     this.assertSame(Element.prototype.___foo, foo);
     this.assertSame(Element.prototype.___bar, bar);
     
+    // checking that the extensions a re working
     var div = new Element('div');
     
     this.assertSame(div, div.___foo('some-title'));
     
     this.assertEqual('some-title', div.title);
     this.assertEqual('some-title-id', div.id);
+    
+    // checking the subclasses extensions
+    var input = new Input();
+    
+    this.assert(input.___foo instanceof Function);
+    this.assert(input.___bar instanceof Function);
+    
+    this.assertSame(input, input.___foo('some-title'));
+    this.assertEqual('some-title', input.title);
+    this.assertEqual('some-title-id', input.id);
   }
 });
