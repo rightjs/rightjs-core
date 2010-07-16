@@ -26,7 +26,7 @@ var WindowTest = TestCase.create({
     this.assertSame(window, win._);
     
     var win2 = new Window(window);
-    this.assertNotSame(win, win2);
+    this.assertSame(win, win2);
     this.assertSame(win._, win2._);
   },
   

@@ -198,33 +198,25 @@ isNode = RightJS.isNode = function(value) {
  * @param String element id or Element to extend
  * @return Element or null
  */
-$ = RightJS.$ = function(element) {
-  if (typeof element === 'string') {
-    element = document.getElementById(element);
+$ = RightJS.$ = function(object) {
+  if (typeof object === 'string') {
+    object = document.getElementById(object);
   }
   
-  if (element) {
-    if (UID_KEY in element && Wrappers_Cache[element[UID_KEY]])
-      element = Wrappers_Cache[element[UID_KEY]];
-    else {
-      if (element.nodeType === 1)
-        element = new Element(element);
-      else if (isElement(element.target))
-        element = new Event(element);
-      else if (element.nodeType === 9)
-        element = new Document(element);
-      else if (element.window == element)
-        element = new Window(element);
-      
-      // storing the element in the cache
-      if ('_' in element) {
-        element._[UID_KEY] = element._[UID_KEY] || UID++;
-        Wrappers_Cache[element._[UID_KEY]] = element;
-      }
-    }
+  if (object) {
+    if (object[UID_KEY] && object[UID_KEY] in Wrappers_Cache)
+      object = Wrappers_Cache[object[UID_KEY]];
+    else if (object.nodeType === 1)
+      object = new Element(object);
+    else if (isElement(object.target))
+      object = new Event(object);
+    else if (object.nodeType === 9)
+      object = new Document(object);
+    else if (object.window == object)
+      object = new Window(object);
   }
   
-  return element;
+  return object;
 },
 
 /** !#server
@@ -246,8 +238,7 @@ $$ = RightJS.$$ = function(css_rule, context) {
  * @return Element instance
  */
 $E = RightJS.$E = function(tag_name, options) {
-  var element = new Element(tag_name, options);
-  return Wrappers_Cache[element._[UID_KEY] = UID++] = element;
+  return new Element(tag_name, options);
 },
 
 /**

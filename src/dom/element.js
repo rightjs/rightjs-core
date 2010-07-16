@@ -22,19 +22,23 @@ Element_wrappers = {},
 // caching the element instances to boos the things up
 elements_cache = {},
 
-// the elements building function
+/**
+ * The elements constructor
+ *
+ * NOTE: this function is called in a context of a dom-wrapper
+ *
+ * @param String element tag name
+ * @param Object options
+ * @return HTMLElement
+ */
 element_constructor = function(element, options) {
   // building the element
-  if (typeof element === 'string') {
-    element = (elements_cache[element] ||
-      (elements_cache[element] = document.createElement(element))
-    ).cloneNode(false);
-  }
-  
-  this._ = element;
+  this._ = element = (element in elements_cache ? elements_cache[element] :
+    (elements_cache[element] = document.createElement(element))
+  ).cloneNode(false);
 
   // applying the options
-  if (options) {
+  if (options !== undefined) {
     for (var key in options) {
       if (key in element_arguments_map) {
         element[element_arguments_map[key]] = options[key];
@@ -45,6 +49,8 @@ element_constructor = function(element, options) {
       }
     }
   }
+  
+  return element;
 };
 
 if (Browser.IE) {
@@ -58,14 +64,24 @@ if (Browser.IE) {
   )+']')[0];
 }
 
+/**
+ * The actual elements wrapper
+ *
+ * @param String element tag name or an HTMLElement instance
+ * @param Object options
+ * @return Element element
+ */
 var Element = RightJS.Element = new Wrapper(function(element, options) {
-  element_constructor.call(this, element, options);
+  if (typeof element === 'string') {
+    element = element_constructor.call(this, element, options);
+  }
   
-  var tag = this._.tagName, instance = this;
+  var tag = element.tagName, instance = Wrapper_cached(element, this);
   
   // dynamically swapping the wrapper if we have it in the system
-  if (tag in Element_wrappers) {
-    instance = new Element_wrappers[tag](this._);
+  if (instance === this && tag in Element_wrappers) {
+    delete(Wrappers_Cache[element[UID_KEY]]);
+    instance = new Element_wrappers[tag](element);
     instance.$listeners = this.$listeners || [];
   }
   

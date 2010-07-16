@@ -4,8 +4,8 @@
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var Window = RightJS.Window = new Wrapper(function(window) {
-  this._ = window;
   this.d = window.document;
+  return Wrapper_cached(window, this);
 });
 
 Window.include({

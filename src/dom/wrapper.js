@@ -21,4 +21,16 @@ var Wrapper = function(parent, klass) {
   klass[PROTO]._ = null;
   
   return klass;
+},
+
+// returns a cached or an initialized instance of an object wrapper
+Wrapper_cached = function(object, instance) {
+  var uid = object[UID_KEY] || (object[UID_KEY] = UID++);
+  
+  if (!(uid in Wrappers_Cache)) {
+    instance._ = object;
+    Wrappers_Cache[uid] = instance;
+  }
+  
+  return Wrappers_Cache[uid];
 };

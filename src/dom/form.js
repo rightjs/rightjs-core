@@ -12,12 +12,12 @@ var Form = RightJS.Form = new Wrapper(Element, function(in_options) {
   var options = in_options || {}, remote = 'remote' in options;
     
   if (isHash(options)) {
-    element_constructor.call(this, 'form', Object.without(options, 'remote'));
-  } else {
-    this._ = options;
+    options = element_constructor.call(this, 'form', Object.without(options, 'remote'));
   }
   
   if (remote) this.remotize();
+  
+  return Wrapper_cached(options, this);
 });
 
 Element_wrappers.FORM = Form;

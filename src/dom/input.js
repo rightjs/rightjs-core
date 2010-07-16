@@ -17,10 +17,10 @@ var Input = RightJS.Input = new Wrapper(Element, function(element, options) {
   }
   
   if (typeof element === 'string') {
-    element_constructor.call(this, element, options);
-  } else {
-    this._ = element;
+    element = element_constructor.call(this, element, options);
   }
+  
+  return Wrapper_cached(element, this);
 });
 
 // registering the typed constructor

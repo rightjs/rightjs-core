@@ -16,7 +16,7 @@ var ElementTest = TestCase.create({
     var el1 = new Element(div);
     var el2 = new Element(div);
     
-    this.assertNotSame(el1, el2);
+    this.assertSame(el1, el2);
     this.assertSame(el1._, el2._);
     this.assertInstanceOf(RightJS.Element, el1);
     this.assertInstanceOf(RightJS.Element, el2);
