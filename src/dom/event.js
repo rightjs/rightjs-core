@@ -153,28 +153,3 @@ var Event = RightJS.Event = new Wrapper({
     });
   }
 });
-
-Event.extend({
-  /**
-   * cleans up the event name
-   *
-   * @param String event name
-   * @return String fixed event name
-   */
-  cleanName: function(name) {
-    name = name === 'rightclick'  ? 'contextmenu' : name;
-    return name;
-  },
-  
-  /**
-   * returns a real, browser specific event name 
-   *
-   * @param String clean unified name
-   * @return String real name
-   */
-  realName: function(name) {
-    if (Browser.Gecko     && name === 'mousewheel')  name = 'DOMMouseScroll';
-    if (Browser.Konqueror && name === 'contextmenu') name = 'rightclick';
-    return name;
-  }
-});

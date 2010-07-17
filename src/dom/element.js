@@ -58,9 +58,9 @@ if (Browser.IE) {
   // and we kinda hacking the Element constructor so that
   // it affected IE browsers only
   //
-  element_constructor = eval('['+element_constructor.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
+  element_constructor = patch_function(element_constructor, /(\((\w+),\s*(\w+)\)\s*\{)/,
     '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
-  )+']')[0];
+  );
 }
 
 /**

@@ -5,7 +5,7 @@
  */
 var Element_observer = Observer_create({}, 
   String_addShorts($w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'))
-), attach = 'attachEvent' in window, REvent = 'RightJS.Event';
+), attach = 'attachEvent' in window;
 
 //
 // HACK HACK HACK
@@ -14,16 +14,21 @@ var Element_observer = Observer_create({},
 // the reason is in building flat and fast functions
 //
 function hack_observer(name, re, text) {
-  Element_observer[name] = eval('['+ Element_observer[name].toString().replace(re, text) +']')[0];
+  Element_observer[name] = patch_function(Element_observer[name], re, text);
 };
 
 hack_observer('on', 
   /(\$listeners\.push\((\w+?)\);)/,
   
-  '$1$2.e='+ REvent +'.cleanName($2.e);$2.n='+ REvent +'.realName($2.e);'+
+  // aliasing the 'rightclick' to the 'contextmenu' event
+  '$1$2.e=$2.n=$2.e==="rightclick"?"contextmenu":$2.e;'+
+  
+  // swapping a browser related event names
+  (Browser.Gecko      ? 'if($2.n==="mousewheel")$2.n="DOMMouseScroll";' : '') +
+  (Browser.Konqueror  ? 'if($2.n==="contextmenu")$2.n="rightclick";'    : '') +
   
   '$2.w=function(){'+
-    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new '+ REvent +'(a[0],this);'+
+    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=RightJS.$(a[0],this);'+
     '$2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
       attach ?
         'this._.attachEvent("on"+$2.n,$2.w);' :
@@ -42,7 +47,7 @@ hack_observer('stopObserving',
 
 hack_observer('fire',
   /(\w+)\.f\.apply.*?\.concat\((\w+)\)\)/,
-  '$1.f.apply(this,(($1.r&&$1.r!=="stopEvent")?[]:[new '+ REvent +'($1.e,$2.shift())]).concat($1.a).concat($2))'
+  '$1.f.apply(this,(($1.r&&$1.r!=="stopEvent")?[]:[new RightJS.Event($1.e,$2.shift())]).concat($1.a).concat($2))'
 );
 
 // a simple events terminator method to be hooked like this.onClick('stopEvent');

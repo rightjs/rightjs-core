@@ -300,3 +300,16 @@ for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < nat
     }
   }
 }
+
+
+/** #!server
+ * A functions brutal hackery helper
+ *
+ * @param Function original function
+ * @param RegExp expression
+ * @param String replacement
+ * @return freshly hacked function
+ */
+function patch_function(func, re, replacement) {
+  return eval('['+ func.toString().replace(re, replacement) + ']')[0];
+};
