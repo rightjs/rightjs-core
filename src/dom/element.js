@@ -96,8 +96,3 @@ var Element = RightJS.Element = new Wrapper({
 });
 
 Element.Wrappers = Element_wrappers;
-
-// predefine the uniq id key in the prototype to boost up future assignments
-try {
-  HTMLElement[PROTO][UID_KEY] = false;
-} catch(e) {}

@@ -57,7 +57,7 @@ var Event = RightJS.Event = new Wrapper({
     
       this.pageX = event.clientX + scrolls.x;
       this.pageY = event.clientY + scrolls.y;
-    } else if (event.target && event.target.nodeType === 3) {
+    } else if (event.target && 'nodeType' in event.target && event.target.nodeType === 3) {
       // Safari fix
       this.target = $(event.target.parentNode);
     }

@@ -1,9 +1,9 @@
 /**
  * the dom-ready module unit tests
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009 Nikolay Nemshilov
  */
-var win_ready_called = doc_ready_called = false;
+var win_ready_called = false, doc_ready_called = false;
 
 $(window).onReady(function() { win_ready_called = true});
 $(document).onReady(function() { doc_ready_called = true});

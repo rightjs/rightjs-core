@@ -127,7 +127,9 @@ Fx.Morph = new Class(Fx, {
   _cloneStyle: function(element, keys) {
     for (var i=0, len = keys.length, style = element.computedStyles(), clean = {}, key; i < len; i++) {
       key = keys[i];
-      clean[key] = ''+ style[key];
+      if (key in style) {
+        clean[key] = ''+ style[key];
+      }
       
       // libwebkit bug fix for in case of languages pack applied
       if (key === 'opacity') {

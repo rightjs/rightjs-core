@@ -13,9 +13,10 @@
  * as a scope for the search
  */
 function stub_rule(css_rule, tag) {
-  tag = tag._.tagName;
-  css_rule = css_rule || '*';
-  return tag ? css_rule.replace(/(^|,)/g, '$1'+ tag + ' ') : css_rule;
+  var rule = css_rule || '*', element = tag._,
+    tag_name = 'tagName' in element ? element.tagName : null;
+
+  return tag_name === null ? rule : rule.replace(/(^|,)/g, '$1'+ tag_name + ' ');
 };
 
 [Element, Document].each('include', {

@@ -16,7 +16,7 @@ Xhr.IFramed = new Class({
   initialize: function(form) {
     this.form = form;
     
-    var id = 'xhr_frame_'+Math.random().toString().split('.').last();
+    var id = this.id = 'xhr_frame_'+Math.random().toString().split('.').last();
     $E('div').insertTo(HTML).update('<iframe name="'+id+'" id="'+id+'" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
     
     this.iframe = $(id);
@@ -30,7 +30,7 @@ Xhr.IFramed = new Class({
         old_target   = form.target;
     
     form.onsubmit = dummy();
-    form.target   = this.iframe.id;
+    form.target   = this.id;
     
     form.submit();
     
@@ -43,7 +43,7 @@ Xhr.IFramed = new Class({
     this.readyState   = 4;
     
     try {
-      this.responseText = window[this.iframe.id].document.documentElement.innerHTML;
+      this.responseText = window[this.id].document.documentElement.innerHTML;
     } catch(e) { }
     
     this.onreadystatechange();

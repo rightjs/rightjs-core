@@ -16,8 +16,8 @@ var Wrapper = function(parent, methods) {
       object = this.construct(object, options);
     }
     
-    var instance = this.initialize(object, options) || this,
-      object = instance._, uid = object[UID_KEY] || (object[UID_KEY] = UID++);
+    var instance = this.initialize(object, options) || this, element = instance._,
+        uid = UID_KEY in element ? element[UID_KEY] : (element[UID_KEY] = UID++);
     
     return Wrappers_Cache[uid] = instance;
   };

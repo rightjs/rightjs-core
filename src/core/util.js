@@ -204,7 +204,7 @@ $ = RightJS.$ = function(object) {
   }
   
   if (object) {
-    if (object[UID_KEY] && object[UID_KEY] in Wrappers_Cache)
+    if (UID_KEY in object && object[UID_KEY] in Wrappers_Cache)
       object = Wrappers_Cache[object[UID_KEY]];
     else if (object.nodeType === 1)
       object = new Element(object);
@@ -274,7 +274,7 @@ $A = RightJS.$A = function(it) {
  * @return Integer uniq id
  */
 $uid = RightJS.$uid = function(item) {
-  return item[UID_KEY] || (item[UID_KEY] = UID++);
+  return UID_KEY in item ? item[UID_KEY] : (item[UID_KEY] = UID++);
 };
 
 /** !#server
