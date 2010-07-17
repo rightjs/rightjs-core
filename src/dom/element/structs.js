@@ -83,7 +83,7 @@ Element.include({
     
     if (typeof(content) !== 'object') {
       content = (''+content).stripScripts(function(s) { scripts = s; });
-    } else if (content && '_' in content) {
+    } else if (content && content instanceof Element) {
       content = content._;
     }
     

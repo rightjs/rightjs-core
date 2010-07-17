@@ -52,7 +52,7 @@ var Window = RightJS.Window = new Wrapper({
   scrollTo: function(left, top, fx_options) {
     var left_pos = left, top_pos = top, element = $(left); // moving the values into new vars so they didn't get screwed later on
     
-    if(element && '_' in element) {
+    if(element && element instanceof Element) {
       left = element.position();
     }
 
