@@ -8,7 +8,7 @@
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 
-var Wrapper = function(parent, methods) {
+var Wrapper = RightJS.Wrapper = function(parent, methods) {
   
   // creating the actual wrapper class
   var Klass = function(object, options) {
@@ -29,6 +29,7 @@ var Wrapper = function(parent, methods) {
   }
   
   // hooking up the extedning tools and methods
-  return $ext(Klass, Class_Methods).inherit(parent)
+  return $ext(Klass, Class_Methods)
+    .inherit(parent || Wrapper)
     .include({_: UNDEF}, methods);
 };

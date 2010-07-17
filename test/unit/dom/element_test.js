@@ -9,6 +9,9 @@ var ElementTest = TestCase.create({
   testInstance: function() {
     this.assertEqual('DIV',   new Element('div')._.tagName);
     this.assertEqual('TABLE', new Element('table')._.tagName);
+    
+    this.assert(new Element('div') instanceof RightJS.Element);
+    this.assert(new Element('div') instanceof RightJS.Wrapper);
   },
   
   testInstanceCaching: function() {
@@ -31,6 +34,8 @@ var ElementTest = TestCase.create({
     
     this.assert(form instanceof RightJS.Form);
     this.assert(form instanceof RightJS.Element);
+    this.assert(form instanceof RightJS.Wrapper);
+    
     this.assert(form.observes('submit'));
   },
   
@@ -43,6 +48,7 @@ var ElementTest = TestCase.create({
     
     this.assert(input instanceof RightJS.Input);
     this.assert(input instanceof RightJS.Element);
+    this.assert(input instanceof RightJS.Wrapper);
     
     this.assert(input.observes('change'));
   },

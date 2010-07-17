@@ -23,6 +23,7 @@ var WindowTest = TestCase.create({
     var win = new Window(window);
     
     this.assert(win instanceof RightJS.Window);
+    this.assert(win instanceof RightJS.Wrapper);
     this.assertSame(window, win._);
     
     var win2 = new Window(window);
