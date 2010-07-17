@@ -8,29 +8,27 @@
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 
-var Wrapper = function(parent, klass) {
-  if (!klass) {
-    klass  = parent;
-    parent = null;
+var Wrapper = function(parent, methods) {
+  
+  // creating the actual wrapper class
+  var Klass = function(object, options) {
+    if (typeof object === 'string') {
+      object = this.construct(object, options);
+    }
+    
+    var instance = this.initialize(object, options) || this,
+      object = instance._, uid = object[UID_KEY] || (object[UID_KEY] = UID++);
+    
+    return Wrappers_Cache[uid] = instance;
+  };
+  
+  // finding the parent
+  if (!methods) {
+    methods = parent;
+    parent  = null;
   }
   
-  // hooking up the class extension tools
-  $ext(klass, Class_Methods).inherit(parent);
-  
-  // predefining the raw object reference
-  klass[PROTO]._ = null;
-  
-  return klass;
-},
-
-// returns a cached or an initialized instance of an object wrapper
-Wrapper_cached = function(object, instance) {
-  var uid = object[UID_KEY] || (object[UID_KEY] = UID++);
-  
-  if (!(uid in Wrappers_Cache)) {
-    instance._ = object;
-    Wrappers_Cache[uid] = instance;
-  }
-  
-  return Wrappers_Cache[uid];
+  // hooking up the extedning tools and methods
+  return $ext(Klass, Class_Methods).inherit(parent)
+    .include({_: UNDEF}, methods);
 };

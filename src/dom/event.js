@@ -9,53 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-var Event = RightJS.Event = new Wrapper(function(event, bound_element) {
-  if (typeof event === 'string') {
-    // TODO replace with something real
-    
-    // building a fake event
-    event = {type: event};
-    
-    // applying the options
-    if (isHash(bound_element) && !(bound_element instanceof Element))
-      $ext(this, bound_element);
-  }
-  
-  this._ = event;
-  
-  this.which         = event.which;
-  this.keyCode       = event.keyCode;
-  
-  this.target        = $(event.target);
-  this.currentTarget = $(event.currentTarget);
-  this.relatedTarget = $(event.relatedTarget);
-  
-  this.pageX         = event.pageX;
-  this.pageY         = event.pageY;
-  
-  if (!('target' in event) && 'srcElement' in event) {
-    // grabbin the IE properties
-    this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
-    
-    // faking the target property  
-    this.target = $(event.srcElement) || bound_element;
-    
-    // faking the relatedTarget, currentTarget and other targets
-    this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : event.target;
-    this.currentTarget = bound_element;
-    
-    // faking the mouse position
-    var scrolls = this.target.win().scrolls();
-    
-    this.pageX = event.clientX + scrolls.x;
-    this.pageY = event.clientY + scrolls.y;
-  } else if (event.target && event.target.nodeType === 3) {
-    // Safari fix
-    this.target = $(event.target.parentNode);
-  }
-});
-
-Event.include({
+var Event = RightJS.Event = new Wrapper({
   // predefining the keys to spped up the assignments
   which:         null,
   keyCode:       null,
@@ -66,6 +20,68 @@ Event.include({
   
   pageX:         null,
   pageY:         null,
+  
+  /**
+   * the class constructor
+   *
+   * @param raw dom-event
+   * @param HTMLElement the bound element
+   * @return void
+   */
+  initialize: function(event, bound_element) {
+    this._             = event;
+    
+    this.which         = event.which;
+    this.keyCode       = event.keyCode;
+  
+    this.target        = $(event.target);
+    this.currentTarget = $(event.currentTarget);
+    this.relatedTarget = $(event.relatedTarget);
+  
+    this.pageX         = event.pageX;
+    this.pageY         = event.pageY;
+  
+    if (!('target' in event) && 'srcElement' in event) {
+      // grabbin the IE properties
+      this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
+    
+      // faking the target property  
+      this.target = $(event.srcElement) || bound_element;
+    
+      // faking the relatedTarget, currentTarget and other targets
+      this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : event.target;
+      this.currentTarget = bound_element;
+    
+      // faking the mouse position
+      var scrolls = this.target.win().scrolls();
+    
+      this.pageX = event.clientX + scrolls.x;
+      this.pageY = event.clientY + scrolls.y;
+    } else if (event.target && event.target.nodeType === 3) {
+      // Safari fix
+      this.target = $(event.target.parentNode);
+    }
+  },
+  
+  /**
+   * Constructs an artifical event
+   *
+   * @param String event name
+   * @param Object the options
+   * @return Object the event object
+   */
+  construct: function(name, options) {
+    // TODO replace with something real
+    
+    // building a fake event
+    var event = {type: name};
+    
+    // applying the options
+    if (isHash(options))
+      $ext(this, options);
+      
+    return event;
+  },
   
   /**
    * Stops the event bubbling process

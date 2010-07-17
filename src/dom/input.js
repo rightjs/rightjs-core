@@ -3,34 +3,49 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-var Input = RightJS.Input = new Wrapper(Element, function(element, options) {
-  // type to tag name conversion
-  if (!element || isHash(element)) {
-    options = element || {};
-    
-    if (/textarea|select/.test(options.type || '')) {
-      element = options.type;
-      delete(options.type);
-    } else {
-      element = 'input';
-    }
-  }
-  
-  if (typeof element === 'string') {
-    element = element_constructor.call(this, element, options);
-  }
-  
-  return Wrapper_cached(element, this);
-});
+var Input = RightJS.Input = 
 
-// registering the typed constructor
+// retgistering the typecasted wrappers
 Element_wrappers.INPUT    = 
 Element_wrappers.BUTTON   =
 Element_wrappers.SELECT   =
-Element_wrappers.TEXTAREA = Input;
+Element_wrappers.TEXTAREA = 
 
-// hookin up the input methods
-Input.include({
+new Wrapper(Element, {
+  /**
+   * Constructor
+   *
+   * NOTE: this constructor can be called in several ways
+   *
+   *  Like normal Element
+   *   var input = new Input('texarea', {...});
+   *   var input = new Input(document.createElement('select'));
+   *
+   *  Or with options only which will make an INPUT element by default
+   *    var input = new Input({type: 'password', name: 'password'});
+   *
+   * @param HTMLElement or a String tag name or Options for default 'input' tag
+   * @param Object options
+   * @return void
+   */
+  initialize: function(element, options) {
+    // type to tag name conversion
+    if (!element || isHash(element)) {
+      options = element || {};
+    
+      if (/textarea|select/.test(options.type || '')) {
+        element = options.type;
+        delete(options.type);
+      } else {
+        element = 'input';
+      }
+      
+      this.construct(element, options);
+    } else {
+      this._ = element;
+    }
+  },
+  
   /**
    * uniform access to the element values
    *

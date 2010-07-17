@@ -4,9 +4,8 @@
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
 
-var old_Element = window.Element,
 // Element constructor options mapper
-element_arguments_map = {
+var element_arguments_map = {
   id:      'id',
   html:    'innerHTML',
   'class': 'className'
@@ -67,25 +66,33 @@ if (Browser.IE) {
 /**
  * The actual elements wrapper
  *
- * @param String element tag name or an HTMLElement instance
- * @param Object options
- * @return Element element
  */
-var Element = RightJS.Element = new Wrapper(function(element, options) {
-  if (typeof element === 'string') {
-    element = element_constructor.call(this, element, options);
-  }
+var Element = RightJS.Element = new Wrapper({
+  /**
+   * constructor
+   *
+   * NOTE: this constructor will dynamically typecast
+   *       the wrappers depending on the element tag-name
+   *
+   * @param String element tag name or an HTMLElement instance
+   * @param Object options
+   * @return Element element
+   */
+  initialize: function(element, options) {
+    var tag = element.tagName, instance = this;
+
+    // dynamically swapping the wrapper if we have it in the system
+    if (tag in Element_wrappers) {
+      instance = new Element_wrappers[tag](element);
+      instance.$listeners = this.$listeners || [];
+    } else {
+      this._ = element;
+    }
+
+    return instance;
+  },
   
-  var tag = element.tagName, instance = Wrapper_cached(element, this);
-  
-  // dynamically swapping the wrapper if we have it in the system
-  if (instance === this && tag in Element_wrappers) {
-    delete(Wrappers_Cache[element[UID_KEY]]);
-    instance = new Element_wrappers[tag](element);
-    instance.$listeners = this.$listeners || [];
-  }
-  
-  return instance;
+  construct: element_constructor
 });
 
 Element.Wrappers = Element_wrappers;

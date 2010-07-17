@@ -1,7 +1,7 @@
 /**
  * The window extensions tests
  *
- * @copyright 2009-2010 Nikolay V. Nemshilov aka St.
+ * @copyright 2009-2010 Nikolay
  */
 var WindowTest = TestCase.create({
   name: 'WindowTest',
@@ -26,7 +26,7 @@ var WindowTest = TestCase.create({
     this.assertSame(window, win._);
     
     var win2 = new Window(window);
-    this.assertSame(win, win2);
+    this.assertNotSame(win, win2);
     this.assertSame(win._, win2._);
   },
   

@@ -8,21 +8,31 @@
  * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
 
-var Form = RightJS.Form = new Wrapper(Element, function(in_options) {
-  var options = in_options || {}, remote = 'remote' in options;
+var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
+  /**
+   * constructor
+   *
+   * NOTE: this constructor can be called as a normal Element constructor
+   *       or with the options only, which will make a FORM element
+   *
+   *   var form = new Form(raw_form_object_element);
+   *   var form = new Form({method: 'post', action: '/boo/hoo'});
+   *
+   * @param Object options or HTMLFormElement object
+   * @return void
+   */
+  initialize: function(in_options) {
+    var options = in_options || {}, remote = 'remote' in options;
     
-  if (isHash(options)) {
-    options = element_constructor.call(this, 'form', Object.without(options, 'remote'));
-  }
+    if (isHash(options)) {
+      this.construct('form', Object.without(options, 'remote'));
+    } else {
+      this._ = options;
+    }
   
-  if (remote) this.remotize();
+    if (remote) this.remotize();
+  },
   
-  return Wrapper_cached(options, this);
-});
-
-Element_wrappers.FORM = Form;
-
-Form.include({
   /**
    * returns the form elements as an array of extended units
    *
