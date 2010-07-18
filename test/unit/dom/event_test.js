@@ -21,6 +21,8 @@ var EventTest = TestCase.create({
     var event = new Event(mock);
     
     this.assert(event instanceof RightJS.Event);
+    this.assert(event instanceof RightJS.Wrapper);
+    
     this.assertSame(mock, event._);
     
     this.assertEqual(44, event.which);
@@ -41,7 +43,7 @@ var EventTest = TestCase.create({
     
     this.assertInstanceOf(RightJS.Event, event);
     this.assertEqual('custom', event._.type);
-    this.assertEqual('foo',    event.foo);
-    this.assertEqual('bar',    event.bar);
+    this.assertEqual('foo',    event._.foo);
+    this.assertEqual('bar',    event._.bar);
   }
 });

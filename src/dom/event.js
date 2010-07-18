@@ -78,7 +78,7 @@ var Event = RightJS.Event = new Wrapper({
     
     // applying the options
     if (isHash(options))
-      $ext(this, options);
+      $ext(event, options);
       
     return event;
   },
@@ -94,6 +94,7 @@ var Event = RightJS.Event = new Wrapper({
     } else {
       this._.cancelBubble = true;
     }
+    this.stopped = true;
     return this;
   },
   
@@ -152,4 +153,6 @@ var Event = RightJS.Event = new Wrapper({
       return search.include(element);
     });
   }
-});
+}),
+
+Event_delegation_shortcuts = [];

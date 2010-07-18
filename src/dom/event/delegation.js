@@ -135,11 +135,9 @@ String.include({
   }
 });
 
-// builds a list of String#onEvent shortucts
-function String_addShorts(events) {
-  return events.each(function(name) {
-    String[PROTO]['on'+name.capitalize()] = function() {
-      return this.on.apply(this, [name].concat($A(arguments)));
-    };
-  });
-};
+// building the list of String#onEvent shortucts
+Event_delegation_shortcuts.each(function(name) {
+  String[PROTO]['on'+name.capitalize()] = function() {
+    return this.on.apply(this, [name].concat($A(arguments)));
+  };
+});

@@ -109,16 +109,6 @@ var ElementEventsTest = TestCase.create({
     this.assert(e2);
   },
   
-  testFireArgumentsByPassing: function() {
-    var args, event;
-    
-    this.el.on('click', function(e) { event = e; args = arguments; }, 1, 2);
-    this.el.fire('click', {a:3, b:4}, 5, 6);
-    
-    this.assertSame(event, args[0]);
-    this.assertEqual([1,2,5,6], $A(args).slice(1));
-  },
-  
   testFireWithListenerByName: function() {
     this.el.on('boo', 'addClass', 'boo-hoo');
     

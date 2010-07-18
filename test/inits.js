@@ -26,7 +26,6 @@ var scripts = [
   'dom/window',
   
   'dom/event',
-  'dom/event/delegation',
   
   'dom/element',
   'dom/element/structs',
@@ -37,6 +36,9 @@ var scripts = [
   
   'dom/form',
   'dom/input',
+  
+  'dom/event/bubbling',
+  'dom/event/delegation',
   
   'dom/ready',
   'dom/selector',

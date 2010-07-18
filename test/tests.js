@@ -20,6 +20,7 @@ var tests = {
   CookieTest:            'dom/cookie_test',
                           
   EventTest:             'dom/event_test',
+  EventBubblingTest:     'dom/event/bubbling_test',
   EventDelegationTest:   'dom/event/delegation_test',
                           
   ElementTest:           'dom/element_test',

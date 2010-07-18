@@ -3,9 +3,11 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Element_observer = Observer_create({}, 
-  String_addShorts($w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'))
-), attach = 'attachEvent' in window;
+var Element_event_shortcuts = 
+$w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'),
+Element_observer = Observer_create({}, Element_event_shortcuts),
+attach = 'attachEvent' in window;
+Event_delegation_shortcuts = Event_delegation_shortcuts.concat(Element_event_shortcuts);
 
 //
 // HACK HACK HACK
@@ -28,7 +30,7 @@ hack_observer('on',
   (Browser.Konqueror  ? 'if($2.n==="contextmenu")$2.n="rightclick";'    : '') +
   
   '$2.w=function(){'+
-    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=RightJS.$(a[0],this);'+
+    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new RightJS.Event(a[0],this);'+
     '$2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
       attach ?
         'this._.attachEvent("on"+$2.n,$2.w);' :
@@ -45,9 +47,18 @@ hack_observer('stopObserving',
   )+'$3 r'
 );
 
+// adding the event generator
 hack_observer('fire',
-  /(\w+)\.f\.apply.*?\.concat\((\w+)\)\)/,
-  '$1.f.apply(this,(($1.r&&$1.r!=="stopEvent")?[]:[new RightJS.Event($1.e,$2.shift())]).concat($1.a).concat($2))'
+  /(\w+)(\s*=\s*(\w+).shift\(\))/,
+  '$1$2;$1=$1 instanceof RightJS.Event?$1:'+
+  'new RightJS.Event($1,Object.merge({target:this._},$3[0]))'+
+  ';$1.currentTarget=this'
+);
+
+// addjusting the arguments list
+hack_observer('fire',
+  /((\w+)\.e\s*===\s*(\w+))([^}]+\2\.f\.apply).*?\.concat\(\w+\)\)/,
+  '$1._.type$4(this,(($2.r&&$1.r!=="stopEvent")?[]:[$3]).concat($2.a))'
 );
 
 // a simple events terminator method to be hooked like this.onClick('stopEvent');

@@ -140,7 +140,10 @@ new Wrapper(Element, {
     this._.disabled = false;
     return this.fire('enable');
   }
-});
+}),
 
 // creating the shortcuts
-Input.include(Observer_createShortcuts({}, String_addShorts($w('focus blur disable enable change'))));
+Input_shortcuts = $w('focus blur disable enable change');
+Event_delegation_shortcuts = Event_delegation_shortcuts.concat(Input_shortcuts);
+
+Input.include(Observer_createShortcuts({}, Input_shortcuts));

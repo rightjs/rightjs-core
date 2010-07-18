@@ -134,7 +134,10 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   serialize: function() {
     return Object.toQueryString(this.values());
   }
-});
+}),
 
-// creating the shortcuts
-Form.include(Observer_createShortcuts({}, String_addShorts($w('submit reset focus blur disable enable'))));
+// creating the event shortcuts
+Form_shortcuts = $w('submit reset focus blur disable enable');
+Event_delegation_shortcuts = Event_delegation_shortcuts.concat(Form_shortcuts);
+
+Form.include(Observer_createShortcuts({}, Form_shortcuts));

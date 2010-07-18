@@ -21,7 +21,7 @@ RIGHTJS_VERSION = '2.0.0-beta'
 BUILD_DIR   = 'build'
 BUILD_FILE  = 'right'
 
-BUILD_OPTIONS = %w(core dom form cookie xhr fx olds)
+BUILD_OPTIONS = %w(core dom form events cookie xhr fx olds)
 
 JS_SOURCES = {
   :core => %w{
@@ -49,8 +49,7 @@ JS_SOURCES = {
     dom/window
     
     dom/event
-    dom/event/delegation
-
+    
     dom/element
     dom/element/structs
     dom/element/styles
@@ -61,6 +60,11 @@ JS_SOURCES = {
     dom/ready
     dom/selector
   },
+  
+  :events => %w{
+    dom/event/bubbling
+    dom/event/delegation
+  }
   
   :cookie => %w{
     dom/cookie
