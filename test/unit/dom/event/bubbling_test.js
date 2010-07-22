@@ -72,5 +72,28 @@ var EventBubblingTest = TestCase.create({
     this.assertNotNull(event_2);
     this.assertNotNull(event_3);
     this.assertNotNull(event_4);
+  },
+  
+  testBubblingOff: function() {
+    var e1 = new Element('div', {id: 'div-1'});
+    var e2 = new Element('div', {id: 'div-2'});
+    var e3 = new Element('div', {id: 'div-3'});
+    
+    e1.insert(e2.insert(e3));
+    
+    var event_1   = null;
+    var event_2   = null;
+    var event_3   = null;
+    
+    e1.on('click', function(event) { event_1 = event; });
+    e2.on('click', function(event) { event_2 = event; });
+    e3.on('click', function(event) { event_3 = event; });
+    
+    e3.fire('click', {bubbles: false});
+    
+    this.assertNull(event_1);
+    this.assertNull(event_2);
+    
+    this.assertNotNull(event_3);
   }
 });

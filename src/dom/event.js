@@ -79,6 +79,8 @@ var Event = RightJS.Event = new Wrapper({
     // applying the options
     if (isHash(options))
       $ext(event, options);
+    
+    this.stopped = event.bubbles === false;
       
     return event;
   },
