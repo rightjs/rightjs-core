@@ -70,7 +70,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     
     if (element) element.focus();
     
-    return this.fire('focus');
+    return this;
   },
   
   /**
@@ -80,7 +80,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    */
   blur: function() {
     this.elements().each('blur');
-    return this.fire('blur');
+    return this;
   },
   
   /**
@@ -90,7 +90,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    */
   disable: function() {
     this.elements().each('disable');
-    return this.fire('disable');
+    return this;
   },
   
   /**
@@ -100,7 +100,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    */
   enable: function() {
     this.elements().each('enable');
-    return this.fire('enable');
+    return this;
   },
   
   /**
@@ -134,10 +134,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   serialize: function() {
     return Object.toQueryString(this.values());
   }
-}),
+});
 
 // creating the event shortcuts
-Form_shortcuts = $w('submit reset focus blur disable enable');
-Event_delegation_shortcuts = Event_delegation_shortcuts.concat(Form_shortcuts);
-
-Form.include(Observer_createShortcuts({}, Form_shortcuts));
+Element_add_event_shortcuts('submit reset focus blur disable enable change');

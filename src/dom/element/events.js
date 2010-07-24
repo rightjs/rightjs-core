@@ -3,11 +3,10 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Element_event_shortcuts = 
-$w('click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'),
-Element_observer = Observer_create({}, Element_event_shortcuts),
-attach = 'attachEvent' in window;
-Event_delegation_shortcuts = Event_delegation_shortcuts.concat(Element_event_shortcuts);
+var Element_observer = Observer_create({}),
+    IE_ADD_EVENT     = 'attachEvent',
+    W3C_ADD_EVENT    = 'addEventListener',
+    attach           = IE_ADD_EVENT in window;
 
 //
 // HACK HACK HACK
@@ -33,8 +32,8 @@ hack_observer('on',
     'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new RightJS.Event(a[0],this);'+
     '$2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
       attach ?
-        'this._.attachEvent("on"+$2.n,$2.w);' :
-        'this._.addEventListener($2.n,$2.w,false);'
+        'this._.'+ IE_ADD_EVENT  +'("on"+$2.n,$2.w);' :
+        'this._.'+ W3C_ADD_EVENT +'($2.n,$2.w,false);'
       )
 );
 
@@ -71,3 +70,23 @@ Window.include(Element_observer);
 
 // couple more shortcuts for the window
 Observer_createShortcuts(Window[PROTO], $w('blur focus scroll resize'));
+
+/**
+ * Registers a list of event-binding shortcuts like
+ *  $(element).onClick
+ *  $(element).onMouseover
+ *
+ * @param String space separated event names
+ * @return void
+ */
+function Element_add_event_shortcuts(tokens) {
+  tokens = $w(tokens);
+  Event_delegation_shortcuts = Event_delegation_shortcuts.concat(tokens);
+  
+  Observer_createShortcuts(Element[PROTO], tokens);
+  Observer_createShortcuts(Document[PROTO], tokens);
+};
+
+Element_add_event_shortcuts(
+  'click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'
+);

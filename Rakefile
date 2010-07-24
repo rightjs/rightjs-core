@@ -64,7 +64,7 @@ JS_SOURCES = {
   :events => %w{
     dom/event/bubbling
     dom/event/delegation
-  }
+  },
   
   :cookie => %w{
     dom/cookie
