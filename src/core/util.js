@@ -208,7 +208,7 @@ $ = RightJS.$ = function(object) {
       object = Wrappers_Cache[object[UID_KEY]];
     else if (object.nodeType === 1)
       object = new Element(object);
-    else if (isElement(object.target))
+    else if (isElement(object.target) || isElement(object.srcElement))
       object = new Event(object);
     else if (object.nodeType === 9)
       object = new Document(object);

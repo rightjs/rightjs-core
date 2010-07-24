@@ -57,7 +57,7 @@ hack_observer('fire',
 // addjusting the arguments list
 hack_observer('fire',
   /((\w+)\.e\s*===\s*(\w+))([^}]+\2\.f\.apply).*?\.concat\(\w+\)\)/,
-  '$1._.type$4(this,(($2.r&&$1.r!=="stopEvent")?[]:[$3]).concat($2.a))'
+  '$1.type$4(this,(($2.r&&$1.r!=="stopEvent")?[]:[$3]).concat($2.a))'
 );
 
 // a simple events terminator method to be hooked like this.onClick('stopEvent');

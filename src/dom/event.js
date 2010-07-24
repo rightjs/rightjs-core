@@ -11,6 +11,8 @@
  */
 var Event = RightJS.Event = new Wrapper({
   // predefining the keys to spped up the assignments
+  type:          null,
+  
   which:         null,
   keyCode:       null,
   
@@ -30,6 +32,7 @@ var Event = RightJS.Event = new Wrapper({
    */
   initialize: function(event, bound_element) {
     this._             = event;
+    this.type          = event.type;
     
     this.which         = event.which;
     this.keyCode       = event.keyCode;
@@ -71,8 +74,6 @@ var Event = RightJS.Event = new Wrapper({
    * @return Object the event object
    */
   construct: function(name, options) {
-    // TODO replace with something real
-    
     // building a fake event
     var event = {type: name};
     
@@ -109,7 +110,7 @@ var Event = RightJS.Event = new Wrapper({
     if ('preventDefault' in this._) {
       this._.preventDefault();
     } else {
-      this.returnValue = false;
+      this._.returnValue = false;
     }
     return this;
   },

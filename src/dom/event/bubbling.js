@@ -42,3 +42,40 @@ if (Browser.IE) {
   document[ADD_EVENT_METHOD]('blur',  focus_boobler, true);
 }
 
+/**
+ * Tests if there is the event support
+ *
+ * @param String event name
+ * @retrun Boolean check result
+ */
+function event_support_for(name) {
+  var e = $E('div')._;
+  e.setAttribute(name, ';');
+  return isFunction(e[name]);
+};
+
+if (!event_support_for('onsubmit')) {
+  /**
+   * Emulates the 'submit' event bubbling for IE browsers
+   *
+   * @param raw dom-event
+   * @return void
+   */
+  function submit_boobler(raw_event) {
+    var event = $(raw_event), element = event.target._,
+        type = element.type, form = element.form, parent;
+    
+    if (form && (parent = $(form).parent()) && (
+      (raw_event.keyCode === 13   && (type === 'text'   || type === 'password')) ||
+      (raw_event.type === 'click' && (type === 'submit' || type === 'image'))
+    )) {
+      event.type   = 'submit';
+      event.target = $(form);
+      parent.fire(event);
+    }
+  };
+  
+  document[ADD_EVENT_METHOD]('onclick',    submit_boobler);
+  document[ADD_EVENT_METHOD]('onkeypress', submit_boobler);
+  
+}

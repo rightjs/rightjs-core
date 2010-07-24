@@ -42,7 +42,7 @@ var EventTest = TestCase.create({
     });
     
     this.assertInstanceOf(RightJS.Event, event);
-    this.assertEqual('custom', event._.type);
+    this.assertEqual('custom', event.type);
     this.assertEqual('foo',    event._.foo);
     this.assertEqual('bar',    event._.bar);
   }
