@@ -13,20 +13,20 @@ Element[PROTO].fire = patch_function(
 );
 
 /**
- * Triggers a manual event bubbling
- * for the events that don't normally bobble
+ * Triggers a manual focus/blur events bubbling
  *
  * @param raw dom-event
  * @return void
  */
-var reboobler = function(raw_event) {
-  var event   = new Event(raw_event),
-      target  = event.target;
-      parent  = target.parent && target.parent();
+function focus_boobler(event) {
+  var target = $(event.target || event.srcElement),
+      parent = target.parent && target.parent();
   
-  parent && parent.fire(event);
+  parent && parent.fire(
+    (event.type === 'focusin' || event.type == 'focus') ?
+    'focus' : 'blur', Object.without(event, 'type')
+  );
 };
-
 
 /**
  * Hooking up the 'focus' and 'blur' events
@@ -35,9 +35,10 @@ var reboobler = function(raw_event) {
  *
  */
 if (Browser.IE) {
-  document[IE_ADD_EVENT]('onfocusin',  reboobler);
-  document[IE_ADD_EVENT]('onfocusout', reboobler);
+  document[ADD_EVENT_METHOD]('onfocusin',  focus_boobler);
+  document[ADD_EVENT_METHOD]('onfocusout', focus_boobler);
 } else {
-  document[W3C_ADD_EVENT]('focus', reboobler, true);
-  document[W3C_ADD_EVENT]('blur',  reboobler, true);
+  document[ADD_EVENT_METHOD]('focus', focus_boobler, true);
+  document[ADD_EVENT_METHOD]('blur',  focus_boobler, true);
 }
+

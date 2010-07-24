@@ -5,8 +5,8 @@
  */
 var Element_observer = Observer_create({}),
     IE_ADD_EVENT     = 'attachEvent',
-    W3C_ADD_EVENT    = 'addEventListener',
-    attach           = IE_ADD_EVENT in window;
+    attach           = IE_ADD_EVENT in window,
+    ADD_EVENT_METHOD = attach ? IE_ADD_EVENT : 'addEventListener';
 
 //
 // HACK HACK HACK
@@ -32,8 +32,8 @@ hack_observer('on',
     'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new RightJS.Event(a[0],this);'+
     '$2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
       attach ?
-        'this._.'+ IE_ADD_EVENT  +'("on"+$2.n,$2.w);' :
-        'this._.'+ W3C_ADD_EVENT +'($2.n,$2.w,false);'
+        'this._.'+ ADD_EVENT_METHOD +'("on"+$2.n,$2.w);' :
+        'this._.'+ ADD_EVENT_METHOD +'($2.n,$2.w,false);'
       )
 );
 
