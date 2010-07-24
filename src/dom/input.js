@@ -97,7 +97,7 @@ new Wrapper(Element, {
   focus: function() {
     this._.focus();
     this.focused = true;
-    return this.fire('focus');
+    return this;
   },
   
   /**
@@ -108,7 +108,7 @@ new Wrapper(Element, {
   blur: function() {
     this._.blur();
     this.focused = false;
-    return this.fire('blur');
+    return this;
   },
   
   /**
