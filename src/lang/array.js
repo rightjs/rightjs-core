@@ -22,6 +22,7 @@ build_loop = function(pre, body, ret) {
 // JavaScript 1.6 methods recatching up or faking
 for_each = A_proto.forEach || build_loop('', '_', ''),
 filter   = A_proto.filter  || build_loop('r=[],j=0,', 'if(_)r[j++]=this[i]', 'return r'),
+reject   =                    build_loop('r=[],j=0,', 'if(!_)r[j++]=this[i]', 'return r'),
 map      = A_proto.map     || build_loop('r=[],', 'r[i]=_', 'return r'),
 some     = A_proto.some    || build_loop('', 'if(_)return true', 'return false'),
 every    = A_proto.every   || build_loop('', 'if(!_)return false', 'return true'),
@@ -202,6 +203,17 @@ Array.include({
    */
   filter: function() {
     return call_method(filter, this, arguments);
+  },
+  
+  /**
+   * creates a list of the array items that are not matching the give callback function
+   *
+   * @param Function callback
+   * @param Object optionl scope
+   * @return Array filtered copy
+   */
+  reject: function() {
+    return call_method(reject, this, arguments);
   },
   
   /**

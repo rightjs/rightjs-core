@@ -139,6 +139,20 @@ var ArrayTest = TestCase.create({
     this.assertEqual($w('banana orange apple'), a.filter('includes', 'a'));
   },
   
+  testReject: function() {
+    var a = [1,2,3,4];
+    var b = a.reject(function(i) { return i % 2 == 0; });
+    
+    this.assertEqual([1,3], b);
+    this.assertNotSame(a,b);
+  },
+  
+  testRejectByName: function() {
+    var a = $w('banana orange lime apple');
+    
+    this.assertEqual($w('lime apple'), a.reject('includes', 'an'));
+  },
+  
   testSome: function() {
     this.assert([0,false,null,1].some());
     this.assertFalse([0,false,null].some());
