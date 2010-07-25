@@ -23,7 +23,7 @@ function focus_boobler(event) {
       parent = target.parent && target.parent();
   
   parent && parent.fire(
-    (event.type === 'focusin' || event.type == 'focus') ?
+    (event.type === 'focusin' || event.type === 'focus') ?
     'focus' : 'blur', Object.without(event, 'type')
   );
 };
@@ -77,5 +77,93 @@ if (!event_support_for('onsubmit')) {
   
   document[ADD_EVENT_METHOD]('onclick',    submit_boobler);
   document[ADD_EVENT_METHOD]('onkeypress', submit_boobler);
+}
+
+if (!event_support_for('onchange')) {
   
+  function get_input_value(target) {
+    var element = target._,
+        type    = element.type;
+        
+    return type === 'radio' || type === 'checkbox' ?
+      element.checked : target.getValue();
+  };
+  
+  /**
+   * Emulates the 'change' event bubbling
+   *
+   * @param Event wrapped dom-event
+   * @param Input wrapped input element
+   * @return void
+   */
+  function change_boobler(event, target) {
+    var parent  = target.parent(),
+        value   = get_input_value(target);
+
+    if (parent && ''+target._prev_value !== ''+value) {
+      target._prev_value = value; // saving the value so it didn't fire up again
+      event.type = 'change';
+      parent.fire(event);
+    }
+  };
+  
+  /**
+   * Catches the input field changes
+   *
+   * @param raw dom-event
+   * @return void
+   */
+  function catch_inputs_access(raw_event) {
+    var event  = $(raw_event),
+        target = event.target,
+        type   = target._.type,
+        tag    = target._.tagName,
+        input_is_radio = (type === 'radio' || type === 'checkbox');
+    
+    if (
+      (event.type === 'click' && (input_is_radio || tag === 'SELECT')) ||
+      (event.type === 'keydown' && (
+        (event.keyCode == 13 && (tag !== 'TEXTAREA')) ||
+        type === 'select-multiple'
+      ))
+    ) 
+    
+    change_boobler(event, target);
+  };
+  
+  document[ADD_EVENT_METHOD]('onclick',   catch_inputs_access);
+  document[ADD_EVENT_METHOD]('onkeydown', catch_inputs_access);
+  
+  /**
+   * Catch inputs blur
+   *
+   * @param raw dom-event
+   * @return void
+   */
+  function catch_input_left(raw_event) {
+    var event  = $(raw_event),
+        target = event.target;
+    
+    if (target instanceof Input) {
+      change_boobler(event, target);
+    }
+  };
+  
+  if (Browser.IE) {
+    document[ADD_EVENT_METHOD]('onfocusout', catch_input_left);
+  } else {
+    document[ADD_EVENT_METHOD]('blur', catch_input_left, true);
+  }
+  
+  /**
+   * storing the input element previous value, so we could figure out
+   * if it was changed later on
+   */
+  document[ADD_EVENT_METHOD]('onbeforeactivate', function(event) {
+    var element = $(event).target, checked = 'checked';
+    
+    if (element instanceof Input) {
+      element._prev_value = get_input_value(element);
+    }
+  });
 }
