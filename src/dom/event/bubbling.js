@@ -18,14 +18,14 @@ Element[PROTO].fire = patch_function(
  * @param raw dom-event
  * @return void
  */
-function focus_boobler(event) {
-  var target = $(event.target || event.srcElement),
+function focus_boobler(raw_event) {
+  var event  = new Event(raw_event),
+      target = event.target,
       parent = target.parent && target.parent();
   
-  parent && parent.fire(
-    (event.type === 'focusin' || event.type === 'focus') ?
-    'focus' : 'blur', Object.without(event, 'type')
-  );
+  event.type = (raw_event.type === 'focusin' || raw_event.type === 'focus') ? 'focus' : 'blur';
+  
+  parent && parent.fire(event);
 };
 
 /**
