@@ -82,7 +82,7 @@ var Event = RightJS.Event = new Wrapper({
       $ext(event, options);
     
     this.stopped = event.bubbles === false;
-      
+    
     return event;
   },
   

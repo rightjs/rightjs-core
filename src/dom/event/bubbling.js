@@ -9,7 +9,7 @@
 Element[PROTO].fire = patch_function(
   Element_observer.fire,
   /(\w+)(\s*=\s*\w+\.shift[\s\S]+)(return this)/m,
-  '$1$2var p=!$1.stopped&&this.parent&&this.parent();p&&p.fire($1);$3'
+  '$1$2var p=!$1.stopped&&this.parent&&this.parent();p&&p.fire&&p.fire($1);$3'
 );
 
 /**

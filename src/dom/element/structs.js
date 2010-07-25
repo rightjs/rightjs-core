@@ -17,7 +17,7 @@
  */
 Element.include({
   parent: function(css_rule) {
-    return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode);
+    return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode || null);
   },
   
   parents: function(css_rule) {
