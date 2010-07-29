@@ -11,21 +11,24 @@
 if (!RightJS.$E('p').getBoundingClientRect) {
   RightJS.Element.include({
     position: function() {
-      var element = this._, left = element.offsetLeft, top = element.offsetTop,
-        position = this.getStyle('position'),
-        parent = RightJS.$(element.parentNode), body = element.ownerDocument.body;
+      var element  = this._,
+          top      = element.offsetTop,
+          left     = element.offsetLeft, 
+          position = this.getStyle('position'),
+          parent   = this.parent(),
+          body     = element.ownerDocument.body;
       
       // getting the parent node position
-      while (parent && parent instanceof Element) {
-        if (parent._ === body || parent.getStyle('position') !== 'static') {
-          if (parent._ !== body || position !== 'absolute') {
+      while (parent && parent._.tagName) {
+        if (parent._ === body   || parent.getStyle('position') !== 'static') {
+          if (parent._ !== body || (position !== 'absolute' && position !== 'relative')) {
             var subset = parent.position();
             left += subset.x;
             top  += subset.y;
           }
           break;
         }
-        parent = $(parent.parentNode);
+        parent = parent.parent();
       }
       
       return {x: left, y: top};
