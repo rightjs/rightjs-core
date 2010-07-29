@@ -231,8 +231,10 @@ var SelectorTest = TestCase.create({
         
     this.assertNotMatchRule('input[title~="some"]', element);
     element._.title = "some value";
-    this.assertMatchRule('input[title~="some"]', element);
-    this.assertMatchRule('input[title~="value"]', element);
+    if (!Browser.Opera) {
+      this.assertMatchRule('input[title~="some"]', element);
+      this.assertMatchRule('input[title~="value"]', element);
+    }
     
     element._.setAttribute('lang', "en-EN");
     this.assertMatchRule('input[lang|="en"]', element);
