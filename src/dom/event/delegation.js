@@ -174,7 +174,7 @@ function delegation_listeners(args, object) {
 
 
 /**
- * A shortcut for document-level events delegation handler attaching
+ * Some nice shortcuts for the document-level events delegation handling
  *
  * USAGE:
  *
@@ -190,19 +190,43 @@ function delegation_listeners(args, object) {
  *     dblclick:  'hide'
  *   });
  *
- * ...
- * @return String this
+ *
+ *   "#css.rule".observes('click');
+ *   "#css.rule".observes('click', function() {});
+ *   "#css.rule".observes('click', 'method_name');
+ *   ....
+ *
+ *   "#css.rule".stopObserving('click');
+ *   "#css.rule".stopObserving('click', function() {});
+ *   "#css.rule".stopObserving('click', 'method_name');
+ *    ....
  */
-String[PROTO].on = function() {
-  var doc = $(document), args = $A(arguments);
-  
-  args.splice(1,0,''+this);
-  doc.delegate.apply(doc, args);
-  
-  return this;
-};
+var String2DocumentMap = {
+  on:            'delegate',
+  stopObserving: 'undelegate',
+  observes:      'delegates'
+}, method;
 
-// building the list of String#onEvent shortucts
+for (method in String2DocumentMap) {
+  String[PROTO][method] = (function(method_name) {
+    return function() {
+      var doc = $(document), args = $A(arguments), result;
+
+      args.splice(1,0,''+this);
+      result = doc[method_name].apply(doc, args);
+      return result === doc ? this : result;
+    };
+  })(String2DocumentMap[method]);
+}
+
+/**
+ * building the list of String#onEvent shortucts
+ *
+ * USAGE:
+ *    
+ *    "#css.rule".onClick(function() {...});
+ *    "#css.rule".onMouseover('method_name');
+ */
 Event_delegation_shortcuts.each(function(name) {
   String[PROTO]['on'+name.capitalize()] = function() {
     return this.on.apply(this, [name].concat($A(arguments)));

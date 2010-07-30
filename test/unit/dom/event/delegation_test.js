@@ -291,14 +291,39 @@ var EventDelegationTest = TestCase.create({
   },
   
   testStringOnShortcut: function() {
-    var args;
-    this.mock($(document), 'delegate', function() { args = $A(arguments); });
+    var args, css_rule = ".some.css-rule";
     
-    ".some.css-rule".on('click', 'addClass', 'foo');
+    this.mock($(document), 'delegate', function() { args = $A(arguments); return $(document); });
     
-    this.assertEqual(['click', '.some.css-rule', 'addClass', 'foo'], args);
+    this.assertSame(css_rule, css_rule.on('click', 'addClass', 'foo'));
+    
+    this.assertEqual(['click', css_rule, 'addClass', 'foo'], args);
     
     this.undoMock($(document), 'delegate');
+  },
+  
+  testStringStopObservingShortcut: function() {
+    var args, css_rule = ".some.css-rule";
+    
+    this.mock($(document), 'undelegate', function() { args = $A(arguments); return $(document); });
+    
+    this.assertSame(css_rule, css_rule.stopObserving('click', 'addClass', 'foo'));
+    
+    this.assertEqual(['click', css_rule, 'addClass', 'foo'], args);
+    
+    this.undoMock($(document), 'undelegate');
+  },
+  
+  testStringObservesShortcut: function() {
+    var args, css_rule = ".some.css-rule", result = 'result';
+    
+    this.mock($(document), 'delegates', function() { args = $A(arguments); return result; });
+    
+    this.assertSame(result, css_rule.observes('click', 'addClass', 'foo'));
+    
+    this.assertEqual(['click', css_rule, 'addClass', 'foo'], args);
+    
+    this.undoMock($(document), 'delegates');
   },
   
   testStringOnNamedShortcuts: function() {
