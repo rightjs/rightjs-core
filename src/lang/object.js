@@ -37,9 +37,9 @@ $ext(Object, {
   /**
    * Calls the function with every key/value pair on the hash
    *
-   * @param Object the data hash
+   * @param in Object the data hash
    * @param Function the callback
-   * @param Object an optional scope
+   * @param scope Object an optional scope
    * @return Object the original hash
    */
   each: function(object, callback, scope) {

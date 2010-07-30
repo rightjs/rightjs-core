@@ -29,7 +29,7 @@ Form.include({
   /**
    * makes the form be remote by default
    *
-   * @params Object default options
+   * @param Object default options
    * @return Form this
    */
   remotize: function(options) {
