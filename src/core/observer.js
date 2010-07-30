@@ -62,7 +62,7 @@ var Observer = RightJS.Observer = new Class({
           if (isArray(callback)) {
             for (var i=0; i < callback.length; i++) {
               this.on.apply(this, [event].concat(
-                isArray(callback[i]) ? callback[i] : [callback[i]]
+                ensure_array(callback[i])
               ).concat(args));
             }
           }
@@ -72,7 +72,7 @@ var Observer = RightJS.Observer = new Class({
       // assuming it's a hash of key-value pairs
       for (var name in event) {
         this.on.apply(this, [name].concat(
-          isArray(event[name]) ? event[name] : [event[name]]
+          ensure_array(event[name])
         ).concat(args));
       }
     }

@@ -313,3 +313,14 @@ for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < nat
 function patch_function(func, re, replacement) {
   return eval('['+ func.toString().replace(re, replacement) + ']')[0];
 };
+
+/**
+ * Checks if the data is an array and if not,
+ * then makes an array out of it
+ *
+ * @param mixed in data
+ * @return Array data
+ */
+function ensure_array(data) {
+  return isArray(data) ? data : [data];
+};

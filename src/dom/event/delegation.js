@@ -127,15 +127,14 @@ function delegation_rules(raw_args) {
   if (isString(rules)) {
     hash[rules] = args.slice(2);
     if (isArray(hash[rules][0]))
-      hash[rules] = hash[rules][0].map(function(i) { return isArray(i) ? i : [i]; });
+      hash[rules] = hash[rules][0].map(ensure_array);
   } else {
     hash = rules;
   }
   
   // converting everything into a hash of lists of callbacks
   for (css_rule in hash) {
-    if (!isArray(hash[css_rule]))
-      hash[css_rule] = [hash[css_rule]];
+    hash[css_rule] = ensure_array(hash[css_rule]);
     
     if (!isArray(hash[css_rule][0]))
       hash[css_rule] = [hash[css_rule]];

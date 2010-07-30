@@ -136,8 +136,7 @@ $ext(Object, {
   toQueryString: function(object) {
     var tokens = [], key, value, encode = encodeURIComponent;
     for (key in object) {
-      value = object[key];
-      value = isArray(value) ? value : [value];
+      value = ensure_array(object[key]);
       for (var i=0; i < value.length; i++) {
         tokens.push(encode(key) +'='+ encode(value[i]))
       }

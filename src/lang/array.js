@@ -262,7 +262,7 @@ Array.include({
   merge: function() {
     for (var copy = this.clone(), arg, i=0, j, length = arguments.length; i < length; i++) {
       arg = arguments[i];
-      arg = isArray(arg) ? arg : [arg];
+      arg = ensure_array(arg);
       
       for (j=0; j < arg.length; j++) {
         if (copy.indexOf(arg[j]) == -1)

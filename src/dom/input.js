@@ -69,7 +69,7 @@ new Wrapper(Element, {
    */
   setValue: function(value) {
     if (this._.type == 'select-multiple') {
-      value = $A(isArray(value) ? value : [value]).map(String);
+      value = ensure_array(value).map(String);
       $A(this._.getElementsByTagName('option')).each(function(option) {
         option.selected = value.includes(option.value);
       });

@@ -36,7 +36,7 @@ var Class = RightJS.Class = function() {
   $w('extend include').each(function(name) {
     if (properties[name]) {
       var modules = properties[name];
-      klass[name].apply(klass, isArray(modules) ? modules : [modules]);
+      klass[name].apply(klass, ensure_array(modules));
       delete(properties[name]);
     }
   });
