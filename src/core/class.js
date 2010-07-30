@@ -11,12 +11,12 @@
  */
 var Class = RightJS.Class = function() {
   var args = $A(arguments), properties = args.pop() || {},
-    parent = args.pop(), prebind = 'prebind';
+    parent = args.pop();
   
   // basic class object definition
   function klass() {
-    if (prebind in this && isArray(this[prebind])) {
-      this[prebind].each(function(method) {
+    if ('prebind' in this && isArray(this.prebind)) {
+      this.prebind.each(function(method) {
         this[method] = this[method].bind(this);
       }, this);
     }
@@ -52,8 +52,8 @@ var Class = RightJS.Class = function() {
 commons = $w('selfExtended self_extended selfIncluded self_included'),
 extend  = commons.concat($w(PROTO+' parent extend include')),
 include = commons.concat(['constructor']),
-clean_module = function (module, what) {
-  return Object.without.apply(Object, [module].concat(what == 'e' ? extend : include));
+clean_module = function (module, ext) {
+  return Object.without.apply(Object, [module].concat(ext ? extend : include));
 },
 
 Class_Methods = {
@@ -100,7 +100,7 @@ Class_Methods = {
     $A(arguments).filter(isHash).each(function(module) {
       var callback = module.selfExtended || module.self_extended;
       
-      $ext(this, clean_module(module, 'e'));
+      $ext(this, clean_module(module, true));
       
       if (callback) callback.call(module, this);
     }, this);
@@ -118,24 +118,19 @@ Class_Methods = {
    * @return Class the klass
    */
   include: function() {
-    var ancestors = (this.ancestors || []).map(PROTO), ancestor;
+    var ancestors = (this.ancestors || []).map(PROTO);
 
     $A(arguments).filter(isHash).each(function(module) {
       var callback = module.selfIncluded || module.self_included;
-      module = clean_module(module, 'i');
-
-      for (var key in module) {
-        ancestor = ancestors.first(function(proto) { return key in proto && isFunction(proto[key]); });
-
-        this[PROTO][key] = !ancestor ? module[key] :
-          (function(name, method, super_method) {
-            return function() {
-              this.$super = super_method;
-
-              return method.apply(this, arguments);
-            };
-          })(key, module[key], ancestor[key]);
-      }
+      
+      Object.each(clean_module(module, false), function(key, method) {
+        var ancestor = ancestors.first(function(proto) { return key in proto && isFunction(proto[key]); });
+        
+        this[PROTO][key] = !ancestor ? method : function() {
+          this.$super = ancestor[key];
+          return method.apply(this, arguments);
+        };
+      }, this);
 
       if (callback) callback.call(module, this);
     }, this);
@@ -158,8 +153,8 @@ Class_Methods = {
  */
 Class_findSet = function(object, property) {
   var upcased = property.toUpperCase(), capcased = property.capitalize(),
-    constructor = object.constructor, ancestors = 'ancestors',
-    candidates = [object, constructor].concat(ancestors in constructor ? constructor[ancestors] : []),
+    constructor = object.constructor,
+    candidates = [object, constructor].concat('ancestors' in constructor ? constructor.ancestors : []),
     holder = candidates.first(function(o) { return o && (upcased in o || capcased in o) });
     
   return holder ? holder[upcased] || holder[capcased] : null;

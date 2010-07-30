@@ -13,10 +13,10 @@
  * Some top-level variables to shortify the things
  */
 var 
-UNDEF = undefined, PROTO = 'prototype', A_proto = Array[PROTO],
+PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
-DOC_E = 'documentElement', HTML = document[DOC_E], UID = 1,  // !#server
+HTML = document.documentElement, UID = 1,  // !#server
 Wrappers_Cache = [], UID_KEY = '_rid'+ new Date().getTime(), // !#server
  
 /**

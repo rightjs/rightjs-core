@@ -35,11 +35,11 @@ function focus_boobler(raw_event) {
  *
  */
 if (Browser.IE) {
-  document[ADD_EVENT_METHOD]('onfocusin',  focus_boobler);
-  document[ADD_EVENT_METHOD]('onfocusout', focus_boobler);
+  document.attachEvent('onfocusin',  focus_boobler);
+  document.attachEvent('onfocusout', focus_boobler);
 } else {
-  document[ADD_EVENT_METHOD]('focus', focus_boobler, true);
-  document[ADD_EVENT_METHOD]('blur',  focus_boobler, true);
+  document.addEventListener('focus', focus_boobler, true);
+  document.addEventListener('blur',  focus_boobler, true);
 }
 
 /**
@@ -49,7 +49,7 @@ if (Browser.IE) {
  * @retrun Boolean check result
  */
 function event_support_for(name) {
-  var e = $E('div')._;
+  var e = $E('DIV')._;
   e.setAttribute(name, ';');
   return isFunction(e[name]);
 };
@@ -75,8 +75,8 @@ if (!event_support_for('onsubmit')) {
     }
   };
   
-  document[ADD_EVENT_METHOD]('onclick',    submit_boobler);
-  document[ADD_EVENT_METHOD]('onkeypress', submit_boobler);
+  document.attachEvent('onclick',    submit_boobler);
+  document.attachEvent('onkeypress', submit_boobler);
 }
 
 if (!event_support_for('onchange')) {
@@ -131,8 +131,8 @@ if (!event_support_for('onchange')) {
     change_boobler(event, target);
   };
   
-  document[ADD_EVENT_METHOD]('onclick',   catch_inputs_access);
-  document[ADD_EVENT_METHOD]('onkeydown', catch_inputs_access);
+  document.attachEvent('onclick',   catch_inputs_access);
+  document.attachEvent('onkeydown', catch_inputs_access);
   
   /**
    * Catch inputs blur
@@ -149,17 +149,13 @@ if (!event_support_for('onchange')) {
     }
   };
   
-  if (Browser.IE) {
-    document[ADD_EVENT_METHOD]('onfocusout', catch_input_left);
-  } else {
-    document[ADD_EVENT_METHOD]('blur', catch_input_left, true);
-  }
+  document.attachEvent('onfocusout', catch_input_left);
   
   /**
    * storing the input element previous value, so we could figure out
    * if it was changed later on
    */
-  document[ADD_EVENT_METHOD]('onbeforeactivate', function(event) {
+  document.attachEvent('onbeforeactivate', function(event) {
     var element = $(event).target, checked = 'checked';
     
     if (element instanceof Input) {

@@ -241,7 +241,7 @@ Element_createFragment = function(content) {
   var fragment = document.createDocumentFragment();
     
   if (isString(content)) {
-    var tmp   = document.createElement('div'),
+    var tmp   = document.createElement('DIV'),
         wrap  = Element_wraps[this.tagName] || ['', '', 0],
         depth = wrap[2];
           
@@ -268,14 +268,12 @@ Element_createFragment = function(content) {
 
 
 // the element insertion wrappers list
-Element_wraps_t1 = '<table><tbody>',
-Element_wraps_t2 = '</tbody></table>',
 Element_wraps = {
-  TABLE:  ['<table>',                   '</table>',                    1],
-  TBODY:  [Element_wraps_t1,            Element_wraps_t2,              2],
-  TR:     [Element_wraps_t1+'<tr>',     '</tr>'+Element_wraps_t2,      3],
-  TD:     [Element_wraps_t1+'<tr><td>', '</td></tr>'+Element_wraps_t2, 4],
-  SELECT: ['<select>',                  '</select>',                   1]
+  TABLE:  ['<TABLE>',                '</TABLE>',                   1],
+  TBODY:  ['<TABLE><TBODY>',         '</TBODY></TABLE>',           2],
+  TR:     ['<TABLE><TBODY><TR>',     '</TR></TBODY></TABLE>',      3],
+  TD:     ['<TABLE><TBODY><TR><TD>', '</TD></TR></TBODY></TABLE>', 4],
+  SELECT: ['<SELECT>',               '</SELECT>',                  1]
 };
 
 $alias(Element_wraps, {

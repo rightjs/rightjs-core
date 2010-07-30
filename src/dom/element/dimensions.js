@@ -42,7 +42,7 @@ Element.include({
    */
   position: function() {
     var rect    = this._.getBoundingClientRect(),
-        html    = this.doc()._[DOC_E],
+        html    = this.doc()._.documentElement,
         scrolls = this.win().scrolls();
     
     return {

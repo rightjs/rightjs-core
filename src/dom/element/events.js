@@ -3,10 +3,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Element_observer = Observer_create({}),
-    IE_ADD_EVENT     = 'attachEvent',
-    attach           = IE_ADD_EVENT in window,
-    ADD_EVENT_METHOD = attach ? IE_ADD_EVENT : 'addEventListener';
+var Element_observer = Observer_create({});
 
 //
 // HACK HACK HACK
@@ -31,16 +28,16 @@ hack_observer('on',
   '$2.w=function(){'+
     'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new RightJS.Event(a[0],this);'+
     '$2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
-      attach ?
-        'this._.'+ ADD_EVENT_METHOD +'("on"+$2.n,$2.w);' :
-        'this._.'+ ADD_EVENT_METHOD +'($2.n,$2.w,false);'
+      looks_like_ie ?
+        'this._.attachEvent("on"+$2.n,$2.w);' :
+        'this._.addEventListener($2.n,$2.w,false);'
       )
 );
 
 hack_observer('stopObserving',
   /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m, 
   '$1var r=$4;'+
-  'if(!r)' + (attach ? 
+  'if(!r)' + (looks_like_ie ? 
     'this._.detachEvent("on"+$2.n,$2.w);' :
     'this._.removeEventListener($2.n,$2.w,false);'
   )+'$3 r'

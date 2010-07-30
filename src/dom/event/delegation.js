@@ -200,23 +200,20 @@ function delegation_listeners(args, object) {
  *   "#css.rule".stopObserving('click', 'method_name');
  *    ....
  */
-var String2DocumentMap = {
+Object.each({
   on:            'delegate',
   stopObserving: 'undelegate',
   observes:      'delegates'
-}, method;
-
-for (method in String2DocumentMap) {
-  String[PROTO][method] = (function(method_name) {
-    return function() {
-      var doc = $(document), args = $A(arguments), result;
-
-      args.splice(1,0,''+this);
-      result = doc[method_name].apply(doc, args);
-      return result === doc ? this : result;
-    };
-  })(String2DocumentMap[method]);
-}
+}, function(name, method) {
+  String[PROTO][name] = function() {
+    var doc = $(document), args = $A(arguments), result;
+    
+    args.splice(1,0,''+this);
+    result = doc[method].apply(doc, args);
+    
+    return result === doc ? this : result;
+  };
+});
 
 /**
  * building the list of String#onEvent shortucts

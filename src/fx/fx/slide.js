@@ -35,18 +35,17 @@ Fx.Slide = new Class(Fx.Twin, {
 
   // calculates the final style
   _getStyle: function(direction) {
-    var style = {}, sizes = this.sizes,
-      m_left = 'marginLeft', m_top = 'marginTop',
-      margin_left = this.styles[m_left].toFloat() || 0,
-      margin_top  = this.styles[m_top].toFloat() || 0;
+    var style = {}, sizes = this.sizes
+      margin_left = this.styles.marginLeft.toFloat() || 0,
+      margin_top  = this.styles.marginTop.toFloat() || 0;
 
     if (this.how == 'out') {
       style[['top', 'bottom'].includes(direction) ? 'height' : 'width'] = '0px';
 
       if (direction == 'right') {
-        style[m_left] = margin_left + sizes.x+'px';
+        style.marginLeft = margin_left + sizes.x+'px';
       } else if (direction == 'bottom') {
-        style[m_top] = margin_top + sizes.y +'px';
+        style.marginTop = margin_top + sizes.y +'px';
       }
 
     } else if (this.how == 'in') {
@@ -61,11 +60,11 @@ Fx.Slide = new Class(Fx.Twin, {
       }
 
       if (direction == 'right') {
-        style[m_left] = margin_left + 'px';
-        element_style[m_left] = margin_left + sizes.x + 'px';
+        style.marginLeft = margin_left + 'px';
+        element_style.marginLeft = margin_left + sizes.x + 'px';
       } else if (direction == 'bottom') {
-        style[m_top] = margin_top + 'px';
-        element_style[m_top] = margin_top + sizes.y + 'px';
+        style.marginTop = margin_top + 'px';
+        element_style.marginTop = margin_top + sizes.y + 'px';
       }
     }
     

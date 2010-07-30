@@ -32,7 +32,7 @@ last     = function(callback, scope) {
     if (callback.call(scope, this[i], i, this))
       return this[i];
   }
-  return UNDEF;
+  return undefined;
 };
   
   
@@ -295,7 +295,7 @@ Array.include({
    * @return Array filtered version
    */
   compact: function() {
-    return this.without(null, UNDEF);
+    return this.without(null, undefined);
   },
   
   /**
@@ -407,7 +407,5 @@ Array.include({
 });
 
 $alias(A_proto, {
-  include: 'includes',
-  all: 'every',
-  any: 'some'
+  include: 'includes'
 });

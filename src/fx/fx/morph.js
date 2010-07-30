@@ -9,10 +9,7 @@
  */
 
 // a list of common style names to compact the code a bit
-var Color = 'Color', Style = 'Style', Width = 'Width', Bg = 'background',
-    Border = 'border', Pos = 'Position', BgColor = Bg + Color,
-    directions = $w('Top Left Right Bottom');
-
+var directions = $w('Top Left Right Bottom');
 
 // adds variants to the style names list
 function add_variants(keys, key, variants) {
@@ -24,9 +21,9 @@ function add_variants(keys, key, variants) {
 function check_border_styles(before, after) {
   for (var i=0; i < 4; i++) {
     var direction = directions[i],
-      bd_style = Border + direction + Style,
-      bd_width = Border + direction + Width,
-      bd_color = Border + direction + Color;
+      bd_style = 'border' + direction + 'Style',
+      bd_width = 'border' + direction + 'Width',
+      bd_color = 'border' + direction + 'Color';
     
     if (bd_style in before && before[bd_style] != after[bd_style]) {
       var style = this.element._.style;
@@ -37,7 +34,7 @@ function check_border_styles(before, after) {
 
       style[bd_style] = after[bd_style];
       if (this._transp(before[bd_color])) {
-        style[bd_color] = this.element._.getStyle(Color);
+        style[bd_color] = this.element._.getStyle('Color');
       }
     }
   }
@@ -147,17 +144,17 @@ Fx.Morph = new Class(Fx, {
    * @return Array of clean style keys list
    */
   _styleKeys: function(style) {
-    var keys = [], border_types = [Style, Color, Width], key, i, j;
+    var keys = [], border_types = ['Style', 'Color', 'Width'], key, i, j;
       
     for (key in style) {
-      if (key.startsWith(Border))
+      if (key.startsWith('border'))
         for (i=0; i < border_types.length; i++)
           for (j=0; j < directions.length; j++)
-            keys.push(Border + directions[j] + border_types[i]);
+            keys.push('border' + directions[j] + border_types[i]);
       else if (key == 'margin' || key == 'padding')
         add_variants(keys, key, directions);
-      else if (key.startsWith(Bg))
-        add_variants(keys, Bg, [Color, Pos, Pos+'X', Pos+'Y']);
+      else if (key.startsWith('background'))
+        add_variants(keys, 'background', ['Color', 'Position', 'PositionX', 'PositionY']);
       else if (key == 'opacity' && Browser.IE)
         keys.push('filter');
       else
@@ -219,7 +216,7 @@ Fx.Morph = new Class(Fx, {
   // looking for the visible background color of the element
   _getBGColor: function(element) {
     return [element].concat(element.parents()).map(function(node) {
-      var bg = node.getStyle(BgColor);
+      var bg = node.getStyle('backgroundColor');
       return (bg && !this._transp(bg)) ? bg : null; 
     }, this).compact().first() || '#FFF';
   },

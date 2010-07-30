@@ -21,7 +21,7 @@ var Window = RightJS.Window = new Wrapper({
    * @return Object x: d+, y: d+
    */
   sizes: function() {
-    var win = this._, html = this.d[DOC_E];
+    var win = this._, html = this.d.documentElement;
     return win.innerWidth ? {x: win.innerWidth, y: win.innerHeight} :
       {x: html.clientWidth, y: html.clientHeight};
   },
@@ -32,13 +32,11 @@ var Window = RightJS.Window = new Wrapper({
    * @return Object x: d+, y: d+
    */
   scrolls: function() {
-    var win = this._, doc = this.d, body = doc.body, html = doc[DOC_E],
-      off_x = 'pageXOffset', off_y = 'pageYOffset',
-      scr_x = 'scrollLeft',  scr_y = 'scrollTop';
+    var win = this._, doc = this.d, body = doc.body, html = doc.documentElement;
     
-    return (win[off_x] || win[off_y]) ? {x: win[off_x], y: win[off_y]} :
-      (body[scr_x] || body[scr_x]) ? {x: body[scr_x], y: body[scr_y]} :
-      {x: html[scr_x], y: html[scr_y]};
+    return (win.pageXOffset || win.pageYOffset) ? {x: win.pageXOffset, y: win.pageYOffset} :
+      (body.scrollLeft || body.scrollTop) ? {x: body.scrollLeft, y: body.scrollTop} :
+      {x: html.scrollLeft, y: html.scrollTop};
   },
 
   /**
