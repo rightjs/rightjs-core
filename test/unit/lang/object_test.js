@@ -1,7 +1,7 @@
 /**
  * The Object unit test-case
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var ObjectTest = TestCase.create({
   name: 'ObjectTest',
@@ -12,6 +12,21 @@ var ObjectTest = TestCase.create({
   
   testValues: function() {
     this.assertEqual([1,2], Object.values({a:1, b:2}));
+  },
+  
+  testEach: function() {
+    var hash = {k1: 'v1', k2: 'v2'}, args = [], scope = {}, callback_scope;
+    
+    this.assertSame(hash, Object.each(hash, function() {
+      args.push($A(arguments));
+      callback_scope = this;
+    }, scope));
+    
+    this.assertSame(scope, callback_scope);
+    this.assertEqual([
+      ['k1', 'v1'],
+      ['k2', 'v2']
+    ], args);
   },
   
   testEmpty: function() {

@@ -35,6 +35,22 @@ $ext(Object, {
   },
   
   /**
+   * Calls the function with every key/value pair on the hash
+   *
+   * @param Object the data hash
+   * @param Function the callback
+   * @param Object an optional scope
+   * @return Object the original hash
+   */
+  each: function(object, callback, scope) {
+    for (var key in object) {
+      callback.call(scope, key, object[key]);
+    }
+    
+    return object;
+  },
+  
+  /**
    * checks if the object-hash has no keys
    *
    * @param Object object
