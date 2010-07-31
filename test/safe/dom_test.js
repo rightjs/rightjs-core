@@ -38,14 +38,14 @@ var DomTest = TestCase.create({
   },
   
   testFindById: function() {
-    var el = RightJS.$('#test-div');
+    var el = RightJS.$('test-div');
     
     this.assert(el instanceof RightJS.Element);
     this.assertSame(this.el, el._, "checking if we found the same element");
   },
   
   testFindByCss: function() {
-    var els = RightJS.$('#test-div div.one div');
+    var els = RightJS.$$('#test-div div.one div');
     
     this.assert(els instanceof RightJS.Array);
     this.assertEqual(3, els.length);
@@ -57,11 +57,12 @@ var DomTest = TestCase.create({
     
     this.assert('onClick' in el);
     
-    var ev;
+    var ev = null;
     el.onClick(function(e) { ev = e; });
     
     this.fireClick(this.el);
     
+    this.assertNotNull(ev);
     this.assert('stop' in ev);
   },
   

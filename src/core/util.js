@@ -292,10 +292,12 @@ if (isHash(HTML)) {
  * Generating methods for native units extending
  */
 for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
+  natives[i].Methods = {};
   natives[i].include = function() {
     for (var i=0, args = arguments; i < args.length; i++) {
       if (isHash(args[i])) {
-        $ext(this[PROTO], args[i]);
+        $ext(this[PROTO],  args[i]);
+        $ext(this.Methods, args[i]);
       }
     }
   }
