@@ -46,6 +46,7 @@ var RightJS = (function(window, src) {
     RightJS[natives[i]] = win[natives[i]];
   }
   RightJS.context = win;
+  RightJS.safe    = true;
   
   // building the access and types conversion proxy
   var proxy = function(value) {
@@ -59,24 +60,6 @@ var RightJS = (function(window, src) {
     }
     
     return value;
-  };
-  
-  // loads up the native class extensions in the current window
-  proxy.civilize = function() {
-    for (var i=0, klass; i < natives.length; i++) {
-      R_Klass = RightJS[natives[i]];
-      W_Klass = window[natives[i]];
-      
-      if ('include' in R_Klass) {
-        W_Klass.include = function(modules, dont_overwrite) {
-          RightJS.$ext(this.prototype, modules, dont_overwrite);
-        };
-        
-        if ('Methods' in R_Klass) {
-          W_Klass.include(R_Klass.Methods);
-        }
-      }
-    }
   };
   
   return RightJS.$ext(proxy, RightJS);
