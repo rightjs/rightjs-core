@@ -48,13 +48,13 @@ if (Browser.IE) {
  * @param String event name
  * @retrun Boolean check result
  */
-function event_support_for(name) {
-  var e = $E('DIV')._;
+function event_support_for(name, tag) {
+  var e = $E(tag)._;
   e.setAttribute(name, ';');
   return isFunction(e[name]);
 };
 
-if (!event_support_for('onsubmit')) {
+if (!event_support_for('onsubmit', 'form')) {
   /**
    * Emulates the 'submit' event bubbling for IE browsers
    *
@@ -79,7 +79,7 @@ if (!event_support_for('onsubmit')) {
   document.attachEvent('onkeypress', submit_boobler);
 }
 
-if (!event_support_for('onchange')) {
+if (!event_support_for('onchange', 'input')) {
   
   function get_input_value(target) {
     var element = target._,
