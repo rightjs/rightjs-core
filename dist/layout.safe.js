@@ -6,9 +6,8 @@
 var RightJS = (function(window, src) {
   // premassaging the source code, swapping the document reference where needed
   src = src
-    // making it search in this document by default
-    .replace(/(\.\$=func.+?)([a-zA-Z]+)(\.getElementById\()/,    '$1parent.document$3')
-    .replace(/(\.\$\$=func.+?)([a-z]+)(\|\|[a-z]+\)\.select\()/, '$1parent.document$3')
+    // the default document to the current one
+    .replace(',document,', ',parent.document,')
     
     // building the inside types conversion methods
     + 'RightJS.$N=function(v){return new Number(v)};'
