@@ -31,7 +31,6 @@ var Event = RightJS.Event = new Wrapper({
    * @return void
    */
   initialize: function(event, bound_element) {
-    this._             = event;
     this.type          = event.type;
     
     this.which         = event.which;
@@ -83,7 +82,7 @@ var Event = RightJS.Event = new Wrapper({
     
     this.stopped = event.bubbles === false;
     
-    return event;
+    return this._ = event;
   },
   
   /**

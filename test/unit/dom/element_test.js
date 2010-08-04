@@ -53,6 +53,54 @@ var ElementTest = TestCase.create({
     this.assert(input.observes('change'));
   },
   
+  testPrivateWrapper: function() {
+    var MyElement = new Wrapper(Element, {
+      initialize: function(element) {
+        this.$super(element);
+        this.boo = 'hoo';
+      }
+    });
+    
+    var my_div = new MyElement('div', {id: 'my-div'});
+    
+    // testing the instance
+    this.assert(my_div instanceof MyElement);
+    this.assert(my_div instanceof Element);
+    
+    // testing the attributes
+    this.assertEqual('DIV', my_div._.tagName);
+    this.assertEqual('my-div', my_div._.id);
+    this.assertEqual('hoo', my_div.boo);
+    
+    this.assertSame(my_div, $(my_div._), "Checking the caching is working");
+  },
+  
+  testPrivateWrapperOverTypeCastedUnits: function() {
+    var Textarea = new Wrapper(Input, {
+      initialize: function(options) {
+        this.$super(Object.merge(options, {
+          type: 'textarea'
+        }));
+        
+        this.addClass('my-area');
+      }
+    });
+    
+    var txt = new Textarea();
+    
+    this.assert(txt instanceof Textarea);
+    this.assert(txt instanceof Input);
+    this.assert(txt instanceof Element);
+    
+    this.assertEqual('TEXTAREA', txt._.tagName);
+    this.assertEqual('my-area', txt._.className);
+    
+    this.assertSame(txt, $(txt._), "Checking the caching is working");
+    
+    this.assertFalse(new Element('textarea') instanceof Textarea,
+      "private wrappers should not get involved in the typecasting");
+  },
+  
   testInstanceWithClass: function() {
     this.assertEqual('foo bla', new Element('div', {
       'class': 'foo bla'

@@ -41,8 +41,6 @@ new Wrapper(Element, {
       }
       
       this.construct(element, options);
-    } else {
-      this._ = element;
     }
   },
   

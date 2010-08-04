@@ -78,20 +78,7 @@ var Element = RightJS.Element = new Wrapper({
    * @param Object options
    * @return Element element
    */
-  initialize: function(element, options) {
-    var tag = element.tagName, instance = this;
-
-    // dynamically swapping the wrapper if we have it in the system
-    if (tag in Element_wrappers) {
-      instance = new Element_wrappers[tag](element);
-      instance.$listeners = this.$listeners || [];
-    } else {
-      this._ = element;
-    }
-
-    return instance;
-  },
-  
+  initialize: dummy(),
   construct: element_constructor
 });
 

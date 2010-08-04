@@ -26,8 +26,6 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     
     if (isHash(options)) {
       this.construct('form', Object.without(options, 'remote'));
-    } else {
-      this._ = options;
     }
   
     if (remote) this.remotize();

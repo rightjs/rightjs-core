@@ -14,12 +14,27 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
   var Klass = function(object, options) {
     if (typeof object === 'string') {
       object = this.construct(object, options);
+    } else {
+      this._ = object;
     }
     
-    var instance = this.initialize(object, options) || this, element = instance._,
-        uid = UID_KEY in element ? element[UID_KEY] : (element[UID_KEY] = UID++);
+    var instance = this;
     
-    return Wrappers_Cache[uid] = instance;
+    // checking if it's a direct call of the Element unit
+    if (this.constructor === Element) {
+      // checking if the instance should be typecasted
+      if (object.tagName in Element_wrappers) {
+        instance = new Element_wrappers[object.tagName](object);
+        instance.$listeners = this.$listeners || [];
+      }
+    } else {
+      this.initialize(object, options);
+      object = this._;
+    }
+    
+    return Wrappers_Cache[
+      UID_KEY in object ? object[UID_KEY] : (object[UID_KEY] = UID++)
+    ] = instance;
   };
   
   // finding the parent
