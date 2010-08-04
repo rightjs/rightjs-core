@@ -107,7 +107,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    * @return Object values
    */
   values: function() {
-    var values = {}, value, name, element;
+    var values = {}, value, name, element, input;
     
     this.inputs().each(function(element) {
       input = element._;

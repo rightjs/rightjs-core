@@ -19,7 +19,7 @@ if (!RightJS.$E('p').getBoundingClientRect) {
           body     = element.ownerDocument.body;
       
       // getting the parent node position
-      while (parent && parent._.tagName) {
+      while (parent && 'tagName' in parent._) {
         if (parent._ === body   || parent.getStyle('position') !== 'static') {
           if (parent._ !== body || (position !== 'absolute' && position !== 'relative')) {
             var subset = parent.position();

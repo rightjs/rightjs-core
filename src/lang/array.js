@@ -32,7 +32,7 @@ last     = function(callback, scope) {
     if (callback.call(scope, this[i], i, this))
       return this[i];
   }
-  return undefined;
+  return null;
 };
   
   

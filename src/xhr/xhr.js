@@ -247,11 +247,8 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     } catch(e) {
       // manual json consistancy check
       if (window.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
-        if (this.secureJSON) {
-          throw "JSON parse error: "+this.text;
-        } else {
-          return null;
-        }
+        if (this.secureJSON) throw "JSON error: "+this.text;
+        return null;
       }
     }
     

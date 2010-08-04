@@ -135,9 +135,7 @@ function delegation_rules(raw_args) {
   // converting everything into a hash of lists of callbacks
   for (css_rule in hash) {
     hash[css_rule] = ensure_array(hash[css_rule]);
-    
-    if (!isArray(hash[css_rule][0]))
-      hash[css_rule] = [hash[css_rule]];
+    hash[css_rule] = isArray(hash[css_rule][0]) ? hash[css_rule] : [hash[css_rule]];
   }
   
   return hash;
@@ -166,6 +164,8 @@ function delegation_listeners(args, object) {
             }
           }
         }
+        
+        return false;
       })()
     )
   });
