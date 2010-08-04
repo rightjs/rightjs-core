@@ -18,7 +18,7 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
       this._ = object;
     }
     
-    var instance = this;
+    var instance = this, uid;
     
     // checking if it's a direct call of the Element unit
     if (this.constructor === Element) {
@@ -32,9 +32,9 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
       object = this._;
     }
     
-    return Wrappers_Cache[
-      UID_KEY in object ? object[UID_KEY] : (object[UID_KEY] = UID++)
-    ] = instance;
+    uid = UID_KEY in object ? object[UID_KEY] : (object[UID_KEY] = UID++);
+    
+    return Wrappers_Cache[uid] = instance;
   };
   
   // finding the parent
