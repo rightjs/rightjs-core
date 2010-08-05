@@ -168,8 +168,8 @@ if (!document.querySelector) {
      * @return Object atom matcher
      */
     var atoms_cache = {};
-    function build_atom(atom) {
-      if (!atoms_cache[atom]) {
+    function build_atom(in_atom) {
+      if (!atoms_cache[in_atom]) {
         //
         // HACK HACK HACK
         //
@@ -186,7 +186,7 @@ if (!document.querySelector) {
         //  p - for 'pseudo' string
         //  v - for 'value_of_pseudo'
         //  
-        var i, t, c, a, p, v, m, desc = {};
+        var i, t, c, a, p, v, m, desc = {}, atom = in_atom;
         
         // grabbing the attributes 
         while((m = atom.match(attrs_re))) {
@@ -267,10 +267,10 @@ if (!document.querySelector) {
           desc.filter = eval('['+ filter.replace('_f_', 'r.push(e)') +']')[0];
         }
         
-        atoms_cache[atom] = desc;
+        atoms_cache[in_atom] = desc;
       }
       
-      return atoms_cache[atom];
+      return atoms_cache[in_atom];
     };
     
     /**
