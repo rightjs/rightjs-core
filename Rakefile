@@ -120,7 +120,7 @@ task :build do
       f.write header
     end
     
-    system "java -jar lib/google-compiler.jar --js=#{file_name} > #{min_file_name}"
+    system "java -jar util/compiler.jar --js=#{file_name} > #{min_file_name}"
     system "gzip -c #{min_file_name} > #{min_file_name}.gz"
   end
   
