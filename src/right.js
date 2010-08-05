@@ -9,3 +9,4 @@ var RightJS = function(value) {
 
 RightJS.version = "#{version}";
 RightJS.modules =["#{modules}"];
+
