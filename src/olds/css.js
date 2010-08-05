@@ -163,9 +163,9 @@ if (!document.querySelector) {
      * @return Object atom matcher
      */
     var atoms_cache = {};
-    function build_atom(atom) {
-      if (!atoms_cache[atom]) {
-        var id, tag, classes, attrs, pseudo, values_of_pseudo, match, func, desc = {};
+    function build_atom(in_atom) {
+      if (!atoms_cache[in_atom]) {
+        var id, tag, classes, attrs, pseudo, values_of_pseudo, match, func, desc = {}, atom = in_atom;
         
         // grabbing the attributes 
         while((match = atom.match(attrs_re))) {
@@ -262,10 +262,10 @@ if (!document.querySelector) {
           );
         }
         
-        atoms_cache[atom] = desc;
+        atoms_cache[in_atom] = desc;
       }
       
-      return atoms_cache[atom];
+      return atoms_cache[in_atom];
     };
     
     /**
