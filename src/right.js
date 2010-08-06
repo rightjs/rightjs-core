@@ -7,6 +7,6 @@ var RightJS = function(value) {
   return value; // <- a dummy method to emulate the safe-mode
 };
 
-RightJS.version = "#{version}";
-RightJS.modules =["#{modules}"];
+RightJS.version = "%{version}";
+RightJS.modules =["%{modules}"];
 

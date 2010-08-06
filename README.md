@@ -16,6 +16,10 @@ After that you'll need `Ruby` and `Java`. Then just say
 
     rake build
 
+If you don't have `Java` you can build the script using the Google's API
+
+    rake build REMOTE=true
+
 There are also the following options to switch off some modules like that
 
     rake build OPTIONS=no-form,no-xhr,no-cookie

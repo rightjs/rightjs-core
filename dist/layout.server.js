@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-#{source_code}
+%{source_code}
   
 if (exports) {
   RightJS.$ext(exports,

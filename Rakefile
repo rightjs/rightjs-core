@@ -15,13 +15,13 @@
 
 require 'rake'
 require 'fileutils'
+require 'util/build/rutil'
 
 RIGHTJS_VERSION = '2.0.0-rc'
 
-BUILD_DIR   = 'build'
-BUILD_FILE  = 'right'
-
-BUILD_OPTIONS = %w(core dom form events cookie xhr fx olds)
+BUILD_DIR     = 'build'
+BUILD_FILE    = 'right'
+BUILD_OPTIONS = %w(core dom events form cookie xhr fx olds)
 
 JS_SOURCES = {
   :core => %w{
@@ -103,139 +103,129 @@ JS_SOURCES = {
   }
 }
 
-task :default => :build
+$options = ((ENV['OPTIONS'] || '').split('=').last || '').split(/\s*,\s*/)
+$options.reject!{ |o| o == 'no-olds'} if $options.include?('safe')
 
-task :build do
-  
-  def write_and_compress(file_name, header, source)
-    # writting the source file
-    File.open(file_name, "w") do |f|
-      f.write header
-      f.write source
-    end
-    
-    # creating the compressed version
-    min_file_name = file_name.gsub('-src', '');
-    File.open(min_file_name, "w") do |f|
-      f.write header
-    end
-    
-    system "java -jar util/compiler.jar --js=#{file_name} > #{min_file_name}"
-    system "gzip -c #{min_file_name} > #{min_file_name}.gz"
-  end
-  
-  ### parsing the options
-  options = ((ENV['OPTIONS'] || '').split('=').last || '').split(/\s*,\s*/)
-  options.reject!{ |o| o == 'no-olds'} if options.include?('safe')
-  
-  ### preparing the directories
-  unless options == ['server'] or !File.exists?(BUILD_DIR)
+######################################################################
+#  Cleaning up the build directory
+######################################################################
+desc "Cleans up the build directory"
+task :clean do
+  unless $options == ['server'] or !File.exists?(BUILD_DIR)
     puts ' * Creating the build dir'
     FileUtils.rm_rf BUILD_DIR
     Dir.mkdir BUILD_DIR
   end
+end
+
+######################################################################
+#  Packing the souce code
+######################################################################
+desc "Packs the source code"
+task :pack do
+  Rake::Task['clean'].invoke
   
+  puts " * Composing the source file"
   
-  ### compiling the source code
+  modules  = []
+  files    = ['src/right.js']
   
-  puts ' * Composing the final file'
-  build = ''
-  source = ''
-  modules = []
-  
-  # filtering the modules
   BUILD_OPTIONS.each do |package|
-    unless options.include?("no-#{package}")
-      JS_SOURCES[package.to_sym].each do |file|
-        source += File.read("src/#{file}.js") + "\n\n"
-      end
+    unless $options.include?("no-#{package}")
+      files   += JS_SOURCES[package.to_sym].collect{ |f| "src/#{f}.js" }
       modules << package
     end
   end
-    
-  desc = File.read('src/right.js')
-  desc.gsub! '#{version}', RIGHTJS_VERSION
-  desc.gsub! '#{modules}', modules.join('", "')
-  
-  source = desc + source
-  
-  # loading up the layout
-  layout = File.read('dist/layout.js').split('#{source_code}')
-  source = layout[0] + source + layout[1]
   
   # hooking up the olds patch loader if necessary
-  if options.include?('no-olds')
-    source << "\n\n"+ File.read("src/olds/loader.js")
-    
-    # using the namespaced $ and $$ calls so that they could be
-    # overwritten in the olds module patch
-    source.gsub!(/([^a-z\d\_\.\$])(\${1,2}\()/, '\1RightJS.\2')
-  end
+  files << "src/olds/loader.js" if $options.include?('no-olds')
   
-  
-  ### writting the files
-  puts ' * Creating the basic build'
-  header = File.read('dist/HEADER.js')
-  if !options.empty? && options != ['no-olds']
-    header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
-  end
-  
-  write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-src.js", header, source)
-  
-  
-  ### creating the safe-mode build
-  if options.include?('safe')
-    puts ' * Creating the safe-mode build'
-    header = File.read('dist/HEADER.safe.js')
-    source = File.read("#{BUILD_DIR}/#{BUILD_FILE}.js")
-    layout = File.read('dist/layout.safe.js').split('#{source_code}')
-    
-    source = source.gsub(/\A\s*\/\*.*?\*\/\s*/m, '').strip
-    source = layout[0] + "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'").gsub("\n", " '+\n'")}'" + layout[1]
-    
-    write_and_compress("#{BUILD_DIR}/#{BUILD_FILE}-safe-src.js", header, source)
-  end
-  
-  
-  ### building the olds patch file
-  if options.include?('no-olds')
-    puts ' * Building the olds patch file'
-  
-    olds_source = JS_SOURCES[:olds].collect do |file|
-      File.read("src/#{file}.js")
-    end.join("\n\n")
-    
-    write_and_compress(
-      "#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js",
-      File.read("dist/HEADER.olds.js"),
-      olds_source
-    )
-  end
+  # initializing the packing utility
+  $rutil = RUtil.new("dist/header.js", "dist/layout.js", {
+    :version => RIGHTJS_VERSION, :modules => modules.join('", "')
+  })
+  $rutil.pack(files)
+  $rutil.write("#{BUILD_DIR}/#{BUILD_FILE}.js")
+end
 
-  ### creating the server build
-  if options.include?('server')
-    puts ' * Creating the server-side build'
+######################################################################
+#  Running the syntax check
+######################################################################
+desc "Runs JSLint on the source code"
+task :check do
+  Rake::Task['pack'].invoke
+  puts " * Running the jslint check"
+  $rutil.check "dist/lint.js"
+end
+
+######################################################################
+#  Creating a standard build
+######################################################################
+desc "Builds the source code"
+task :build do
+  if $options.include?('safe')
+    Rake::Task['build:safe'].invoke
+  elsif $options.include?('server')
+    Rake::Task['build:server'].invoke
+  else
+    Rake::Task['pack'].invoke
+    puts " * Compressing the source code"
+    $rutil.compile ENV['REMOTE']
     
-    source = File.read("src/right.js") + JS_SOURCES[:core].collect do |file|
-      File.read("src/#{file}.js")
-    end.join("\n\n")
-    
-    source.gsub! '#{version}', RIGHTJS_VERSION
-    source.gsub! '#{modules}', 'core'
-    
+    if $options.include?('no-olds')
+      Rake::Task['build:olds'].invoke
+    end
+  end
+end
+
+######################################################################
+#  Creating the olds module
+######################################################################
+desc "Builds the old browsers support module"
+task 'build:olds' do
+  puts " * Creating the old browsers support module"
+  
+  @util = RUtil.new("dist/header.olds.js")
+  @util.pack(JS_SOURCES[:olds].collect{|f| "src/#{f}.js"})
+  @util.write("#{BUILD_DIR}/#{BUILD_FILE}-olds.js")
+  @util.compile ENV['REMOTE']
+end
+
+######################################################################
+#  Creating the safemode build
+######################################################################
+desc "Builds the safe-mode version"
+task 'build:safe' do
+  # creating a normal build
+  Rake::Task['pack'].invoke
+  puts " * Compressing the source code"
+  $rutil.compile ENV['REMOTE']
+  
+  # creating the safe-mode build
+  puts " * Creating the safe-mode build"
+  @rutil = RUtil.new("dist/header.safe.js", "dist/layout.safe.js")
+  @rutil.pack(["#{BUILD_DIR}/#{BUILD_FILE}.js"]) do |source|
+    source = source.gsub!(/\A\s*\/\*.*?\*\/\s*/m, '').strip
+    "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'").gsub("\n", " '+\n'")}'"
+  end
+  @rutil.write("#{BUILD_DIR}/#{BUILD_FILE}-safe.js")
+  @rutil.compile ENV['REMOTE']
+end
+
+######################################################################
+#  Creating the server-side build
+######################################################################
+desc "Bulds the server-side version"
+task 'build:server' do
+  puts " * Creating the server side version"
+  
+  @util = RUtil.new("dist/header.server.js", "dist/layout.server.js")
+  @util.pack(JS_SOURCES[:core].collect{|f| "src/#{f}.js"}) do |source|
     # removing dom related util methods and hacks
     source.gsub! /\n\/\/\s+!#server:begin.+?\/\/\s+!#server:end\n/m, ''
     source.gsub! /\/\*\*\s+!#server.+?(?=\/\*\*)/m, ''
-    source.gsub! /\n[^\n]+\/\/\s*!#server\s*\n/m, ''
-    
-    # loading up the layout
-    layout = File.read('dist/layout.server.js').split('#{source_code}')
-    source = layout[0] + source + layout[1]
-    
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-server.js", "w") do |file|
-      file.write File.read("dist/HEADER.server.js")
-      file.write source
-    end
+    source.gsub! /\n[^\n]+\/\/\s*!#server\s*(\n)/m, '\1'
+    source
   end
-
+  @util.write("#{BUILD_DIR}/#{BUILD_FILE}-server.js")
 end

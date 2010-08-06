@@ -63,4 +63,4 @@ var RightJS = (function(window, src) {
   
   return RightJS.$ext(proxy, RightJS);
   
-})(window, #{source_code});
+})(window, %{source_code});
