@@ -12,12 +12,17 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
   
   // creating the actual wrapper class
   var Klass = function(object, options) {
-    var instance = this.initialize(object, options), uid, unit;
+    this.initialize(object, options);
     
-    if (instance === undefined)
-      instance = this;
+    var instance = this, unit = instance._, uid;
     
-    unit = instance._;
+    // dynamically typecasting in case if the user is creating
+    // an element of a subtype via the basic Element constructor
+    if (this.constructor === Element && unit.tagName in Element_wrappers) {
+      instance = new Element_wrappers[unit.tagName](unit);
+      instance.$listeners = this.$listeners;
+    }
+    
     uid  = UID_KEY in unit ? unit[UID_KEY] : (unit[UID_KEY] = UID++);
     
     return Wrappers_Cache[uid] = instance;
