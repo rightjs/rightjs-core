@@ -11,6 +11,7 @@ var Window = RightJS.Window = new Wrapper({
    * @return void
    */
   initialize: function(window) {
+    this._ = window;
     this.d = window.document;
   },
   

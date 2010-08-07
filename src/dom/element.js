@@ -78,7 +78,28 @@ var Element = RightJS.Element = new Wrapper({
    * @param Object options
    * @return Element element
    */
-  initialize: dummy(),
+  initialize: function(element, options) {
+    var instance = this;
+    
+    if (typeof element === 'string') {
+      element = this.construct(element, options);
+    } else {
+      this._ = element;
+    }
+    
+    // dynamically typecasting in case when someone builds an
+    // element via the basic Element constructor
+    if (this.constructor === Element && element.tagName in Element_wrappers) {
+      instance = new Element_wrappers[element.tagName](element);
+      instance.$listeners = this.$listeners;
+    }
+    
+    return instance;
+  },
+  
+// protected
+  
+  // constructs the event
   construct: element_constructor
 });
 

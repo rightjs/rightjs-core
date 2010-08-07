@@ -39,9 +39,9 @@ new Wrapper(Element, {
       } else {
         element = 'input';
       }
-      
-      this.construct(element, options);
     }
+    
+    this.$super(element, options);
   },
   
   /**

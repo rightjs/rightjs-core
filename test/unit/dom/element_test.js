@@ -55,8 +55,8 @@ var ElementTest = TestCase.create({
   
   testPrivateWrapper: function() {
     var MyElement = new Wrapper(Element, {
-      initialize: function(element) {
-        this.$super(element);
+      initialize: function(element, options) {
+        this.$super(element, options);
         this.boo = 'hoo';
       }
     });
@@ -73,6 +73,31 @@ var ElementTest = TestCase.create({
     this.assertEqual('hoo', my_div.boo);
     
     this.assertSame(my_div, $(my_div._), "Checking the caching is working");
+  },
+  
+  testAnotherPrivateWrapper: function() {
+    var MyElement = new Wrapper(Element, {
+      initialize: function(element_id) {
+        this.$super('div', {
+          id: element_id,
+          'class': 'boo'
+        });
+        
+        this.addClass('hoo');
+        this.onClick('doo');
+      }
+    });
+    
+    var my_div = new MyElement('my-div');
+    
+    this.assert(my_div instanceof MyElement);
+    this.assert(my_div instanceof Element);
+    
+    this.assertEqual('DIV', my_div._.tagName);
+    this.assertEqual('my-div', my_div._.id);
+    this.assertEqual('boo hoo', my_div._.className);
+    
+    this.assert(my_div.observes('click', 'doo'));
   },
   
   testPrivateWrapperOverTypeCastedUnits: function() {

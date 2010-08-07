@@ -22,11 +22,14 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    * @return void
    */
   initialize: function(in_options) {
-    var options = in_options || {}, remote = 'remote' in options;
+    var options = in_options || {}, remote = 'remote' in options, element = options;
     
     if (isHash(options)) {
-      this.construct('form', Object.without(options, 'remote'));
+      element = 'form';
+      options = Object.without(options, 'remote');
     }
+    
+    this.$super(element, options);
   
     if (remote) this.remotize();
   },
