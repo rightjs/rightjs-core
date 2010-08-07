@@ -170,7 +170,7 @@ task :build do
   else
     Rake::Task['pack'].invoke
     puts " * Compressing the source code"
-    $rutil.compile ENV['REMOTE']
+    $rutil.compile
     
     if $options.include?('no-olds')
       Rake::Task['build:olds'].invoke
@@ -188,7 +188,7 @@ task 'build:olds' do
   @util = RUtil.new("dist/header.olds.js")
   @util.pack(JS_SOURCES[:olds].collect{|f| "src/#{f}.js"})
   @util.write("#{BUILD_DIR}/#{BUILD_FILE}-olds.js")
-  @util.compile ENV['REMOTE']
+  @util.compile
 end
 
 ######################################################################
@@ -199,7 +199,7 @@ task 'build:safe' do
   # creating a normal build
   Rake::Task['pack'].invoke
   puts " * Compressing the source code"
-  $rutil.compile ENV['REMOTE']
+  $rutil.compile
   
   # creating the safe-mode build
   puts " * Creating the safe-mode build"
@@ -209,7 +209,7 @@ task 'build:safe' do
     "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'").gsub("\n", " '+\n'")}'"
   end
   @rutil.write("#{BUILD_DIR}/#{BUILD_FILE}-safe.js")
-  @rutil.compile ENV['REMOTE']
+  @rutil.compile
 end
 
 ######################################################################
