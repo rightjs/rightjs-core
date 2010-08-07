@@ -21,7 +21,7 @@ RIGHTJS_VERSION = '2.0.0-rc'
 
 BUILD_DIR     = 'build'
 BUILD_FILE    = 'right'
-BUILD_OPTIONS = %w(core dom events form cookie xhr fx olds)
+BUILD_OPTIONS = %w(core dom form events cookie xhr fx olds)
 
 JS_SOURCES = {
   :core => %w{
