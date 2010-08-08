@@ -291,17 +291,23 @@ if (isHash(HTML)) {
 /**
  * Generating methods for native units extending
  */
-for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
-  natives[i].Methods = {};
-  natives[i].include = function() {
-    for (var i=0, args = arguments; i < args.length; i++) {
-      if (isHash(args[i])) {
-        $ext(this[PROTO],  args[i]);
-        $ext(this.Methods, args[i]);
+for (var i=0, natives = $w('Array Function Number String Date RegExp'); i < natives.length; i++) {
+  $ext(RightJS[natives[i]] = window[natives[i]], {
+    Methods: {},
+    include: function() {
+      for (var i=0, args = arguments; i < args.length; i++) {
+        if (isHash(args[i])) {
+          $ext(this[PROTO],  args[i]);
+          $ext(this.Methods, args[i]);
+        }
       }
     }
-  }
+  });
 }
+
+// referring those two as well
+RightJS.Object = Object;
+RightJS.Math   = Math;
 
 
 /** #!server

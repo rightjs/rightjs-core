@@ -40,10 +40,6 @@ var RightJS = (function(window, src) {
   
   // transferring the object references from the sandbox into local variable
   var RightJS = win.RightJS;
-  var natives = 'Number,String,Array,Function,Math,Object,RegExp,Date'.split(',');
-  for (var i=0; i < natives.length; i++) {
-    RightJS[natives[i]] = win[natives[i]];
-  }
   RightJS.context = win;
   RightJS.safe    = true;
   
