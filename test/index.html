@@ -1,33 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
     <title>RightJS - Test</title>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
     
-    <script type="text/javascript" src="../util/test/testcase.js"></script>
-    <script type="text/javascript" src="./inits.js"></script>
-    <script type="text/javascript" src="./tests.js"></script>
-    <style type="text/css">
-      /* Need those setting to have stable element positions during the tests */
-      html {
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        background: #CCC;
-        margin:  5px 10px;
-        padding: 5px 10px;
-        
-      /** Old IE screws with body paddings so we zerofying it to have
-          exactely the same result as in other browsers */
-      * padding: 0;
-      * margin: 10px 20px;
-      }
-    </style>
+    <script type="text/javascript" src="../util/test/tools.js"></script>
+    <script type="text/javascript">
+    // <![CDATA[
+      initialize_core_test_page();
+      
+      include_js("test/tests" + (in_safe_mode ? ".safe" : ""));
+    // ]]>
+    </script>
   </head>
-  <body>
-    The project Tests
-  </body>
 </html>

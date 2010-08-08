@@ -9,7 +9,7 @@ var UtilTest = TestCase.create({
   beforeAll: function() {
     var id = 'datatypes_checks_iframe';
     
-    $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
+    this.frame_block = $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+
       '" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
     
     var array, object, doc, und, nil;
@@ -29,6 +29,10 @@ var UtilTest = TestCase.create({
       'undef':    und,
       'nil':      nil
     };
+  },
+  
+  afterAll: function() {
+    this.frame_block.remove();
   },
   
   test_$ext: function() {

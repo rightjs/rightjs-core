@@ -10,7 +10,7 @@
 #
 #  rake build OPTIONS=server
 #
-#  See the JS_SOURCES list keys for the options
+#  See the $js_sources list keys for the options
 #
 
 require 'rake'
@@ -21,87 +21,19 @@ RIGHTJS_VERSION = '2.0.0-rc'
 
 BUILD_DIR     = 'build'
 BUILD_FILE    = 'right'
-BUILD_OPTIONS = %w(core dom form events cookie xhr fx olds)
 
-JS_SOURCES = {
-  :core => %w{
-    core/util
+## getting the sources list
+initializer = File.read("src/__init__.js")[/\{.+\}/m]
 
-    lang/object
-    lang/math
-    lang/array
-    lang/string
-    lang/function
-    lang/number
-    lang/regexp
+$build_options = []
+$js_sources    = {}
 
-    core/class
-    core/options
-    core/observer
-    core/break
-  },
-  
-  :dom => %w{
-    dom/browser
-    dom/wrapper
-    
-    dom/document
-    dom/window
-    
-    dom/event
-    
-    dom/element
-    dom/element/structs
-    dom/element/styles
-    dom/element/commons
-    dom/element/dimensions
-    dom/element/events
-    
-    dom/ready
-    dom/selector
-  },
-  
-  :events => %w{
-    dom/event/bubbling
-    dom/event/delegation
-  },
-  
-  :cookie => %w{
-    dom/cookie
-  },
-  
-  :form => %w{
-    dom/form
-    dom/input
-  },
-  
-  :xhr => %w{
-    xhr/xhr
-    xhr/form
-    xhr/element
-    xhr/xhr/dummy
-    xhr/xhr/iframed
-    xhr/xhr/jsonp
-  },
-  
-  :fx => %w{
-    fx/fx
-    fx/string
-    fx/fx/morph
-    fx/fx/highlight
-    fx/fx/twin
-    fx/fx/slide
-    fx/fx/fade
-    fx/fx/scroll
-    fx/element
-  },
-  
-  :olds => %w{
-    olds/ie
-    olds/konq
-    olds/css
+initializer.scan(/([a-z]+):\s*\[([^\]]+?)\]/).each do |item|
+  $build_options << item[0]
+  $js_sources[item[0].to_sym] = item[1].scan(/('|")([\w\d\_\/]+)\1/).collect{ |match|
+    match[1]
   }
-}
+end
 
 $options = ((ENV['OPTIONS'] || '').split('=').last || '').split(/\s*,\s*/)
 $options.reject!{ |o| o == 'no-olds'} if $options.include?('safe')
@@ -128,11 +60,11 @@ task :pack do
   puts " * Composing the source file"
   
   modules  = []
-  files    = ['src/right.js']
+  files    = []
   
-  BUILD_OPTIONS.each do |package|
+  $build_options.each do |package|
     unless $options.include?("no-#{package}")
-      files   += JS_SOURCES[package.to_sym].collect{ |f| "src/#{f}.js" }
+      files   += $js_sources[package.to_sym].collect{ |f| "src/#{f}.js" }
       modules << package
     end
   end
@@ -186,7 +118,7 @@ task 'build:olds' do
   puts " * Creating the old browsers support module"
   
   @util = RUtil.new("dist/header.olds.js")
-  @util.pack(JS_SOURCES[:olds].collect{|f| "src/#{f}.js"})
+  @util.pack($js_sources[:olds].collect{|f| "src/#{f}.js"})
   @util.write("#{BUILD_DIR}/#{BUILD_FILE}-olds.js")
   @util.compile
 end
@@ -220,7 +152,7 @@ task 'build:server' do
   puts " * Creating the server side version"
   
   @util = RUtil.new("dist/header.server.js", "dist/layout.server.js")
-  @util.pack(JS_SOURCES[:core].collect{|f| "src/#{f}.js"}) do |source|
+  @util.pack($js_sources[:core].collect{|f| "src/#{f}.js"}) do |source|
     # removing dom related util methods and hacks
     source.gsub! /\n\/\/\s+!#server:begin.+?\/\/\s+!#server:end\n/m, ''
     source.gsub! /\/\*\*\s+!#server.+?(?=\/\*\*)/m, ''

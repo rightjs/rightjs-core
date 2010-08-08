@@ -6,13 +6,49 @@
 var ElementDimensionsTest = TestCase.create({
   name: 'ElementDimensionsTest',
   
-  beforeAll: function() {
-    // makes the window scroll down
-    this.spoof = new Element('div', {
-      style: 'height: 2000px'
-    }).insertTo(document.body, 'top');
+  E: function(tag, options) {
+    // creating an element in the scope of the working frame
+    var element = new Element(tag, options);
+    element._ = this.doc.createElement(tag);
+    if (options && options.style) {
+      for (var key in options.style) {
+        element._.style[key] = options.style[key];
+      }
+    }
     
-    window.scrollTo(0, 100);
+    return element;
+  },
+  
+  beforeAll: function() {
+    var id = 'dimensions_checks_iframe';
+    
+    this.frame_block = $E('div').insertTo(document.body)
+      .update('<iframe name="'+id+'" id="'+id+
+        '" width="1" height="0" frameborder="0" src="about:blank"></iframe>'
+    );
+    
+    var win = this.win = window.frames[id],
+        doc = this.doc = win.document;
+    
+    doc.open();
+    doc.write('<!DOCTYPE html><html><body><style>'+
+      'html{margin:0;           padding:0}'+
+      'body{margin:  5px 10px;  padding: 5px 10px;}'+
+      'body{*margin:10px 20px; *padding: 0;}'+
+    '</style></body></html>');
+    doc.close();
+    
+    // makes the window scroll down
+    this.spoof = this.E('div', {
+      style: 'height: 2000px'
+    }).insertTo(doc.body, 'top');
+    
+    win.scrollTo(0, 100);
+  },
+  
+  afterAll: function() {
+//    this.spoof.remove();
+//    this.frame_block.remove();
   },
   
   setUp: function() {
@@ -20,7 +56,7 @@ var ElementDimensionsTest = TestCase.create({
      * NOTE: document.body has margin and padding set to '5px 10px'
      *       so you'll have +10 and +20 offset for your elements
      */
-    this.div = new Element('div', {
+    this.div = this.E('div', {
       style: {
         width:   '200px',
         height:  '100px',
@@ -31,24 +67,20 @@ var ElementDimensionsTest = TestCase.create({
     }).insertTo(this.spoof, 'before');
     
     // screws with the manual position calculation
-    this.p = new Element('p').insertTo(this.spoof, 'before').insert(this.div);
+    this.p = this.E('p').insertTo(this.spoof, 'before').insert(this.div);
   },
   
   tearDown: function() {
+    this.div.remove();
     this.p.remove();
   },
   
-  afterAll: function() {
-    this.spoof.remove();
-    window.scrollTo(0,0);
-  },
-  
   testDocReference: function() {
-    this.assertSame($(document), this.div.doc());
+    this.assertSame($(this.doc), this.div.doc());
   },
   
   testWinReference: function() {
-    this.assertSame($(window), this.div.win());
+    this.assertSame($(this.win), this.div.win());
   },
   
   testSize: function() {
@@ -64,7 +96,7 @@ var ElementDimensionsTest = TestCase.create({
   
   testPositionWithRelatives: function() {
     // testing position of relatively positioned element
-    var rel = new Element('div', {
+    var rel = this.E('div', {
       style: {
         position: 'relative',
         top:    '10px',
@@ -79,7 +111,7 @@ var ElementDimensionsTest = TestCase.create({
     this.assertEqual(110, pos.y);
     
     // testing position of an absolutely positioned element
-    var abs = new Element('div', {
+    var abs = this.E('div', {
       style: {
         position: 'absolute',
         top:    '10px',
@@ -101,7 +133,7 @@ var ElementDimensionsTest = TestCase.create({
     
     
     // testing with two nested relative position spaces
-    var sub = new Element('div', {
+    var sub = this.E('div', {
       style: {
         margin: '10px 20px',
         width:  '10px',
@@ -167,7 +199,7 @@ var ElementDimensionsTest = TestCase.create({
     this.assertSame(this.div, this.div.moveTo(40, 40));
     this.assertEqual({x: 40, y: 40}, this.div.position());
     
-    this.div.insertTo(document.body).moveTo({x: 80, y: 80});
+    this.div.insertTo(this.doc.body).moveTo({x: 80, y: 80});
     this.assertEqual({x: 80, y: 80}, this.div.position());
   }
 });

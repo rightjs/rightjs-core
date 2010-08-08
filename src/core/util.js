@@ -287,11 +287,10 @@ if (isHash(HTML)) {
       typeof(value.hasOwnProperty) !== 'undefined';
   };
 }
-
 /**
  * Generating methods for native units extending
  */
-for (var i=0, natives = $w('Array Function Number String Date RegExp'); i < natives.length; i++) {
+for (var i=0, natives = 'Array Function Number String Date RegExp'.split(' '); i < natives.length; i++) {
   $ext(RightJS[natives[i]] = window[natives[i]], {
     Methods: {},
     include: function() {
