@@ -24,28 +24,6 @@ if (!RightJS.$E('p').getBoundingClientRect) {
       }
       
       return {x: left, y: top};
-      /*
-      var element  = this._,
-          top      = element.offsetTop,
-          left     = element.offsetLeft, 
-          position = this.getStyle('position'),
-          parent   = this.parent(),
-          body     = element.ownerDocument.body;
-      
-      // getting the parent node position
-      while (parent && 'tagName' in parent._) {
-        if (parent._ === body   || parent.getStyle('position') !== 'static') {
-          if (parent._ !== body || (position !== 'absolute' && position !== 'relative')) {
-            var subset = parent.position();
-            left += subset.x;
-            top  += subset.y;
-          }
-          break;
-        }
-        parent = parent.parent();
-      }
-      
-      return {x: left, y: top};*/
     }
   });
 }
