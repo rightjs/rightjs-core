@@ -13,6 +13,20 @@ if (!RightJS.$E('p').getBoundingClientRect) {
     position: function() {
       var element  = this._,
           top      = element.offsetTop,
+          left     = element.offsetLeft,
+          parent   = element.offsetParent;
+      
+      while (parent) {
+        top  += parent.offsetTop;
+        left += parent.offsetLeft;
+        
+        parent = parent.offsetParent;
+      }
+      
+      return {x: left, y: top};
+      /*
+      var element  = this._,
+          top      = element.offsetTop,
           left     = element.offsetLeft, 
           position = this.getStyle('position'),
           parent   = this.parent(),
@@ -31,7 +45,7 @@ if (!RightJS.$E('p').getBoundingClientRect) {
         parent = parent.parent();
       }
       
-      return {x: left, y: top};
+      return {x: left, y: top};*/
     }
   });
 }

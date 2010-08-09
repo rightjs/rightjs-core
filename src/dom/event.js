@@ -134,7 +134,7 @@ var Event = RightJS.Event = new Wrapper({
    * @return Object {x: ..., y: ...}
    */
   position: function() {
-    return {x: this._.pageX, y: this._.pageY};
+    return {x: this.pageX, y: this.pageY};
   },
   
   /**
