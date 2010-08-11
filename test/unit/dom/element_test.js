@@ -126,6 +126,18 @@ var ElementTest = TestCase.create({
       "private wrappers should not get involved in the typecasting");
   },
   
+  testWrapperWithInjections: function() {
+    var MyElement = new Wrapper(Element, {
+      include: [{boo: 'hoo'}],
+      extend: {
+        BOO: 'HOO'
+      }
+    });
+    
+    this.assertEqual('hoo', MyElement.prototype.boo);
+    this.assertEqual('HOO', MyElement.BOO);
+  },
+  
   testInstanceWithClass: function() {
     this.assertEqual('foo bla', new Element('div', {
       'class': 'foo bla'

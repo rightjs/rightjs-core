@@ -33,13 +33,7 @@ var Class = RightJS.Class = function() {
   $ext(klass, Class_Methods).inherit(parent);
   
   // catching the injections
-  $w('extend include').each(function(name) {
-    if (properties[name]) {
-      var modules = properties[name];
-      klass[name].apply(klass, ensure_array(modules));
-      delete(properties[name]);
-    }
-  });
+  Class_attachInjections(klass, properties);
   
   return klass.include(properties);
 },
@@ -137,7 +131,24 @@ Class_Methods = {
 
     return this;
   }
-},
+};
+
+/**
+ * Processess the functionality injection properties
+ *
+ * @param Function klass
+ * @param Object properties
+ * @return void
+ */
+function Class_attachInjections(klass, properties) {
+  ['extend', 'include'].each(function(name) {
+    var modules = properties[name];
+    if (isHash(modules) || isArray(modules)) {
+      klass[name].apply(klass, ensure_array(modules));
+      delete(properties[name]);
+    }
+  });
+};
 
 /**
  * This method gets through a list of the object its class and all the ancestors
@@ -151,7 +162,7 @@ Class_Methods = {
  * @param String property name
  * @return Object hash or null if nothing found
  */
-Class_findSet = function(object, property) {
+function Class_findSet(object, property) {
   var upcased = property.toUpperCase(), capcased = property.capitalize(),
     constructor = object.constructor,
     candidates = [object, constructor].concat('ancestors' in constructor ? constructor.ancestors : []),

@@ -35,7 +35,11 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
   }
   
   // hooking up the extedning tools and methods
-  return $ext(Klass, Class_Methods)
-    .inherit(parent || Wrapper)
-    .include({_: undefined}, methods);
+  $ext(Klass, Class_Methods).inherit(parent || Wrapper)
+  
+  // checking for the injections
+  Class_attachInjections(Klass, methods);
+  
+  // including the basic tools
+  return Klass.include({_: undefined}, methods);
 };
