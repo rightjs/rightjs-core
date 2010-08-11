@@ -273,12 +273,15 @@ Element_wraps = {
   TBODY:  ['<TABLE><TBODY>',         '</TBODY></TABLE>',           2],
   TR:     ['<TABLE><TBODY><TR>',     '</TR></TBODY></TABLE>',      3],
   TD:     ['<TABLE><TBODY><TR><TD>', '</TD></TR></TBODY></TABLE>', 4],
-  SELECT: ['<SELECT>',               '</SELECT>',                  1]
+  SELECT: ['<SELECT>',               '</SELECT>',                  1],
+  UL:     ['<UL>',                   '</UL>',                      1]
 };
 
 $alias(Element_wraps, {
   OPTGROUP: 'SELECT',
   THEAD:    'TBODY',
   TFOOT:    'TBODY',
-  TH:       'TD'
+  TH:       'TD',
+  OL:       'UL',
+  DL:       'UL'
 });

@@ -427,6 +427,17 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual(['O1','O2'], options.map('innerHTML'));
   },
   
+  testUpdateLists: function() {
+    var content = '<LI>one</LI><LI>two</LI>';
+    [
+      $E('ul').update(content),
+      $E('ol').update(content),
+      $E('dl').update(content)
+    ].each(function(element) {
+      this.assertEqual(content.toLowerCase(), element._.innerHTML.toLowerCase(0).replace(/\s+/im, ""));
+    }, this)
+  },
+  
   testInsertAndUpdateWithNumbers: function() {
     this.el.insert(2.2);
     this.assertEqual('2.2', this.el._.innerHTML);
