@@ -138,6 +138,19 @@ var ElementTest = TestCase.create({
     this.assertEqual('HOO', MyElement.BOO);
   },
   
+  testWrapperCaching: function() {
+    var element = new Element('div', {id: 'my-div'}).insertTo(document.body);
+    
+    this.assertSame($(element._), element);
+    this.assertSame($('my-div'), element);
+    
+    var Div = new Wrapper(Element, {});
+    var div = new Div(element._).insertTo(document.body);
+    
+    this.assertSame($(div._),    div);
+    this.assertSame($('my-div'), div);
+  },
+  
   testInstanceWithClass: function() {
     this.assertEqual('foo bla', new Element('div', {
       'class': 'foo bla'
