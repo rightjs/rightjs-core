@@ -100,11 +100,18 @@ Fx.Morph = new Class(Fx, {
    * @return Object end style
    */
   _endStyle: function(style, keys) {
-    var element = this.element, dummy  = $(element._.cloneNode(true))
+    var element = this.element,
+        dummy   = element._.cloneNode(true);
+    
+    // need to remove the uid-key manually
+    // otherwise it will return the original element under IE6
+    dummy[UID_KEY] = null;
+    
+    dummy = $(dummy)
         .setStyle('position:absolute;z-index:-1;visibility:hidden')
         .setWidth(element.sizes().x)
         .setStyle(style);
-        
+    
     if (element._.parentNode) element.insert(dummy, 'before');
     
     var after  = this._cloneStyle(dummy, keys);
