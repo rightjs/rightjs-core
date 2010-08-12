@@ -32,7 +32,12 @@ var Event = RightJS.Event = new Wrapper({
    */
   initialize: function(event, bound_element) {
     if (typeof event === 'string') {
-      event = this.construct(event, bound_element);
+      event = Object.merge({type: event}, bound_element);
+      this.stopped = event.bubbles === false;
+      
+      if (isHash(bound_element)) {
+        $ext(this, bound_element);
+      }
     }
     
     this._             = event;
@@ -68,26 +73,6 @@ var Event = RightJS.Event = new Wrapper({
       // Safari fix
       this.target = $(event.target.parentNode);
     }
-  },
-  
-  /**
-   * Constructs an artifical event
-   *
-   * @param String event name
-   * @param Object the options
-   * @return Object the event object
-   */
-  construct: function(name, options) {
-    // building a fake event
-    var event = {type: name};
-    
-    // applying the options
-    if (isHash(options))
-      $ext(event, options);
-    
-    this.stopped = event.bubbles === false;
-    
-    return event;
   },
   
   /**

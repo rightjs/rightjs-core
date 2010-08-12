@@ -45,5 +45,7 @@ var EventTest = TestCase.create({
     this.assertEqual('custom', event.type);
     this.assertEqual('foo',    event._.foo);
     this.assertEqual('bar',    event._.bar);
+    this.assertEqual('foo',    event.foo);
+    this.assertEqual('bar',    event.bar);
   }
 });
