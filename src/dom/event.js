@@ -61,7 +61,7 @@ var Event = RightJS.Event = new Wrapper({
       this.target = $(event.srcElement) || bound_element;
     
       // faking the relatedTarget, currentTarget and other targets
-      this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : event.target;
+      this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : this.target;
       this.currentTarget = bound_element;
     
       // faking the mouse position

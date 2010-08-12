@@ -16,12 +16,17 @@ var ElementEventsTest = TestCase.create({
   },
 
   testObserve: function() {
-    var wired = false, context = null;
-    this.assertSame(this.el, this.el.on('click', function() { wired = true; context = this; }));
+    var wired = false, context = null, event;
+    this.assertSame(this.el, this.el.on('click', function(e) { wired = true; context = this; event = e; }));
+    
     this.fireClick(this.el._);
+    
     this.assert(wired);
+    
+    this.assert(event instanceof Event, "the event object should be wrapped in the Event class");
 
-    this.assertSame(this.el, context);
+    this.assertSame(this.el, context, "the function should be called in the context of the element");
+    this.assertSame(this.el, event.currentTarget, "it should assign the currentTarget property properly");
   },
   
   testObserve_aHash: function() {
