@@ -20,7 +20,9 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
     // an element of a subtype via the basic Element constructor
     if (this.constructor === Element && unit.tagName in Element_wrappers) {
       instance = new Element_wrappers[unit.tagName](unit);
-      instance.$listeners = this.$listeners;
+      if ('$listeners' in this) {
+        instance.$listeners = this.$listeners;
+      }
     }
     
     uid  = UID_KEY in unit ? unit[UID_KEY] : (unit[UID_KEY] = UID++);
