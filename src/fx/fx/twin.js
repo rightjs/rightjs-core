@@ -11,8 +11,9 @@ Fx.Twin = new Class(Fx.Morph, {
    * @return Fx self
    */
   finish: function() {
-    if (this.how == 'out')
-      this.element.hide();
+    if (this.how == 'out') {
+      old_hide.call(this.element);
+    }
       
     return this.$super();
   },

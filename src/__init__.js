@@ -67,13 +67,13 @@ include_sources_by_modules({
   fx: [
     'fx/fx',
     'fx/string',
+    'fx/element',
     'fx/fx/morph',
     'fx/fx/highlight',
     'fx/fx/twin',
     'fx/fx/slide',
     'fx/fx/fade',
-    'fx/fx/scroll',
-    'fx/element'
+    'fx/fx/scroll'
   ],
   
   cookie: [

@@ -14,8 +14,7 @@ Fx.Slide = new Class(Fx.Twin, {
   prepare: function(how) {
     this.setHow(how);
     
-    var element = this.element;
-    element.show();
+    var element = old_show.call(this.element);
     this.sizes = element.sizes();
     
     this.styles = {};
