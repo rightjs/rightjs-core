@@ -51,22 +51,6 @@ var UtilTest = TestCase.create({
     this.assertEqual({ a:1, b:2, c:4 }, obj1);
   },
   
-  test_$try: function() {
-    var assigned1 = false;
-    var assigned2 = false;
-    
-    this.assertNothingThrown(function() {
-      this.assertEqual(2, $try(
-        function() { throw 'problem'; assigned1 = true; return 1; },
-        function() { assigned2 = true; return 2; },
-        function() { assigned1 = true; return 3; }
-      ));
-    }, this);
-    
-    this.assertFalse(assigned1);
-    this.assert(assigned2);
-  },
-  
   test_$eval: function() {
     window.____a = null;
     $eval('var ____a = 1;');

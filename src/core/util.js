@@ -40,26 +40,6 @@ $ext = RightJS.$ext = function(dest, source, dont_overwrite) {
   return dest;
 },
 
-/**
- * tries to execute all the functions passed as arguments
- *
- * NOTE: will hide all the exceptions raised by the functions
- *
- * @param Function to execute
- * ......
- * @return mixed first sucessfully executed function result or undefined by default
- */
-$try = RightJS.$try = function() {
-  for (var i=0, result; i < arguments.length; i++) {
-    try {
-      result = arguments[i]();
-      break;
-    } catch(e) {}
-  }
-  
-  return result;
-},
-
 /** !#server
  * evals the given javascript text in the context of the current window
  *
