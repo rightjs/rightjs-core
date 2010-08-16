@@ -241,6 +241,15 @@ var SelectorTest = TestCase.create({
     this.assertNotMatchRule('input[lang|="ru"]', element);
   },
   
+  testAttrsExistanceMatch: function() {
+    var element = $E('div', {id: 'boo', 'data-zing': ''});
+    
+    this.assertMatchRule('[id]', element);
+    this.assertMatchRule('[data-zing]', element);
+    
+    this.assertNotMatchRule('[data-not-set]', element);
+  },
+  
   testPseudoMatch: function() {
     if (!Browser.OLD && Browser.IE) return; // IE8 has problems with the native selectors
     

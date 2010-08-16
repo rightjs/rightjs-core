@@ -229,14 +229,15 @@ if (!document.querySelector) {
           // adding the attributes matching conditions
           if (attrs) patch_filter(
             'var p,o,v,k,b=false;'+
-            'for (k in a){p=e.getAttribute(k)||"";o=a[k].o;v=a[k].v;'+
+            'for (k in a){p=e.getAttribute(k)||"";o=a[k].o||"";v=a[k].v||"";'+
               'if('+
-                '(o=="="&&p!=v)||'+
-                '(o=="*="&&!p.includes(v))||'+
-                '(o=="^="&&!p.startsWith(v))||'+
-                '(o=="$="&&!p.endsWith(v))||'+
-                '(o=="~="&&!p.split(" ").includes(v))||'+
-                '(o=="|="&&!p.split("-").includes(v))'+
+                '(o===""&&e.getAttributeNode(k)===null)||'+
+                '(o==="="&&p!=v)||'+
+                '(o==="*="&&!p.includes(v))||'+
+                '(o==="^="&&!p.startsWith(v))||'+
+                '(o==="$="&&!p.endsWith(v))||'+
+                '(o==="~="&&!p.split(" ").includes(v))||'+
+                '(o==="|="&&!p.split("-").includes(v))'+
               '){b=true;break;}'+
             '}if(b){continue;}'
           );
