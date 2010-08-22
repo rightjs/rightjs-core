@@ -135,23 +135,28 @@ Element.include({
    * @return Element self
    */
   update: function(content) {
-    if (typeof(content) !== 'object' && !(this._.tagName in Element_wraps)) {
-      var scripts;
-      this._.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
-      if (scripts) $eval(scripts);
-    } else {
-      this.clean().insert(content);
-    }
-    return this;
+    return this.clean().insert(content);
   },
   
   /**
-   * Returns the html content of the elemnt
+   * Works with the Element's innerHTML property
+   * This method works both ways! if a content is provided
+   * then it will be assigned, otherwise will return
+   * the innerHTML property
    *
-   * @return String html content
+   * NOTE: this method _desn't_ eval the scripts in your HTML
+   *       content! use the #update method for that
+   *
+   * @param String html content
+   * @return String html content or Element this
    */
-  html: function() {
-    return this._.innerHTML;
+  html: function(content) {
+    if (content === undefined) {
+      return this._.innerHTML;
+    } else {
+      this._.innerHTML = ''+ content;
+      return this;
+    }
   },
   
   /**

@@ -474,10 +474,15 @@ var ElementStructsTest = TestCase.create({
     this.assertFalse(this.el.empty());
   },
   
-  testHtml: function() {
+  testHtml_getter: function() {
     this.el._.innerHTML = 'boo hoo';
     
     this.assertEqual('boo hoo', this.el.html());
+  },
+  
+  testHtml_setter: function() {
+    this.assertSame(this.el, this.el.html('boo hoo'));
+    this.assertEqual('boo hoo', this.el._.innerHTML);
   },
   
   testAnotherFrameAccess: function() {
