@@ -12,9 +12,11 @@
   
   // redefining the observer method to catch up
   proto.on = function(name) {
-    if (name == 'ready' && !this._wR) {
+    if ((name == 'ready' || name == 'load') && !this._wR) {
       var document = this._, document = document.nodeType == 9 ? document : document.document,
-        ready = this.fire.bind(this, 'ready');
+        ready = function() {
+          this.fire('ready').fire('load');
+        }.bind(this);
       
       // IE and Konqueror browsers
       if ('readyState' in document) {
@@ -30,7 +32,7 @@
     return old_on.apply(this, arguments);
   };
   
-  Observer_createShortcuts(proto, ['ready']);
+  Observer_createShortcuts(proto, ['ready', 'load']);
 });
 
 /**
