@@ -62,7 +62,7 @@ Element.include({
    * @return String style value or null if not set
    */
   getStyle: function(key) {
-    return this._getStyle(this._.style, key) || this._getStyle(this.computedStyles(), key);
+    return clean_style(this._.style, key) || clean_style(this.computedStyles(), key);
   },
   
   /**
@@ -74,31 +74,6 @@ Element.include({
     var element = this._;
     //     old IE,                 IE8,                    W3C
     return element.currentStyle || element.runtimeStyle || element.ownerDocument.defaultView.getComputedStyle(element, null) || {};
-  },
-  
-  // cleans up the style value
-  _getStyle: function(style, in_key) {
-    var value, key = in_key.camelize();
-    
-    switch (key) {
-      case 'opacity':
-        value = !Browser.IE ? style[key].replace(',', '.') :
-          ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
-        break;
-        
-      case 'float':
-        key = Browser.IE ? 'styleFloat' : 'cssFloat';
-        
-      default:
-        value = style[key];
-        
-        // Opera returns named colors with quotes
-        if (Browser.Opera && /color/i.test(key) && value) {
-          value = value.replace(/"/g, '');
-        }
-    }
-    
-    return value ? value : null;
   },
   
   /**
@@ -169,3 +144,34 @@ Element.include({
      return this.addClass(name);
    }
 });
+
+/**
+ * cleans up a style value
+ *
+ * @param Object styles hash
+ * @param String style-key
+ * @return String clean style
+ */
+function clean_style(style, in_key) {
+  var value, key = in_key.camelize();
+  
+  switch (key) {
+    case 'opacity':
+      value = !Browser.IE ? style[key].replace(',', '.') :
+        ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
+      break;
+      
+    case 'float':
+      key = Browser.IE ? 'styleFloat' : 'cssFloat';
+      
+    default:
+      value = style[key];
+      
+      // Opera returns named colors with quotes
+      if (Browser.Opera && /color/i.test(key) && value) {
+        value = value.replace(/"/g, '');
+      }
+  }
+  
+  return value ? value : null;
+};
