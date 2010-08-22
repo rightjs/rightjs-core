@@ -21,7 +21,7 @@ Element.include({
   },
   
   parents: function(css_rule) {
-    return this.rCollect('parentNode', css_rule);
+    return recursively_collect(this, 'parentNode', css_rule);
   },
   
   children: function(css_rule) {
@@ -35,11 +35,11 @@ Element.include({
   },
   
   nextSiblings: function(css_rule) {
-    return this.rCollect('nextSibling', css_rule);
+    return recursively_collect(this, 'nextSibling', css_rule);
   },
   
   prevSiblings: function(css_rule) {
-    return this.rCollect('previousSibling', css_rule);
+    return recursively_collect(this, 'previousSibling', css_rule);
   },
   
   next: function(css_rule) {
@@ -194,27 +194,28 @@ Element.include({
    */
   empty: function() {
     return this.html().blank();
-  },
-
-  /**
-   * recursively collects nodes by pointer attribute name
-   *
-   * @param name String pointer attribute name
-   * @param rule String optional css-atom rule
-   * @return Array found elements
-   */
-  rCollect: function(attr, css_rule) {
-    var node = this._, result = [], first;
-
-    while ((node = node[attr])) {
-      if (node.tagName && (!css_rule || $(node).match(css_rule))) {
-        result.push(new Element(node));
-      }
-    }
-    
-    return result;
   }
 });
+
+/**
+ * Recursively collects the target element's related nodes
+ *
+ * @param Element context
+ * @param name String pointer attribute name
+ * @param rule String optional css-atom rule
+ * @return Array found elements
+ */ 
+function recursively_collect(where, attr, css_rule) {
+  var node = where._, result = [];
+
+  while ((node = node[attr])) {
+    if (node.tagName && (!css_rule || $(node).match(css_rule))) {
+      result.push($(node));
+    }
+  }
+  
+  return result;
+};
 
 // list of insertions handling functions
 // NOTE: each of the methods will be called in the contects of the current element
@@ -240,9 +241,28 @@ var Element_insertions = {
     target.parentNode.replaceChild(content, target);
   }
 },
+
+// the element insertion wrappers list
+Element_wraps = {
+  TABLE:  ['<TABLE>',                '</TABLE>',                   1],
+  TBODY:  ['<TABLE><TBODY>',         '</TBODY></TABLE>',           2],
+  TR:     ['<TABLE><TBODY><TR>',     '</TR></TBODY></TABLE>',      3],
+  TD:     ['<TABLE><TBODY><TR><TD>', '</TD></TR></TBODY></TABLE>', 4],
+  SELECT: ['<SELECT>',               '</SELECT>',                  1],
+  UL:     ['<UL>',                   '</UL>',                      1]
+};
+
+$alias(Element_wraps, {
+  OPTGROUP: 'SELECT',
+  THEAD:    'TBODY',
+  TFOOT:    'TBODY',
+  TH:       'TD',
+  OL:       'UL',
+  DL:       'UL'
+});
   
 // converts any data into a html fragment unit
-Element_createFragment = function(content) {
+function Element_createFragment(content) {
   var fragment = document.createDocumentFragment();
     
   if (isString(content)) {
@@ -269,24 +289,4 @@ Element_createFragment = function(content) {
   }
   
   return fragment;
-},
-
-
-// the element insertion wrappers list
-Element_wraps = {
-  TABLE:  ['<TABLE>',                '</TABLE>',                   1],
-  TBODY:  ['<TABLE><TBODY>',         '</TBODY></TABLE>',           2],
-  TR:     ['<TABLE><TBODY><TR>',     '</TR></TBODY></TABLE>',      3],
-  TD:     ['<TABLE><TBODY><TR><TD>', '</TD></TR></TBODY></TABLE>', 4],
-  SELECT: ['<SELECT>',               '</SELECT>',                  1],
-  UL:     ['<UL>',                   '</UL>',                      1]
 };
-
-$alias(Element_wraps, {
-  OPTGROUP: 'SELECT',
-  THEAD:    'TBODY',
-  TFOOT:    'TBODY',
-  TH:       'TD',
-  OL:       'UL',
-  DL:       'UL'
-});
