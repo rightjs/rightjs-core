@@ -56,14 +56,14 @@ var Cookie = RightJS.Cookie = new Class({
    */
   set: function(data) {
     var value = encodeURIComponent(data), options = this.options;
-    if (options.domain) value += '; domain=' + options.domain;
-    if (options.path) value += '; path=' + options.path;
-    if (options.duration){
+    if (options.domain) { value += '; domain=' + options.domain; }
+    if (options.path)   { value += '; path=' + options.path; }
+    if (options.duration) {
       var date = new Date();
       date.setTime(date.getTime() + options.duration * 24 * 60 * 60 * 1000);
       value += '; expires=' + date.toGMTString();
     }
-    if (options.secure) value += '; secure';
+    if (options.secure) { value += '; secure'; }
     options.document.cookie = this.name + '=' + value;
     return this;
   },

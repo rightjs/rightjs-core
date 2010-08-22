@@ -15,8 +15,8 @@ build_loop = function(pre, body, ret) {
     'for(var '+pre+'i=0,l=this.length;i<l;i++){'+
       body.replace('_', 'c.call(s,this[i],i,this)') + 
     '}' +
-    ret
-  +'}]')[0];
+    ret +
+  '}]')[0];
 },
   
 // JavaScript 1.6 methods recatching up or faking
@@ -29,8 +29,9 @@ every    = A_proto.every   || build_loop('', 'if(!_)return false', 'return true'
 first    = build_loop('', 'if(_)return this[i]', 'return [][0]'),
 last     = function(callback, scope) {
   for (var i=this.length-1; i > -1; i--) {
-    if (callback.call(scope, this[i], i, this))
+    if (callback.call(scope, this[i], i, this)) {
       return this[i];
+    }
   }
   return null;
 };
@@ -56,26 +57,28 @@ function guess_callback(argsi, array) {
   }
   
   return [callback, scope];
-};
+}
 
 // calls the given method with preprocessing the arguments
 function call_method(func, scope, args) {
+  var result;
+  
   try {
-    var result = func.apply(scope, guess_callback(args, scope));
-  } catch(e) { if (!(e instanceof RightJS.Break)) throw(e); }
+    result = func.apply(scope, guess_callback(args, scope));
+  } catch(e) { if (!(e instanceof RightJS.Break)) { throw(e); } }
   
   return result;
-};
+}
 
 // checks the value as a boolean
 function boolean_check(i) {
   return !!i;
-};
+}
 
 // default sorting callback
 function default_sort(a, b) {
   return a > b ? 1 : a < b ? -1 : 0;
-};
+}
   
 Array.include({
   /**
@@ -87,9 +90,11 @@ Array.include({
    * @return Integer index or -1 if not found
    */
   indexOf: A_proto.indexOf || function(value, from) {
-    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0, l = this.length; i < l; i++)
-      if (this[i] === value)
+    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0, l = this.length; i < l; i++) {
+      if (this[i] === value) {
         return i;
+      }
+    }
     return -1;
   },
   
@@ -101,9 +106,11 @@ Array.include({
    * @return Integer index or -1 if not found
    */
   lastIndexOf: A_proto.lastIndexOf || function(value) {
-    for (var i=this.length-1; i > -1; i--)
-      if (this[i] === value)
+    for (var i=this.length-1; i > -1; i--) {
+      if (this[i] === value) {
         return i;
+      }
+    }
     return -1;
   },
   
@@ -265,8 +272,9 @@ Array.include({
       arg = ensure_array(arg);
       
       for (j=0; j < arg.length; j++) {
-        if (copy.indexOf(arg[j]) == -1)
+        if (copy.indexOf(arg[j]) == -1) {
           copy.push(arg[j]);
+        }
       }
     }
     return copy;
@@ -316,9 +324,11 @@ Array.include({
    * @return boolean check result
    */
   includes: function() {
-    for (var i=0, length = arguments.length; i < length; i++)
-      if (this.indexOf(arguments[i]) == -1)
+    for (var i=0, length = arguments.length; i < length; i++) {
+      if (this.indexOf(arguments[i]) == -1) {
         return false;
+      }
+    }
     return true;
   },
   
@@ -344,7 +354,7 @@ Array.include({
   shuffle: function() {
     var shuff = this.clone(), j, x, i = shuff.length;
     
-    for (; i; j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x) {;}
+    for (; i > 0; j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x) {}
     
     return shuff;
   },
@@ -401,7 +411,7 @@ Array.include({
    * @return Number a summ of values on the list
    */
   sum: function() {
-    for(var i=0,l=this.length,sum=0; i < l; sum += this[i++]) {;}
+    for(var i=0,l=this.length,sum=0; i < l; sum += this[i++]) {}
     return sum;
   }
 });

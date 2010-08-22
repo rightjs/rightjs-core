@@ -13,15 +13,20 @@
   // redefining the observer method to catch up
   proto.on = function(name) {
     if ((name == 'ready' || name == 'load') && !this._wR) {
-      var document = this._, document = document.nodeType == 9 ? document : document.document,
-        ready = function() {
-          this.fire('ready').fire('load');
-        }.bind(this);
+      var document = this._, ready = function() {
+        this.fire('ready').fire('load');
+      }.bind(this);
+      
+      document = document.nodeType == 9 ? document : document.document;
       
       // IE and Konqueror browsers
       if ('readyState' in document) {
         (function() {
-          ['loaded','complete'].includes(document.readyState) ? ready() : arguments.callee.delay(50);
+          if (['loaded','complete'].includes(document.readyState)) { 
+            ready();
+          } else {
+            arguments.callee.delay(50);
+          }
         })();
       } else {
         document.addEventListener('DOMContentLoaded', ready, false);

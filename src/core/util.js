@@ -33,9 +33,11 @@ Wrappers_Cache = [], UID_KEY = '_rid'+ new Date().getTime(), // !#server
 $ext = RightJS.$ext = function(dest, source, dont_overwrite) { 
   var src = source || {}, key;
 
-  for (key in src)
-    if (!dont_overwrite || !(key in dest))
+  for (key in src) {
+    if (!dont_overwrite || !(key in dest)) {
       dest[key] = src[key];
+    }
+  }
 
   return dest;
 },
@@ -47,7 +49,7 @@ $ext = RightJS.$ext = function(dest, source, dont_overwrite) {
  * @return void
  */
 $eval = RightJS.$eval = function(text) {
-  if (!isString(text) || text.blank()) return;
+  if (!isString(text) || text.blank()) { return; }
   if ('execScript' in window) {
     window.execScript(text);
   } else {
@@ -184,16 +186,17 @@ $ = RightJS.$ = function(object) {
   }
   
   if (object) {
-    if (UID_KEY in object && object[UID_KEY] in Wrappers_Cache)
+    if (UID_KEY in object && object[UID_KEY] in Wrappers_Cache) {
       object = Wrappers_Cache[object[UID_KEY]];
-    else if (object.nodeType === 1)
+    } else if (object.nodeType === 1) {
       object = new Element(object);
-    else if (isElement(object.target) || isElement(object.srcElement))
+    } else if (isElement(object.target) || isElement(object.srcElement)) {
       object = new Event(object);
-    else if (object.nodeType === 9)
+    } else if (object.nodeType === 9) {
       object = new Document(object);
-    else if (object.window == object)
+    } else if (object.window == object) {
       object = new Window(object);
+    }
   }
   
   return object;
@@ -241,8 +244,9 @@ $A = RightJS.$A = function(it) {
   try {
     return slice.call(it);
   } catch(e) {
-    for (var a=[], i=0, length = it.length; i < length; i++)
+    for (var a=[], i=0, length = it.length; i < length; i++) {
       a[i] = it[i];
+    }
     return a;
   }
 },
@@ -270,17 +274,20 @@ if (isHash(HTML)) {
 /**
  * Generating methods for native units extending
  */
-for (var i=0, natives = 'Array Function Number String Date RegExp'.split(' '); i < natives.length; i++) {
+var i=0, natives = 'Array Function Number String Date RegExp'.split(' '),
+include_native = function() {
+  for (var i=0, args = arguments; i < args.length; i++) {
+    if (isHash(args[i])) {
+      $ext(this[PROTO],  args[i]);
+      $ext(this.Methods, args[i]);
+    }
+  }
+};
+
+for (; i < natives.length; i++) {
   $ext(RightJS[natives[i]] = window[natives[i]], {
     Methods: {},
-    include: function() {
-      for (var i=0, args = arguments; i < args.length; i++) {
-        if (isHash(args[i])) {
-          $ext(this[PROTO],  args[i]);
-          $ext(this.Methods, args[i]);
-        }
-      }
-    }
+    include: include_native
   });
 }
 
@@ -299,7 +306,7 @@ RightJS.Math   = Math;
  */
 function patch_function(func, re, replacement) {
   return eval('['+ func.toString().replace(re, replacement) + ']')[0];
-};
+}
 
 /**
  * Checks if the data is an array and if not,
@@ -310,4 +317,4 @@ function patch_function(func, re, replacement) {
  */
 function ensure_array(data) {
   return isArray(data) ? data : [data];
-};
+}

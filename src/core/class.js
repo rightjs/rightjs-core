@@ -22,7 +22,7 @@ var Class = RightJS.Class = function() {
     }
     
     return this.initialize ? this.initialize.apply(this, arguments) : this;
-  };
+  }
 
   // if only the parent class has been specified
   if (!args.length && !isHash(properties)) {
@@ -62,7 +62,7 @@ Class_Methods = {
     if (parent && parent[PROTO]) {
       var s_klass = dummy();
       s_klass[PROTO] = parent[PROTO];
-      this[PROTO] = new s_klass;
+      this[PROTO] = new s_klass();
       this.parent = parent;
     }
 
@@ -73,7 +73,7 @@ Class_Methods = {
       parent = parent.parent;
     }
 
-    return this[PROTO].constructor = this;
+    return (this[PROTO].constructor = this);
   },
 
   /**
@@ -96,7 +96,9 @@ Class_Methods = {
       
       $ext(this, clean_module(module, true));
       
-      if (callback) callback.call(module, this);
+      if (callback) {
+        callback.call(module, this);
+      }
     }, this);
 
     return this;
@@ -126,7 +128,9 @@ Class_Methods = {
         };
       }, this);
 
-      if (callback) callback.call(module, this);
+      if (callback) {
+        callback.call(module, this);
+      }
     }, this);
 
     return this;
@@ -148,7 +152,7 @@ function Class_attachInjections(klass, properties) {
       delete(properties[name]);
     }
   });
-};
+}
 
 /**
  * This method gets through a list of the object its class and all the ancestors
@@ -166,7 +170,7 @@ function Class_findSet(object, property) {
   var upcased = property.toUpperCase(), capcased = property.capitalize(),
     constructor = object.constructor,
     candidates = [object, constructor].concat('ancestors' in constructor ? constructor.ancestors : []),
-    holder = candidates.first(function(o) { return o && (upcased in o || capcased in o) });
+    holder = candidates.first(function(o) { return o && (upcased in o || capcased in o); });
     
   return holder ? holder[upcased] || holder[capcased] : null;
-};
+}

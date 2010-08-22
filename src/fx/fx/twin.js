@@ -28,8 +28,9 @@ Fx.Twin = new Class(Fx.Morph, {
   setHow: function(how) {
     this.how = how || 'toggle';
     
-    if (this.how == 'toggle')
+    if (this.how == 'toggle') {
       this.how = this.element.visible() ? 'out' : 'in';
+    }
   }
 
 });

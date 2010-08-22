@@ -173,5 +173,5 @@ function clean_style(style, in_key) {
       }
   }
   
-  return value ? value : null;
-};
+  return value || null;
+}

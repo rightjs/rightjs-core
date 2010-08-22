@@ -34,12 +34,12 @@ var Observer = RightJS.Observer = new Class({
    * @return Observer self
    */
   on: function() {
-    var args = $A(arguments), event = args.shift();
+    var args = $A(arguments), event = args.shift(), name;
     
     if (isString(event)) {
-      if (!('$listeners' in this)) this.$listeners = [];
+      if (!('$listeners' in this)) { this.$listeners = []; }
 
-      var callback = args.shift(), name;
+      var callback = args.shift();
       switch (typeof callback) {
         case "string":
           name     = callback;
@@ -70,7 +70,7 @@ var Observer = RightJS.Observer = new Class({
       
     } else {
       // assuming it's a hash of key-value pairs
-      for (var name in event) {
+      for (name in event) {
         this.on.apply(this, [name].concat(
           ensure_array(event[name])
         ).concat(args));
@@ -94,7 +94,7 @@ var Observer = RightJS.Observer = new Class({
    */
   observes: function(event, callback) {
     if (!isString(event)) { callback = event; event = null; }
-    if (isString(callback)) callback = this[callback];
+    if (isString(callback)) { callback = this[callback]; }
     
     return (this.$listeners || []).some(function(i) {
       return (event && callback) ? i.e === event && i.f === callback :
@@ -118,8 +118,8 @@ var Observer = RightJS.Observer = new Class({
         this.stopObserving(key, event[key]);
       }
     } else {
-      if (!isString(event)) { callback = event; event = null; }
-      if (isString(callback)) callback = this[callback];
+      if (!isString(event)) {  callback = event; event = null; }
+      if (isString(callback)){ callback = this[callback]; }
       
       this.$listeners = (this.$listeners || []).filter(function(i) {
         return (event && callback) ? (i.e !== event || i.f !== callback) :
@@ -157,7 +157,9 @@ var Observer = RightJS.Observer = new Class({
     var args = $A(arguments), event = args.shift();
     
     (this.$listeners || []).each(function(i) {
-      if (i.e === event) i.f.apply(this, i.a.concat(args));
+      if (i.e === event) {
+        i.f.apply(this, i.a.concat(args));
+      }
     }, this);
     
     return this;
@@ -185,7 +187,7 @@ Observer_create = Observer.create =  function(object, events) {
  */
 Observer_createShortcuts = Observer.createShortcuts = function(object, names) {
   (names || []).each(function(name) {
-    var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g, function(match, pre, chr) { return chr.toUpperCase() });
+    var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g, function(match, pre, chr) { return chr.toUpperCase(); });
     if (!(method_name in object)) {
       object[method_name] = function() {
         return this.on.apply(this, [name].concat($A(arguments)));

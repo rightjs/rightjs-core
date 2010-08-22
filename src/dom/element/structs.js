@@ -101,7 +101,7 @@ Element.include({
       });
     }
     
-    if (scripts) $eval(scripts);
+    if (scripts) { $eval(scripts); }
     
     return this;
   },
@@ -215,7 +215,7 @@ function recursively_collect(where, attr, css_rule) {
   }
   
   return result;
-};
+}
 
 // list of insertions handling functions
 // NOTE: each of the methods will be called in the contects of the current element
@@ -225,12 +225,20 @@ var Element_insertions = {
   },
   
   top: function(target, content) {
-    target.firstChild ? target.insertBefore(content, target.firstChild) : target.appendChild(content);
+    if (target.firstChild !== null) {
+      target.insertBefore(content, target.firstChild);
+    } else {
+      target.appendChild(content);
+    }
   },
   
   after: function(target, content) {
     var parent = target.parentNode, sibling = target.nextSibling;
-    sibling ? parent.insertBefore(content, sibling) : parent.appendChild(content);
+    if (sibling !== null) {
+      parent.insertBefore(content, sibling);
+    } else {
+      parent.appendChild(content);
+    }
   },
   
   before: function(target, content) {
@@ -289,4 +297,4 @@ function Element_createFragment(content) {
   }
   
   return fragment;
-};
+}

@@ -1,7 +1,7 @@
 /**
  * this script builds and runs all the tests
  */
-run_tests({
+run_tests({/*
   UtilTest:              'unit/core/util',
                           
   ObjectTest:            'unit/lang/object',
@@ -33,9 +33,9 @@ run_tests({
   SelectorTest:          'unit/dom/selector',
                           
   FormTest:              'unit/dom/form',
-  InputTest:             'unit/dom/input',
+  InputTest:             'unit/dom/input',*/
                           
-  DomReadyTest:          'unit/dom/ready',
+  DomReadyTest:          'unit/dom/ready'/*,
   WindowTest:            'unit/dom/window',
                           
   XhrTest:               'unit/xhr/xhr',
@@ -43,5 +43,5 @@ run_tests({
   XhrJSONPTest:          'unit/xhr/xhr/jsonp',
                           
   FxTest:                'unit/fx/fx',
-  FxMorphTest:           'unit/fx/fx/morph'
+  FxMorphTest:           'unit/fx/fx/morph'*/
 });

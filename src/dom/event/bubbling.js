@@ -25,8 +25,8 @@ function focus_boobler(raw_event) {
   
   event.type = (raw_event.type === 'focusin' || raw_event.type === 'focus') ? 'focus' : 'blur';
   
-  parent && parent.fire(event);
-};
+  if (parent) { parent.fire(event); }
+}
 
 /**
  * Hooking up the 'focus' and 'blur' events
@@ -52,7 +52,7 @@ function event_support_for(name, tag) {
   var e = $E(tag)._;
   e.setAttribute(name, ';');
   return isFunction(e[name]);
-};
+}
 
 if (!event_support_for('onsubmit', 'form')) {
   /**
@@ -61,7 +61,7 @@ if (!event_support_for('onsubmit', 'form')) {
    * @param raw dom-event
    * @return void
    */
-  function submit_boobler(raw_event) {
+  var submit_boobler = function(raw_event) {
     var event = $(raw_event), element = event.target._,
         type = element.type, form = element.form, parent;
     
@@ -81,13 +81,13 @@ if (!event_support_for('onsubmit', 'form')) {
 
 if (!event_support_for('onchange', 'input')) {
   
-  function get_input_value(target) {
+  var get_input_value = function(target) {
     var element = target._,
         type    = element.type;
         
     return type === 'radio' || type === 'checkbox' ?
       element.checked : target.getValue();
-  };
+  },
   
   /**
    * Emulates the 'change' event bubbling
@@ -96,7 +96,7 @@ if (!event_support_for('onchange', 'input')) {
    * @param Input wrapped input element
    * @return void
    */
-  function change_boobler(event, target) {
+  change_boobler = function(event, target) {
     var parent  = target.parent(),
         value   = get_input_value(target);
 
@@ -105,7 +105,7 @@ if (!event_support_for('onchange', 'input')) {
       event.type = 'change';
       parent.fire(event);
     }
-  };
+  },
   
   /**
    * Catches the input field changes
@@ -113,7 +113,7 @@ if (!event_support_for('onchange', 'input')) {
    * @param raw dom-event
    * @return void
    */
-  function catch_inputs_access(raw_event) {
+  catch_inputs_access = function(raw_event) {
     var event  = $(raw_event),
         target = event.target,
         type   = target._.type,
@@ -126,13 +126,10 @@ if (!event_support_for('onchange', 'input')) {
         (event.keyCode == 13 && (tag !== 'TEXTAREA')) ||
         type === 'select-multiple'
       ))
-    ) 
-    
-    change_boobler(event, target);
-  };
-  
-  document.attachEvent('onclick',   catch_inputs_access);
-  document.attachEvent('onkeydown', catch_inputs_access);
+    ) {
+      change_boobler(event, target);
+    }
+  },
   
   /**
    * Catch inputs blur
@@ -140,7 +137,7 @@ if (!event_support_for('onchange', 'input')) {
    * @param raw dom-event
    * @return void
    */
-  function catch_input_left(raw_event) {
+  catch_input_left = function(raw_event) {
     var event  = $(raw_event),
         target = event.target;
     
@@ -149,6 +146,8 @@ if (!event_support_for('onchange', 'input')) {
     }
   };
   
+  document.attachEvent('onclick',    catch_inputs_access);
+  document.attachEvent('onkeydown',  catch_inputs_access);
   document.attachEvent('onfocusout', catch_input_left);
   
   /**

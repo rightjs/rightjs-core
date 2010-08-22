@@ -30,18 +30,7 @@
     for (css_rule in rules) {
       for (i=0, list = rules[css_rule]; i < list.length; i++) {
         // registering the delegative listener
-        this.on(event, (function(css_rule, entry, scope) {
-          return function(event) {
-            var target = event.target, args = $A(entry), callback = args.shift();
-            if (scope.find(css_rule).includes(target)) {
-              if (isFunction(callback)) {
-                callback.apply(target, [event].concat(args));
-              } else {
-                target[callback].apply(target, args);
-              }
-            }
-          };
-        })(css_rule, list[i], this));
+        this.on(event, build_delegative_listener(css_rule, list[i], this));
         
         // adding the css-rule and callback references to the store
         $ext(this.$listeners.last(), { dr: css_rule, dc: list[i][0] });
@@ -114,6 +103,19 @@
   }
 });
 
+function build_delegative_listener(css_rule, entry, scope) {
+  return function(event) {
+    var target = event.target, args = $A(entry), callback = args.shift();
+    if (scope.find(css_rule).includes(target)) {
+      if (isFunction(callback)) {
+        callback.apply(target, [event].concat(args));
+      } else {
+        target[callback].apply(target, args);
+      }
+    }
+  };
+}
+
 /**
  * Converts the events-delegation api arguments
  * into a systematic hash of rules
@@ -126,8 +128,9 @@ function delegation_rules(raw_args) {
   
   if (isString(rules)) {
     hash[rules] = args.slice(2);
-    if (isArray(hash[rules][0]))
+    if (isArray(hash[rules][0])) {
       hash[rules] = hash[rules][0].map(ensure_array);
+    }
   } else {
     hash = rules;
   }
@@ -139,7 +142,7 @@ function delegation_rules(raw_args) {
   }
   
   return hash;
-};
+}
 
 /**
  * Returns the list of delegative listeners that match the conditions
@@ -149,27 +152,28 @@ function delegation_rules(raw_args) {
  * @return Array list of matching listeners
  */
 function delegation_listeners(args, object) {
-  var event = args[0], css_rule, i, list,
+  var event = args[0], i, list,
      rules = delegation_rules(args),
      rules_are_empty = !Object.keys(rules).length;
   
   return (object.$listeners || []).filter(function(hash) {
     return hash.dr && hash.n === event && (
       rules_are_empty || (function() {
-        for (css_rule in rules) {
+        for (var css_rule in rules) {
           if (hash.dr === css_rule) {
             for (i=0, list = rules[css_rule]; i < list.length; i++) {
-              if (!list[i].length || list[i][0] === hash.dc)
+              if (!list[i].length || list[i][0] === hash.dc) {
                 return true;
+              }
             }
           }
         }
         
         return false;
       })()
-    )
+    );
   });
-};
+}
 
 
 /**

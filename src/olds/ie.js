@@ -17,6 +17,6 @@ if (RightJS.Browser.OLD) {
       }
         
       return element;
-    }
+    };
   })(RightJS.$);
 }

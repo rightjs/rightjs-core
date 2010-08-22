@@ -13,14 +13,15 @@ var directions = $w('Top Left Right Bottom');
 
 // adds variants to the style names list
 function add_variants(keys, key, variants) {
-  for (var i=0; i < variants.length; i++)
+  for (var i=0; i < variants.length; i++) {
     keys.push(key + variants[i]);
-};
+  }
+}
 
 // checks if the color is transparent
 function is_transparent(color) {
   return color === 'transparent' || color === 'rgba(0, 0, 0, 0)';
-};
+}
 
 // adjusts the border-styles
 function check_border_styles(element, before, after) {
@@ -43,7 +44,7 @@ function check_border_styles(element, before, after) {
       }
     }
   }
-};
+}
 
 // parses the style hash into a processable format
 function parse_style(values) {
@@ -55,7 +56,7 @@ function parse_style(values) {
     value.t = values[key].split(re);
     value.r = value.t[0] === 'rgb(';
 
-    if (value.t.length == 1) value.t.unshift('');
+    if (value.t.length == 1) { value.t.unshift(''); }
     
     for (i=0; i < value.length; i++) {
       value.t.splice(i*2 + 1, 0, value[i]);
@@ -64,7 +65,7 @@ function parse_style(values) {
   }
   
   return result;
-};
+}
 
 // cleans up and optimizies the styles
 function clean_styles(element, before, after) {
@@ -78,10 +79,12 @@ function clean_styles(element, before, after) {
   }
   
   // IE opacity filter fix
-  if (after.filter && !before.filter) before.filter = 'alpha(opacity=100)';
+  if (after.filter && !before.filter) {
+    before.filter = 'alpha(opacity=100)';
+  }
   
   // adjusting the border style
-  check_border_styles.call(element, before, after);
+  check_border_styles(element, before, after);
   
   // cleaing up the list
   for (key in after) {
@@ -92,14 +95,16 @@ function clean_styles(element, before, after) {
         before[key] = before[key].replace(/"/g, '');
       }
 
-      if (!is_transparent(after[key]))  after[key]  = after[key].toRgb();
-      if (!is_transparent(before[key])) before[key] = before[key].toRgb();
+      if (!is_transparent(after[key]))  { after[key]  = after[key].toRgb(); }
+      if (!is_transparent(before[key])) { before[key] = before[key].toRgb(); }
 
-      if (!after[key] || !before[key]) after[key] = before[key] = '';
+      if (!after[key] || !before[key]) {  after[key] = before[key] = ''; }
     }
     
     // filling up the missing size
-    if (/\d/.test(after[key]) && !/\d/.test(before[key])) before[key] = after[key].replace(/[\d\.\-]+/g, '0');
+    if (/\d/.test(after[key]) && !/\d/.test(before[key])) {
+      before[key] = after[key].replace(/[\d\.\-]+/g, '0');
+    }
     
     // removing unprocessable keys
     if (after[key] === before[key] || remove.includes(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
@@ -107,7 +112,7 @@ function clean_styles(element, before, after) {
       delete(before[key]);
     }
   }
-};
+}
 
 /**
  * creates an appropriate style-keys list out of the user styles
@@ -119,18 +124,21 @@ function style_keys(style) {
   var keys = [], border_types = ['Style', 'Color', 'Width'], key, i, j;
     
   for (key in style) {
-    if (key.startsWith('border'))
-      for (i=0; i < border_types.length; i++)
-        for (j=0; j < directions.length; j++)
+    if (key.startsWith('border')) {
+      for (i=0; i < border_types.length; i++) {
+        for (j=0; j < directions.length; j++) {
           keys.push('border' + directions[j] + border_types[i]);
-    else if (key == 'margin' || key == 'padding')
+        }
+      }
+    } else if (key == 'margin' || key == 'padding') {
       add_variants(keys, key, directions);
-    else if (key.startsWith('background'))
+    } else if (key.startsWith('background')) {
       add_variants(keys, 'background', ['Color', 'Position', 'PositionX', 'PositionY']);
-    else if (key == 'opacity' && Browser.IE)
+    } else if (key == 'opacity' && Browser.IE) {
       keys.push('filter');
-    else
+    } else {
       keys.push(key);
+    }
   }
   
   return keys;
@@ -160,7 +168,9 @@ Fx.Morph = new Class(Fx, {
       
       for (i=0, l = after.length; i < l; i++) {
         value = before[i] + (after[i] - before[i]) * delta;
-        if (after.r) value = Math.round(value);
+        if (after.r) {
+          value = Math.round(value);
+        }
         after.t[i*2 + 1] = value;
       }
       
@@ -187,7 +197,9 @@ Fx.Morph = new Class(Fx, {
         .setWidth(element.size().x)
         .setStyle(style);
     
-    if (element._.parentNode) element.insert(dummy, 'before');
+    if (element._.parentNode) {
+      element.insert(dummy, 'before');
+    }
     
     var after  = this._cloneStyle(dummy, keys);
     

@@ -17,7 +17,7 @@ function stub_rule(css_rule, tag) {
     tag_name = 'tagName' in element ? element.tagName : null;
 
   return tag_name === null ? rule : rule.replace(/(^|,)/g, '$1'+ tag_name + ' ');
-};
+}
 
 [Element, Document].each('include', {
   /**
@@ -57,7 +57,7 @@ Element.include({
     // if it's a single node putting it into the context
     result = $(parent || $E('p').insert(this)).find(css_rule).include(this);
     
-    if (!parent) this.remove();
+    if (!parent) { this.remove(); }
     
     return result;
   }

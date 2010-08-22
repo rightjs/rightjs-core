@@ -63,8 +63,9 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     $ext(this.$super(options), this.options);
     
     // removing the local spinner if it's the same as the global one
-    if (Xhr.Options.spinner && $(this.spinner) === $(Xhr.Options.spinner))
+    if (Xhr.Options.spinner && $(this.spinner) === $(Xhr.Options.spinner)) {
       this.spinner = null;
+    }
   },
   
   /**
@@ -85,10 +86,10 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
    * @return mixed String header value or undefined
    */
   getHeader: function(name) {
+    var value;
     try {
-      var value = this.xhr.getResponseHeader(name);
+      value = this.xhr.getResponseHeader(name);
     } catch(e) {}
-    
     return value;
   },
   
@@ -122,7 +123,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     }
     
     if (method == 'get') {
-      if (data) url += (url.includes('?') ? '&' : '?') + data;
+      if (data) { url += (url.includes('?') ? '&' : '?') + data; }
       data = null;
     }
     
@@ -140,7 +141,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     xhr.send(data);
     this.fire('request');
     
-    if (!this.async) this.stateChanged();
+    if (!this.async) { this.stateChanged(); }
     
     return this;
   },
@@ -165,7 +166,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
   cancel: function() {
     var xhr = this.xhr;
     
-    if (!xhr || xhr.canceled) return this;
+    if (!xhr || xhr.canceled) { return this; }
     
     xhr.abort();
     xhr.onreadystatechange = dummy();
@@ -186,10 +187,12 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
       return new Xhr.JSONP(this);
     } else if (this.form && this.form.first('input[type=file]')) {
       return new Xhr.IFramed(this.form);
-    } else try {
-      return new XMLHttpRequest();
-    } catch(e) {
-      return new ActiveXObject('MSXML2.XMLHTTP');
+    } else {
+      try {
+        return new XMLHttpRequest();
+      } catch(e) {
+        return new ActiveXObject('MSXML2.XMLHTTP');
+      }
     }
   },
   
@@ -216,7 +219,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
   stateChanged: function() {
     var xhr = this.xhr;
     
-    if (xhr.readyState != 4 || xhr.canceled) return;
+    if (xhr.readyState != 4 || xhr.canceled) { return; }
     
     try { this.status = xhr.status;
     } catch(e) { this.status = 0; }
@@ -247,7 +250,9 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     } catch(e) {
       // manual json consistancy check
       if (window.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
-        if (this.secureJSON) throw "JSON error: "+this.text;
+        if (this.secureJSON) { 
+          throw "JSON error: "+this.text;
+        }
         return null;
       }
     }
@@ -292,7 +297,7 @@ $ext(Observer_create(Xhr), {
   
   trySpinner: function(context, method) {
     var object = context || Xhr.Options, spinner = $(object.spinner);
-    if (spinner) spinner[method](object.spinnerFx, {duration: 100});
+    if (spinner) { spinner[method](object.spinnerFx, {duration: 100}); }
   },
   
   // counts a request in
@@ -304,7 +309,9 @@ $ext(Observer_create(Xhr), {
   // counts a request out
   countOut: function() {
     Xhr.counter --;
-    if (Xhr.counter < 1) Xhr.hideSpinner();
+    if (Xhr.counter < 1) {
+      Xhr.hideSpinner();
+    }
   }
 }).on({
   create:   'countIn',

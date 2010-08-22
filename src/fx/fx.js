@@ -74,7 +74,7 @@ var Fx = RightJS.Fx = new Class(Observer, {
    * @return Fx this
    */
   start: function() {
-    if (this.queue(arguments)) return this;
+    if (this.queue(arguments)) { return this; }
     this.prepare.apply(this, arguments);
     
     var options = this.options,
@@ -84,7 +84,9 @@ var Fx = RightJS.Fx = new Class(Observer, {
     this.steps  = (duration / 1000 * this.options.fps).ceil();
     this.number = 1;
     
-    if (this.cr) this.cr.push(this); // adding this effect to the list of currently active
+    if (this.cr) {
+      this.cr.push(this); // adding this effect to the list of currently active
+    }
     
     return this.fire('start', this).startTimer();
   },
@@ -140,8 +142,9 @@ var Fx = RightJS.Fx = new Class(Observer, {
   // the periodically called method
   // NOTE: called outside of the instance scope!
   step: function(that) {
-    if (that.number > that.steps) that.finish();
-    else {
+    if (that.number > that.steps) {
+      that.finish();
+    } else {
       if (!that.w) {
         that.w = true;
         that.render(that.transition(that.number / that.steps));
@@ -170,19 +173,21 @@ var Fx = RightJS.Fx = new Class(Observer, {
   queue: function(args) {
     var chain = this.ch, queue = this.options.queue;
     
-    if (!chain || this.$ch)
-      return this.$ch = false;
+    if (!chain || this.$ch) {
+      return (this.$ch = false);
+    }
 
-    if (queue)
+    if (queue) {
       chain.push([args, this]);
+    }
     
     return queue && chain[0][1] !== this;
   },
   
   // calls for the next effect in the queue
   next: function() {
-    var chain = this.ch, next = chain.shift(), next = chain[0];
-    if (next) {
+    var chain = this.ch, next = chain.shift();
+    if ((next = chain[0])) {
       next[1].$ch = true;
       next[1].start.apply(next[1], next[0]);
     }
@@ -192,7 +197,9 @@ var Fx = RightJS.Fx = new Class(Observer, {
   // unregisters this effect out of the currently running list
   unreg: function() {
     var currents = this.cr;
-    if (currents) currents.splice(currents.indexOf(this), 1);
+    if (currents) {
+      currents.splice(currents.indexOf(this), 1);
+    }
     return this;
   }
   

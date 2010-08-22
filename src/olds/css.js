@@ -22,8 +22,9 @@ if (!document.querySelector) {
       '>': function(element, tag) {
         var result = [], node = element.firstChild;
         while (node) {
-          if (tag == '*' || node.tagName == tag)
+          if (tag == '*' || node.tagName == tag) {
             result.push(node);
+          }
           node = node.nextSibling;
         }
         return result;
@@ -32,8 +33,9 @@ if (!document.querySelector) {
       // search for immiate sibling nodes
       '+': function(element, tag) {
         while ((element = element.nextSibling)) {
-          if (element.tagName)
+          if (element.tagName) {
             return (tag == '*' || element.tagName == tag) ? [element] : [];
+          }
         }
         return [];
       },
@@ -41,9 +43,11 @@ if (!document.querySelector) {
       // search for late sibling nodes
       '~': function(element, tag) {
         var result = [];
-        while ((element = element.nextSibling))
-          if (tag == '*' || element.tagName == tag)
+        while ((element = element.nextSibling)) {
+          if (tag == '*' || element.tagName == tag) {
             result.push(element);
+          }
+        }
         return result;
       }
     };
@@ -94,8 +98,8 @@ if (!document.querySelector) {
       },
 
       'only-child': function(tag_name, matchers) {
-        return matchers['first-child'].call(this, tag_name) 
-          && matchers['last-child'].call(this, tag_name);
+        return matchers['first-child'].call(this, tag_name) &&
+          matchers['last-child'].call(this, tag_name);
       },
 
       'only-of-type': function() {
@@ -103,15 +107,15 @@ if (!document.querySelector) {
       },
 
       'nth-child': function(number, matchers, tag_name) {
-        if (!this.parentNode) return false;
+        if (!this.parentNode) { return false; }
         number = number.toLowerCase();
 
-        if (number == 'n') return true;
+        if (number == 'n') { return true; }
 
         if (number.includes('n')) {
           // parsing out the matching expression
-          var a = b = 0;
-          if ((m = number.match(/^([+-]?\d*)?n([+-]?\d*)?$/))) {
+          var a = 0, b = 0;
+          if ((m = number.match(/^([+\-]?\d*)?n([+\-]?\d*)?$/))) {
             a = m[1] == '-' ? -1 : parseInt(m[1], 10) || 1;
             b = parseInt(m[2], 10) || 0;
           }
@@ -119,13 +123,13 @@ if (!document.querySelector) {
           // getting the element index
           var index = 1, node = this;
           while ((node = node.previousSibling)) {
-            if (node.tagName && (!tag_name || node.tagName == tag_name)) index++;
+            if (node.tagName && (!tag_name || node.tagName == tag_name)) { index++; }
           }
 
-          return (index - b) % a == 0 && (index - b) / a >= 0;
+          return (index - b) % a === 0 && (index - b) / a >= 0;
 
         } else {
-          return matchers['index'].call(this, number.toInt() - 1, matchers, tag_name);
+          return matchers.index.call(this, number.toInt() - 1, matchers, tag_name);
         }
       },
 
@@ -138,19 +142,19 @@ if (!document.querySelector) {
         number = RightJS.isString(number) ? number.toInt() : number;
         var node = this, count = 0;
         while ((node = node.previousSibling)) {
-          if (node.tagName && (!tag_name || node.tagName == tag_name) && ++count > number) return false;
+          if (node.tagName && (!tag_name || node.tagName == tag_name) && ++count > number) { return false; }
         }
         return count == number;
       }
     };
     
     // the regexps collection
-    var chunker   = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|['"][^'"]*['"]|[^[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?/g;
+    var chunker   = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?/g;
     var id_re     = /#([\w\-_]+)/;
     var tag_re    = /^[\w\*]+/;
     var class_re  = /\.([\w\-\._]+)/;
     var pseudo_re = /:([\w\-]+)(\((.+?)\))*$/;
-    var attrs_re  = /\[((?:[\w-]*:)?[\w-]+)\s*(?:([!^$*~|]?=)\s*((['"])([^\4]*?)\4|([^'"][^\]]*?)))?\]/;
+    var attrs_re  = /\[((?:[\w\-]*:)?[\w\-]+)\s*(?:([!\^$*~|]?=)\s*((['"])([^\4]*?)\4|([^'"][^\]]*?)))?\]/;
   
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,10 +214,10 @@ if (!document.querySelector) {
           };
           
           // adding the ID check conditions
-          if (id) patch_filter('if(e.id!=i)continue;');
+          if (id) { patch_filter('if(e.id!=i)continue;'); }
           
           // adding the classes matching code
-          if (classes.length) patch_filter(
+          if (classes.length) { patch_filter(
             'if(e.className){'+
               'var n=e.className.split(" ");'+
               'if(n.length==1&&c.indexOf(n[0])==-1)continue;'+
@@ -224,10 +228,10 @@ if (!document.querySelector) {
                     
               'if(b)continue;}'+
             '}else continue;'
-          );
+          ); }
           
           // adding the attributes matching conditions
-          if (attrs) patch_filter(
+          if (attrs) { patch_filter(
             'var p,o,v,k,b=false;'+
             'for (k in a){p=e.getAttribute(k)||"";o=a[k].o||"";v=a[k].v||"";'+
               'if('+
@@ -240,7 +244,7 @@ if (!document.querySelector) {
                 '(o==="|="&&!p.split("-").includes(v))'+
               '){b=true;break;}'+
             '}if(b){continue;}'
-          );
+          ); }
           
           // adding the pseudo matchers check
           if (pseudo in pseudos) {
@@ -267,7 +271,7 @@ if (!document.querySelector) {
       }
       
       return atoms_cache[in_atom];
-    };
+    }
     
     /**
      * Builds a single selector out of a simple rule chunk
@@ -309,11 +313,11 @@ if (!document.querySelector) {
           var founds, sub_founds;
           
           for (var i=0, i_length = rule.length; i < i_length; i++) {
-            if (i == 0) {
+            if (i === 0) {
               founds = find_subnodes(element, rule[i]);
 
             } else {
-              if (i > 1) founds = uniq(founds);
+              if (i > 1) { founds = uniq(founds); }
 
               for (var j=0; j < founds.length; j++) {
                 sub_founds = find_subnodes(founds[j], rule[i]);
@@ -332,7 +336,7 @@ if (!document.querySelector) {
         };
       }
       return tokens_cache[rule_key];
-    };
+    }
     
     
     /**
@@ -367,7 +371,7 @@ if (!document.querySelector) {
         selectors_cache[css_rule] = rules;
       }
       return selectors_cache[css_rule];
-    };
+    }
     
     
     /**
@@ -380,11 +384,12 @@ if (!document.querySelector) {
      */
     function select_all(element, css_rule) {
       var selectors = split_rule_to_selectors(css_rule), result = [];
-      for (var i=0, length = selectors.length; i < length; i++)
+      for (var i=0, length = selectors.length; i < length; i++) {
         result = result.concat(selectors[i](element));
+      }
       
       return result;
-    };
+    }
     
     
   /////////////////////////////////////////////////////////////////////////////////////////////////////////

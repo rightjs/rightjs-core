@@ -13,7 +13,7 @@ var Element_observer = Observer_create({});
 //
 function hack_observer(name, re, text) {
   Element_observer[name] = patch_function(Element_observer[name], re, text);
-};
+}
 
 hack_observer('on', 
   /(\$listeners\.push\((\w+?)\);)/,
@@ -82,7 +82,7 @@ function Element_add_event_shortcuts(tokens) {
   
   Observer_createShortcuts(Element[PROTO], tokens);
   Observer_createShortcuts(Document[PROTO], tokens);
-};
+}
 
 Element_add_event_shortcuts(
   'click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'

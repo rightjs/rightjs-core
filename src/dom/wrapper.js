@@ -27,7 +27,7 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
     
     uid  = UID_KEY in unit ? unit[UID_KEY] : (unit[UID_KEY] = UID++);
     
-    return Wrappers_Cache[uid] = instance;
+    return (Wrappers_Cache[uid] = instance);
   };
   
   // finding the parent
@@ -37,7 +37,7 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
   }
   
   // hooking up the extedning tools and methods
-  $ext(Klass, Class_Methods).inherit(parent || Wrapper)
+  $ext(Klass, Class_Methods).inherit(parent || Wrapper);
   
   // checking for the injections
   Class_attachInjections(Klass, methods);

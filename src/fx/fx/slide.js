@@ -34,7 +34,7 @@ Fx.Slide = new Class(Fx.Twin, {
 
   // calculates the final style
   _getStyle: function(direction) {
-    var style = {}, size = this.size
+    var style = {}, size = this.size,
       margin_left = this.styles.marginLeft.toFloat() || 0,
       margin_top  = this.styles.marginTop.toFloat() || 0;
 

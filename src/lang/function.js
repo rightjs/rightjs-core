@@ -60,7 +60,7 @@ Function.include({
     var curry = $A(arguments), func = this;
     return function() {
       return func.apply(func, $A(arguments).concat(curry));
-    }
+    };
   },
 
   /**

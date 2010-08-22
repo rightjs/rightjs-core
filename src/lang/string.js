@@ -25,7 +25,7 @@ String.include({
    * @return boolean check result
    */
   blank: function() {
-    return /^\s*$/.test(this);
+    return (/^\s*$/).test(this);
   },
   
   /**
@@ -35,7 +35,7 @@ String.include({
    */
   trim: String[PROTO].trim || function() {
     var str = this.replace(/^\s\s*/, ''), i = str.length;
-    while (/\s/.test(str.charAt(--i))) {;}
+    while ((/\s/).test(str.charAt(--i))) {}
     return str.slice(0, i + 1);
   },
   
@@ -59,10 +59,11 @@ String.include({
       return '';
     });
     
-    if (option === true)
+    if (option === true) {
       $eval(scripts);
-    else if (isFunction(option))
+    } else if (isFunction(option)) {
       option(scripts, text);
+    }
     
     return text;
   },

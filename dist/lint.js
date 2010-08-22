@@ -8,10 +8,8 @@ load("util/test/rightly_check.js");
 
 rightly_check("build/right-src.js", [
 //  the okay errors
-//  "Expected an identifier and instead saw 'undefined' (a reserved word).",
-//  "Use '===' to compare with 'null'.",
-//  "Use '!==' to compare with 'null'.",
-//  "Expected an assignment or function call and instead saw an expression.",
-//  "Expected a 'break' statement before 'case'."
+  "Do not use Number as a constructor.", // used to create those nice timer pointers
+  "Expected a 'break' statement before 'case'.", // in some cases we don't need the break
+  "Expected a 'break' statement before 'default'."
 ]);
 

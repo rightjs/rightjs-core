@@ -20,7 +20,7 @@ Element.include({
     
     var key, element = this._;
     
-    for (var key in hash) {
+    for (key in hash) {
       // some attributes are not available as properties
       if (!(key in element)) {
         element.setAttribute(key, ''+hash[key]);

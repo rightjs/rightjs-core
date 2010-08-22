@@ -31,7 +31,9 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     
     this.$super(element, options);
   
-    if (remote) this.remotize();
+    if (remote) {
+      this.remotize();
+    }
   },
   
   /**
@@ -64,7 +66,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
       return input._.type !== 'hidden';
     });
     
-    if (element) element.focus();
+    if (element) { element.focus(); }
     
     return this;
   },
@@ -112,8 +114,9 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
       name  = input.name;
       if (!input.disabled && name && (!['checkbox', 'radio'].includes(input.type) || input.checked)) {
         value = element.getValue();
-        if (name.endsWith('[]'))
+        if (name.endsWith('[]')) {
           value = (values[name] || []).concat([value]);
+        }
         
         values[name] = value;
       }

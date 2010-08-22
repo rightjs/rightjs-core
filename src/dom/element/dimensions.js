@@ -89,8 +89,8 @@ Element.include({
   overlaps: function(target) {
     var pos = this.position(), size = this.size();
     
-    return target.x > pos.x && target.x < (pos.x + size.x)
-        && target.y > pos.y && target.y < (pos.y + size.y);
+    return target.x > pos.x && target.x < (pos.x + size.x) &&
+           target.y > pos.y && target.y < (pos.y + size.y);
   },
   
   /**

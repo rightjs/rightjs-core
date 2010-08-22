@@ -16,20 +16,23 @@ Number.include({
    * @return void
    */
   times: function(callback, scope) {
-    for (var i=0; i < this; i++)
+    for (var i=0; i < this; i++) {
       callback.call(scope, i);
+    }
     return this;
   },
   
   upto: function(number, callback, scope) {
-    for (var i=this+0; i <= number; i++)
+    for (var i=this+0; i <= number; i++) {
       callback.call(scope, i);
+    }
     return this;
   },
   
   downto: function(number, callback, scope) {
-    for (var i=this+0; i >= number; i--)
+    for (var i=this+0; i >= number; i--) {
       callback.call(scope, i);
+    }
     return this;
   },
   

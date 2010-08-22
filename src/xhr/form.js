@@ -17,7 +17,7 @@ Form.include({
    */
   send: function(options) {
     options = options || {};
-    options['method'] = options['method'] || this.method || 'post';
+    options.method = options.method || this.method || 'post';
     
     new Xhr(this.get('action') || document.location.href, options
       ).onRequest(this.disable.bind(this)

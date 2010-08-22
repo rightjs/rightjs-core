@@ -16,8 +16,9 @@ $ext(Object, {
    */
   keys: function(object) {
     var keys = [], key;
-    for (key in object)
+    for (key in object) {
       keys.push(key);
+    }
     return keys;
   },
   
@@ -29,8 +30,9 @@ $ext(Object, {
    */
   values: function(object) {
     var values = [], key;
-    for (key in object)
+    for (key in object) {
       values.push(object[key]);
+    }
     return values;
   },
   
@@ -57,7 +59,7 @@ $ext(Object, {
    * @return check result
    */
   empty: function(object) {
-    for (var key in object) break;
+    for (var key in object) { break; }
     return !key;
   },
   
@@ -74,9 +76,11 @@ $ext(Object, {
   without: function() {
     var filter = $A(arguments), object = filter.shift(), copy = {}, key;
     
-    for (key in object)
-      if (!filter.includes(key))
+    for (key in object) {
+      if (!filter.includes(key)) {
         copy[key] = object[key];
+      }
+    }
     
     return copy;
   },
@@ -97,8 +101,9 @@ $ext(Object, {
         i=0, length = filter.length;
     
     for (; i < length; i++) {
-      if (filter[i] in object)
+      if (filter[i] in object) {
         copy[filter[i]] = object[filter[i]];
+      }
     }
     
     return copy;
@@ -138,7 +143,7 @@ $ext(Object, {
     for (key in object) {
       value = ensure_array(object[key]);
       for (var i=0; i < value.length; i++) {
-        tokens.push(encode(key) +'='+ encode(value[i]))
+        tokens.push(encode(key) +'='+ encode(value[i]));
       }
     }
     return tokens.join('&');
