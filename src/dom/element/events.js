@@ -66,7 +66,7 @@ Document.include(Element_observer);
 Window.include(Element_observer);
 
 // couple more shortcuts for the window
-Observer_createShortcuts(Window[PROTO], $w('blur focus scroll resize'));
+Observer_createShortcuts(Window[PROTO], $w('blur focus scroll resize load'));
 
 /**
  * Registers a list of event-binding shortcuts like

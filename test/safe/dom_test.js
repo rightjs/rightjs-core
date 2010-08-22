@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-var doc_load = false, win_load = false;
-RightJS.$(document).onLoad(function() { doc_load = true;  });
-RightJS.$(window).onLoad(function() { win_load = true; });
+var doc_ready = false, win_ready = false;
+RightJS.$(document).onReady(function() { doc_ready = true;  });
+RightJS.$(window).onReady(function() { win_ready = true; });
 
 var DomTest = TestCase.create({
   name: 'DomTest',
@@ -79,7 +79,7 @@ var DomTest = TestCase.create({
   },
   
   testDocumentReady: function() {
-    this.assert(doc_load);
-    this.assert(win_load);
+    this.assert(doc_ready);
+    this.assert(win_ready);
   }
 });
