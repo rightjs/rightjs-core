@@ -13,18 +13,18 @@
  *   The insertions system implementation is inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 Element.include({
   parent: function(css_rule) {
-    return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode || null);
+    return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode || null); // <- IE6 need that || null
   },
   
   parents: function(css_rule) {
     return this.rCollect('parentNode', css_rule);
   },
   
-  subNodes: function(css_rule) {
+  children: function(css_rule) {
     return this.select(css_rule).filter(function(element) {
       return element._.parentNode === this._;
     }, this);

@@ -87,3 +87,18 @@ function Element_add_event_shortcuts(tokens) {
 Element_add_event_shortcuts(
   'click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'
 );
+
+
+
+
+/**
+ * Deprecated method names aliases
+ *
+ * In RightJS 2 some methods were renamed so those are the aliases
+ * to support the old API
+ *
+ * NOTE: Will be nuked in couple of releases!
+ */
+$alias(Element[PROTO], {
+  subNodes: 'children'
+});

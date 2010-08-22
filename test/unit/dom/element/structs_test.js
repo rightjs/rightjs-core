@@ -72,7 +72,7 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([el1, el3, this.container._], this.el.parents('div, span').map('_'));
   },
   
-  testSubNodes: function() {
+  testChildren: function() {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -85,15 +85,15 @@ var ElementStructsTest = TestCase.create({
     this.el._.appendChild(el3);
     el3.appendChild(el4);
     
-    var result = this.el.subNodes();
+    var result = this.el.children();
     
     this.assertEqual([el1, el2, el3], result.map('_'));
     this.assert(result[0] instanceof RightJS.Element);
     this.assert(result[1] instanceof RightJS.Element);
     this.assert(result[2] instanceof RightJS.Element);
     
-    this.assertEqual([el1, el3], this.el.subNodes('div, span').map('_'), "getting the filtered subnodes list");
-    this.assertEqual([el2], this.el.subNodes('p').map('_'), "filtering the subnodes differently");
+    this.assertEqual([el1, el3], this.el.children('div, span').map('_'), "getting the filtered subnodes list");
+    this.assertEqual([el2], this.el.children('p').map('_'), "filtering the subnodes differently");
     
     // trying the same things, but with more settings
     var el = $E('div');
@@ -102,7 +102,11 @@ var ElementStructsTest = TestCase.create({
     
     el.insert([d1, d2]);
     
-    this.assertEqual([d2], el.subNodes('#b'));
+    this.assertEqual([d2], el.children('#b'));
+  },
+  
+  testSubNodesAlias: function() {
+    this.assertSame(Element[PROTO].subNodes, Element[PROTO].children);
   },
   
   testSiblings: function() {
