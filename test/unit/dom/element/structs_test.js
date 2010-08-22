@@ -106,7 +106,7 @@ var ElementStructsTest = TestCase.create({
   },
   
   testSubNodesAlias: function() {
-    this.assertSame(Element[PROTO].subNodes, Element[PROTO].children);
+    this.assertSame(Element.prototype.subNodes, Element.prototype.children);
   },
   
   testSiblings: function() {

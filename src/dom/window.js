@@ -16,11 +16,11 @@ var Window = RightJS.Window = new Wrapper({
   },
   
   /**
-   * returns the inner-sizes of the window
+   * returns the inner-size of the window
    *
    * @return Object x: d+, y: d+
    */
-  sizes: function() {
+  size: function() {
     var win = this._, html = this.d.documentElement;
     return win.innerWidth ? {x: win.innerWidth, y: win.innerHeight} :
       {x: html.clientWidth, y: html.clientHeight};

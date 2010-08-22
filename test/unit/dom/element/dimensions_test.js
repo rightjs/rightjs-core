@@ -47,8 +47,8 @@ var ElementDimensionsTest = TestCase.create({
   },
   
   afterAll: function() {
-//    this.spoof.remove();
-//    this.frame_block.remove();
+    this.spoof.remove();
+    this.frame_block.remove();
   },
   
   setUp: function() {
@@ -84,7 +84,12 @@ var ElementDimensionsTest = TestCase.create({
   },
   
   testSize: function() {
-    this.assertEqual({x: 400, y: 240}, this.div.sizes());
+    this.assertEqual({x: 400, y: 240}, this.div.size());
+  },
+  
+  testSizesAlias: function() {
+    
+    this.assertSame(Element.prototype.sizes, Element.prototype.size);
   },
   
   testPosition: function() {
@@ -187,10 +192,10 @@ var ElementDimensionsTest = TestCase.create({
   
   testResize: function() {
     this.assertSame(this.div, this.div.resize(500, 600));
-    this.assertEqual({x: 500, y: 600}, this.div.sizes());
+    this.assertEqual({x: 500, y: 600}, this.div.size());
     
     this.assertSame(this.div, this.div.resize({x: 444, y: 666}));
-    this.assertEqual({x: 444, y: 666}, this.div.sizes());
+    this.assertEqual({x: 444, y: 666}, this.div.size());
   },
   
   testMoveTo: function() {

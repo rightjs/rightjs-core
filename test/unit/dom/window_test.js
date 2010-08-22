@@ -31,13 +31,17 @@ var WindowTest = TestCase.create({
     this.assertSame(win._, win2._);
   },
   
-  testSizes: function() {
+  testSize: function() {
     var width  = window.innerWidth  || document.documentElement.clientWidth;
     var height = window.innerHeight || document.documentElement.clientHeight;
-    var sizes = $(window).sizes();
+    var size  = $(window).size();
     
-    this.assertEqual(width, sizes.x);
-    this.assertEqual(height, sizes.y);
+    this.assertEqual(width, size.x);
+    this.assertEqual(height, size.y);
+  },
+  
+  testSizesAlias: function() {
+    this.assertSame(Window.prototype.sizes, Window.prototype.size, "the deprecated alias");
   },
   
   testScrolls: function() {

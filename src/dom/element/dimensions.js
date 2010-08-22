@@ -25,11 +25,11 @@ Element.include({
   },
   
   /**
-   * Returns the element sizes as a hash
+   * Returns the element size as a hash
    *
    * @return Object {x: NNN, y: NNN}
    */
-  sizes: function() {
+  size: function() {
     return { x: this._.offsetWidth, y: this._.offsetHeight };
   },
   
@@ -66,15 +66,15 @@ Element.include({
    * @return Object dimensions (top, left, width, height, scrollLeft, scrollTop)
    */
   dimensions: function() {
-    var sizes    = this.sizes(),
+    var size     = this.size(),
         scrolls  = this.scrolls(),
         position = this.position();
     
     return {
       top:        position.y,
       left:       position.x,
-      width:      sizes.x,
-      height:     sizes.y,
+      width:      size.x,
+      height:     size.y,
       scrollLeft: scrolls.x,
       scrollTop:  scrolls.y
     };
@@ -87,7 +87,7 @@ Element.include({
    * @return boolean check result
    */
   overlaps: function(target) {
-    var pos = this.position(), size = this.sizes();
+    var pos = this.position(), size = this.size();
     
     return target.x > pos.x && target.x < (pos.x + size.x)
         && target.y > pos.y && target.y < (pos.y + size.y);

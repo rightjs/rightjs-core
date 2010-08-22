@@ -109,7 +109,7 @@ Fx.Morph = new Class(Fx, {
     
     dummy = $(dummy)
         .setStyle('position:absolute;z-index:-1;visibility:hidden')
-        .setWidth(element.sizes().x)
+        .setWidth(element.size().x)
         .setStyle(style);
     
     if (element._.parentNode) element.insert(dummy, 'before');
@@ -209,7 +209,7 @@ Fx.Morph = new Class(Fx, {
         if (!after[key] || !before[key]) after[key] = before[key] = '';
       }
       
-      // filling up the missing sizes
+      // filling up the missing size
       if (/\d/.test(after[key]) && !/\d/.test(before[key])) before[key] = after[key].replace(/[\d\.\-]+/g, '0');
       
       // removing unprocessable keys
