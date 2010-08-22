@@ -43,7 +43,12 @@
  */
 $alias(Element[PROTO], {
   subNodes: 'children',
-  sizes:    'size'
+  sizes:    'size',
+  select:   'find'
+});
+
+$alias(Document[PROTO], {
+  select:   'find'
 });
 
 $alias(Window[PROTO], {

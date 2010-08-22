@@ -133,7 +133,7 @@ var Event = RightJS.Event = new Wrapper({
   find: function(css_rule) {
     var target   = this.target,
         targets  = [target].concat(target.parents()),
-        search   = this.currentTarget.select(css_rule);
+        search   = this.currentTarget.find(css_rule);
     
     return targets.first(function(element) {
       return search.include(element);

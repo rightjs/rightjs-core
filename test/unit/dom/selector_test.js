@@ -15,14 +15,14 @@ var SelectorTest = TestCase.create({
   },
   
   assertSelect: function(css_rule, block, elements, message) {
-    var selected = $(block).select(css_rule).map('_');
+    var selected = $(block).find(css_rule).map('_');
     if (!this.util.equal(selected, elements)) {
       this.throw_unexp(elements, selected, message || "Trying '"+css_rule+"'");
     }
   },
   
   assertNotSelect: function(css_rule, block, elements, message) {
-    var selected = $(block).select(css_rule).map('_');
+    var selected = $(block).find(css_rule).map('_');
     elements.each(function(element) {
       if (selected.includes(element)) {
         this.throw_problem('It should not select the element: '+this.util.to_s(element), message);

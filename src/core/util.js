@@ -204,10 +204,10 @@ $ = RightJS.$ = function(object) {
  *
  * @param String element
  * @param Object optional context
- * @return Array select result
+ * @return Array search result
  */
 $$ = RightJS.$$ = function(css_rule, context) {
-  return $(context || document).select(css_rule);
+  return $(context || document).find(css_rule);
 },
 
 /** !#server

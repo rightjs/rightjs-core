@@ -239,7 +239,7 @@ var ElementStructsTest = TestCase.create({
     this.assertSame(el4, this.el.first('div.our-guy')._);
   },
   
-  testSelect: function() {
+  testFind: function() {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
     var el3 = document.createElement('span');
@@ -254,13 +254,17 @@ var ElementStructsTest = TestCase.create({
     
     el4.className = 'our-guy';
     
-    var result = this.el.select('div, p');
+    var result = this.el.find('div, p');
     
     this.assertEqual([el1, el4, el2].sort(), result.map('_').sort());
     
     this.assert(result[0] instanceof RightJS.Element);
     this.assert(result[1] instanceof RightJS.Element);
     this.assert(result[2] instanceof RightJS.Element);
+  },
+  
+  testSelectAlias: function() {
+    this.assertSame(Element.prototype.select, Element.prototype.find);
   },
   
   testMatch: function() {
@@ -515,7 +519,7 @@ var ElementStructsTest = TestCase.create({
     // checking that the element was automatically extended
     this.assert(e instanceof RightJS.Element);
     
-    var that_divs = e.select('div.that');
+    var that_divs = e.find('div.that');
     this.assertEqual(['one', 'two'], that_divs.map('html'));
     this.assert(that_divs[0].set && that_divs[1].set, 'both elements should be extended');
     

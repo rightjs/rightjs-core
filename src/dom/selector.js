@@ -4,7 +4,7 @@
  * NOTE: this module is just a wrap over the native CSS-selectors feature
  *       see the olds/css.js file for the manual selector code
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 
 /**
@@ -32,12 +32,12 @@ function stub_rule(css_rule, tag) {
   },
   
   /**
-   * Selects a list of matching nodes, or all the descendant nodes if no css-rule provided
+   * Finds a list of matching nodes, or all the descendant nodes if no css-rule provided
    *
    * @param String css-rule
    * @return Array of elements
    */
-  select: function(css_rule) {
+  find: function(css_rule) {
     return $A(this._.querySelectorAll(stub_rule(css_rule, this))).map($);
   }
 });
@@ -55,7 +55,7 @@ Element.include({
     var result, parent = this._.tagName === 'HTML' ? this._.ownerDocument : this.parents().last();
     
     // if it's a single node putting it into the context
-    result = $(parent || $E('p').insert(this)).select(css_rule).include(this);
+    result = $(parent || $E('p').insert(this)).find(css_rule).include(this);
     
     if (!parent) this.remove();
     

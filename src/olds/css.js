@@ -394,13 +394,15 @@ if (!document.querySelector) {
     // the previous dom-selection methods replacement
     var dom_extension = {
       first: function(css_rule) {
-        return this.select(css_rule)[0];
+        return this.find(css_rule)[0];
       },
       
-      select: function(css_rule) {
+      find: function(css_rule) {
         return select_all(this._, css_rule || '*').map(RightJS.$);
       }
     };
+    
+    dom_extension.select = dom_extension.find;
     
     // hooking up the rightjs wrappers with the new methods
     RightJS.Element.include(dom_extension);

@@ -25,7 +25,7 @@ Element.include({
   },
   
   children: function(css_rule) {
-    return this.select(css_rule).filter(function(element) {
+    return this.find(css_rule).filter(function(element) {
       return element._.parentNode === this._;
     }, this);
   },

@@ -40,12 +40,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    * @return Array of elements
    */
   elements: function() {
-    return this.select('input,button,select,textarea');
-  },
-  
-  // DEPRECATED
-  getElements: function() {
-    return this.elements();
+    return this.find('input,button,select,textarea');
   },
   
   /**
@@ -139,3 +134,8 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
 
 // creating the event shortcuts
 Element_add_event_shortcuts('submit reset focus blur disable enable change');
+
+// deprecated alias
+$alias(Form[PROTO], {
+  getElements: 'elements'
+});
