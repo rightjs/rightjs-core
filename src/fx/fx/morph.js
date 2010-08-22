@@ -5,7 +5,7 @@
  *   The idea is inspired by the Morph effect from
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 
 // a list of common style names to compact the code a bit
@@ -17,8 +17,13 @@ function add_variants(keys, key, variants) {
     keys.push(key + variants[i]);
 };
 
+// checks if the color is transparent
+function is_transparent(color) {
+  return color === 'transparent' || color === 'rgba(0, 0, 0, 0)';
+};
+
 // adjusts the border-styles
-function check_border_styles(before, after) {
+function check_border_styles(element, before, after) {
   for (var i=0; i < 4; i++) {
     var direction = directions[i],
       bd_style = 'border' + direction + 'Style',
@@ -26,15 +31,15 @@ function check_border_styles(before, after) {
       bd_color = 'border' + direction + 'Color';
     
     if (bd_style in before && before[bd_style] != after[bd_style]) {
-      var style = this.element._.style;
+      var style = element._.style;
 
       if (before[bd_style] == 'none') {
         style[bd_width] = '0px';
       }
 
       style[bd_style] = after[bd_style];
-      if (this._transp(before[bd_color])) {
-        style[bd_color] = this.element._.getStyle('Color');
+      if (is_transparent(before[bd_color])) {
+        style[bd_color] = element.getStyle('Color');
       }
     }
   }
@@ -60,6 +65,76 @@ function parse_style(values) {
   
   return result;
 };
+
+// cleans up and optimizies the styles
+function clean_styles(element, before, after) {
+  var remove = [], key;
+  
+  for (key in after) {
+    // checking the height/width options
+    if ((key == 'width' || key == 'height') && before[key] == 'auto') {
+      before[key] = element._['offset'+key.capitalize()] + 'px';
+    }
+  }
+  
+  // IE opacity filter fix
+  if (after.filter && !before.filter) before.filter = 'alpha(opacity=100)';
+  
+  // adjusting the border style
+  check_border_styles.call(element, before, after);
+  
+  // cleaing up the list
+  for (key in after) {
+    // proprocessing colors
+    if (after[key] !== before[key] && !remove.includes(key) && /color/i.test(key)) {
+      if (Browser.Opera) {
+        after[key] = after[key].replace(/"/g, '');
+        before[key] = before[key].replace(/"/g, '');
+      }
+
+      if (!is_transparent(after[key]))  after[key]  = after[key].toRgb();
+      if (!is_transparent(before[key])) before[key] = before[key].toRgb();
+
+      if (!after[key] || !before[key]) after[key] = before[key] = '';
+    }
+    
+    // filling up the missing size
+    if (/\d/.test(after[key]) && !/\d/.test(before[key])) before[key] = after[key].replace(/[\d\.\-]+/g, '0');
+    
+    // removing unprocessable keys
+    if (after[key] === before[key] || remove.includes(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
+      delete(after[key]);
+      delete(before[key]);
+    }
+  }
+};
+
+/**
+ * creates an appropriate style-keys list out of the user styles
+ *
+ * @param Object the style hash
+ * @return Array of clean style keys list
+ */
+function style_keys(style) {
+  var keys = [], border_types = ['Style', 'Color', 'Width'], key, i, j;
+    
+  for (key in style) {
+    if (key.startsWith('border'))
+      for (i=0; i < border_types.length; i++)
+        for (j=0; j < directions.length; j++)
+          keys.push('border' + directions[j] + border_types[i]);
+    else if (key == 'margin' || key == 'padding')
+      add_variants(keys, key, directions);
+    else if (key.startsWith('background'))
+      add_variants(keys, 'background', ['Color', 'Position', 'PositionX', 'PositionY']);
+    else if (key == 'opacity' && Browser.IE)
+      keys.push('filter');
+    else
+      keys.push(key);
+  }
+  
+  return keys;
+}
  
 Fx.Morph = new Class(Fx, {
 
@@ -67,11 +142,11 @@ Fx.Morph = new Class(Fx, {
 
   // parepares the effect
   prepare: function(style) {
-    var keys   = this._styleKeys(style),
+    var keys   = style_keys(style),
         before = this._cloneStyle(this.element, keys),
         after  = this._endStyle(style, keys);
     
-    this._cleanStyles(before, after);
+    clean_styles(this.element, before, after);
     
     this.before = parse_style(before);
     this.after  = parse_style(after);
@@ -142,97 +217,6 @@ Fx.Morph = new Class(Fx, {
     }
     
     return clean;
-  },
-  
-  /**
-   * creates an appropriate style-keys list out of the user styles
-   *
-   * @param Object the style hash
-   * @return Array of clean style keys list
-   */
-  _styleKeys: function(style) {
-    var keys = [], border_types = ['Style', 'Color', 'Width'], key, i, j;
-      
-    for (key in style) {
-      if (key.startsWith('border'))
-        for (i=0; i < border_types.length; i++)
-          for (j=0; j < directions.length; j++)
-            keys.push('border' + directions[j] + border_types[i]);
-      else if (key == 'margin' || key == 'padding')
-        add_variants(keys, key, directions);
-      else if (key.startsWith('background'))
-        add_variants(keys, 'background', ['Color', 'Position', 'PositionX', 'PositionY']);
-      else if (key == 'opacity' && Browser.IE)
-        keys.push('filter');
-      else
-        keys.push(key);
-    }
-    
-    return keys;
-  },
-  
-  /**
-   * cleans up and optimizies the styles
-   *
-   * @param before Object before
-   * @param after Object after
-   * @return void
-   */
-  _cleanStyles: function(before, after) {
-    var remove = [], key;
-    
-    for (key in after) {
-      // checking the height/width options
-      if ((key == 'width' || key == 'height') && before[key] == 'auto') {
-        before[key] = this.element._['offset'+key.capitalize()] + 'px';
-      }
-    }
-    
-    // IE opacity filter fix
-    if (after.filter && !before.filter) before.filter = 'alpha(opacity=100)';
-    
-    // adjusting the border style
-    check_border_styles.call(this, before, after);
-    
-    // cleaing up the list
-    for (key in after) {
-      // proprocessing colors
-      if (after[key] !== before[key] && !remove.includes(key) && /color/i.test(key)) {
-        if (Browser.Opera) {
-          after[key] = after[key].replace(/"/g, '');
-          before[key] = before[key].replace(/"/g, '');
-        }
-
-        if (!this._transp(after[key]))  after[key]  = after[key].toRgb();
-        if (!this._transp(before[key])) before[key] = before[key].toRgb();
-
-        if (!after[key] || !before[key]) after[key] = before[key] = '';
-      }
-      
-      // filling up the missing size
-      if (/\d/.test(after[key]) && !/\d/.test(before[key])) before[key] = after[key].replace(/[\d\.\-]+/g, '0');
-      
-      // removing unprocessable keys
-      if (after[key] === before[key] || remove.includes(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
-        delete(after[key]);
-        delete(before[key]);
-      }
-    }
-  },
-  
-  // looking for the visible background color of the element
-  _getBGColor: function(element) {
-    return [element].concat(element.parents()).map(function(node) {
-      var bg = node.getStyle('backgroundColor');
-      return (bg && !this._transp(bg)) ? bg : null; 
-    }, this).compact().first() || '#FFF';
-  },
-  
-  
-  // checks if the color is transparent
-  _transp: function(color) {
-    return color === 'transparent' || color === 'rgba(0, 0, 0, 0)';
   }
-  
 });
 
