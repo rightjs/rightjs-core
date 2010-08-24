@@ -65,7 +65,7 @@ var Event = RightJS.Event = new Wrapper({
       this.currentTarget = bound_element;
     
       // faking the mouse position
-      var scrolls = this.target.win().scrolls();
+      var scrolls = (this.target instanceof Window ? this.target : this.target.win()).scrolls();
     
       this.pageX = event.clientX + scrolls.x;
       this.pageY = event.clientY + scrolls.y;
