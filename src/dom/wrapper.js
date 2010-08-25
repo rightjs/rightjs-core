@@ -45,3 +45,6 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
   // including the basic tools
   return Klass.include({_: undefined}, methods);
 };
+
+// exposing the cache so it could be manupulated externally
+Wrapper.Cache = Wrappers_Cache;
