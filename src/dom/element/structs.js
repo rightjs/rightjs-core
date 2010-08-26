@@ -78,7 +78,7 @@ Element.include({
    * @return Element self
    */
   insert: function(content, position) {    
-    var scripts, element = this._;
+    var scripts = null, element = this._;
     position = (position||'bottom').toLowerCase();
     
     if (typeof(content) !== 'object') {
@@ -101,7 +101,7 @@ Element.include({
       });
     }
     
-    if (scripts) { $eval(scripts); }
+    if (scripts !== null) { $eval(scripts); }
     
     return this;
   },
@@ -135,7 +135,14 @@ Element.include({
    * @return Element self
    */
   update: function(content) {
-    return this.clean().insert(content);
+    if (typeof(content) !== 'object' && !(this._.tagName in Element_wraps)) {
+      var scripts = null;
+      this._.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
+      if (scripts !== null) { $eval(scripts); }
+    } else {
+      this.clean().insert(content);
+    }
+    return this;
   },
   
   /**
@@ -144,19 +151,11 @@ Element.include({
    * then it will be assigned, otherwise will return
    * the innerHTML property
    *
-   * NOTE: this method _desn't_ eval the scripts in your HTML
-   *       content! use the #update method for that
-   *
    * @param String html content
    * @return String html content or Element this
    */
   html: function(content) {
-    if (content === undefined) {
-      return this._.innerHTML;
-    } else {
-      this._.innerHTML = ''+ content;
-      return this;
-    }
+    return content === undefined ? this._.innerHTML : this.update(content);
   },
   
   /**
