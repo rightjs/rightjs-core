@@ -168,7 +168,7 @@ Element.include({
   wrap: function(wrapper) {
     var element = this._, parent = element.parentNode;
     if (parent) {
-      parent.replaceChild(wrapper, element);
+      parent.replaceChild($(wrapper)._, element);
       wrapper.appendChild(element);
     }
     return this;
