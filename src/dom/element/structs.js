@@ -15,6 +15,14 @@
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
+
+// checking if this the darn IE
+var BROWSER_SCREWS_INNER_HTML = true;
+try {
+  document.createElement('TABLE').innerHTML = '<TR></TR>';
+  BROWSER_SCREWS_INNER_HTML = false;
+} catch (e) {}
+
 Element.include({
   parent: function(css_rule) {
     return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode || null); // <- IE6 need that || null
@@ -127,19 +135,19 @@ Element.include({
    * @param mixed content (a String, an Element or a list of elements)
    * @return Element self
    */
-  update: function(content) {
-    try {
-      if (typeof(content) !== 'object' && !(this._.tagName in Element_wraps)) {
-        content = '' + content;
-        this._.innerHTML = content;
-        
-        content.evalScripts();
-        
-        return this;
-      }
-    } catch(e) {}
-    
-    return this.clean().insert(content);
+  update: BROWSER_SCREWS_INNER_HTML ? function(content) {
+     return this.clean().insert(content);
+  } : function(content) {
+    if (typeof(content) !== 'object') {
+      content = '' + content;
+      
+      this._.innerHTML = content;
+      content.evalScripts();
+      
+      return this;
+    } else {
+      return this.clean().insert(content);
+    }
   },
   
   /**
