@@ -3,7 +3,9 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-var Input = RightJS.Input = 
+var old_insert = Element[PROTO].insert,
+
+Input = RightJS.Input = 
 
 // retgistering the typecasted wrappers
 Element_wrappers.INPUT    = 
@@ -42,6 +44,36 @@ new Wrapper(Element, {
     }
     
     this.$super(element, options);
+  },
+  
+  /**
+   * SELECT element has a bug in FF that screws the selected options
+   *
+   * @param mixed content
+   * @param String optional position
+   * @return Input this
+   */
+  insert: function(content, position) {
+    old_insert.call(this, content, position);
+    
+    // FF doesn't marks selected options correctly with a textual content
+    if (this._.tagName === 'SELECT' && isString(content)) {
+      $A(this._.getElementsByTagName('option')).each(function(option) {
+        option.selected = !!option.getAttribute('selected');
+      });
+    }
+    
+    return this;
+  },
+  
+  /**
+   * Overloading the method so it always called the '#insert' method
+   *
+   * @param mixed content
+   * @return Input this
+   */
+  update: function(content) {
+    return this.clean().insert(content);
   },
   
   /**

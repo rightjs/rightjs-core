@@ -82,7 +82,7 @@ Element.include({
     position = (position||'bottom').toLowerCase();
     
     if (typeof(content) !== 'object') {
-      content = (''+content).stripScripts(function(s) { scripts = s; });
+      scripts = content = (''+content);
     } else if (content && content instanceof Element) {
       content = content._;
     }
@@ -94,14 +94,7 @@ Element.include({
       )
     );
     
-    // FF doesn't marks selected options correctly with a textual content
-    if (element.tagName === 'SELECT' && isString(content)) {
-      $A(element.getElementsByTagName('option')).each(function(option) {
-        option.selected = !!option.getAttribute('selected');
-      });
-    }
-    
-    if (scripts !== null) { $eval(scripts); }
+    if (scripts !== null) { scripts.evalScripts(); }
     
     return this;
   },
@@ -135,14 +128,18 @@ Element.include({
    * @return Element self
    */
   update: function(content) {
-    if (typeof(content) !== 'object' && !(this._.tagName in Element_wraps)) {
-      var scripts = null;
-      this._.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
-      if (scripts !== null) { $eval(scripts); }
-    } else {
-      this.clean().insert(content);
-    }
-    return this;
+    try {
+      if (typeof(content) !== 'object' && !(this._.tagName in Element_wraps)) {
+        content = '' + content;
+        this._.innerHTML = content;
+        
+        content.evalScripts();
+        
+        return this;
+      }
+    } catch(e) {}
+    
+    return this.clean().insert(content);
   },
   
   /**
@@ -252,21 +249,20 @@ var Element_insertions = {
 
 // the element insertion wrappers list
 Element_wraps = {
-  TABLE:  ['<TABLE>',                '</TABLE>',                   1],
-  TBODY:  ['<TABLE><TBODY>',         '</TBODY></TABLE>',           2],
-  TR:     ['<TABLE><TBODY><TR>',     '</TR></TBODY></TABLE>',      3],
-  TD:     ['<TABLE><TBODY><TR><TD>', '</TD></TR></TBODY></TABLE>', 4],
-  SELECT: ['<SELECT>',               '</SELECT>',                  1],
-  UL:     ['<UL>',                   '</UL>',                      1]
+  TBODY:  ['<TABLE>',            '</TABLE>',                           2],
+  TR:     ['<TABLE><TBODY>',     '</TBODY></TABLE>',                   3],
+  TD:     ['<TABLE><TBODY><TR>', '</TR></TBODY></TABLE>',              4],
+  COL:    ['<TABLE><COLGROUP>',  '</COLGROUP><TBODY></TBODY></TABLE>', 2],
+  LEGEND: ['<FIELDSET>',         '</FIELDSET>',                        2],
+  AREA:   ['<map>',              '</map>',                             2],
+  OPTION: ['<SELECT>',           '</SELECT>',                          2]
 };
 
 $alias(Element_wraps, {
-  OPTGROUP: 'SELECT',
+  OPTGROUP: 'OPTION',
   THEAD:    'TBODY',
   TFOOT:    'TBODY',
-  TH:       'TD',
-  OL:       'UL',
-  DL:       'UL'
+  TH:       'TD'
 });
   
 // converts any data into a html fragment unit
@@ -274,15 +270,15 @@ function Element_createFragment(content) {
   var fragment = document.createDocumentFragment();
     
   if (isString(content)) {
-    var tmp   = document.createElement('DIV'),
-        wrap  = Element_wraps[this.tagName] || ['', '', 0],
+    var tag   = this.tagName,
+        tmp   = document.createElement('DIV'),
+        wrap  = Element_wraps[tag] || ['', '', 1],
         depth = wrap[2];
           
-    tmp.innerHTML = wrap[0] + content + wrap[1];
+    tmp.innerHTML = wrap[0] + '<'+ tag + '>' + content + '</'+ tag + '>' + wrap[1];
     
-    while (depth > 0) {
+    while (depth-- > 0) {
       tmp = tmp.firstChild;
-      depth--;
     }
     
     content = tmp.childNodes;
@@ -292,7 +288,7 @@ function Element_createFragment(content) {
     // in case of NodeList unit, the elements will be removed out of the list during the appends
     // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
     // then we always hit the first element of the stack
-    node = content[content.length == length ? i : 0];
+    node = content[content.length === length ? i : 0];
     fragment.appendChild(node instanceof Element ? node._ : node);
   }
   

@@ -302,7 +302,9 @@ var ElementStructsTest = TestCase.create({
   _html: function(el) {
     var element = el || this.el;
     element = '_' in element ? element._ : element;
-    return element.innerHTML.toLowerCase().replace(/\s+</mg, "<").replace(/\s+_rid[^=]+="\d+"/mg, '')
+    return element.innerHTML.toLowerCase()
+      .replace(/\s+</mg, "<").replace(/\s+_rid[^=]+="\d+"/mg, '')
+      .replace(/<script[^>]*>([\s\S]*?)<\/script>/img, '');
   },
   
   testInsert: function() {
@@ -428,9 +430,8 @@ var ElementStructsTest = TestCase.create({
   
   testUpdateOptgroup: function() {
     var element = $E('select').update('<optgroup label="Boos"></optgroup>');
-    $(element._.getElementsByTagName('optgroup')[0])
+    var optgroup = $(element._.getElementsByTagName('optgroup')[0])
       .update('<option>O1</option><option>O2</option>');
-    
     var options = $A(element._.getElementsByTagName('option'));
     this.assertEqual(['O1','O2'], options.map('innerHTML'));
   },

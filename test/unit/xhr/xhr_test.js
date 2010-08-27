@@ -397,6 +397,14 @@ var XhrTest = TestCase.create({
     this.assertEqual('get', request.method);
   },
   
+  _html: function(el) {
+    var element = el || this.el;
+    element = '_' in element ? element._ : element;
+    return element.innerHTML.toLowerCase()
+      .replace(/\s+</mg, "<").replace(/\s+_rid[^=]+="\d+"/mg, '')
+      .replace(/<script[^>]*>([\s\S]*?)<\/script>/img, '');
+  },
+  
   testUpdateElement: function() {
     window.____1 = null;
     this.mockAjax({text: 'response text<script>var ____1 = 4444;</script>'});
@@ -405,7 +413,7 @@ var XhrTest = TestCase.create({
     var request = new Xhr('foo/bar');
     
     this.assertSame(request, request.update(div));
-    this.assertEqual('response text', div._.innerHTML);
+    this.assertEqual('response text', this._html(div));
     this.assertEqual(4444, window.____1);
   },
   
@@ -416,7 +424,7 @@ var XhrTest = TestCase.create({
     var div = new Element('div');
     
     this.assertSame(div, div.load('foo/bar'));
-    this.assertEqual('response text', div._.innerHTML);
+    this.assertEqual('response text', this._html(div));
     this.assertEqual(4444, window.____1);
   },
   
