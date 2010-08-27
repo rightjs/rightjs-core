@@ -16,6 +16,15 @@ var Window = RightJS.Window = new Wrapper({
   },
   
   /**
+   * Generic API reference
+   *
+   * @return Window this
+   */
+  window: function() {
+    return this;
+  },
+  
+  /**
    * returns the inner-size of the window
    *
    * @return Object x: d+, y: d+

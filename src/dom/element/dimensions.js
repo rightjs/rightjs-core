@@ -2,7 +2,7 @@
  * this module contains the Element's part of functionality 
  * responsible for the dimensions and positions getting/setting
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 Element.include({
   /**
@@ -10,7 +10,7 @@ Element.include({
    *
    * @return RightJS.Document
    */
-  doc: function() {
+  document: function() {
     return $(this._.ownerDocument);
   },
   
@@ -19,9 +19,8 @@ Element.include({
    *
    * @return RightJS.Window
    */
-  win: function() {
-    var doc = this.doc()._;
-    return $(doc.defaultView || doc.parentWindow);
+  window: function() {
+    return this.document().window();
   },
   
   /**
@@ -42,8 +41,8 @@ Element.include({
    */
   position: function() {
     var rect    = this._.getBoundingClientRect(),
-        html    = this.doc()._.documentElement,
-        scrolls = this.win().scrolls();
+        html    = this.document()._.documentElement,
+        scrolls = this.window().scrolls();
     
     return {
       x: rect.left + scrolls.x - html.clientLeft,
@@ -188,7 +187,7 @@ Element.include({
    * @return Element self
    */
   scrollThere: function(options) {
-    this.win().scrollTo(this, options);
+    this.window().scrollTo(this, options);
     return this;
   }
 });

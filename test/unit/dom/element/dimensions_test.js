@@ -75,12 +75,12 @@ var ElementDimensionsTest = TestCase.create({
     this.p.remove();
   },
   
-  testDocReference: function() {
-    this.assertSame($(this.doc), this.div.doc());
+  testDocumentReference: function() {
+    this.assertSame($(this.doc), this.div.document());
   },
   
-  testWinReference: function() {
-    this.assertSame($(this.win), this.div.win());
+  testWindowReference: function() {
+    this.assertSame($(this.win), this.div.window());
   },
   
   testSize: function() {
@@ -88,7 +88,6 @@ var ElementDimensionsTest = TestCase.create({
   },
   
   testSizesAlias: function() {
-    
     this.assertSame(Element.prototype.sizes, Element.prototype.size);
   },
   
