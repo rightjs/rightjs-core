@@ -531,6 +531,19 @@ var ElementStructsTest = TestCase.create({
     var last = another.next();
     this.assertEqual('last one', last._.innerHTML);
     this.assert('set' in last, 'the last element should be extended');
+  },
+  
+  testClone: function() {
+    var original = new Element('div', {html: 'boo hoo!'}).onClick('hide');
+    var clone    = original.clone();
+    
+    this.assert(clone instanceof Element, "Clone should be instance of an Element");
+    this.assertNotSame(original, clone);
+    this.assertNotSame(original._, clone._);
+    
+    this.assertEqual('DIV', clone._.tagName, 'Clone should have correct tag-name');
+    this.assertEqual(original.html(), clone.html(), 'Clone should have the same innerHTML');
+    this.assertFalse(clone.observes('click'), 'Clone should not inherit the events');
   }
 });
 
