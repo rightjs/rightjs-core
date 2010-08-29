@@ -51,7 +51,7 @@ $ext = RightJS.$ext = function(dest, source, dont_overwrite) {
 $eval = RightJS.$eval = function(text) {
   if (text) {
     if ('execScript' in window) {
-      document.parentWindow.execScript(text);
+      $(document).window()._.execScript(text);
     } else {
       $E('script', {text: text}).insertTo(HTML);
     }
