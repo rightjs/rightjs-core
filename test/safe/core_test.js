@@ -82,5 +82,15 @@ var CoreTest = TestCase.create({
       boo: 'boo',
       hoo: 'hoo'
     }, RightJS.$ext({boo: 'boo'}, {hoo: 'hoo'}));
+  },
+  
+  test$eval: function() {
+    this.assert('$eval' in RightJS);
+    this.assertFalse('$eval' in window);
+    
+    window.____boo = null;
+    RightJS.$eval('window.____boo = "hoo";');
+    
+    this.assertEqual("hoo", window.____boo, "it should eval the script in the context of the current window");
   }
 });

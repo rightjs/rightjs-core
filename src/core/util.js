@@ -49,11 +49,11 @@ $ext = RightJS.$ext = function(dest, source, dont_overwrite) {
  * @return void
  */
 $eval = RightJS.$eval = function(text) {
-  if (!isString(text) || text.blank()) { return; }
+  if (!text) { return; }
   if ('execScript' in window) {
-    window.execScript(text);
+    document.parentWindow.execScript(text);
   } else {
-    $E('script', {type: 'text/javascript', text: text}).insertTo(HTML);
+    $E('script', {text: text}).insertTo(HTML);
   }
 },
 
