@@ -2,7 +2,7 @@
  * This unit presents a fake drop in replacement for the XmlHTTPRequest unit
  * but works with an iframe targeting in the background
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 Xhr.IFramed = new Class({
   include: Xhr.Dummy,
@@ -16,10 +16,9 @@ Xhr.IFramed = new Class({
   initialize: function(form) {
     this.form = form;
     
-    var id = this.id = 'xhr_frame_'+ new Date().getTime();
-    $E('DIV').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+'" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
-    
-    this.iframe = $(id).on('load', this.onLoad.bind(this));
+    var id = this.id = 'xhr_'+ new Date().getTime();
+    $(document.body).insert('<i><iframe name="'+id+'" id="'+id+'" width="0" height="0" frameborder="0" src="about:blank"></iframe></i>');
+    $(id).on('load', this.onLoad.bind(this));
   },
   
   send: function() {

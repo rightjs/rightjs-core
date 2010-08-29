@@ -9,13 +9,14 @@ var XhrIFramedTest = TestCase.create({
   testInstance: function() {
     var form = new Form();
     var ixhr = new Xhr.IFramed(form);
+    var iframe = $(ixhr.id);
     
     this.assertSame(form, ixhr.form);
-    this.assertEqual('IFRAME', ixhr.iframe._.tagName);
+    this.assertEqual('IFRAME', iframe._.tagName);
     
-    this.assertEqual('about:blank',  ixhr.iframe.get('src'));
-    this.assertEqual('0', ixhr.iframe.get('width'));
-    this.assertEqual('0', ixhr.iframe.get('height'));
+    this.assertEqual('about:blank',  iframe.get('src'));
+    this.assertEqual('0', iframe.get('width'));
+    this.assertEqual('0', iframe.get('height'));
     // FIXME IE6 doesn't get it
     //this.assertEqual('0', ixhr.iframe.get('frameborder'));
     

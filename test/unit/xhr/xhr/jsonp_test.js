@@ -15,7 +15,6 @@ var XhrJSONPTest = TestCase.create({
     
     this.assert(xhr.script);
     this.assertEqual('SCRIPT', xhr.script._.tagName);
-    this.assertEqual('text/javascript', xhr.script._.type);
     this.assertEqual('utf-8', xhr.script._.charset);
     this.assert(xhr.script._.async);
     

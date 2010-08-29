@@ -21,7 +21,6 @@ Xhr.JSONP = new Class({
       xhr.jsonp : 'callback') + "=" + this.name;
       
     this.script = $E('script', {
-      type:    'text/javascript',
       charset: xhr.encoding,
       async:   xhr.async
     });
