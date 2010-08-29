@@ -286,12 +286,13 @@ $alias(Element_wraps, {
 });
   
 // converts any data into a html fragment unit
-function Element_createFragment(content) {
-  var fragment = document.createDocumentFragment();
+var fragment = document.createDocumentFragment(),
+    tmp_cont = document.createElement('DIV');
     
-  if (isString(content)) {
+function Element_createFragment(content) {
+  if (typeof(content) === 'string') {
     var tag   = this.tagName,
-        tmp   = document.createElement('DIV'),
+        tmp   = tmp_cont,
         wrap  = Element_wraps[tag] || ['', '', 1],
         depth = wrap[2];
           
