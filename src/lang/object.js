@@ -59,8 +59,8 @@ $ext(Object, {
    * @return check result
    */
   empty: function(object) {
-    for (var key in object) { break; }
-    return !key;
+    for (var key in object) { return false; }
+    return true;
   },
   
   /**

@@ -32,6 +32,8 @@ var ObjectTest = TestCase.create({
   testEmpty: function() {
     this.assert(Object.empty({}));
     this.assertFalse(Object.empty({1: 1}));
+    
+    this.assertFalse(Object.empty({'': 'boo'}), "should be fine with weird keys");
   },
   
   testWithout: function() {
