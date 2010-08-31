@@ -12,6 +12,7 @@ Element_wrappers.INPUT    =
 Element_wrappers.BUTTON   =
 Element_wrappers.SELECT   =
 Element_wrappers.TEXTAREA = 
+Element_wrappers.OPTGROUP =
 
 new Wrapper(Element, {
   /**
