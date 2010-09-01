@@ -5,7 +5,7 @@
  *   The idea of random mehtod is taken from
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var Math_old_random = Math.random;
 
@@ -22,14 +22,13 @@ var Math_old_random = Math.random;
  * @return Float random between 0 and 1 if there's no arguments or an integer in the given range
  */
 Math.random = function(min, max) {
-  var rand = Math_old_random();
   
-  if (min === undefined) {
-    return rand;
-  } else if (max === undefined) {
+  if (arguments.length === 0) {
+    return Math_old_random();
+  } else if (arguments.length === 1) {
     max = min;
     min = 0;
   }
   
-  return Math.floor(rand * (max-min+1)+min);
+  return ~~(Math_old_random() * (max-min+1) + ~~min);
 };

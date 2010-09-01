@@ -31,5 +31,14 @@ var MathTest = TestCase.create({
       rands[rand] = rand;
     }
     this.assertEqual([null,null,2,3,4,5,6], rands);
+  },
+  
+  testRandomWithStringArgs: function() {
+    var rands = [null, null];
+    for (var i=0; i < 100; i++) {
+      var rand = Math.random('2','4');
+      rands[rand] = rand;
+    }
+    this.assertEqual([null,null,2,3,4], rands);
   }
 });
