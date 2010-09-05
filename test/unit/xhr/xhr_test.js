@@ -126,6 +126,21 @@ var XhrTest = TestCase.create({
     this.assertEqual('another=one&some=more', request.xhr.sentData);
   },
   
+  testSendForm: function() {
+    this.mockAjax();
+    
+    var form = new Form();
+    var request = new Xhr('foo/bar');
+    
+    form.values = function() {
+      return "boo=boo&hoo=hoo";
+    };
+    
+    request.send(form);
+    
+    this.assertEqual('boo=boo&hoo=hoo', request.xhr.sentData);
+  },
+  
   testCallbacksInvolvement: function() {
     this.mockAjax();
     
