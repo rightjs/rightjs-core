@@ -72,13 +72,18 @@ Element.include({
     return this.getStyle('display') == 'none';
   },
   
+  // WebKit causes bugs with overloading the 'hidden' property here and there
+  _hidden: function() {
+    return this.getStyle('display') == 'none';
+  },
+  
   /**
    * checks if the element is visible
    *
    * @return boolean check result
    */
   visible: function() {
-    return !this.hidden();
+    return !this._hidden();
   },
   
   /**
@@ -118,7 +123,7 @@ Element.include({
    * @return Element self
    */
   toggle: function(effect, options) {
-    return this[this.hidden() ? 'show' : 'hide'](effect, options);
+    return this[this.visible() ? 'hide' : 'show'](effect, options);
   },
   
   /**

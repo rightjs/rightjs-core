@@ -43,7 +43,7 @@ return {
    * @return Element this
    */
   show: function(fx, options) {
-    return (fx && this.hidden()) ? this.fx(fx, ['in', options]) : old_show.call(this);
+    return (fx && !this.visible()) ? this.fx(fx, ['in', options]) : old_show.call(this);
   },
   
   /**
