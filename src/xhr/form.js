@@ -8,6 +8,19 @@
  *
  * Copyright (C) 2009-2010 Nikolay V. Nemshilov
  */
+
+/**
+ * Catches the form submit events and sends the form remotely
+ *
+ * @param Event submit
+ * @param Object xhr options
+ * @return void
+ */
+function remote_send(event, options) {
+  event.stop();
+  this.send(Object.merge({spinner: this.first('.spinner')}, options));
+};
+
 Form.include({
   /**
    * sends the form via xhr request
@@ -17,15 +30,15 @@ Form.include({
    */
   send: function(options) {
     options = options || {};
-    options.method = options.method || this.method || 'post';
-    
-    new Xhr(this.get('action') || document.location.href, options
+    options.method = options.method || this._.method || 'post';
+
+    new Xhr(this._.action || document.location.href, options
       ).onRequest(this.disable.bind(this)
       ).onComplete(this.enable.bind(this)).send(this);
-    
+
     return this;
   },
-  
+
   /**
    * makes the form be remote by default
    *
@@ -33,25 +46,22 @@ Form.include({
    * @return Form this
    */
   remotize: function(options) {
-    this.onsubmit = function() {
-      this.send.bind(this, Object.merge({spinner: this.first('.spinner')}, options)).delay(20);
-      return false;
-    };
-      
-    this.remote   = true;
+    if (!this.observes('submit', remote_send)) {
+      this.on('submit', remote_send, options);
+      this.remote = true;
+    }
     return this;
   },
-  
+
   /**
    * removes the remote call hook
-   *
-   * NOTE: will nuke onsubmit attribute
    *
    * @return Form this
    */
   unremotize: function() {
-    this.onsubmit = dummy();
-    this.remote   = false;
+    this.stopObserving('submit', remote_send);
+    this.remote = false;
+
     return this;
   }
 });
