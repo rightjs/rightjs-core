@@ -132,6 +132,16 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    */
   serialize: function() {
     return Object.toQueryString(this.values());
+  },
+  
+  /**
+   * Delegating the submit method
+   *
+   * @return Form this
+   */
+  submit: function() {
+    this._.submit();
+    return this;
   }
 });
 
