@@ -6,8 +6,16 @@
 var XhrIFramedTest = TestCase.create({
   name: 'XhrIFramedTest',
   
+  setUp: function() {
+    this.form = new Form().insertTo(document.body);
+  },
+  
+  tearDown: function() {
+    this.form.remove();
+  },
+  
   testInstance: function() {
-    var form = new Form();
+    var form = this.form;
     var ixhr = new Xhr.IFramed(form);
     var iframe = $(ixhr.id);
     
@@ -29,7 +37,7 @@ var XhrIFramedTest = TestCase.create({
   },
   
   testOnLoad: function() {
-    var form = new Form();
+    var form = this.form;
     var ixhr = new Xhr.IFramed(form);
     
     var onready_called = false;
@@ -45,7 +53,7 @@ var XhrIFramedTest = TestCase.create({
   testXhrFormHookForSimpleForm: function() {
     var xhr = new Xhr('/boo');
     
-    xhr.form = new Form();
+    xhr.form = this.form;
     
     this.assert(xhr.createXhr().constructor !== Xhr.IFramed);
   },
@@ -53,9 +61,7 @@ var XhrIFramedTest = TestCase.create({
   testXhrFormHookForFormWithFiles: function() {
     var xhr = new Xhr('/boo');
     
-    xhr.form = new Form({
-      html: '<input type="file" name="boo" />'
-    });
+    xhr.form = this.form.insert('<input type="file" name="boo" />');
     
     this.assert(xhr.createXhr().constructor === Xhr.IFramed);
   }

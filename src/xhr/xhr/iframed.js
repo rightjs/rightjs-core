@@ -15,25 +15,17 @@ Xhr.IFramed = new Class({
    */
   initialize: function(form) {
     this.form = form;
+    this.id   = 'xhr_'+ new Date().getTime();
     
-    var id = this.id = 'xhr_'+ new Date().getTime();
-    $(document.body).insert('<i><iframe name="'+id+'" id="'+id+'" width="0" height="0" frameborder="0" src="about:blank"></iframe></i>');
-    $(id).on('load', this.onLoad.bind(this));
+    form.insert('<i><iframe name="'+this.id+'" id="'+this.id+
+      '" width="0" height="0" frameborder="0" src="about:blank"></iframe></i>',
+      'after');
+      
+    $(this.id).on('load', this.onLoad.bind(this));
   },
   
   send: function() {
-    // stubbing the onsubmit method so it allowed us to submit the form
-    var form         = this.form,
-        old_onsubmit = form.onsubmit,
-        old_target   = form.target;
-    
-    form.onsubmit = dummy();
-    form.target   = this.id;
-    
-    form.submit();
-    
-    form.onsubmit = old_onsubmit;
-    form.target   = old_target;
+    this.form.set('target', this.id).submit();
   },
   
   onLoad: function() {
