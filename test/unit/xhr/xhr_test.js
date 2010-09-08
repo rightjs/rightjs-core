@@ -97,6 +97,16 @@ var XhrTest = TestCase.create({
     this.assertNull(request.responseXml);
   },
   
+  testSendingAForm: function() {
+    this.mockAjax({text: 'boo'});
+    var request = new Xhr('foo/bar');
+    var form    = new Form({html: '<input name="boo[hoo]" value="✓" />'});
+    
+    request.send(form);
+    
+    this.assertEqual('boo%5Bhoo%5D=%E2%9C%93', request.xhr.sentData);
+  },
+  
   testReceiveXml: function() {
     this.mockAjax({
       xml: 'response xml',
