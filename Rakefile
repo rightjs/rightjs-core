@@ -161,3 +161,15 @@ task 'build:server' do
   end
   @util.write("#{BUILD_DIR}/#{BUILD_FILE}-server.js")
 end
+
+######################################################################
+#  Checking the Harmony
+######################################################################
+desc "Checks the Harmony compatibility"
+task "harm" do
+  Rake::Task['pack'].invoke
+  
+  require 'harmony'
+  page = Harmony::Page.new
+  page.load('build/right-src.js')
+end

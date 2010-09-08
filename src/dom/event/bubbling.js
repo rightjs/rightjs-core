@@ -49,7 +49,7 @@ if (Browser.IE) {
  * @retrun Boolean check result
  */
 function event_support_for(name, tag) {
-  var e = $E(tag)._;
+  var e = document.createElement('DIV');
   e.setAttribute(name, ';');
   return isFunction(e[name]);
 }
