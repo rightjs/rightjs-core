@@ -131,13 +131,17 @@ var Event = RightJS.Event = new Wrapper({
    * @return Element element or null
    */
   find: function(css_rule) {
-    var target   = this.target,
-        targets  = [target].concat(target.parents()),
-        search   = this.currentTarget.find(css_rule);
-    
-    return targets.first(function(element) {
-      return search.include(element);
-    });
+    if (this.target instanceof Element) {
+      var target   = this.target,
+          targets  = [target].concat(target.parents()),
+          search   = this.currentTarget.find(css_rule);
+
+      return targets.first(function(element) {
+        return search.include(element);
+      });
+    } else {
+      return undefined;
+    }
   }
 }),
 
