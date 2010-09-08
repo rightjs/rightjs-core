@@ -184,6 +184,15 @@ var FormTest = TestCase.create({
     });
     
     this.assertEqual({'test[]': ['1', '2', '3']}, form.values());
+  },
+  
+  testFormInput: function() {
+    var form = this.setForm();
+    var name = form.input('name');
+    
+    this.assert(name, "should exist");
+    this.assert(name instanceof Input, "the field should be wrapped");
+    this.assertSame(name._, form._.name, "it should be the correct field");
   }
 });
 

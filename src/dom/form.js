@@ -57,6 +57,16 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   },
   
   /**
+   * Accessing an input by name
+   *
+   * @param String name
+   * @return Input field
+   */
+  input: function(name) {
+    return $(this._[name]);
+  },
+  
+  /**
    * focuses on the first input element on the form
    *
    * @return Form this

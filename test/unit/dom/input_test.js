@@ -182,5 +182,12 @@ var InputTest = TestCase.create({
     input.onChange(f);
     
     this.assert(input.observes('change', f));
+  },
+  
+  testFormReference: function() {
+    var form  = new Form();
+    var input = new Input().insertTo(form);
+    
+    this.assertSame(form, input.form());
   }
 });

@@ -48,6 +48,15 @@ new Wrapper(Element, {
   },
   
   /**
+   * Returns a reference to the input's form
+   *
+   * @return Form wrapped form
+   */
+  form: function() {
+    return $(this._.form);
+  },
+  
+  /**
    * SELECT element has a bug in FF that screws the selected options
    *
    * @param mixed content
