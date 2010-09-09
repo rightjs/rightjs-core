@@ -126,7 +126,7 @@ new Wrapper(Element, {
    * @return mixed this or the value
    */
   value: function(value) {
-    return this[value ? 'setValue' : 'getValue'](value);
+    return this[value === undefined ? 'setValue' : 'getValue'](value);
   },
   
   /**
