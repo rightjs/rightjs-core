@@ -373,22 +373,13 @@ var ElementStructsTest = TestCase.create({
     
   },
   
-  testReplace: function() {
-    this.el._.innerHTML = '<b></b><div></div><span></span>';
-    this.el.first('div').replace('<ul></ul><ul></ul><script>self["____test"]=4;</script>');
-    
-    this.assertEqual('<b></b><ul></ul><ul></ul><span></span>', this._html());
-    this.assertEqual(4, self['____test']);
-    self['____test'] = null;
-    
-    this.assertSame(this.el.first('ul'), this.el.first('ul').replace(document.createElement('cite')));
-    this.assertEqual('<b></b><cite></cite><ul></ul><span></span>', this._html());
-    
-    this.el.first('span').replace([$E('div'), $E('u')]);
-    this.assertEqual('<b></b><cite></cite><ul></ul><div></div><u></u>', this._html());
-    
-    this.el.first('div').replace('div string');
-    this.assertEqual('<b></b><cite></cite><ul></ul>div string<u></u>', this._html());
+  testAppend: function() {
+    this.el.append(
+      $E('i', {html:'1'}),
+      $E('b', {html:'2'}),
+      $E('u', {html:'3'})
+    );
+    this.assertEqual('<i>1</i><b>2</b><u>3</u>', this._html());
   },
   
   testUpdate: function() {
@@ -453,6 +444,24 @@ var ElementStructsTest = TestCase.create({
     this.el.update(44);
     this.assertEqual('44', this.el._.innerHTML);
     this.assertEqual('8.8', $E('div', {html: 8.8})._.innerHTML);
+  },
+  
+  testReplace: function() {
+    this.el._.innerHTML = '<b></b><div></div><span></span>';
+    this.el.first('div').replace('<ul></ul><ul></ul><script>self["____test"]=4;</script>');
+    
+    this.assertEqual('<b></b><ul></ul><ul></ul><span></span>', this._html());
+    this.assertEqual(4, self['____test']);
+    self['____test'] = null;
+    
+    this.assertSame(this.el.first('ul'), this.el.first('ul').replace(document.createElement('cite')));
+    this.assertEqual('<b></b><cite></cite><ul></ul><span></span>', this._html());
+    
+    this.el.first('span').replace([$E('div'), $E('u')]);
+    this.assertEqual('<b></b><cite></cite><ul></ul><div></div><u></u>', this._html());
+    
+    this.el.first('div').replace('div string');
+    this.assertEqual('<b></b><cite></cite><ul></ul>div string<u></u>', this._html());
   },
   
   testWrap: function() {

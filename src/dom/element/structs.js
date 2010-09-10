@@ -113,13 +113,14 @@ Element.include({
   },
   
   /**
-   * replaces the current element by the given content
+   * A shortcut to uppend several units into the element
    *
-   * @param mixed content (a String, an Element or a list of elements)
-   * @return Element self
+   * @param mixed data
+   * ..................
+   * @return Element this
    */
-  replace: function(content) {
-    return this.insert(content, 'instead');
+  append: function() {
+    return this.insert(arguments);
   },
   
   /**
@@ -157,6 +158,16 @@ Element.include({
    */
   html: function(content) {
     return content === undefined ? this._.innerHTML : this.update(content);
+  },
+
+  /**
+   * replaces the current element by the given content
+   *
+   * @param mixed content (a String, an Element or a list of elements)
+   * @return Element self
+   */
+  replace: function(content) {
+    return this.insert(content, 'instead');
   },
   
   /**
