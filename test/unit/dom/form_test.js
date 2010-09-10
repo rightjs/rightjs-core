@@ -193,6 +193,26 @@ var FormTest = TestCase.create({
     this.assert(name, "should exist");
     this.assert(name instanceof Input, "the field should be wrapped");
     this.assertSame(name._, form._.name, "it should be the correct field");
+  },
+  
+  testSubmit: function() {
+    var called = false;
+    var form   = new Form();
+    form._.submit = function() {
+      called = true;
+    };
+    form.submit();
+    this.assert(called);
+  },
+  
+  testReset: function() {
+    var called = false;
+    var form   = new Form();
+    form._.reset = function() {
+      called = true;
+    };
+    form.reset();
+    this.assert(called);
   }
 });
 

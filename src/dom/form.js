@@ -152,6 +152,16 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   submit: function() {
     this._.submit();
     return this;
+  },
+  
+  /**
+   * Delegating the 'reset' method
+   *
+   * @return Form this
+   */
+  reset: function() {
+    this._.reset();
+    return this;
   }
 });
 
