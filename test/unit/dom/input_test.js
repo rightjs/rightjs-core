@@ -1,10 +1,14 @@
 /**
  * The Input unit tests
  *
- * Copyright (C) 2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009 Nikolay Nemshilov
  */
 var InputTest = TestCase.create({
   name: 'InputTest',
+  
+  afterAll: function() {
+    window.scrollTo(0,0);
+  },
   
   testInstanceWithTag: function() {
     var input  = new Input('input');
