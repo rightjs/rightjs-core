@@ -49,7 +49,7 @@ if (Browser.IE) {
  * @retrun Boolean check result
  */
 function event_support_for(name, tag) {
-  var e = document.createElement('DIV');
+  var e = document.createElement(tag);
   e.setAttribute(name, ';');
   return isFunction(e[name]);
 }
@@ -155,7 +155,7 @@ if (!event_support_for('onchange', 'input')) {
    * if it was changed later on
    */
   document.attachEvent('onbeforeactivate', function(event) {
-    var element = $(event).target, checked = 'checked';
+    var element = $(event).target;
     
     if (element instanceof Input) {
       element._prev_value = get_input_value(element);
