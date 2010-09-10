@@ -9,7 +9,12 @@
     <script type="text/javascript">
     // <![CDATA[
       initialize_core_test_page();
-      
+    // ]]>
+    </script>
+    <script type="text/javascript">
+    // <![CDATA[
+      // calling it in a separate script so tests were working
+      // with the no-olds build in IE6
       include_js("test/tests" + (in_safe_mode ? ".safe" : ""));
     // ]]>
     </script>
