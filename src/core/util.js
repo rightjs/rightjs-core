@@ -277,10 +277,10 @@ if (isHash(HTML)) {
  */
 var i=0, natives = 'Array Function Number String Date RegExp'.split(' '),
 include_native = function() {
-  for (var i=0, args = arguments; i < args.length; i++) {
-    if (isHash(args[i])) {
-      $ext(this[PROTO],  args[i]);
-      $ext(this.Methods, args[i]);
+  for (var i=0; i < arguments.length; i++) {
+    if (isHash(arguments[i])) {
+      $ext(this[PROTO],  arguments[i]);
+      $ext(this.Methods, arguments[i]);
     }
   }
 };
