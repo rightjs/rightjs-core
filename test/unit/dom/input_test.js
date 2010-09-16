@@ -193,5 +193,30 @@ var InputTest = TestCase.create({
     var input = new Input().insertTo(form);
     
     this.assertSame(form, input.form());
+  },
+  
+  testDisabled: function() {
+    var input = new Input();
+    
+    this.assertFalse(input.disabled());
+    this.assertSame(input, input.disabled(true));
+    this.assert(input.disabled());
+    this.assert(input._.disabled);
+    this.assertSame(input, input.disabled(false));
+    this.assertFalse(input.disabled());
+    this.assertFalse(input._.disabled);
+  },
+  
+  testChecked: function() {
+    var input = new Input({type: 'checkbox'});
+    input._.checked = false;
+    
+    this.assertFalse(input.checked());
+    this.assertSame(input, input.checked(true));
+    this.assert(input.checked());
+    this.assert(input._.checked);
+    this.assertSame(input, input.checked(false));
+    this.assertFalse(input.checked());
+    this.assertFalse(input._.checked);
   }
 });

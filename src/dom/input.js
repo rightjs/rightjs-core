@@ -181,5 +181,32 @@ new Wrapper(Element, {
   enable: function() {
     this._.disabled = false;
     return this.fire('enable');
+  },
+  
+  /**
+   * A bidirectional method to set/get the disabled status of the input field
+   *
+   * @param boolean optional value
+   * @return Input in setter mode boolean in getter
+   */
+  disabled: function(value) {
+    return value === undefined ? this._.disabled : this[value ? 'disable' : 'enable']();
+  },
+  
+  /**
+   * A bidirectional method to set/get the checked status of the input field
+   *
+   * @param boolean optional value
+   * @return Input in setter mode boolean in getter
+   */
+  checked: function(value) {
+    if (value === undefined) {
+      value = this._.checked;
+    } else {
+      this._.checked = value;
+      value = this;
+    }
+    
+    return value;
   }
 });
