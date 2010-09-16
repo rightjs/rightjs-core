@@ -1,7 +1,7 @@
 /**
  * The Element unit events related methods test-case
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var ElementEventsTest = TestCase.create({
   name: 'ElementEventsTest',
@@ -14,7 +14,7 @@ var ElementEventsTest = TestCase.create({
   tearDown: function() {
     this.el.remove();
   },
-
+/*
   testObserve: function() {
     var wired = false, context = null, event;
     this.assertSame(this.el, this.el.on('click', function(e) { wired = true; context = this; event = e; }));
@@ -167,5 +167,19 @@ var ElementEventsTest = TestCase.create({
     
     this.assertSame(this.el, e.target, "testing target");
     this.assertEqual(1, e.which)
+  },
+  */
+  testStoppinEventByReturnFalse: function() {
+    var e1, e2; e1 = e2 = false;
+    
+    this.el.on('click', function(e) { e1 = e; return false; });
+    this.el.on('click', function(e) { e2 = e; });
+    
+    this.fireClick(this.el._);
+    
+    this.assert(e1);
+    this.assert(e2);
+    
+    this.assert(e1.stopped);
   }
 });

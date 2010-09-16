@@ -26,12 +26,13 @@ hack_observer('on',
   (Browser.Konqueror  ? 'if($2.n==="contextmenu")$2.n="rightclick";'    : '') +
   
   '$2.w=function(){'+
-    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new RightJS.Event(a[0],this);'+
-    '$2.f.apply($2.t,a.concat($2.a))};$2.t=this;' + (
-      looks_like_ie ?
-        '$2.w=$2.w.bind(this);this._.attachEvent("on"+$2.n,$2.w);' :
-        'this._.addEventListener($2.n,$2.w,false);'
-      )
+    'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new RightJS.Event(a[0],this),e=a[0];'+
+    '$2.f.apply($2.t,a.concat($2.a))===false&&e.stop()'+
+  '};$2.t=this;' + (
+    looks_like_ie ?
+      '$2.w=$2.w.bind(this);this._.attachEvent("on"+$2.n,$2.w);' :
+      'this._.addEventListener($2.n,$2.w,false);'
+  )
 );
 
 hack_observer('stopObserving',
