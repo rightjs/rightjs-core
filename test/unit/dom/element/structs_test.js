@@ -382,6 +382,15 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('<i>1</i><b>2</b><u>3</u>', this._html());
   },
   
+  testAppendStrings: function() {
+    this.el.append(
+      '<i>1</i>',
+      '<b>2</b>',
+      '<u>3</u>'
+    );
+    this.assertEqual('<i>1</i><b>2</b><u>3</u>', this._html());
+  },
+  
   testUpdate: function() {
     this.el.update('<div></div><script>self["____test"] = 8;</script>');
     this.assertEqual('<div></div>', this._html());

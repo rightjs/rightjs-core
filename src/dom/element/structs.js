@@ -119,8 +119,8 @@ Element.include({
    * ..................
    * @return Element this
    */
-  append: function() {
-    return this.insert(arguments);
+  append: function(first) {
+    return this.insert(isString(first) ? $A(arguments).join('') : arguments);
   },
   
   /**
