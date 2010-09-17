@@ -5,8 +5,8 @@
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 Xhr.Dummy = {
-  open:               function() {},
-  abort:              function() {},
-  setRequestHeader:   function() {},
-  onreadystatechange: function() {}
+  open:               dummy(),
+  abort:              dummy(),
+  setRequestHeader:   dummy(),
+  onreadystatechange: dummy()
 };

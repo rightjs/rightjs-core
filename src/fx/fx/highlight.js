@@ -10,26 +10,31 @@ Fx.Highlight = new Class(Fx.Morph, {
       transition: 'Exp'
     })
   },
-  
+
 // protected
-  
+
   /**
    * starts the transition
    *
-   * @param String the hightlight color
-   * @param String optional fallback color
+   * @param high String the hightlight color
+   * @param back String optional fallback color
    * @return self
    */
   prepare: function(start, end) {
-    var end_color = end || this.element.getStyle('backgroundColor');
-    
-    if (this._transp(end_color)) {
-      this.onFinish(function() { this.element.style.backgroundColor = 'transparent'; });
-      end_color = this._getBGColor(this.element);
+    var element = this.element, style = element._.style, end_color = end || element.getStyle('backgroundColor');
+
+    if (is_transparent(end_color)) {
+      this.onFinish(function() { style.backgroundColor = 'transparent'; });
+
+      // trying to find the end color
+      end_color = [element].concat(element.parents()).map(function(node) {
+        var bg = node.getStyle('backgroundColor');
+        return (bg && !is_transparent(bg)) ? bg : null;
+      }).compact().first() || '#FFF';
     }
-    
-    this.element.style.backgroundColor = (start || this.options.color);
-    
+
+    style.backgroundColor = (start || this.options.color);
+
     return this.$super({backgroundColor: end_color});
   }
 });

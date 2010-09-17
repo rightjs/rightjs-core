@@ -5,7 +5,7 @@
  */
 var RegexpTest = TestCase.create({
   name: 'RegexpTest',
-  
+
   testEscape: function() {
     this.assertEqual('\\.\\*\\+\\?\\^\\=\\!\\:\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\', RegExp.escape(".*+?^=!:${}()|[]/\\"));
   }

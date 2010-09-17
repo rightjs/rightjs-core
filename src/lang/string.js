@@ -18,27 +18,27 @@ String.include({
   empty: function() {
     return this == '';
   },
-  
+
   /**
    * checks if the string contains only white-spaces
    *
    * @return boolean check result
    */
   blank: function() {
-    return /^\s*$/.test(this);
+    return (/^\s*$/).test(this);
   },
-  
+
   /**
-   * removes trailing whitespaces   
+   * removes trailing whitespaces
    *
    * @return String trimmed version
    */
-  trim: String.prototype.trim || function() {
+  trim: String[PROTO].trim || function() {
     var str = this.replace(/^\s\s*/, ''), i = str.length;
-    while (/\s/.test(str.charAt(--i)));
+    while ((/\s/).test(str.charAt(--i))) {}
     return str.slice(0, i + 1);
   },
-  
+
   /**
    * returns a copy of the string with all the tags removed
    * @return String without tags
@@ -46,10 +46,10 @@ String.include({
   stripTags: function() {
     return this.replace(/<\/?[^>]+>/ig, '');
   },
-  
+
   /**
    * removes all the scripts declarations out of the string
-   * @param mixed option. If it equals true the scrips will be executed, 
+   * @param mixed option. If it equals true the scrips will be executed,
    *                      if a function the scripts will be passed in it
    * @return String without scripts
    */
@@ -58,15 +58,16 @@ String.include({
       scripts += source + "\n";
       return '';
     });
-    
-    if (option === true)
+
+    if (option === true) {
       $eval(scripts);
-    else if (isFunction(option))
+    } else if (isFunction(option)) {
       option(scripts, text);
-    
+    }
+
     return text;
   },
-  
+
   /**
    * extracts all the scripts out of the string
    *
@@ -77,7 +78,7 @@ String.include({
     this.stripScripts(function(s) { scripts = s; });
     return scripts;
   },
-  
+
   /**
    * evals all the scripts in the string
    *
@@ -87,7 +88,7 @@ String.include({
     this.stripScripts(true);
     return this;
   },
-  
+
   /**
    * converts underscored or dasherized string to a camelized one
    * @returns String camelized version
@@ -97,7 +98,7 @@ String.include({
       return chr ? chr.toUpperCase() : '';
     });
   },
-  
+
   /**
    * converts a camelized or dasherized string into an underscored one
    * @return String underscored version
@@ -114,7 +115,7 @@ String.include({
   capitalize: function() {
     return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
   },
-  
+
   /**
    * checks if the string contains the given substring
    *
@@ -124,7 +125,7 @@ String.include({
   includes: function(string) {
     return this.indexOf(string) != -1;
   },
-  
+
   /**
    * checks if the string starts with the given substring
    *
@@ -134,10 +135,10 @@ String.include({
    */
   startsWith: function(string, ignorecase) {
     var start_str = this.substr(0, string.length);
-    return ignorecase ? start_str.toLowerCase() === string.toLowerCase() : 
+    return ignorecase ? start_str.toLowerCase() === string.toLowerCase() :
       start_str === string;
   },
-  
+
   /**
    * checks if the string ends with the given substring
    *
@@ -150,7 +151,7 @@ String.include({
     return ignorecase ? end_str.toLowerCase() === string.toLowerCase() :
       end_str === string;
   },
-  
+
   /**
    * converts the string to an integer value
    * @param Integer base
@@ -159,7 +160,7 @@ String.include({
   toInt: function(base) {
     return parseInt(this, base || 10);
   },
-  
+
   /**
    * converts the string to a float value
    * @param boolean flat if the method should not use a flexible matching
@@ -168,7 +169,7 @@ String.include({
   toFloat: function(strict) {
     return parseFloat(strict ? this : this.replace(',', '.').replace(/(\d)-(\d)/g, '$1.$2'));
   }
-  
+
 });
 
-$alias(String.prototype, {include: 'includes'});
+$alias(String[PROTO], {include: 'includes'});

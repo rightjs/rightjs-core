@@ -10,220 +10,173 @@
 #
 #  rake build OPTIONS=server
 #
-#  See the JS_SOURCES list keys for the options
+#  See the $js_sources list keys for the options
 #
 
 require 'rake'
 require 'fileutils'
-require 'rubygems'
-require 'front_compiler'
+require 'util/build/rutil'
 
-RIGHTJS_VERSION = '1.5.6'
+RIGHTJS_VERSION = '2.0.0-rc2'
 
-BUILD_DIR   = 'build'
-BUILD_FILE  = 'right'
+BUILD_DIR     = 'build'
+BUILD_FILE    = 'right'
 
-BUILD_OPTIONS = %w(core dom form cookie xhr fx olds)
+## getting the sources list
+initializer = File.read("src/__init__.js")[/\{.+\}/m]
 
-JS_SOURCES = {
-  :core => %w{
-    core/util
+$build_options = []
+$js_sources    = {}
 
-    lang/object
-    lang/math
-    lang/array
-    lang/string
-    lang/function
-    lang/number
-    lang/regexp
-
-    core/class
-    core/class/methods
-
-    core/options
-    core/observer
-    core/break
-  },
-  
-  :dom => %w{
-    dom/browser
-    
-    dom/event
-    dom/event/custom
-    dom/event/delegation
-
-    dom/element
-    dom/element/structs
-    dom/element/styles
-    dom/element/commons
-    dom/element/dimensions
-    dom/element/events
-
-    dom/selector
-    
-    dom/window
-    dom/ready
-  },
-  
-  :cookie => %w{
-    dom/cookie
-  },
-  
-  :form => %w{
-    dom/form
-    dom/form/element
-  },
-  
-  :xhr => %w{
-    xhr/xhr
-    xhr/form
-    xhr/element
-    xhr/xhr/dummy
-    xhr/xhr/iframed
-    xhr/xhr/jsonp
-  },
-  
-  :fx => %w{
-    fx/fx
-    fx/string
-    fx/fx/morph
-    fx/fx/highlight
-    fx/fx/twin
-    fx/fx/slide
-    fx/fx/fade
-    fx/fx/scroll
-    fx/element
-  },
-  
-  :olds => %w{
-    olds/ie
-    olds/konq
-    olds/css
+initializer.scan(/([a-z]+):\s*\[([^\]]+?)\]/).each do |item|
+  $build_options << item[0]
+  $js_sources[item[0].to_sym] = item[1].scan(/('|")([\w\d\_\/]+)\1/).collect{ |match|
+    match[1]
   }
-}
+end
 
-task :default => :build
+$options = ((ENV['OPTIONS'] || '').split('=').last || '').split(/\s*,\s*/)
+$options.reject!{ |o| o == 'no-olds'} if $options.include?('safe')
 
-task :build do
-  ### parsing the options
-  options = ((ENV['OPTIONS'] || '').split('=').last || '').split(/\s*,\s*/)
-  
-  ### preparing the directories
-  
-  unless options == ['server'] or !File.exists?(BUILD_DIR)
+######################################################################
+#  Cleaning up the build directory
+######################################################################
+desc "Cleans up the build directory"
+task :clean do
+  unless $options == ['server'] or !File.exists?(BUILD_DIR)
     puts ' * Creating the build dir'
     FileUtils.rm_rf BUILD_DIR
     Dir.mkdir BUILD_DIR
   end
-  
-  
-  ### compiling the source code
-  
-  puts ' * Compiling the sources'
-  build = ''
-  source = ''
-  modules = []
-  
-  # filtering the modules
-  BUILD_OPTIONS.each do |package|
-    unless options.include?("no-#{package}")
-      JS_SOURCES[package.to_sym].each do |file|
-        source += File.open("src/#{file}.js", "r").read + "\n\n"
-      end
+end
+
+######################################################################
+#  Packing the souce code
+######################################################################
+desc "Packs the source code"
+task :pack do
+  Rake::Task['clean'].invoke
+
+  puts " * Composing the source file"
+
+  modules  = []
+  files    = []
+
+  $build_options.each do |package|
+    unless $options.include?("no-#{package}")
+      files   += $js_sources[package.to_sym].collect{ |f| "src/#{f}.js" }
       modules << package
     end
   end
-  
+
+
+
+  # initializing the packing utility
+  $rutil = RUtil.new("dist/header.js", "dist/layout.js", {
+    :version => RIGHTJS_VERSION, :modules => modules.join('", "')
+  })
+  $rutil.pack(files)
+
   # hooking up the olds patch loader if necessary
-  if options.include?('no-olds')
-    source += File.open("src/olds/loader.js", "r").read
-  end
-    
-  desc = File.open('src/right.js', 'r').read
-  desc.gsub! '#{version}', RIGHTJS_VERSION
-  desc.gsub! '#{modules}', modules.join('", "')
-  
-  source = desc + source
-  
-  # joining muli-lined strings
-  source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
-  
-  
-  minified = FrontCompiler.new.compact_js(source)
-  
-  
-  ### writting the files
-  
-  puts ' * Writting files'
-  header = File.open('src/HEADER.js', 'r').read
-  if !options.empty? && options != ['no-olds']
-    header.gsub! "* Copyright", "* Custom build with options: #{options.join(", ")}\n *\n * Copyright" unless options.empty?
-  end
-  
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}-src.js", "w") do |file|
-    file.write header
-    file.write source
-  end
-  
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}-min.js", "w") do |file|
-    file.write header
-    file.write minified
-  end
-  
-  File.open("#{BUILD_DIR}/#{BUILD_FILE}.js", "w") do |file|
-    file.write header
-    file.write minified.create_self_build
-  end
-  
-  ### building the olds patch file
-  if options.include?('no-olds')
-    puts ' * Building the olds patch file'
-  
-    olds_source = ''
-    JS_SOURCES[:olds].each do |file|
-      olds_source += File.open("src/#{file}.js", "r").read + "\n\n"
-    end
-    
-    olds_source.gsub!(/('|")\s*\+\s*?\n\s*\1/, '')
-  
-    olds_header = File.open("src/HEADER.olds.js", 'r').read
-    olds_minified = FrontCompiler.new.compact_js(olds_source)
-  
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-src.js", "w") do |file|
-      file.write olds_header
-      file.write olds_source
-    end
-  
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds-min.js", "w") do |file|
-      file.write olds_header
-      file.write olds_minified
-    end
-  
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-olds.js", "w") do |file|
-      file.write olds_header
-      file.write olds_minified.create_self_build
+  if $options.include?('no-olds')
+    $rutil.patch do |source|
+      source += File.read("src/olds/loader.js")
     end
   end
-  
-  ### creating the server build
-  if options.include?('server')
-    puts ' * Creating the server-side build'
-    
-    source = JS_SOURCES[:core].collect do |file|
-      File.read("src/#{file}.js")
-    end.join("\n\n")
-    
-    source.gsub! '#{version}', RIGHTJS_VERSION
-    source.gsub! '#{modules}', 'core'
-    
+
+  $rutil.write("#{BUILD_DIR}/#{BUILD_FILE}.js")
+end
+
+######################################################################
+#  Running the syntax check
+######################################################################
+desc "Runs JSLint on the source code"
+task :check do
+  Rake::Task['pack'].invoke
+  puts " * Running the jslint check"
+  $rutil.check "dist/lint.js"
+end
+
+######################################################################
+#  Creating a standard build
+######################################################################
+desc "Builds the source code"
+task :build do
+  if $options.include?('safe')
+    Rake::Task['build:safe'].invoke
+  elsif $options.include?('server')
+    Rake::Task['build:server'].invoke
+  else
+    Rake::Task['pack'].invoke
+    puts " * Compressing the source code"
+    $rutil.compile
+
+    if $options.include?('no-olds')
+      Rake::Task['build:olds'].invoke
+    end
+  end
+end
+
+######################################################################
+#  Creating the olds module
+######################################################################
+desc "Builds the old browsers support module"
+task 'build:olds' do
+  puts " * Creating the old browsers support module"
+
+  @util = RUtil.new("dist/header.olds.js")
+  @util.pack($js_sources[:olds].collect{|f| "src/#{f}.js"})
+  @util.write("#{BUILD_DIR}/#{BUILD_FILE}-olds.js")
+  @util.compile
+end
+
+######################################################################
+#  Creating the safemode build
+######################################################################
+desc "Builds the safe-mode version"
+task 'build:safe' do
+  # creating a normal build
+  Rake::Task['pack'].invoke
+  puts " * Compressing the source code"
+  $rutil.compile
+
+  # creating the safe-mode build
+  puts " * Creating the safe-mode build"
+  @rutil = RUtil.new("dist/header.safe.js", "dist/layout.safe.js")
+  @rutil.pack(["#{BUILD_DIR}/#{BUILD_FILE}.js"]) do |source|
+    source = source.gsub!(/\A\s*\/\*.*?\*\/\s*/m, '').strip
+    "'#{source.gsub("\\","\\\\\\\\").gsub("'","\\\\'").gsub("\n", " '+\n'")}'"
+  end
+  @rutil.write("#{BUILD_DIR}/#{BUILD_FILE}-safe.js")
+  @rutil.compile
+end
+
+######################################################################
+#  Creating the server-side build
+######################################################################
+desc "Bulds the server-side version"
+task 'build:server' do
+  puts " * Creating the server side version"
+
+  @util = RUtil.new("dist/header.server.js", "dist/layout.server.js")
+  @util.pack($js_sources[:core].collect{|f| "src/#{f}.js"}) do |source|
     # removing dom related util methods and hacks
+    source.gsub! /\n\/\/\s+!#server:begin.+?\/\/\s+!#server:end\n/m, ''
     source.gsub! /\/\*\*\s+!#server.+?(?=\/\*\*)/m, ''
-    
-    File.open("#{BUILD_DIR}/#{BUILD_FILE}-server.js", "w") do |file|
-      file.write File.read("src/HEADER.server.js")
-      file.write source
-      file.write File.read("src/core/server.js")
-    end
+    source.gsub! /\n[^\n]+\/\/\s*!#server\s*(\n)/m, '\1'
+    source
   end
-  
+  @util.write("#{BUILD_DIR}/#{BUILD_FILE}-server.js")
+end
+
+######################################################################
+#  Checking the Harmony
+######################################################################
+desc "Checks the Harmony compatibility"
+task "harm" do
+  Rake::Task['pack'].invoke
+
+  require 'harmony'
+  page = Harmony::Page.new
+  page.load('build/right-src.js')
 end

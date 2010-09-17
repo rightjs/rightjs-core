@@ -1,5 +1,5 @@
 /**
- * standard Observer class. 
+ * standard Observer class.
  *
  * Might be used as a usual class or as a builder over another objects
  *
@@ -9,20 +9,20 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Observer = new Class({
+var Observer = RightJS.Observer = new Class({
   include: Options,
-  
+
   /**
    * general constructor
    *
    * @param Object options
    */
   initialize: function(options) {
-    this.setOptions(options);    
-    Observer.createShortcuts(this, Class.findSet(this, 'events'));
+    this.setOptions(options);
+    Observer_createShortcuts(this, Class_findSet(this, 'events'));
     return this;
   },
-  
+
   /**
    * binds an event listener
    *
@@ -34,12 +34,12 @@ var Observer = new Class({
    * @return Observer self
    */
   on: function() {
-    var args = $A(arguments), event = args.shift();
-    
-    if (isString(event)) {
-      if (!('$listeners' in this)) this.$listeners = [];
+    var args = $A(arguments), event = args.shift(), name;
 
-      var callback = args.shift(), name;
+    if (isString(event)) {
+      if (!('$listeners' in this)) { this.$listeners = []; }
+
+      var callback = args.shift();
       switch (typeof callback) {
         case "string":
           name     = callback;
@@ -47,14 +47,14 @@ var Observer = new Class({
 
         case "function":
           var hash = {};
-          
+
           // DON'T move it in the one-line hash variable definition,
           // it causes problems with the Konqueror 3 later on
           hash.e = event;
           hash.f = callback;
           hash.a = args;
           hash.r = name;
-          
+
           this.$listeners.push(hash);
           break;
 
@@ -62,26 +62,26 @@ var Observer = new Class({
           if (isArray(callback)) {
             for (var i=0; i < callback.length; i++) {
               this.on.apply(this, [event].concat(
-                isArray(callback[i]) ? callback[i] : [callback[i]]
+                ensure_array(callback[i])
               ).concat(args));
             }
           }
       }
-      
+
     } else {
       // assuming it's a hash of key-value pairs
-      for (var name in event) {
+      for (name in event) {
         this.on.apply(this, [name].concat(
-          isArray(event[name]) ? event[name] : [event[name]]
+          ensure_array(event[name])
         ).concat(args));
       }
     }
-    
-    
-    
+
+
+
     return this;
   },
-  
+
   /**
    * checks if the observer observes given event and/or callback
    *
@@ -94,14 +94,14 @@ var Observer = new Class({
    */
   observes: function(event, callback) {
     if (!isString(event)) { callback = event; event = null; }
-    if (isString(callback)) callback = this[callback];
-    
+    if (isString(callback)) { callback = this[callback]; }
+
     return (this.$listeners || []).some(function(i) {
       return (event && callback) ? i.e === event && i.f === callback :
         event ? i.e === event : i.f === callback;
     });
   },
-  
+
   /**
    * stops observing an event or/and function
    *
@@ -118,18 +118,18 @@ var Observer = new Class({
         this.stopObserving(key, event[key]);
       }
     } else {
-      if (!isString(event)) { callback = event; event = null; }
-      if (isString(callback)) callback = this[callback];
-      
+      if (!isString(event)) {  callback = event; event = null; }
+      if (isString(callback)){ callback = this[callback]; }
+
       this.$listeners = (this.$listeners || []).filter(function(i) {
         return (event && callback) ? (i.e !== event || i.f !== callback) :
           (event ? i.e !== event : i.f !== callback);
       }, this);
     }
-    
+
     return this;
   },
-  
+
   /**
    * returns the listeners list for the event
    *
@@ -144,7 +144,7 @@ var Observer = new Class({
       return !event || i.e === event;
     }).map(function(i) { return i.f; }).uniq();
   },
-  
+
   /**
    * initiates the event handling
    *
@@ -155,45 +155,45 @@ var Observer = new Class({
    */
   fire: function() {
     var args = $A(arguments), event = args.shift();
-    
+
     (this.$listeners || []).each(function(i) {
-      if (i.e === event) i.f.apply(this, i.a.concat(args));
+      if (i.e === event) {
+        i.f.apply(this, i.a.concat(args));
+      }
     }, this);
-    
+
     return this;
-  },
-  
-  extend: {
-    /**
-     * adds an observer functionality to any object
-     *
-     * @param Object object
-     * @param Array optional events list to build shortcuts
-     * @return Object extended object
-     */
-    create: function(object, events) {
-      $ext(object, Object.without(this.prototype, 'initialize', 'setOptions'), true);
-      return this.createShortcuts(object, events || Class.findSet(object, 'events'));
-    },
-    
-    /**
-     * builds shortcut methods to wire/fire events on the object
-     *
-     * @param Object object to extend
-     * @param Array list of event names
-     * @return Object extended object
-     */
-    createShortcuts: function(object, names) {
-      (names || []).each(function(name) {
-        var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g, function(match, pre, chr) { return chr.toUpperCase() });
-        if (!(method_name in object)) {
-          object[method_name] = function() {
-            return this.on.apply(this, [name].concat($A(arguments)));
-          };
-        }
-      });
-      
-      return object;
-    }
   }
-});
+}),
+
+/**
+ * adds an observer functionality to any object
+ *
+ * @param Object object
+ * @param Array optional events list to build shortcuts
+ * @return Object extended object
+ */
+Observer_create = Observer.create =  function(object, events) {
+  $ext(object, Object.without(Observer[PROTO], 'initialize', 'setOptions'), true);
+  return Observer_createShortcuts(object, events || Class_findSet(object, 'events'));
+},
+
+/**
+ * builds shortcut methods to wire/fire events on the object
+ *
+ * @param Object object to extend
+ * @param Array list of event names
+ * @return Object extended object
+ */
+Observer_createShortcuts = Observer.createShortcuts = function(object, names) {
+  (names || []).each(function(name) {
+    var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g, function(match, pre, chr) { return chr.toUpperCase(); });
+    if (!(method_name in object)) {
+      object[method_name] = function() {
+        return this.on.apply(this, [name].concat($A(arguments)));
+      };
+    }
+  });
+
+  return object;
+};

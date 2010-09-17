@@ -10,7 +10,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Options = {
+var Options = RightJS.Options = {
   /**
    * assigns the options by merging them with the default ones
    *
@@ -18,8 +18,8 @@ var Options = {
    * @return Object current instance
    */
   setOptions: function(opts) {
-    var options = this.options = Object.merge(Class.findSet(this, 'options'), opts), match, key;
-    
+    var options = this.options = Object.merge(Class_findSet(this, 'options'), opts), match, key;
+
     // hooking up the observer options
     if (isFunction(this.on)) {
       for (key in options) {
@@ -29,10 +29,10 @@ var Options = {
         }
       }
     }
-    
+
     return this;
   },
-  
+
   /**
    * Cuts of an options hash from the end of the arguments list
    * assigns them using the #setOptions method and then

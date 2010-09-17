@@ -8,47 +8,39 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
- 
+
+/**
+ * Some top-level variables to shortify the things
+ */
+var
+PROTO = 'prototype', A_proto = Array[PROTO],
+to_s = Object[PROTO].toString, slice = A_proto.slice,
+dummy = function() { return function() {}; },
+HTML = document.documentElement, UID = 1,  // !#server
+Wrappers_Cache = [], UID_KEY = '_rjs_id',  // !#server
+
 /**
  * extends the first object with the keys and values of the second one
  *
  * NOTE: the third optional argument tells if the existing values
  *       of the first object should _NOT_ get updated by the values of the second object
  *
- * @param Object destintation object
- * @param Object source object
+ * @param oritinal Object destintation object
+ * @param source Object source object
  * @param Boolean flag if the function should not overwrite intersecting values
- * @return Objecte extended destination object
+ * @return Object extended destination object
  */
-function $ext(dest, source, dont_overwrite) { 
+$ext = RightJS.$ext = function(dest, source, dont_overwrite) {
   var src = source || {}, key;
 
-  for (key in src)
-    if (!dont_overwrite || !(key in dest))
+  for (key in src) {
+    if (!dont_overwrite || !(key in dest)) {
       dest[key] = src[key];
+    }
+  }
 
   return dest;
-};
-
-/**
- * tries to execute all the functions passed as arguments
- *
- * NOTE: will hide all the exceptions raised by the functions
- *
- * @param Function to execute
- * ......
- * @return mixed first sucessfully executed function result or undefined by default
- */
-function $try() {
-  for (var i=0, result; i < arguments.length; i++) {
-    try {
-      result = arguments[i]();
-      break;
-    } catch(e) {}
-  }
-  
-  return result;
-};
+},
 
 /** !#server
  * evals the given javascript text in the context of the current window
@@ -56,14 +48,15 @@ function $try() {
  * @param String javascript
  * @return void
  */
-function $eval(text) {
-  if (!isString(text) || text.blank()) return;
-  if ('execScript' in window) {
-    window.execScript(text);
-  } else {
-    $E('script', {type: 'text/javascript', text: text}).insertTo(document.body);
+$eval = RightJS.$eval = function(text) {
+  if (text) {
+    if ('execScript' in window) {
+      $(document).window()._.execScript(text);
+    } else {
+      $E('script', {text: text}).insertTo(HTML);
+    }
   }
-};
+},
 
 /**
  * throws an exception to break iterations throw a callback
@@ -71,23 +64,23 @@ function $eval(text) {
  * @return void
  * @throws Break
  */
-function $break() {
-  throw new Break();
-};
+$break = RightJS.$break = function() {
+  throw new RightJS.Break();
+},
 
 /**
  * generates aliases for the object properties
  *
- * @param Object object
- * @param Object aliases hash
+ * @param object Object object
+ * @param names Object aliases hash
  * @return Object the extended objects
  */
-function $alias(object, names) {
+$alias = RightJS.$alias = function(object, names) {
   for (var new_name in names) {
     object[new_name] = object[names[new_name]];
   }
   return object;
-};
+},
 
 /**
  * checks if the given value or a reference points
@@ -106,9 +99,9 @@ function $alias(object, names) {
  * @param mixed value
  * @return boolean check result
  */
-function defined(value) {
+defined = RightJS.defined = function(value) {
   return typeof(value) !== 'undefined';
-};
+},
 
 
 /**
@@ -117,9 +110,9 @@ function defined(value) {
  * @param mixed value
  * @return boolean check result
  */
-function isFunction(value) {
+isFunction = RightJS.isFunction = function(value) {
   return typeof(value) === 'function';
-};
+},
 
 /**
  * checks if the given value is a string
@@ -127,9 +120,9 @@ function isFunction(value) {
  * @param mixed value
  * @return boolean check result
  */
-function isString(value) {
+isString = RightJS.isString = function(value) {
   return typeof(value) === 'string';
-};
+},
 
 
 /**
@@ -138,9 +131,29 @@ function isString(value) {
  * @param mixed value to check
  * @return boolean check result
  */
-function isNumber(value) {
+isNumber = RightJS.isNumber = function(value) {
   return typeof(value) === 'number';
-};
+},
+
+/**
+ * checks if the given value is a hash-like object
+ *
+ * @param mixed value
+ * @return boolean check result
+ */
+isHash = RightJS.isHash = function(value) {
+  return to_s.call(value) === '[object Object]';
+},
+
+/**
+ * checks if the given value is an array
+ *
+ * @param mixed value to check
+ * @return boolean check result
+ */
+isArray = RightJS.isArray = function(value) {
+  return to_s.call(value) === '[object Array]';
+},
 
 /** !#server
  * checks if the given value is an element
@@ -148,9 +161,9 @@ function isNumber(value) {
  * @param mixed value to check
  * @return boolean check result
  */
-function isElement(value) {
+isElement = RightJS.isElement = function(value) {
   return value && value.tagName;
-};
+},
 
 /** !#server
  * checks if the given value is a DOM-node
@@ -158,9 +171,48 @@ function isElement(value) {
  * @param mixed value to check
  * @return boolean check result
  */
-function isNode(value) {
+isNode = RightJS.isNode = function(value) {
   return value && value.nodeType;
-};
+},
+
+/** !#server
+ * searches an element by id and/or extends it with the framework extentions
+ *
+ * @param String element id or Element to extend
+ * @return Element or null
+ */
+$ = RightJS.$ = function(object) {
+  if (typeof object === 'string') {
+    object = document.getElementById(object);
+  }
+
+  if (object) {
+    if (UID_KEY in object && object[UID_KEY] in Wrappers_Cache) {
+      object = Wrappers_Cache[object[UID_KEY]];
+    } else if (object.nodeType === 1) {
+      object = new Element(object);
+    } else if (isElement(object.target) || isElement(object.srcElement)) {
+      object = new Event(object);
+    } else if (object.nodeType === 9) {
+      object = new Document(object);
+    } else if (object.window == object) {
+      object = new Window(object);
+    }
+  }
+
+  return object;
+},
+
+/** !#server
+ * Finds all the elements in the document by the given css_rule
+ *
+ * @param String element
+ * @param Object optional context
+ * @return Array search result
+ */
+$$ = RightJS.$$ = function(css_rule, context) {
+  return $(context || document).find(css_rule);
+},
 
 /** !#server
  * shortcut to instance new elements
@@ -169,29 +221,9 @@ function isNode(value) {
  * @param object options
  * @return Element instance
  */
-function $E(tag_name, options) {
+$E = RightJS.$E = function(tag_name, options) {
   return new Element(tag_name, options);
-};
-
-/** !#server
- * searches an element by id and/or extends it with the framework extentions
- *
- * @param String element id or Element to extend
- * @return Element or null
- */
-function $(element) {
-  return Element.prepare(typeof(element) === 'string' ? document.getElementById(element) : element);
-};
-
-/** !#server
- * searches for elements in the document which matches the given css-rule
- *
- * @param String css-rule
- * @return Array matching elements list
- */
-function $$(css_rule) {
-  return $A(document.querySelectorAll(css_rule));
-};
+},
 
 /**
  * shortcut, generates an array of words from a given string
@@ -199,79 +231,91 @@ function $$(css_rule) {
  * @param String string
  * @return Array of words
  */
-function $w(string) {
+$w = RightJS.$w = function(string) {
   return string.trim().split(/\s+/);
+},
+
+/**
+ * converts any iterables into an array
+ *
+ * @param Object iterable
+ * @return Array list
+ */
+$A = RightJS.$A = function(it) {
+  try {
+    return slice.call(it);
+  } catch(e) {
+    for (var a=[], i=0, length = it.length; i < length; i++) {
+      a[i] = it[i];
+    }
+    return a;
+  }
+},
+
+/**
+ * generates an unique id for an object
+ *
+ * @param Object object
+ * @return Integer uniq id
+ */
+$uid = RightJS.$uid = function(item) {
+  return UID_KEY in item ? item[UID_KEY] : (item[UID_KEY] = UID++);
 };
 
-// we need to generate those functions in an anonymous scope
-var isHash, isArray, $A, $uid;
-(function(to_s, slice, UID) {
-  /**
-   * checks if the given value is a hash-like object
-   *
-   * @param mixed value
-   * @return boolean check result
-   */
-  isHash = function(value) {
-    return to_s.call(value) === '[object Object]';
+/** !#server
+ * Internet Explorer needs some additional mumbo-jumbo in here
+ */
+if (isHash(HTML)) {
+  isHash = RightJS.isHash = function(value) {
+    return to_s.call(value) === '[object Object]' &&
+      value !== null && typeof(value) !== 'undefined' &&
+      typeof(value.hasOwnProperty) !== 'undefined';
   };
-  
-  /** !#server
-   * Internet Explorer needs some additional mumbo-jumbo in here
-   */
-  if (isHash(document.documentElement)) {
-    isHash = function(value) {
-      return to_s.call(value) === '[object Object]' &&
-        value !== null && typeof(value) !== 'undefined' &&
-        typeof(value.hasOwnProperty) !== 'undefined';
-    };
-  }
-
-  /**
-   * checks if the given value is an array
-   *
-   * @param mixed value to check
-   * @return boolean check result
-   */
-  isArray = function(value) {
-    return to_s.call(value) === '[object Array]';
-  };
-  
-  /**
-   * converts any iterables into an array
-   *
-   * @param Object iterable
-   * @return Array list
-   */
-  $A = function (it) {
-    try {
-      return slice.call(it);
-    } catch(e) {
-      for (var a=[], i=0, length = it.length; i < length; i++)
-        a[i] = it[i];
-      return a;
+}
+/**
+ * Generating methods for native units extending
+ */
+var i=0, natives = 'Array Function Number String Date RegExp'.split(' '),
+include_native = function() {
+  for (var i=0; i < arguments.length; i++) {
+    if (isHash(arguments[i])) {
+      $ext(this[PROTO],  arguments[i]);
+      $ext(this.Methods, arguments[i]);
     }
-  };
-
-  /**
-   * generates an unique id for an object
-   *
-   * @param Object object
-   * @return Integer uniq id
-   */
-  $uid = function(item) {
-    return item.uid || (item.uid = UID++);
-  };
-  
-  /**
-   * Generating methods for native units extending
-   */
-  for (var i=0, natives = [Array, Function, Number, String, Date, RegExp]; i < natives.length; i++) {
-    natives[i].include = function(module, dont_overwrite) {
-      $ext(this.prototype, module, dont_overwrite);
-      return this;
-    };
   }
-})(Object.prototype.toString, Array.prototype.slice, 1);
+};
+
+for (; i < natives.length; i++) {
+  $ext(RightJS[natives[i]] = window[natives[i]], {
+    Methods: {},
+    include: include_native
+  });
+}
+
+// referring those two as well
+RightJS.Object = Object;
+RightJS.Math   = Math;
 
 
+/** #!server
+ * A functions brutal hackery helper
+ *
+ * @param Function original function
+ * @param RegExp expression
+ * @param String replacement
+ * @return freshly hacked function
+ */
+function patch_function(func, re, replacement) {
+  return eval('['+ func.toString().replace(re, replacement) + ']')[0];
+}
+
+/**
+ * Checks if the data is an array and if not,
+ * then makes an array out of it
+ *
+ * @param mixed in data
+ * @return Array data
+ */
+function ensure_array(data) {
+  return isArray(data) ? data : [data];
+}

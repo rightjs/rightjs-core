@@ -2,7 +2,7 @@
  * this module contains the element unit styles related methods
  *
  * Credits:
- *   Some of the functionality is inspired by 
+ *   Some of the functionality is inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - Dojo      (www.dojotoolkit.org)      Copyright (C) The Dojo Foundation
@@ -20,8 +20,8 @@ Element.include({
    * @return Element self
    */
   setStyle: function(hash, value) {
-    var key, c_key, style = {};
-    
+    var key, c_key, style = {}, element_style = this._.style;
+
     if (value) { style[hash] = value; hash = style; }
     else if(isString(hash)) {
       hash.split(';').each(function(option) {
@@ -32,27 +32,27 @@ Element.include({
       });
       hash = style;
     }
-    
-    
+
+
     for (key in hash) {
-      c_key = key.indexOf('-') != -1 ? key.camelize() : key;
-      
+      c_key = key.indexOf('-') < 0 ? key : key.camelize();
+
       if (key === 'opacity') {
         if (Browser.IE) {
-          this.style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
+          element_style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
         } else {
-          this.style.opacity = hash[key];
+          element_style.opacity = hash[key];
         }
       } else if (key === 'float') {
         c_key = Browser.IE ? 'styleFloat' : 'cssFloat';
       }
-      
-      this.style[c_key] = hash[key];
+
+      element_style[c_key] = hash[key];
     }
-    
+
     return this;
   },
-  
+
   /**
    * returns style of the element
    *
@@ -62,54 +62,30 @@ Element.include({
    * @return String style value or null if not set
    */
   getStyle: function(key) {
-    return this._getStyle(this.style, key) || this._getStyle(this.computedStyles(), key);
+    return clean_style(this._.style, key) || clean_style(this.computedStyles(), key);
   },
-  
+
   /**
    * returns the hash of computed styles for the element
    *
    * @return Object/CSSDefinition computed styles
    */
   computedStyles: function() {
-    //     old IE,              IE8,                 W3C
-    return this.currentStyle || this.runtimeStyle || this.ownerDocument.defaultView.getComputedStyle(this, null) || {};
+    var element = this._;
+    //     old IE,                 IE8,                    W3C
+    return element.currentStyle || element.runtimeStyle || element.ownerDocument.defaultView.getComputedStyle(element, null) || {};
   },
-  
-  // cleans up the style value
-  _getStyle: function(style, in_key) {
-    var value, key = in_key.camelize();
-    
-    switch (key) {
-      case 'opacity':
-        value = !Browser.IE ? style[key].replace(',', '.') :
-          ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
-        break;
-        
-      case 'float':
-        key = Browser.IE ? 'styleFloat' : 'cssFloat';
-        
-      default:
-        value = style[key];
-        
-        // Opera returns named colors with quotes
-        if (Browser.Opera && /color/i.test(key) && value) {
-          value = value.replace(/"/g, '');
-        }
-    }
-    
-    return value ? value : null;
-  },
-  
+
   /**
    * checks if the element has the given class name
-   * 
+   *
    * @param String class name
    * @return boolean check result
    */
   hasClass: function(name) {
-    return (' '+this.className+' ').indexOf(' '+name+' ') != -1;
+    return (' '+this._.className+' ').indexOf(' '+name+' ') != -1;
   },
-  
+
   /**
    * sets the whole class-name string for the element
    *
@@ -117,7 +93,7 @@ Element.include({
    * @return Element self
    */
   setClass: function(class_name) {
-    this.className = class_name;
+    this._.className = class_name;
     return this;
   },
 
@@ -128,13 +104,13 @@ Element.include({
    * @return Element self
    */
   addClass: function(name) {
-    var testee = ' '+this.className+' ';
+    var testee = ' '+this._.className+' ';
     if (testee.indexOf(' '+name+' ') == -1) {
-      this.className += (testee === '  ' ? '' : ' ') + name;
+      this._.className += (testee === '  ' ? '' : ' ') + name;
     }
     return this;
   },
-  
+
   /**
    * removes the given class name
    *
@@ -142,10 +118,10 @@ Element.include({
    * @return Element self
    */
   removeClass: function(name) {
-    this.className = (' '+this.className+' ').replace(' '+name+' ', ' ').trim();
+    this._.className = (' '+this._.className+' ').replace(' '+name+' ', ' ').trim();
     return this;
   },
-  
+
   /**
    * toggles the given class name on the element
    *
@@ -155,7 +131,7 @@ Element.include({
    toggleClass: function(name) {
      return this[this.hasClass(name) ? 'removeClass' : 'addClass'](name);
    },
-   
+
    /**
     * adds the given class-name to the element
     * and removes it from all the element siblings
@@ -168,3 +144,34 @@ Element.include({
      return this.addClass(name);
    }
 });
+
+/**
+ * cleans up a style value
+ *
+ * @param Object styles hash
+ * @param String style-key
+ * @return String clean style
+ */
+function clean_style(style, in_key) {
+  var value, key = in_key.camelize();
+
+  switch (key) {
+    case 'opacity':
+      value = !Browser.IE ? style[key].replace(',', '.') :
+        ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
+      break;
+
+    case 'float':
+      key = Browser.IE ? 'styleFloat' : 'cssFloat';
+
+    default:
+      value = style[key];
+
+      // Opera returns named colors with quotes
+      if (Browser.Opera && /color/i.test(key) && value) {
+        value = value.replace(/"/g, '');
+      }
+  }
+
+  return value || null;
+}

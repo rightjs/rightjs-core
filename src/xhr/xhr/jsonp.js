@@ -5,9 +5,9 @@
  */
 Xhr.JSONP = new Class({
   include: Xhr.Dummy,
-  
-  prefix: 'rightjs_jsonp_',
-  
+
+  prefix: 'jsonp',
+
   /**
    * Constructor
    *
@@ -19,27 +19,26 @@ Xhr.JSONP = new Class({
     this.name  = this.prefix + new Date().getTime();
     this.param = (isString(xhr.jsonp) ?
       xhr.jsonp : 'callback') + "=" + this.name;
-      
+
     this.script = $E('script', {
-      type:    'text/javascript',
       charset: xhr.encoding,
       async:   xhr.async
     });
   },
-  
+
   /**
    * saving the url and method for the further use
    *
-   * @param String request method
-   * @param String request url address
+   * @param method String request method
+   * @param address String request url address
    * @param Boolean async request marker
    * @return void
-   */ 
+   */
   open: function(method, url, async) {
     this.url    = url;
     this.method = method;
   },
-  
+
   /**
    * Sends the actual request by inserting the script into the document body
    *
@@ -48,11 +47,11 @@ Xhr.JSONP = new Class({
    */
   send: function(data) {
     window[this.name] = this.finish.bind(this);
-    
+
     this.script.set('src', this.url + (this.url.include('?') ? '&' : '?') + this.param + "&" + data)
       .insertTo($$('script').last(), 'after');
   },
-  
+
   /**
    * Receives the actual JSON data from the server
    *
@@ -62,9 +61,9 @@ Xhr.JSONP = new Class({
   finish: function(data) {
     this.status       = 200;
     this.readyState   = 4;
-    
+
     this.xhr.json = this.xhr.responseJSON = data;
-    
+
     this.onreadystatechange();
   }
 });

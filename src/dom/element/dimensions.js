@@ -1,19 +1,37 @@
 /**
- * this module contains the Element's part of functionality 
+ * this module contains the Element's part of functionality
  * responsible for the dimensions and positions getting/setting
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 Element.include({
   /**
-   * Returns the element sizes as a hash
+   * Returns the reference to this element document
+   *
+   * @return RightJS.Document
+   */
+  document: function() {
+    return $(this._.ownerDocument);
+  },
+
+  /**
+   * Returns the reference to this elements window
+   *
+   * @return RightJS.Window
+   */
+  window: function() {
+    return this.document().window();
+  },
+
+  /**
+   * Returns the element size as a hash
    *
    * @return Object {x: NNN, y: NNN}
    */
-  sizes: function() {
-    return { x: this.offsetWidth, y: this.offsetHeight };
+  size: function() {
+    return { x: this._.offsetWidth, y: this._.offsetHeight };
   },
-  
+
   /**
    * Returns the element absolute position
    *
@@ -22,43 +40,45 @@ Element.include({
    * @return Object {x: NNN, y: NNN}
    */
   position: function() {
-    var rect = this.getBoundingClientRect(), doc = this.ownerDocument.documentElement, scrolls = window.scrolls();
-    
+    var rect    = this._.getBoundingClientRect(),
+        html    = this.document()._.documentElement,
+        scrolls = this.window().scrolls();
+
     return {
-      x: rect.left + scrolls.x - doc.clientLeft,
-      y: rect.top  + scrolls.y - doc.clientTop
+      x: rect.left + scrolls.x - html.clientLeft,
+      y: rect.top  + scrolls.y - html.clientTop
     };
   },
-  
+
   /**
    * Returns the element scrolls
    *
    * @return Object {x: NNN, y: NNN}
    */
   scrolls: function() {
-    return { x: this.scrollLeft, y: this.scrollTop };
+    return { x: this._.scrollLeft, y: this._.scrollTop };
   },
-  
+
   /**
    * returns the element dimensions hash
    *
    * @return Object dimensions (top, left, width, height, scrollLeft, scrollTop)
    */
   dimensions: function() {
-    var sizes    = this.sizes();
-    var scrolls  = this.scrolls();
-    var position = this.position();
-    
+    var size     = this.size(),
+        scrolls  = this.scrolls(),
+        position = this.position();
+
     return {
       top:        position.y,
       left:       position.x,
-      width:      sizes.x,
-      height:     sizes.y,
+      width:      size.x,
+      height:     size.y,
       scrollLeft: scrolls.x,
       scrollTop:  scrolls.y
     };
   },
-  
+
   /**
    * Checks if the element overlaps the given position
    *
@@ -66,12 +86,12 @@ Element.include({
    * @return boolean check result
    */
   overlaps: function(target) {
-    var pos = this.position(), size = this.sizes();
-    
-    return target.x > pos.x && target.x < (pos.x + size.x)
-        && target.y > pos.y && target.y < (pos.y + size.y);
+    var pos = this.position(), size = this.size();
+
+    return target.x > pos.x && target.x < (pos.x + size.x) &&
+           target.y > pos.y && target.y < (pos.y + size.y);
   },
-  
+
   /**
    * sets the width of the element in pixels
    *
@@ -82,12 +102,12 @@ Element.include({
    * @return Element self
    */
   setWidth: function(width_px) {
-    var style = this.style, property = 'offsetWidth';
+    var style = this._.style;
     style.width = width_px + 'px';
-    style.width = (2 * width_px - this[property]) + 'px';
+    style.width = (2 * width_px - this._.offsetWidth) + 'px';
     return this;
   },
-  
+
   /**
    * sets the width of the element in pixels
    *
@@ -98,20 +118,20 @@ Element.include({
    * @return Element self
    */
   setHeight: function(height_px) {
-    var style = this.style, property = 'offsetHeight';
+    var style = this._.style;
     style.height = height_px + 'px';
-    style.height = (2 * height_px - this[property]) + 'px';
+    style.height = (2 * height_px - this._.offsetHeight) + 'px';
     return this;
   },
-  
+
   /**
    * sets the size of the element in pixels
    *
    * NOTE: will double assign the size of the element, so it match the exact
    *       size including any possible borders and paddings
    *
-   * @param Integer width in pixels or {x: 10, y: 20} like object
-   * @param Integer height
+   * @param width Integer width in pixels or {x: 10, y: 20} like object
+   * @param height Integer height
    * @return Element self
    */
   resize: function(width, height) {
@@ -121,12 +141,12 @@ Element.include({
     }
     return this.setWidth(width).setHeight(height);
   },
-  
+
   /**
    * sets the element position (against the window corner)
    *
-   * @param Number left position in pixels or an object like {x: 10, y: 20}
-   * @param Number top position in pixels
+   * @param left Number left position in pixels or an object like {x: 10, y: 20}
+   * @param top Number top position in pixels
    * @return Element self
    */
   moveTo: function(left, top) {
@@ -134,18 +154,18 @@ Element.include({
       top  = left.y;
       left = left.x;
     }
-    
+
     return this.setStyle({
       left: left + 'px',
       top:  top  + 'px'
     });
   },
-  
+
   /**
    * sets the scroll position
    *
-   * @param Integer left scroll px or an object like {x: 22, y: 33}
-   * @param Integer top scroll px
+   * @param left Integer left scroll px or an object like {x: 22, y: 33}
+   * @param top Integer top scroll px
    * @return Element self
    */
   scrollTo: function(left, top) {
@@ -153,13 +173,13 @@ Element.include({
       top  = left.y;
       left = left.x;
     }
-    
-    this.scrollLeft = left;
-    this.scrollTop  = top;
-    
+
+    this._.scrollLeft = left;
+    this._.scrollTop  = top;
+
     return this;
   },
-  
+
   /**
    * makes the window be scrolled to the element
    *
@@ -167,7 +187,7 @@ Element.include({
    * @return Element self
    */
   scrollThere: function(options) {
-    window.scrollTo(this, options);
+    this.window().scrollTo(this, options);
     return this;
   }
 });

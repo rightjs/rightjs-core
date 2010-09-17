@@ -1,44 +1,44 @@
 # Welcome to RightJS Core!
 
-RightJS is a fancy JavaScript framework which
+RightJS is a fine JavaScript framework full of sweet goodness and serious
+kick-assery.
 
-* Compact by itself and allows others to write compact code
-* Has standard predictable and really comfy API
-* Supports multi-paradigm development and extensive OOP abilities
-* Modular, with small and fast core
-* Works fast and stable
-
-
-RightJS is a server-side developers oriented framework, it's made to help
-us do JavaScript programming in the most natural and effective way.
-
-And yes, we have cookies too.
-
-
-# Contacts
-
-For further information, please proceed to the official site of the project
-
-<http://rightjs.org>
-
+It lives over here <http://rightjs.org>, go check it, you won't regret!
 
 # Build
 
-For building the scripts we use [FrontCompiler](http://github.com/MadRabbit/frontcompiler)
-a Ruby based JavaScript/CSS/HTML compression tool. For that you need to have
-Ruby and the 'front-compiler' gem installed.
+To build the darn thing you need to hook up the `rightjs-util` submodule first
 
-    gem sources -a http://gemcutter.org
-    gem install front-compiler
-    
-After that just say in the root of the project
+    git submodule init
+    git submodule update
+
+After that you'll need `Ruby` and `Java`. Then just say
 
     rake build
-    
-For having two file builds, use the `no-olds` option like that
 
-    rake build OPTIONS=no-olds
+If you don't have `Java` you can build the script using the Google's API
 
+    rake build REMOTE=true
+
+There are also the following options to switch off some modules like that
+
+    rake build OPTIONS=no-form,no-xhr,no-cookie
+
+The list of options goes like that
+
+  * `no-form` - no advanced forms features
+  * `no-events` - no events delegation featuers
+  * `no-cookie` - no cookies module
+  * `no-xhr` - no ajax support
+  * `no-fx` - no visual effects
+  * `no-olds` - puts the old browsers support in a separate file
+  * `safe` - builds the safe-mode version
+  
+Enjoy!
+
+
+# License
 
 The code released under terms of the MIT License
-Copyright (C) 2008-2010 Nikolay V. Nemshilov aka St.
+
+Copyright (C) 2008-2010 Nikolay Nemshilov

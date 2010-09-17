@@ -5,119 +5,136 @@
  *   The basic principles of the module are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
-function Form(in_options) {
-  var options = in_options || {}, remote = options.remote,
-    form = new Element('form', Object.without(options, 'remote'));
-  
-  if (remote) form.remotize();
-  
-  return form;
-};
 
-$ext(Form, {
-  Methods: {},
-  
+var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   /**
-   * Extends the form functionality
+   * constructor
    *
-   * @param Object methods hash
+   * NOTE: this constructor can be called as a normal Element constructor
+   *       or with the options only, which will make a FORM element
+   *
+   *   var form = new Form(raw_form_object_element);
+   *   var form = new Form({method: 'post', action: '/boo/hoo'});
+   *
+   * @param Object options or HTMLFormElement object
    * @return void
    */
-  include: function(methods, dont_overwrite) {
-    $ext(Form.Methods, methods, dont_overwrite);
-    
-    try { // trying to extend the form element prototype
-      $ext(HTMLFormElement.prototype, methods, dont_overwrite);
-    } catch(e) {}
-  }
-});
+  initialize: function(in_options) {
+    var options = in_options || {}, remote = 'remote' in options, element = options;
 
-Form.include({
+    if (isHash(options)) {
+      element = 'form';
+      options = Object.without(options, 'remote');
+    }
+
+    this.$super(element, options);
+
+    if (remote) {
+      this.remotize();
+    }
+  },
+
   /**
    * returns the form elements as an array of extended units
    *
    * @return Array of elements
    */
-  getElements: function() {
-    return this.select('input,button,select,textarea');
+  elements: function() {
+    return this.find('input,button,select,textarea');
   },
-  
+
   /**
    * returns the list of all the input elements on the form
    *
    * @return Array of elements
    */
   inputs: function() {
-    return this.getElements().filter(function(input) {
-      return !['submit', 'button', 'reset', 'image', null].includes(input.type);
+    return this.elements().filter(function(input) {
+      return !['submit', 'button', 'reset', 'image', null].includes(input._.type);
     });
   },
-  
+
+  /**
+   * Accessing an input by name
+   *
+   * @param String name
+   * @return Input field
+   */
+  input: function(name) {
+    return $(this._[name]);
+  },
+
   /**
    * focuses on the first input element on the form
    *
    * @return Form this
    */
   focus: function() {
-    var first = this.inputs().first(function(input) { return input.type != 'hidden'; });
-    if (first) first.focus();
-    return this.fire('focus');
+    var element = this.inputs().first(function(input) {
+      return input._.type !== 'hidden';
+    });
+
+    if (element) { element.focus(); }
+
+    return this;
   },
-  
+
   /**
    * removes focus out of all the form elements
    *
    * @return Form this
    */
   blur: function() {
-    this.getElements().each('blur');
-    return this.fire('blur');
+    this.elements().each('blur');
+    return this;
   },
-  
+
   /**
    * disables all the elements on the form
    *
    * @return Form this
    */
   disable: function() {
-    this.getElements().each('disable');
-    return this.fire('disable');
+    this.elements().each('disable');
+    return this;
   },
-  
+
   /**
    * enables all the elements on the form
    *
    * @return Form this
    */
   enable: function() {
-    this.getElements().each('enable');
-    return this.fire('enable');
+    this.elements().each('enable');
+    return this;
   },
-  
+
   /**
    * returns the list of the form values
    *
    * @return Object values
    */
   values: function() {
-    var values = {}, value, name;
-    
-    this.inputs().each(function(input) {
-      name = input.name;
+    var values = {}, value, name, element, input;
+
+    this.inputs().each(function(element) {
+      input = element._;
+      name  = input.name;
       if (!input.disabled && name && (!['checkbox', 'radio'].includes(input.type) || input.checked)) {
-        value = input.getValue();
-        if (name.endsWith('[]'))
+        value = element.getValue();
+        if (name.endsWith('[]')) {
           value = (values[name] || []).concat([value]);
-        
+        }
+
         values[name] = value;
       }
     });
-    
+
     return values;
   },
-  
+
   /**
    * returns the key/values organized ready to be sent via a get request
    *
@@ -125,9 +142,33 @@ Form.include({
    */
   serialize: function() {
     return Object.toQueryString(this.values());
+  },
+
+  /**
+   * Delegating the submit method
+   *
+   * @return Form this
+   */
+  submit: function() {
+    this._.submit();
+    return this;
+  },
+
+  /**
+   * Delegating the 'reset' method
+   *
+   * @return Form this
+   */
+  reset: function() {
+    this._.reset();
+    return this;
   }
 });
 
-// creating the shortcuts
-Form.include(Observer.createShortcuts({}, String._addShorts($w('submit reset focus'))), true);
+// creating the event shortcuts
+Element_add_event_shortcuts('submit reset focus blur disable enable change');
 
+// deprecated alias
+$alias(Form[PROTO], {
+  getElements: 'elements'
+});

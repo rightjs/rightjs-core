@@ -13,55 +13,57 @@
  *   The insertions system implementation is inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
+
 Element.include({
   parent: function(css_rule) {
-    return css_rule ? this.parents(css_rule)[0] : $(this.parentNode);
+    return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode || null); // <- IE6 need that || null
   },
-  
+
   parents: function(css_rule) {
-    return this.rCollect('parentNode', css_rule);
+    return recursively_collect(this, 'parentNode', css_rule);
   },
-  
-  subNodes: function(css_rule) {
-    return this.select(css_rule).filter(function(element) {
-      return element.parentNode === this;
+
+  children: function(css_rule) {
+    return this.find(css_rule).filter(function(element) {
+      return element._.parentNode === this._;
     }, this);
   },
-  
+
   siblings: function(css_rule) {
     return this.prevSiblings(css_rule).reverse().concat(this.nextSiblings(css_rule));
   },
-  
+
   nextSiblings: function(css_rule) {
-    return this.rCollect('nextSibling', css_rule);
+    return recursively_collect(this, 'nextSibling', css_rule);
   },
-  
+
   prevSiblings: function(css_rule) {
-    return this.rCollect('previousSibling', css_rule);
+    return recursively_collect(this, 'previousSibling', css_rule);
   },
-  
+
   next: function(css_rule) {
     return this.nextSiblings(css_rule)[0];
   },
-  
+
   prev: function(css_rule) {
     return this.prevSiblings(css_rule)[0];
   },
-  
+
   /**
    * removes the elemnt out of this parent node
    *
    * @return Element self
    */
   remove: function() {
-    if (this.parentNode) {
-      this.parentNode.removeChild(this);
+    var element = this._, parent = element.parentNode;
+    if (parent) {
+      parent.removeChild(element);
     }
     return this;
   },
-  
+
   /**
    * handles the elements insertion functionality
    *
@@ -69,7 +71,7 @@ Element.include({
    *
    *  o) an element instance
    *  o) a String, which will be converted into content to insert (all the scripts will be parsed out and executed)
-   *  o) a list of Elements 
+   *  o) a list of Elements
    *  o) a hash like {position: content}
    *
    * @param mixed data to insert
@@ -77,37 +79,27 @@ Element.include({
    * @return Element self
    */
   insert: function(content, position) {
-    if (isHash(content)) {
-      for (var pos in content) {
-        this.insert(content[pos], pos)
-      }
-    } else {
-      var scripts, insertions = Element.insertions;
-      position = (position||'bottom').toLowerCase();
-      
-      if (typeof(content) !== 'object') {
-        content = (''+content).stripScripts(function(s) { scripts = s; });
-      }
-      
-      insertions[position](this, content.tagName ? content :
-        insertions.createFragment.call(
-          (position === 'bottom' || position === 'top') ?
-            this : this.parentNode, content
-        )
-      );
-      
-      // FF doesn't marks selected options correctly with a textual content
-      if (this.tagName === 'SELECT' && isString(content)) {
-        $A(this.getElementsByTagName('option')).each(function(option) {
-          option.selected = !!option.getAttribute('selected');
-        });
-      }
-      
-      if (scripts) $eval(scripts);
+    var scripts = null, element = this._;
+    position = (position||'bottom').toLowerCase();
+
+    if (typeof(content) !== 'object') {
+      scripts = content = (''+content);
+    } else if (content && content instanceof Element) {
+      content = content._;
     }
+
+    Element_insertions[position](element, content.tagName ? content :
+      Element_createFragment.call(
+        (position === 'bottom' || position === 'top') ?
+          element : element.parentNode, content
+      )
+    );
+
+    if (scripts !== null) { scripts.evalScripts(); }
+
     return this;
   },
-  
+
   /**
    * Inserts the element inside the given one at the given position
    *
@@ -119,7 +111,55 @@ Element.include({
     $(element).insert(this, position);
     return this;
   },
-  
+
+  /**
+   * A shortcut to uppend several units into the element
+   *
+   * @param mixed data
+   * ..................
+   * @return Element this
+   */
+  append: function(first) {
+    return this.insert(isString(first) ? $A(arguments).join('') : arguments);
+  },
+
+  /**
+   * updates the content of the element by the given content
+   *
+   * @param mixed content (a String, an Element or a list of elements)
+   * @return Element self
+   */
+  update: function(content) {
+    if (typeof(content) !== 'object') {
+      content = '' + content;
+
+      try {
+        this._.innerHTML = content;
+      } catch(e) {
+        return this.clean().insert(content);
+      }
+
+      content.evalScripts();
+
+      return this;
+    } else {
+      return this.clean().insert(content);
+    }
+  },
+
+  /**
+   * Works with the Element's innerHTML property
+   * This method works both ways! if a content is provided
+   * then it will be assigned, otherwise will return
+   * the innerHTML property
+   *
+   * @param String html content
+   * @return String html content or Element this
+   */
+  html: function(content) {
+    return content === undefined ? this._.innerHTML : this.update(content);
+  },
+
   /**
    * replaces the current element by the given content
    *
@@ -129,144 +169,156 @@ Element.include({
   replace: function(content) {
     return this.insert(content, 'instead');
   },
-  
-  /**
-   * updates the content of the element by the given content
-   *
-   * @param mixed content (a String, an Element or a list of elements)
-   * @return Element self
-   */
-  update: function(content) {
-    if (typeof(content) !== 'object' && !(this.tagName in Element.insertions.wraps)) {
-      var scripts;
-      this.innerHTML = (''+content).stripScripts(function(s) { scripts = s; });
-      if (scripts) $eval(scripts);
-    } else {
-      this.clean().insert(content);
-    }
-    return this;
-  },
-  
+
   /**
    * wraps the element with the given element
    *
    * @param Element wrapper
    * @return Element self
    */
-  wrap: function(element) {
-    if (this.parentNode) {
-      this.parentNode.replaceChild(element, this);
-      element.appendChild(this);
+  wrap: function(wrapper) {
+    var element = this._, parent = element.parentNode;
+    if (parent) {
+      wrapper = $(wrapper)._;
+      parent.replaceChild(wrapper, element);
+      wrapper.appendChild(element);
     }
     return this;
   },
-  
+
   /**
    * removes all the child nodes out of the element
    *
    * @return Element self
    */
   clean: function() {
-    while (this.firstChild) {
-      this.removeChild(this.firstChild);
+    while (this._.firstChild) {
+      this._.removeChild(this._.firstChild);
     }
-    
+
     return this;
   },
-  
+
   /**
    * checks if the element has no child nodes
    *
    * @return boolean check result
    */
   empty: function() {
-    return this.innerHTML.blank();
+    return this.html().blank();
   },
 
   /**
-   * recursively collects nodes by pointer attribute name
+   * Creates a clean clone of the element without any events attached to it
    *
-   * @param String pointer attribute name
-   * @param String optional css-atom rule
-   * @return Array found elements
+   * @return Element new clone
    */
-  rCollect: function(attr, css_rule) {
-    var node = this, result = [], first;
-
-    while ((node = node[attr])) {
-      if (node.tagName && (!css_rule || $(node).match(css_rule))) {
-        result.push(node);
-      }
-    }
-    
-    return Element.prepareAll(result);
+  clone: function() {
+    var clone = this._.cloneNode(true);
+    // we need manually reassing the UID_KEY because IE will clone it too
+    clone[UID_KEY] = UID++;
+    return new Element(clone);
   }
 });
 
+/**
+ * Recursively collects the target element's related nodes
+ *
+ * @param Element context
+ * @param name String pointer attribute name
+ * @param rule String optional css-atom rule
+ * @return Array found elements
+ */
+function recursively_collect(where, attr, css_rule) {
+  var node = where._, result = [];
+
+  while ((node = node[attr])) {
+    if (node.tagName && (!css_rule || $(node).match(css_rule))) {
+      result.push($(node));
+    }
+  }
+
+  return result;
+}
+
 // list of insertions handling functions
 // NOTE: each of the methods will be called in the contects of the current element
-Element.insertions = {
+var Element_insertions = {
   bottom: function(target, content) {
     target.appendChild(content);
   },
-  
+
   top: function(target, content) {
-    target.firstChild ? target.insertBefore(content, target.firstChild) : target.appendChild(content);
+    if (target.firstChild !== null) {
+      target.insertBefore(content, target.firstChild);
+    } else {
+      target.appendChild(content);
+    }
   },
-  
+
   after: function(target, content) {
     var parent = target.parentNode, sibling = target.nextSibling;
-    sibling ? parent.insertBefore(content, sibling) : parent.appendChild(content);
+    if (sibling !== null) {
+      parent.insertBefore(content, sibling);
+    } else {
+      parent.appendChild(content);
+    }
   },
-  
+
   before: function(target, content) {
     target.parentNode.insertBefore(content, target);
   },
-  
+
   instead: function(target, content) {
     target.parentNode.replaceChild(content, target);
-  },
-  
-  // converts any data into a html fragment unit
-  createFragment: function(content) {
-    var fragment = document.createDocumentFragment();
-    
-    if (isString(content)) {
-      var tmp = document.createElement('div'),
-          wrap = Element.insertions.wraps[this.tagName] || ['', '', 0],
-          depth = wrap[2];
-          
-      tmp.innerHTML = wrap[0] + content + wrap[1];
-      
-      while (depth > 0) {
-        tmp = tmp.firstChild;
-        depth--;
-      }
-      
-      content = tmp.childNodes;
-    }
-    
-    for (var i=0, length = content.length; i < length; i++) {
-      // in case of NodeList unit, the elements will be removed out of the list during the appends
-      // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
-      // then we always hit the first element of the stack
-      fragment.appendChild(content[content.length == length ? i : 0]);
-    }
-    
-    return fragment;
-  },
-  
-  wraps: {
-    TABLE:  ['<table>',                '</table>',                   1],
-    TBODY:  ['<table><tbody>',         '</tbody></table>',           2],
-    TR:     ['<table><tbody><tr>',     '</tr></tbody></table>',      3],
-    TD:     ['<table><tbody><tr><td>', '</td></tr></tbody></table>', 4],
-    SELECT: ['<select>',               '</select>',                  1]
   }
+},
+
+// the element insertion wrappers list
+Element_wraps = {
+  TBODY:  ['<TABLE>',            '</TABLE>',                           2],
+  TR:     ['<TABLE><TBODY>',     '</TBODY></TABLE>',                   3],
+  TD:     ['<TABLE><TBODY><TR>', '</TR></TBODY></TABLE>',              4],
+  COL:    ['<TABLE><COLGROUP>',  '</COLGROUP><TBODY></TBODY></TABLE>', 2],
+  LEGEND: ['<FIELDSET>',         '</FIELDSET>',                        2],
+  AREA:   ['<map>',              '</map>',                             2],
+  OPTION: ['<SELECT>',           '</SELECT>',                          2]
 };
-$alias(Element.insertions.wraps, {
-  OPTGROUP: 'SELECT',
+
+$alias(Element_wraps, {
+  OPTGROUP: 'OPTION',
   THEAD:    'TBODY',
   TFOOT:    'TBODY',
   TH:       'TD'
 });
+
+// converts any data into a html fragment unit
+var fragment = document.createDocumentFragment(),
+    tmp_cont = document.createElement('DIV');
+
+function Element_createFragment(content) {
+  if (typeof(content) === 'string') {
+    var tag   = this.tagName,
+        tmp   = tmp_cont,
+        wrap  = Element_wraps[tag] || ['', '', 1],
+        depth = wrap[2];
+
+    tmp.innerHTML = wrap[0] + '<'+ tag + '>' + content + '</'+ tag + '>' + wrap[1];
+
+    while (depth-- > 0) {
+      tmp = tmp.firstChild;
+    }
+
+    content = tmp.childNodes;
+  }
+
+  for (var i=0, length = content.length, node; i < length; i++) {
+    // in case of NodeList unit, the elements will be removed out of the list during the appends
+    // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
+    // then we always hit the first element of the stack
+    node = content[content.length === length ? i : 0];
+    fragment.appendChild(node instanceof Element ? node._ : node);
+  }
+
+  return fragment;
+}

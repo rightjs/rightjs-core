@@ -3,125 +3,92 @@
  *
  * Copyright (C) 2008-2010 Nikolay V. Nemshilov
  */
-var Element = (function(old_Element) {
-  
-  // Element constructor options mapper
-  var options_map = {
-    id:      ['id',        0],
-    html:    ['innerHTML', 0],
-    'class': ['className', 0],
-    style:   ['setStyle',  1],
-    on:      ['on',        1]
-  };
-  
-  function new_Element(tag, options) {
-    var element = document.createElement(tag);
-    
-    if (options) {
-      for (var key in options) {
-        if (options_map[key]) {
-          if (options_map[key][1]) element[options_map[key][0]](options[key]);
-          else element[options_map[key][0]] = options[key];
-        } else {
-          element.set(key, options[key]);
-        }
+
+// Element constructor options mapper
+var element_arguments_map = {
+  id:      'id',
+  html:    'innerHTML',
+  'class': 'className'
+},
+
+element_methods_map = {
+  style:   'setStyle',
+  on:      'on'
+},
+
+Element_wrappers = {},
+
+// caching the element instances to boos the things up
+elements_cache = {},
+
+/**
+ * The elements constructor
+ *
+ * NOTE: this function is called in a context of a dom-wrapper
+ *
+ * @param String element tag name
+ * @param Object options
+ * @return HTMLElement
+ */
+element_constructor = function(element, options) {
+  // building the element
+  this._ = element = (element in elements_cache ? elements_cache[element] :
+    (elements_cache[element] = document.createElement(element))
+  ).cloneNode(false);
+
+  // applying the options
+  if (options !== undefined) {
+    for (var key in options) {
+      if (key in element_arguments_map) {
+        element[element_arguments_map[key]] = options[key];
+      } else if (key in element_methods_map) {
+        this[element_methods_map[key]](options[key]);
+      } else {
+        this.set(key, options[key]);
       }
     }
-    
-    return element;
-  };
-  
-  
-  if (Browser.IE) {
-    //
-    // IE browsers have a bug with checked input elements
-    // and we kinda hacking the Element constructor so that
-    // it affected IE browsers only
-    //
-    new_Element = eval('['+new_Element.toString().replace(/(\((\w+),\s*(\w+)\)\s*\{)/,
-      '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
-    )+']')[0];
   }
-  
-  // connecting the old Element instance to the new one for IE browsers
-  if (old_Element) {
-    $ext(new_Element, old_Element);
-    new_Element.parent = old_Element;
-  }
-  
-  return new_Element;
-})(window.Element);
+};
 
+//
+// IE 6,7,8 (not 9!) browsers have a bug with checkbox and radio input elements
+// it doesn't place the 'checked' property correctly, so we kinda hacking
+// the Element constructor a bit for them
+//
+try {
+  document.createElement('<input/>'); // <- works for IE < 9 only
+  element_constructor = patch_function(element_constructor, /(\((\w+),\s*(\w+)\)\s*\{)/,
+    '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
+  );
+} catch (e) {}
 
-$ext(Element, {
+/**
+ * The actual elements wrapper
+ *
+ */
+var Element = RightJS.Element = new Wrapper({
   /**
-   * registeres the methods on the custom element methods list
-   * will add them to prototype and register at the Element.Methods hash
-   * 
-   * USAGE:
-   *  Element.include({
-   *    foo: function(bar) {}
-   *  });
+   * constructor
    *
-   *  $(element).foo(bar);
+   * NOTE: this constructor will dynamically typecast
+   *       the wrappers depending on the element tag-name
    *
-   * @param Object new methods list
-   * @param Boolean flag if the method should keep the existing methods alive
-   * @return Element the global Element object
+   * @param String element tag name or an HTMLElement instance
+   * @param Object options
+   * @return Element element
    */
-  include: function(methods, dont_overwrite) {
-    $ext(this.Methods, methods, dont_overwrite);
-    
-    try { // busting up the basic element prototypes
-      $ext((window.HTMLElement || this.parent).prototype, methods, dont_overwrite);
-    } catch(e) {}
-    
-    return this;
-  },
-  
-  Methods: {}, // DO NOT Extend this object manually unless you really need it, use Element#include
-  
-  /**
-   * manual elements extending, in case of elements from another frames
-   *
-   * @param Element
-   * @return Element
-   */
-  prepare: function(element) {
-    if (element && !('set' in element)) {
-      $ext(element, Element.Methods, true);
-
-      if ('Form' in window) {
-        switch(element.tagName) {
-          case 'FORM':
-            $ext(element, Form.Methods);
-            break;
-
-          case 'INPUT':
-          case 'SELECT':
-          case 'BUTTON':
-          case 'TEXTAREA':
-            $ext($alias(element, {
-              _blur:   'blur',
-              _focus:  'focus',
-              _select: 'select'
-            }), Form.Element.Methods);
-            break;
-        }
-      }
+  initialize: function(element, options) {
+    if (typeof element === 'string') {
+      this.construct(element, options);
+    } else {
+      this._ = element;
     }
-    
-    return element;
   },
-  
-  /**
-   * Checks if the elements on the list need to be prepared
-   * and prepares them all
-   *
-   * @param Array list of raw elements
-   * @return Array list of prepared elements
-   */
-  prepareAll: function(list) {
-    return !list[0] || 'set' in list[0] ? list : list.map(Element.prepare);
-  }
+
+// protected
+
+  // constructs the event
+  construct: element_constructor
 });
+
+Element.Wrappers = Element_wrappers;

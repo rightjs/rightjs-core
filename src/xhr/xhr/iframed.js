@@ -2,11 +2,11 @@
  * This unit presents a fake drop in replacement for the XmlHTTPRequest unit
  * but works with an iframe targeting in the background
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 Xhr.IFramed = new Class({
   include: Xhr.Dummy,
-  
+
   /**
    * constructor
    *
@@ -15,37 +15,27 @@ Xhr.IFramed = new Class({
    */
   initialize: function(form) {
     this.form = form;
-    
-    var id = 'xhr_frame_'+Math.random().toString().split('.').last();
-    $E('div').insertTo(document.body).update('<iframe name="'+id+'" id="'+id+'" width="0" height="0" frameborder="0" src="about:blank"></iframe>');
-    
-    this.iframe = $(id);
-    this.iframe.on('load', this.onLoad.bind(this));
+    this.id   = 'xhr_'+ new Date().getTime();
+
+    form.insert('<i><iframe name="'+this.id+'" id="'+this.id+
+      '" width="0" height="0" frameborder="0" src="about:blank"></iframe></i>',
+      'after');
+
+    $(this.id).on('load', this.onLoad.bind(this));
   },
-  
+
   send: function() {
-    // stubbing the onsubmit method so it allowed us to submit the form
-    var form         = this.form,
-        old_onsubmit = form.onsubmit,
-        old_target   = form.target;
-    
-    form.onsubmit = function() {};
-    form.target   = this.iframe.id;
-    
-    form.submit();
-    
-    form.onsubmit = old_onsubmit;
-    form.target   = old_target;
+    this.form.set('target', this.id).submit();
   },
-  
+
   onLoad: function() {
     this.status       = 200;
     this.readyState   = 4;
-    
+
     try {
-      this.responseText = window[this.iframe.id].document.documentElement.innerHTML;
+      this.responseText = window[this.id].document.documentElement.innerHTML;
     } catch(e) { }
-    
+
     this.onreadystatechange();
   }
 });

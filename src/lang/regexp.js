@@ -16,5 +16,5 @@
   * @return String escaped string
   */
 RegExp.escape = function(string) {
-  return (''+string).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+  return (''+string).replace(/([.*+?\^=!:${}()|\[\]\/\\])/g, '\\$1');
 };

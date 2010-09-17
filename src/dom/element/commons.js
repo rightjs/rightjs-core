@@ -17,18 +17,20 @@ Element.include({
    */
   set: function(hash, value) {
     if (typeof(hash) === 'string') { var val = {}; val[hash] = value; hash = val; }
-    
-    for (var key in hash) {
+
+    var key, element = this._;
+
+    for (key in hash) {
       // some attributes are not available as properties
-      if (!(key in this)) {
-        this.setAttribute(key, ''+hash[key]);
+      if (!(key in element)) {
+        element.setAttribute(key, ''+hash[key]);
       }
-      this[key] = hash[key];
+      element[key] = hash[key];
     }
-      
+
     return this;
   },
-  
+
   /**
    * returns the attribute value for the name
    *
@@ -36,10 +38,10 @@ Element.include({
    * @return mixed value
    */
   get: function(name) {
-    var value = this[name] || this.getAttribute(name);
+    var element = this._, value = element[name] || element.getAttribute(name);
     return value === '' ? null : value;
   },
-  
+
   /**
    * checks if the element has that attribute
    *
@@ -49,7 +51,7 @@ Element.include({
   has: function(name) {
     return this.get(name) !== null;
   },
-  
+
   /**
    * erases the given attribute of the element
    *
@@ -57,10 +59,10 @@ Element.include({
    * @return Element self
    */
   erase: function(name) {
-    this.removeAttribute(name);
+    this._.removeAttribute(name);
     return this;
   },
-  
+
   /**
    * checks if the elemnt is hidden
    *
@@ -69,23 +71,18 @@ Element.include({
    * @return boolean check result
    */
   hidden: function() {
-    return this.getStyle('display') == 'none';
+    return this.getStyle('display') === 'none';
   },
-  
-  // WebKit causes bugs with overloading the 'hidden' property here and there
-  _hidden: function() {
-    return this.getStyle('display') == 'none';
-  },
-  
+
   /**
    * checks if the element is visible
    *
    * @return boolean check result
    */
   visible: function() {
-    return !this._hidden();
+    return !this.hidden();
   },
-  
+
   /**
    * hides the element
    *
@@ -94,11 +91,14 @@ Element.include({
    * @return Element self
    */
   hide: function(effect, options) {
-    this._$pd = this.getStyle('display');
-    this.style.display = 'none';
+    if (this.visible()) {
+      this._d = this.getStyle('display');
+      this._.style.display = 'none';
+    }
+
     return this;
   },
-  
+
   /**
    * shows the element
    *
@@ -107,14 +107,16 @@ Element.include({
    * @return Element self
    */
   show: function(effect, options) {
-    if (this.getStyle('display') == 'none') {
+    if (this.hidden()) {
       // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
-      var value = this.tagName == 'DIV' ? 'block' : 'inline';
-      this.style.display = this._$pd == 'none' ? value : this._$pd || value;
+      var element = this._, value = element.tagName == 'DIV' ? 'block' : 'inline';
+
+      element.style.display = this._d == 'none' ? value : this._d || value;
     }
+
     return this;
   },
-  
+
   /**
    * toggles the visibility state of the element
    *
@@ -125,7 +127,7 @@ Element.include({
   toggle: function(effect, options) {
     return this[this.visible() ? 'hide' : 'show'](effect, options);
   },
-  
+
   /**
    * shows the element and hides all the sibligns
    *
