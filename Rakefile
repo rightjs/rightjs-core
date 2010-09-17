@@ -56,27 +56,34 @@ end
 desc "Packs the source code"
 task :pack do
   Rake::Task['clean'].invoke
-  
+
   puts " * Composing the source file"
-  
+
   modules  = []
   files    = []
-  
+
   $build_options.each do |package|
     unless $options.include?("no-#{package}")
       files   += $js_sources[package.to_sym].collect{ |f| "src/#{f}.js" }
       modules << package
     end
   end
-  
-  # hooking up the olds patch loader if necessary
-  files << "src/olds/loader.js" if $options.include?('no-olds')
-  
+
+
+
   # initializing the packing utility
   $rutil = RUtil.new("dist/header.js", "dist/layout.js", {
     :version => RIGHTJS_VERSION, :modules => modules.join('", "')
   })
   $rutil.pack(files)
+
+  # hooking up the olds patch loader if necessary
+  if $options.include?('no-olds')
+    $rutil.patch do |source|
+      source += File.read("src/olds/loader.js")
+    end
+  end
+
   $rutil.write("#{BUILD_DIR}/#{BUILD_FILE}.js")
 end
 
@@ -103,7 +110,7 @@ task :build do
     Rake::Task['pack'].invoke
     puts " * Compressing the source code"
     $rutil.compile
-    
+
     if $options.include?('no-olds')
       Rake::Task['build:olds'].invoke
     end
@@ -116,7 +123,7 @@ end
 desc "Builds the old browsers support module"
 task 'build:olds' do
   puts " * Creating the old browsers support module"
-  
+
   @util = RUtil.new("dist/header.olds.js")
   @util.pack($js_sources[:olds].collect{|f| "src/#{f}.js"})
   @util.write("#{BUILD_DIR}/#{BUILD_FILE}-olds.js")
@@ -132,7 +139,7 @@ task 'build:safe' do
   Rake::Task['pack'].invoke
   puts " * Compressing the source code"
   $rutil.compile
-  
+
   # creating the safe-mode build
   puts " * Creating the safe-mode build"
   @rutil = RUtil.new("dist/header.safe.js", "dist/layout.safe.js")
@@ -150,7 +157,7 @@ end
 desc "Bulds the server-side version"
 task 'build:server' do
   puts " * Creating the server side version"
-  
+
   @util = RUtil.new("dist/header.server.js", "dist/layout.server.js")
   @util.pack($js_sources[:core].collect{|f| "src/#{f}.js"}) do |source|
     # removing dom related util methods and hacks
@@ -168,7 +175,7 @@ end
 desc "Checks the Harmony compatibility"
 task "harm" do
   Rake::Task['pack'].invoke
-  
+
   require 'harmony'
   page = Harmony::Page.new
   page.load('build/right-src.js')
