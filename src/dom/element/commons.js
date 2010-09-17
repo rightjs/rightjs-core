@@ -17,9 +17,9 @@ Element.include({
    */
   set: function(hash, value) {
     if (typeof(hash) === 'string') { var val = {}; val[hash] = value; hash = val; }
-    
+
     var key, element = this._;
-    
+
     for (key in hash) {
       // some attributes are not available as properties
       if (!(key in element)) {
@@ -27,10 +27,10 @@ Element.include({
       }
       element[key] = hash[key];
     }
-      
+
     return this;
   },
-  
+
   /**
    * returns the attribute value for the name
    *
@@ -41,7 +41,7 @@ Element.include({
     var element = this._, value = element[name] || element.getAttribute(name);
     return value === '' ? null : value;
   },
-  
+
   /**
    * checks if the element has that attribute
    *
@@ -51,7 +51,7 @@ Element.include({
   has: function(name) {
     return this.get(name) !== null;
   },
-  
+
   /**
    * erases the given attribute of the element
    *
@@ -62,7 +62,7 @@ Element.include({
     this._.removeAttribute(name);
     return this;
   },
-  
+
   /**
    * checks if the elemnt is hidden
    *
@@ -73,7 +73,7 @@ Element.include({
   hidden: function() {
     return this.getStyle('display') === 'none';
   },
-  
+
   /**
    * checks if the element is visible
    *
@@ -82,7 +82,7 @@ Element.include({
   visible: function() {
     return !this.hidden();
   },
-  
+
   /**
    * hides the element
    *
@@ -95,10 +95,10 @@ Element.include({
       this._d = this.getStyle('display');
       this._.style.display = 'none';
     }
-    
+
     return this;
   },
-  
+
   /**
    * shows the element
    *
@@ -110,13 +110,13 @@ Element.include({
     if (this.hidden()) {
       // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
       var element = this._, value = element.tagName == 'DIV' ? 'block' : 'inline';
-      
+
       element.style.display = this._d == 'none' ? value : this._d || value;
     }
-    
+
     return this;
   },
-  
+
   /**
    * toggles the visibility state of the element
    *
@@ -127,7 +127,7 @@ Element.include({
   toggle: function(effect, options) {
     return this[this.hidden() ? 'show' : 'hide'](effect, options);
   },
-  
+
   /**
    * shows the element and hides all the sibligns
    *

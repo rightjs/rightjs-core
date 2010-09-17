@@ -12,13 +12,13 @@
 /**
  * Some top-level variables to shortify the things
  */
-var 
+var
 PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
 HTML = document.documentElement, UID = 1,  // !#server
 Wrappers_Cache = [], UID_KEY = '_rjs_id',  // !#server
- 
+
 /**
  * extends the first object with the keys and values of the second one
  *
@@ -30,7 +30,7 @@ Wrappers_Cache = [], UID_KEY = '_rjs_id',  // !#server
  * @param Boolean flag if the function should not overwrite intersecting values
  * @return Object extended destination object
  */
-$ext = RightJS.$ext = function(dest, source, dont_overwrite) { 
+$ext = RightJS.$ext = function(dest, source, dont_overwrite) {
   var src = source || {}, key;
 
   for (key in src) {
@@ -185,7 +185,7 @@ $ = RightJS.$ = function(object) {
   if (typeof object === 'string') {
     object = document.getElementById(object);
   }
-  
+
   if (object) {
     if (UID_KEY in object && object[UID_KEY] in Wrappers_Cache) {
       object = Wrappers_Cache[object[UID_KEY]];
@@ -199,7 +199,7 @@ $ = RightJS.$ = function(object) {
       object = new Window(object);
     }
   }
-  
+
   return object;
 },
 

@@ -21,7 +21,7 @@ $ext(Object, {
     }
     return keys;
   },
-  
+
   /**
    * extracts the list of the attribute values of the given object
    *
@@ -35,7 +35,7 @@ $ext(Object, {
     }
     return values;
   },
-  
+
   /**
    * Calls the function with every key/value pair on the hash
    *
@@ -48,10 +48,10 @@ $ext(Object, {
     for (var key in object) {
       callback.call(scope, key, object[key]);
     }
-    
+
     return object;
   },
-  
+
   /**
    * checks if the object-hash has no keys
    *
@@ -62,7 +62,7 @@ $ext(Object, {
     for (var key in object) { return false; }
     return true;
   },
-  
+
   /**
    * returns a copy of the object which contains
    * all the same keys/values except the key-names
@@ -75,16 +75,16 @@ $ext(Object, {
    */
   without: function() {
     var filter = $A(arguments), object = filter.shift(), copy = {}, key;
-    
+
     for (key in object) {
       if (!filter.includes(key)) {
         copy[key] = object[key];
       }
     }
-    
+
     return copy;
   },
-  
+
   /**
    * returns a copy of the object which contains all the
    * key/value pairs from the specified key-names list
@@ -99,21 +99,21 @@ $ext(Object, {
   only: function() {
     var filter = $A(arguments), object = filter.shift(), copy = {},
         i=0, length = filter.length;
-    
+
     for (; i < length; i++) {
       if (filter[i] in object) {
         copy[filter[i]] = object[filter[i]];
       }
     }
-    
+
     return copy;
   },
-    
+
   /**
    * merges the given objects and returns the result
    *
    * NOTE this method _DO_NOT_ change the objects, it creates a new object
-   *      which conatins all the given ones. 
+   *      which conatins all the given ones.
    *      if there is some keys introspections, the last object wins.
    *      all non-object arguments will be omitted
    *
@@ -131,7 +131,7 @@ $ext(Object, {
     }
     return object;
   },
-  
+
   /**
    * converts a hash-object into an equivalent url query string
    *

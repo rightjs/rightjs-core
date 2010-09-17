@@ -5,16 +5,16 @@
  */
 var FormTest = TestCase.create({
   name: 'FormTest',
-  
+
   testInstance: function() {
     var form = new Form({
       id: 'my-form'
     });
-    
+
     this.assertEqual('FORM', form._.tagName);
     this.assertEqual('my-form', form._.id);
   },
-  
+
   setForm: function() {
     return new Form({
       'html': ""+
@@ -65,63 +65,63 @@ var FormTest = TestCase.create({
       ""
     });
   },
-  
+
   testGetElements: function() {
     var form = this.setForm();
-    
+
     this.assertEqual(11, form.getElements().length);
-    
+
     form.getElements().each(function(element) {
       this.assert('getValue' in element, "elements should be wrapped");
     }, this);
   },
-  
+
   testInputs: function() {
     var form = this.setForm();
-    
+
     this.assertEqual(8, form.inputs().length);
   },
-  
+
   testFocus: function() {
     var form = this.setForm();
-    
+
     this.assertSame(form, form.focus());
-    
+
     if (Browser.Konqueror) return;
     this.assert($(form._.name).focused);
   },
-  
+
   testBlur: function() {
     var form = this.setForm();
     form.focus();
-    
+
     this.assertSame(form, form.blur());
-    
+
     form.getElements().each(function(element) {
       this.assertFalse(element.focused);
     }, this);
   },
-  
+
   testDisable: function() {
     var form = this.setForm();
-    
+
     this.assertSame(form, form.disable());
-    
+
     form.inputs().each(function(element) {
       this.assert(element._.disabled);
     }, this);
   },
-  
+
   testEnable: function() {
     var form = this.setForm().disable();
-    
+
     this.assertSame(form, form.enable());
-    
+
     form.getElements().each(function(element) {
       this.assertFalse(element._.disabled);
     }, this);
   },
-  
+
   testValues: function() {
     if (Browser.Konqueror) return;
     var form = this.setForm();
@@ -138,12 +138,12 @@ var FormTest = TestCase.create({
       items:    ['2', '3'],
       text:     'Boo boo boo'
     };
-    
+
     this.assertEqual(result, form.values());
-    
+
     form._.keep_me.checked = true;
     form.first('#who-bob')._.checked = true;
-    
+
     var result = document.querySelector ? {
       name:     'Bob',
       password: 'secret',
@@ -161,20 +161,20 @@ var FormTest = TestCase.create({
       items:    ['2', '3'],
       text:     'Boo boo boo'
     };
-    
+
     this.assertEqual(result, form.values());
   },
-  
+
   testSerialize: function() {
     if (Browser.Konqueror) return;
     var form = this.setForm();
-    var result = document.querySelector ? 
+    var result = document.querySelector ?
       'name=Bob&password=secret&text=Boo%20boo%20boo&kinda=1&items=2&items=3' :
       'name=Bob&password=secret&kinda=1&items=2&items=3&text=Boo%20boo%20boo';
-      
+
     this.assertEqual(result, form.serialize());
   },
-  
+
   testSerializeWithArrays: function() {
     var form = new Form({
       'html': '' +
@@ -182,19 +182,19 @@ var FormTest = TestCase.create({
         '<input type="hidden" name="test[]" value="2" />'+
         '<input type="hidden" name="test[]" value="3" />'
     });
-    
+
     this.assertEqual({'test[]': ['1', '2', '3']}, form.values());
   },
-  
+
   testFormInput: function() {
     var form = this.setForm();
     var name = form.input('name');
-    
+
     this.assert(name, "should exist");
     this.assert(name instanceof Input, "the field should be wrapped");
     this.assertSame(name._, form._.name, "it should be the correct field");
   },
-  
+
   testSubmit: function() {
     var called = false;
     var form   = new Form();
@@ -204,7 +204,7 @@ var FormTest = TestCase.create({
     form.submit();
     this.assert(called);
   },
-  
+
   testReset: function() {
     var called = false;
     var form   = new Form();

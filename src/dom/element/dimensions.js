@@ -1,5 +1,5 @@
 /**
- * this module contains the Element's part of functionality 
+ * this module contains the Element's part of functionality
  * responsible for the dimensions and positions getting/setting
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
@@ -13,7 +13,7 @@ Element.include({
   document: function() {
     return $(this._.ownerDocument);
   },
-  
+
   /**
    * Returns the reference to this elements window
    *
@@ -22,7 +22,7 @@ Element.include({
   window: function() {
     return this.document().window();
   },
-  
+
   /**
    * Returns the element size as a hash
    *
@@ -31,7 +31,7 @@ Element.include({
   size: function() {
     return { x: this._.offsetWidth, y: this._.offsetHeight };
   },
-  
+
   /**
    * Returns the element absolute position
    *
@@ -43,13 +43,13 @@ Element.include({
     var rect    = this._.getBoundingClientRect(),
         html    = this.document()._.documentElement,
         scrolls = this.window().scrolls();
-    
+
     return {
       x: rect.left + scrolls.x - html.clientLeft,
       y: rect.top  + scrolls.y - html.clientTop
     };
   },
-  
+
   /**
    * Returns the element scrolls
    *
@@ -58,7 +58,7 @@ Element.include({
   scrolls: function() {
     return { x: this._.scrollLeft, y: this._.scrollTop };
   },
-  
+
   /**
    * returns the element dimensions hash
    *
@@ -68,7 +68,7 @@ Element.include({
     var size     = this.size(),
         scrolls  = this.scrolls(),
         position = this.position();
-    
+
     return {
       top:        position.y,
       left:       position.x,
@@ -78,7 +78,7 @@ Element.include({
       scrollTop:  scrolls.y
     };
   },
-  
+
   /**
    * Checks if the element overlaps the given position
    *
@@ -87,11 +87,11 @@ Element.include({
    */
   overlaps: function(target) {
     var pos = this.position(), size = this.size();
-    
+
     return target.x > pos.x && target.x < (pos.x + size.x) &&
            target.y > pos.y && target.y < (pos.y + size.y);
   },
-  
+
   /**
    * sets the width of the element in pixels
    *
@@ -107,7 +107,7 @@ Element.include({
     style.width = (2 * width_px - this._.offsetWidth) + 'px';
     return this;
   },
-  
+
   /**
    * sets the width of the element in pixels
    *
@@ -123,7 +123,7 @@ Element.include({
     style.height = (2 * height_px - this._.offsetHeight) + 'px';
     return this;
   },
-  
+
   /**
    * sets the size of the element in pixels
    *
@@ -141,7 +141,7 @@ Element.include({
     }
     return this.setWidth(width).setHeight(height);
   },
-  
+
   /**
    * sets the element position (against the window corner)
    *
@@ -154,13 +154,13 @@ Element.include({
       top  = left.y;
       left = left.x;
     }
-    
+
     return this.setStyle({
       left: left + 'px',
       top:  top  + 'px'
     });
   },
-  
+
   /**
    * sets the scroll position
    *
@@ -173,13 +173,13 @@ Element.include({
       top  = left.y;
       left = left.x;
     }
-    
+
     this._.scrollLeft = left;
     this._.scrollTop  = top;
-    
+
     return this;
   },
-  
+
   /**
    * makes the window be scrolled to the element
    *

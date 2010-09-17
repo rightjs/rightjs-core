@@ -23,7 +23,7 @@ include_sources_by_modules({
     'core/observer',
     'core/break'
   ],
-  
+
   dom: [
     'dom/browser',
     'dom/wrapper',
@@ -43,18 +43,18 @@ include_sources_by_modules({
     'dom/selector',
     'dom/ready'
   ],
-  
+
   form: [
     'dom/form',
     'dom/input'
   ],
-  
+
   // NOTE: this one should be after the 'form' module!
   events: [
     'dom/event/bubbling',
     'dom/event/delegation'
   ],
-  
+
   xhr: [
     'xhr/xhr',
     'xhr/form',
@@ -63,7 +63,7 @@ include_sources_by_modules({
     'xhr/xhr/iframed',
     'xhr/xhr/jsonp'
   ],
-  
+
   fx: [
     'fx/fx',
     'fx/string',
@@ -75,11 +75,11 @@ include_sources_by_modules({
     'fx/fx/fade',
     'fx/fx/scroll'
   ],
-  
+
   cookie: [
     'dom/cookie'
   ],
-  
+
   // the old browsers support hacks
   olds: [
     'olds/ie',

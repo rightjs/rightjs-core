@@ -12,17 +12,17 @@
 var Event = RightJS.Event = new Wrapper({
   // predefining the keys to spped up the assignments
   type:          null,
-  
+
   which:         null,
   keyCode:       null,
-  
+
   target:        null,
   currentTarget: null,
   relatedTarget: null,
-  
+
   pageX:         null,
   pageY:         null,
-  
+
   /**
    * the class constructor
    *
@@ -34,39 +34,39 @@ var Event = RightJS.Event = new Wrapper({
     if (typeof event === 'string') {
       event = Object.merge({type: event}, bound_element);
       this.stopped = event.bubbles === false;
-      
+
       if (isHash(bound_element)) {
         $ext(this, bound_element);
       }
     }
-    
+
     this._             = event;
     this.type          = event.type;
-    
+
     this.which         = event.which;
     this.keyCode       = event.keyCode;
-  
+
     this.target        = $(event.target);
     this.currentTarget = $(event.currentTarget);
     this.relatedTarget = $(event.relatedTarget);
-  
+
     this.pageX         = event.pageX;
     this.pageY         = event.pageY;
-  
+
     if (!('target' in event) && 'srcElement' in event) {
       // grabbin the IE properties
       this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
-    
-      // faking the target property  
+
+      // faking the target property
       this.target = $(event.srcElement) || bound_element;
-    
+
       // faking the relatedTarget, currentTarget and other targets
       this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : this.target;
       this.currentTarget = bound_element;
-    
+
       // faking the mouse position
       var scrolls = this.target.window().scrolls();
-    
+
       this.pageX = event.clientX + scrolls.x;
       this.pageY = event.clientY + scrolls.y;
     } else if (event.target && 'nodeType' in event.target && event.target.nodeType === 3) {
@@ -74,7 +74,7 @@ var Event = RightJS.Event = new Wrapper({
       this.target = $(event.target.parentNode);
     }
   },
-  
+
   /**
    * Stops the event bubbling process
    *
@@ -89,7 +89,7 @@ var Event = RightJS.Event = new Wrapper({
     this.stopped = true;
     return this;
   },
-  
+
   /**
    * Prevents the default browser action on the event
    *
@@ -103,7 +103,7 @@ var Event = RightJS.Event = new Wrapper({
     }
     return this;
   },
-  
+
   /**
    * Fully stops the event
    *
@@ -112,7 +112,7 @@ var Event = RightJS.Event = new Wrapper({
   stop: function() {
     return this.stopPropagation().preventDefault();
   },
-  
+
   /**
    * Returns the event position
    *
@@ -121,7 +121,7 @@ var Event = RightJS.Event = new Wrapper({
   position: function() {
     return {x: this.pageX, y: this.pageY};
   },
-  
+
   /**
    * Finds the element between the event target
    * and the boundary element that matches the

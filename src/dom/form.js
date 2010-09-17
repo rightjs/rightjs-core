@@ -23,19 +23,19 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    */
   initialize: function(in_options) {
     var options = in_options || {}, remote = 'remote' in options, element = options;
-    
+
     if (isHash(options)) {
       element = 'form';
       options = Object.without(options, 'remote');
     }
-    
+
     this.$super(element, options);
-  
+
     if (remote) {
       this.remotize();
     }
   },
-  
+
   /**
    * returns the form elements as an array of extended units
    *
@@ -44,7 +44,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   elements: function() {
     return this.find('input,button,select,textarea');
   },
-  
+
   /**
    * returns the list of all the input elements on the form
    *
@@ -55,7 +55,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
       return !['submit', 'button', 'reset', 'image', null].includes(input._.type);
     });
   },
-  
+
   /**
    * Accessing an input by name
    *
@@ -65,7 +65,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   input: function(name) {
     return $(this._[name]);
   },
-  
+
   /**
    * focuses on the first input element on the form
    *
@@ -75,12 +75,12 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     var element = this.inputs().first(function(input) {
       return input._.type !== 'hidden';
     });
-    
+
     if (element) { element.focus(); }
-    
+
     return this;
   },
-  
+
   /**
    * removes focus out of all the form elements
    *
@@ -90,7 +90,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     this.elements().each('blur');
     return this;
   },
-  
+
   /**
    * disables all the elements on the form
    *
@@ -100,7 +100,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     this.elements().each('disable');
     return this;
   },
-  
+
   /**
    * enables all the elements on the form
    *
@@ -110,7 +110,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     this.elements().each('enable');
     return this;
   },
-  
+
   /**
    * returns the list of the form values
    *
@@ -118,7 +118,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    */
   values: function() {
     var values = {}, value, name, element, input;
-    
+
     this.inputs().each(function(element) {
       input = element._;
       name  = input.name;
@@ -127,14 +127,14 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
         if (name.endsWith('[]')) {
           value = (values[name] || []).concat([value]);
         }
-        
+
         values[name] = value;
       }
     });
-    
+
     return values;
   },
-  
+
   /**
    * returns the key/values organized ready to be sent via a get request
    *
@@ -143,7 +143,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   serialize: function() {
     return Object.toQueryString(this.values());
   },
-  
+
   /**
    * Delegating the submit method
    *
@@ -153,7 +153,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     this._.submit();
     return this;
   },
-  
+
   /**
    * Delegating the 'reset' method
    *

@@ -84,9 +84,9 @@ var Element = RightJS.Element = new Wrapper({
       this._ = element;
     }
   },
-  
+
 // protected
-  
+
   // constructs the event
   construct: element_constructor
 });

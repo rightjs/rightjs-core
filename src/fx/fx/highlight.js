@@ -10,9 +10,9 @@ Fx.Highlight = new Class(Fx.Morph, {
       transition: 'Exp'
     })
   },
-  
+
 // protected
-  
+
   /**
    * starts the transition
    *
@@ -22,19 +22,19 @@ Fx.Highlight = new Class(Fx.Morph, {
    */
   prepare: function(start, end) {
     var element = this.element, style = element._.style, end_color = end || element.getStyle('backgroundColor');
-    
+
     if (is_transparent(end_color)) {
       this.onFinish(function() { style.backgroundColor = 'transparent'; });
-      
+
       // trying to find the end color
       end_color = [element].concat(element.parents()).map(function(node) {
         var bg = node.getStyle('backgroundColor');
-        return (bg && !is_transparent(bg)) ? bg : null; 
+        return (bg && !is_transparent(bg)) ? bg : null;
       }).compact().first() || '#FFF';
     }
-    
+
     style.backgroundColor = (start || this.options.color);
-    
+
     return this.$super({backgroundColor: end_color});
   }
 });

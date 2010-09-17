@@ -15,16 +15,16 @@ function hack_observer(name, re, text) {
   Element_observer[name] = patch_function(Element_observer[name], re, text);
 }
 
-hack_observer('on', 
+hack_observer('on',
   /(\$listeners\.push\((\w+?)\);)/,
-  
+
   // aliasing the 'rightclick' to the 'contextmenu' event
   '$1$2.e=$2.n=$2.e==="rightclick"?"contextmenu":$2.e;'+
-  
+
   // swapping a browser related event names
   (Browser.Gecko      ? 'if($2.n==="mousewheel")$2.n="DOMMouseScroll";' : '') +
   (Browser.Konqueror  ? 'if($2.n==="contextmenu")$2.n="rightclick";'    : '') +
-  
+
   '$2.w=function(){'+
     'var a=$A(arguments);$2.r&&$2.r!=="stopEvent"?a.shift():a[0]=new RightJS.Event(a[0],this),e=a[0];'+
     '$2.f.apply($2.t,a.concat($2.a))===false&&e.stop()'+
@@ -36,9 +36,9 @@ hack_observer('on',
 );
 
 hack_observer('stopObserving',
-  /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m, 
+  /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m,
   '$1var r=$4;'+
-  'if(!r)' + (looks_like_ie ? 
+  'if(!r)' + (looks_like_ie ?
     'this._.detachEvent("on"+$2.n,$2.w);' :
     'this._.removeEventListener($2.n,$2.w,false);'
   )+'$3 r'
@@ -80,7 +80,7 @@ Observer_createShortcuts(Window[PROTO], $w('blur focus scroll resize load'));
 function Element_add_event_shortcuts(tokens) {
   tokens = $w(tokens);
   Event_delegation_shortcuts = Event_delegation_shortcuts.concat(tokens);
-  
+
   Observer_createShortcuts(Element[PROTO], tokens);
   Observer_createShortcuts(Document[PROTO], tokens);
 }

@@ -22,13 +22,13 @@ var Math_old_random = Math.random;
  * @return Float random between 0 and 1 if there's no arguments or an integer in the given range
  */
 Math.random = function(min, max) {
-  
+
   if (arguments.length === 0) {
     return Math_old_random();
   } else if (arguments.length === 1) {
     max = min;
     min = 0;
   }
-  
+
   return ~~(Math_old_random() * (max-min+1) + ~~min);
 };

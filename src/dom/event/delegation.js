@@ -31,15 +31,15 @@
       for (i=0, list = rules[css_rule]; i < list.length; i++) {
         // registering the delegative listener
         this.on(event, build_delegative_listener(css_rule, list[i], this));
-        
+
         // adding the css-rule and callback references to the store
         $ext(this.$listeners.last(), { dr: css_rule, dc: list[i][0] });
       }
     }
-    
+
     return this;
   },
-  
+
   /**
    * Removes a delegative event listener from the element
    *
@@ -67,10 +67,10 @@
     delegation_listeners(arguments, this).each(function(h) {
       this.stopObserving(h.n, h.f);
     }, this);
-    
+
     return this;
   },
-  
+
   /**
    * Checks if there is sucha delegative event listener
    *
@@ -125,7 +125,7 @@ function build_delegative_listener(css_rule, entry, scope) {
  */
 function delegation_rules(raw_args) {
   var args = $A(raw_args), rules = args[1] || {}, hash = {}, css_rule;
-  
+
   if (isString(rules)) {
     hash[rules] = args.slice(2);
     if (isArray(hash[rules][0])) {
@@ -134,13 +134,13 @@ function delegation_rules(raw_args) {
   } else {
     hash = rules;
   }
-  
+
   // converting everything into a hash of lists of callbacks
   for (css_rule in hash) {
     hash[css_rule] = ensure_array(hash[css_rule]);
     hash[css_rule] = isArray(hash[css_rule][0]) ? hash[css_rule] : [hash[css_rule]];
   }
-  
+
   return hash;
 }
 
@@ -155,7 +155,7 @@ function delegation_listeners(args, object) {
   var event = args[0], i, list,
      rules = delegation_rules(args),
      rules_are_empty = !Object.keys(rules).length;
-  
+
   return (object.$listeners || []).filter(function(hash) {
     return hash.dr && hash.n === event && (
       rules_are_empty || (function() {
@@ -168,7 +168,7 @@ function delegation_listeners(args, object) {
             }
           }
         }
-        
+
         return false;
       })()
     );
@@ -211,10 +211,10 @@ Object.each({
 }, function(name, method) {
   String[PROTO][name] = function() {
     var doc = $(document), args = $A(arguments), result;
-    
+
     args.splice(1,0,''+this);
     result = doc[method].apply(doc, args);
-    
+
     return result === doc ? this : result;
   };
 });
@@ -223,7 +223,7 @@ Object.each({
  * building the list of String#onEvent shortucts
  *
  * USAGE:
- *    
+ *
  *    "#css.rule".onClick(function() {...});
  *    "#css.rule".onMouseover('method_name');
  */

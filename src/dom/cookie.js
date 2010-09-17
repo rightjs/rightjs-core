@@ -9,7 +9,7 @@
  */
 var Cookie = RightJS.Cookie = new Class({
   include: Options,
-  
+
   extend: {
     // sets the cookie
     set: function(name, value, options) {
@@ -23,20 +23,20 @@ var Cookie = RightJS.Cookie = new Class({
     remove: function(name) {
       return new this(name).remove();
     },
-    
+
     // checks if the cookies are enabled
     enabled: function() {
       document.cookie = "__t=1";
       return document.cookie.indexOf("__t=1")!=-1;
     },
-    
+
     // some basic options
     Options: {
       secure:   false,
       document: document
     }
   },
-  
+
   /**
    * constructor
    * @param String cookie name
@@ -47,7 +47,7 @@ var Cookie = RightJS.Cookie = new Class({
     this.name = name;
     this.setOptions(options);
   },
-  
+
   /**
    * sets the cookie with the name
    *
@@ -67,7 +67,7 @@ var Cookie = RightJS.Cookie = new Class({
     options.document.cookie = this.name + '=' + value;
     return this;
   },
-  
+
   /**
    * searches for a cookie with the name
    *
@@ -77,8 +77,8 @@ var Cookie = RightJS.Cookie = new Class({
     var value = this.options.document.cookie.match('(?:^|;)\\s*' + RegExp.escape(this.name) + '=([^;]*)');
     return (value) ? decodeURIComponent(value[1]) : null;
   },
-  
-  /** 
+
+  /**
    * removes the cookie
    *
    * @return Cookie this

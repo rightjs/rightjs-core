@@ -8,11 +8,11 @@ var RightJS = (function(window, src) {
   src = src
     // the default document to the current one
     .replace(',document,', ',parent.document,')
-    
+
     // building the inside types conversion methods
     + 'RightJS.$N=function(v){return new Number(v)};'
     + 'RightJS.$S=function(v){return new String(v)}';
-  
+
   // building the frame sandbox
   var frame_id = '__rightjs_condom', document = window.document;
   if ('attachEvent' in window) {
@@ -23,26 +23,26 @@ var RightJS = (function(window, src) {
     frame.style.display = 'none';
     document.documentElement.appendChild(frame);
   }
-  
+
   // puttin the code into the frame
   var win = window.frames[frame_id];
-  
+
   if ('execScript' in win) {
     win.execScript(src);
   } else {
     var doc = win.document;
     doc.open();doc.write('<html></html>'); doc.close();
-    
+
     var script = document.createElement('script');
     script.text = src;
     doc.body.appendChild(script);
   }
-  
+
   // transferring the object references from the sandbox into local variable
   var RightJS = win.RightJS;
   RightJS.context = win;
   RightJS.safe    = true;
-  
+
   // building the access and types conversion proxy
   var proxy = function(value) {
     switch (typeof value) {
@@ -53,10 +53,10 @@ var RightJS = (function(window, src) {
         if (RightJS.isArray(value))
           return RightJS.$A(value);
     }
-    
+
     return value;
   };
-  
+
   return RightJS.$ext(proxy, RightJS);
-  
+
 })(window, %{source_code});

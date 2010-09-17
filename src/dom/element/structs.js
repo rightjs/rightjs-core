@@ -20,37 +20,37 @@ Element.include({
   parent: function(css_rule) {
     return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode || null); // <- IE6 need that || null
   },
-  
+
   parents: function(css_rule) {
     return recursively_collect(this, 'parentNode', css_rule);
   },
-  
+
   children: function(css_rule) {
     return this.find(css_rule).filter(function(element) {
       return element._.parentNode === this._;
     }, this);
   },
-  
+
   siblings: function(css_rule) {
     return this.prevSiblings(css_rule).reverse().concat(this.nextSiblings(css_rule));
   },
-  
+
   nextSiblings: function(css_rule) {
     return recursively_collect(this, 'nextSibling', css_rule);
   },
-  
+
   prevSiblings: function(css_rule) {
     return recursively_collect(this, 'previousSibling', css_rule);
   },
-  
+
   next: function(css_rule) {
     return this.nextSiblings(css_rule)[0];
   },
-  
+
   prev: function(css_rule) {
     return this.prevSiblings(css_rule)[0];
   },
-  
+
   /**
    * removes the elemnt out of this parent node
    *
@@ -63,7 +63,7 @@ Element.include({
     }
     return this;
   },
-  
+
   /**
    * handles the elements insertion functionality
    *
@@ -71,35 +71,35 @@ Element.include({
    *
    *  o) an element instance
    *  o) a String, which will be converted into content to insert (all the scripts will be parsed out and executed)
-   *  o) a list of Elements 
+   *  o) a list of Elements
    *  o) a hash like {position: content}
    *
    * @param mixed data to insert
    * @param String position to insert  top/bottom/before/after/instead
    * @return Element self
    */
-  insert: function(content, position) {    
+  insert: function(content, position) {
     var scripts = null, element = this._;
     position = (position||'bottom').toLowerCase();
-    
+
     if (typeof(content) !== 'object') {
       scripts = content = (''+content);
     } else if (content && content instanceof Element) {
       content = content._;
     }
-    
+
     Element_insertions[position](element, content.tagName ? content :
       Element_createFragment.call(
         (position === 'bottom' || position === 'top') ?
           element : element.parentNode, content
       )
     );
-    
+
     if (scripts !== null) { scripts.evalScripts(); }
-    
+
     return this;
   },
-  
+
   /**
    * Inserts the element inside the given one at the given position
    *
@@ -111,7 +111,7 @@ Element.include({
     $(element).insert(this, position);
     return this;
   },
-  
+
   /**
    * A shortcut to uppend several units into the element
    *
@@ -122,7 +122,7 @@ Element.include({
   append: function(first) {
     return this.insert(isString(first) ? $A(arguments).join('') : arguments);
   },
-  
+
   /**
    * updates the content of the element by the given content
    *
@@ -132,21 +132,21 @@ Element.include({
   update: function(content) {
     if (typeof(content) !== 'object') {
       content = '' + content;
-      
+
       try {
         this._.innerHTML = content;
       } catch(e) {
         return this.clean().insert(content);
       }
-      
+
       content.evalScripts();
-      
+
       return this;
     } else {
       return this.clean().insert(content);
     }
   },
-  
+
   /**
    * Works with the Element's innerHTML property
    * This method works both ways! if a content is provided
@@ -169,7 +169,7 @@ Element.include({
   replace: function(content) {
     return this.insert(content, 'instead');
   },
-  
+
   /**
    * wraps the element with the given element
    *
@@ -185,7 +185,7 @@ Element.include({
     }
     return this;
   },
-  
+
   /**
    * removes all the child nodes out of the element
    *
@@ -195,10 +195,10 @@ Element.include({
     while (this._.firstChild) {
       this._.removeChild(this._.firstChild);
     }
-    
+
     return this;
   },
-  
+
   /**
    * checks if the element has no child nodes
    *
@@ -207,7 +207,7 @@ Element.include({
   empty: function() {
     return this.html().blank();
   },
-  
+
   /**
    * Creates a clean clone of the element without any events attached to it
    *
@@ -228,7 +228,7 @@ Element.include({
  * @param name String pointer attribute name
  * @param rule String optional css-atom rule
  * @return Array found elements
- */ 
+ */
 function recursively_collect(where, attr, css_rule) {
   var node = where._, result = [];
 
@@ -237,7 +237,7 @@ function recursively_collect(where, attr, css_rule) {
       result.push($(node));
     }
   }
-  
+
   return result;
 }
 
@@ -247,7 +247,7 @@ var Element_insertions = {
   bottom: function(target, content) {
     target.appendChild(content);
   },
-  
+
   top: function(target, content) {
     if (target.firstChild !== null) {
       target.insertBefore(content, target.firstChild);
@@ -255,7 +255,7 @@ var Element_insertions = {
       target.appendChild(content);
     }
   },
-  
+
   after: function(target, content) {
     var parent = target.parentNode, sibling = target.nextSibling;
     if (sibling !== null) {
@@ -264,11 +264,11 @@ var Element_insertions = {
       parent.appendChild(content);
     }
   },
-  
+
   before: function(target, content) {
     target.parentNode.insertBefore(content, target);
   },
-  
+
   instead: function(target, content) {
     target.parentNode.replaceChild(content, target);
   }
@@ -291,27 +291,27 @@ $alias(Element_wraps, {
   TFOOT:    'TBODY',
   TH:       'TD'
 });
-  
+
 // converts any data into a html fragment unit
 var fragment = document.createDocumentFragment(),
     tmp_cont = document.createElement('DIV');
-    
+
 function Element_createFragment(content) {
   if (typeof(content) === 'string') {
     var tag   = this.tagName,
         tmp   = tmp_cont,
         wrap  = Element_wraps[tag] || ['', '', 1],
         depth = wrap[2];
-          
+
     tmp.innerHTML = wrap[0] + '<'+ tag + '>' + content + '</'+ tag + '>' + wrap[1];
-    
+
     while (depth-- > 0) {
       tmp = tmp.firstChild;
     }
-    
+
     content = tmp.childNodes;
   }
-  
+
   for (var i=0, length = content.length, node; i < length; i++) {
     // in case of NodeList unit, the elements will be removed out of the list during the appends
     // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
@@ -319,6 +319,6 @@ function Element_createFragment(content) {
     node = content[content.length === length ? i : 0];
     fragment.appendChild(node instanceof Element ? node._ : node);
   }
-  
+
   return fragment;
 }

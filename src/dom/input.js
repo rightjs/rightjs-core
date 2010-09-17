@@ -5,13 +5,13 @@
  */
 var old_insert = Element[PROTO].insert,
 
-Input = RightJS.Input = 
+Input = RightJS.Input =
 
 // retgistering the typecasted wrappers
-Element_wrappers.INPUT    = 
+Element_wrappers.INPUT    =
 Element_wrappers.BUTTON   =
 Element_wrappers.SELECT   =
-Element_wrappers.TEXTAREA = 
+Element_wrappers.TEXTAREA =
 Element_wrappers.OPTGROUP =
 
 new Wrapper(Element, {
@@ -35,7 +35,7 @@ new Wrapper(Element, {
     // type to tag name conversion
     if (!element || isHash(element)) {
       options = element || {};
-    
+
       if (/textarea|select/.test(options.type || '')) {
         element = options.type;
         delete(options.type);
@@ -43,10 +43,10 @@ new Wrapper(Element, {
         element = 'input';
       }
     }
-    
+
     this.$super(element, options);
   },
-  
+
   /**
    * Returns a reference to the input's form
    *
@@ -55,7 +55,7 @@ new Wrapper(Element, {
   form: function() {
     return $(this._.form);
   },
-  
+
   /**
    * SELECT element has a bug in FF that screws the selected options
    *
@@ -65,17 +65,17 @@ new Wrapper(Element, {
    */
   insert: function(content, position) {
     old_insert.call(this, content, position);
-    
+
     // FF doesn't marks selected options correctly with a textual content
     if (this._.tagName === 'SELECT' && isString(content)) {
       $A(this._.getElementsByTagName('option')).each(function(option) {
         option.selected = !!option.getAttribute('selected');
       });
     }
-    
+
     return this;
   },
-  
+
   /**
    * Overloading the method so it always called the '#insert' method
    *
@@ -85,7 +85,7 @@ new Wrapper(Element, {
   update: function(content) {
     return this.clean().insert(content);
   },
-  
+
   /**
    * uniform access to the element values
    *
@@ -118,7 +118,7 @@ new Wrapper(Element, {
     }
     return this;
   },
-  
+
   /**
    * Both ways getter/setter for the value parameter
    *
@@ -128,7 +128,7 @@ new Wrapper(Element, {
   value: function(value) {
     return this[value === undefined ? 'getValue' : 'setValue'](value);
   },
-  
+
   /**
    * focuses on the first input element on the form
    *
@@ -140,7 +140,7 @@ new Wrapper(Element, {
     if (Browser.IE) { this.fire('focus', {bubbles: false}); }
     return this;
   },
-  
+
   /**
    * removes focus out of all the form elements
    *
@@ -152,7 +152,7 @@ new Wrapper(Element, {
     if (Browser.IE) { this.fire('blur', {bubbles: false}); }
     return this;
   },
-  
+
   /**
    * focuses on the element and selects its content
    *
@@ -162,7 +162,7 @@ new Wrapper(Element, {
     this._.select();
     return this.focus();
   },
-  
+
   /**
    * disables all the elements on the form
    *
@@ -172,7 +172,7 @@ new Wrapper(Element, {
     this._.disabled = true;
     return this.fire('disable');
   },
-  
+
   /**
    * enables all the elements on the form
    *
@@ -182,7 +182,7 @@ new Wrapper(Element, {
     this._.disabled = false;
     return this.fire('enable');
   },
-  
+
   /**
    * A bidirectional method to set/get the disabled status of the input field
    *
@@ -192,7 +192,7 @@ new Wrapper(Element, {
   disabled: function(value) {
     return value === undefined ? this._.disabled : this[value ? 'disable' : 'enable']();
   },
-  
+
   /**
    * A bidirectional method to set/get the checked status of the input field
    *
@@ -206,7 +206,7 @@ new Wrapper(Element, {
       this._.checked = value;
       value = this;
     }
-    
+
     return value;
   }
 });

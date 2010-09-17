@@ -12,7 +12,7 @@
 var Class = RightJS.Class = function() {
   var args = $A(arguments), properties = args.pop() || {},
     parent = args.pop();
-  
+
   // basic class object definition
   function klass() {
     if ('prebind' in this && isArray(this.prebind)) {
@@ -20,7 +20,7 @@ var Class = RightJS.Class = function() {
         this[method] = this[method].bind(this);
       }, this);
     }
-    
+
     return this.initialize ? this.initialize.apply(this, arguments) : this;
   }
 
@@ -28,13 +28,13 @@ var Class = RightJS.Class = function() {
   if (!args.length && !isHash(properties)) {
     parent = properties; properties = {};
   }
-  
+
   // attaching main class-level methods
   $ext(klass, Class_Methods).inherit(parent);
-  
+
   // catching the injections
   Class_attachInjections(klass, properties);
-  
+
   return klass.include(properties);
 },
 
@@ -93,9 +93,9 @@ Class_Methods = {
   extend: function() {
     $A(arguments).filter(isHash).each(function(module) {
       var callback = module.selfExtended || module.self_extended;
-      
+
       $ext(this, clean_module(module, true));
-      
+
       if (callback) {
         callback.call(module, this);
       }
@@ -118,10 +118,10 @@ Class_Methods = {
 
     $A(arguments).filter(isHash).each(function(module) {
       var callback = module.selfIncluded || module.self_included;
-      
+
       Object.each(clean_module(module, false), function(key, method) {
         var ancestor = ancestors.first(function(proto) { return key in proto && isFunction(proto[key]); });
-        
+
         this[PROTO][key] = !ancestor ? method : function() {
           this.$super = ancestor[key];
           return method.apply(this, arguments);
@@ -171,6 +171,6 @@ function Class_findSet(object, property) {
     constructor = object.constructor,
     candidates = [object, constructor].concat('ancestors' in constructor ? constructor.ancestors : []),
     holder = candidates.first(function(o) { return o && (upcased in o || capcased in o); });
-    
+
   return holder ? holder[upcased] || holder[capcased] : null;
 }

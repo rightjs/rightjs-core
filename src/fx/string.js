@@ -32,7 +32,7 @@ String.include({
    */
   toHex: function() {
     var match = /^#(\w)(\w)(\w)$/.exec(this);
-    
+
     if (match) {
       match = "#"+ match[1]+match[1]+match[2]+match[2]+match[3]+match[3];
     } else if ((match = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(this))) {
@@ -43,10 +43,10 @@ String.include({
     } else {
       match = String.COLORS[this] || this;
     }
-    
+
     return match;
   },
-  
+
   /**
    * converts a hex string into an rgb array
    *
@@ -55,12 +55,12 @@ String.include({
    */
   toRgb: function(array) {
     var match = /#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i.exec(this.toHex()||'');
-    
+
     if (match) {
       match = match.slice(1).map('toInt', 16);
       match = array ? match : 'rgb('+match+')';
     }
-    
+
     return match;
   }
 });

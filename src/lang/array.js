@@ -13,12 +13,12 @@ var original_sort = A_proto.sort,
 build_loop = function(pre, body, ret) {
   return eval('[function(c,s){'+
     'for(var '+pre+'i=0,l=this.length;i<l;i++){'+
-      body.replace('_', 'c.call(s,this[i],i,this)') + 
+      body.replace('_', 'c.call(s,this[i],i,this)') +
     '}' +
     ret +
   '}]')[0];
 },
-  
+
 // JavaScript 1.6 methods recatching up or faking
 for_each = A_proto.forEach || build_loop('', '_', ''),
 filter   = A_proto.filter  || build_loop('r=[],j=0,', 'if(_)r[j++]=this[i]', 'return r'),
@@ -35,8 +35,8 @@ last     = function(callback, scope) {
   }
   return null;
 };
-  
-  
+
+
 //
 // RightJS callbacks magick preprocessing
 //
@@ -44,7 +44,7 @@ last     = function(callback, scope) {
 // prepares a correct callback function
 function guess_callback(argsi, array) {
   var callback = argsi[0], args = slice.call(argsi, 1), scope = array, attr;
-  
+
   if (isString(callback)) {
     attr = callback;
     if (array.length && isFunction(array[0][attr])) {
@@ -55,18 +55,18 @@ function guess_callback(argsi, array) {
   } else {
     scope = args[0];
   }
-  
+
   return [callback, scope];
 }
 
 // calls the given method with preprocessing the arguments
 function call_method(func, scope, args) {
   var result;
-  
+
   try {
     result = func.apply(scope, guess_callback(args, scope));
   } catch(e) { if (!(e instanceof RightJS.Break)) { throw(e); } }
-  
+
   return result;
 }
 
@@ -79,7 +79,7 @@ function boolean_check(i) {
 function default_sort(a, b) {
   return a > b ? 1 : a < b ? -1 : 0;
 }
-  
+
 Array.include({
   /**
    * IE fix
@@ -97,7 +97,7 @@ Array.include({
     }
     return -1;
   },
-  
+
   /**
    * IE fix
    * returns the last index of the value in the array
@@ -113,7 +113,7 @@ Array.include({
     }
     return -1;
   },
-  
+
   /**
    * returns the first element of the array
    *
@@ -122,7 +122,7 @@ Array.include({
   first: function() {
     return arguments.length ? call_method(first, this, arguments) : this[0];
   },
-  
+
   /**
    * returns the last element of the array
    *
@@ -131,7 +131,7 @@ Array.include({
   last: function() {
     return arguments.length ? call_method(last, this, arguments) : this[this.length-1];
   },
-  
+
   /**
    * returns a random item of the array
    *
@@ -140,7 +140,7 @@ Array.include({
   random: function() {
     return this.length ? this[Math.random(this.length-1)] : null;
   },
-  
+
   /**
    * returns the array size
    *
@@ -149,7 +149,7 @@ Array.include({
   size: function() {
     return this.length;
   },
-  
+
   /**
    * cleans the array
    * @return Array this
@@ -158,7 +158,7 @@ Array.include({
     this.length = 0;
     return this;
   },
-  
+
   /**
    * checks if the array has no elements in it
    *
@@ -167,7 +167,7 @@ Array.include({
   empty: function() {
     return !this.length;
   },
-  
+
   /**
    * creates a copy of the given array
    *
@@ -176,7 +176,7 @@ Array.include({
   clone: function() {
     return this.slice(0);
   },
-  
+
   /**
    * calls the given callback function in the given scope for each element of the array
    *
@@ -189,7 +189,7 @@ Array.include({
     return this;
   },
   forEach: for_each,
-  
+
   /**
    * creates a list of the array items converted in the given callback function
    *
@@ -200,7 +200,7 @@ Array.include({
   map: function() {
     return call_method(map, this, arguments);
   },
-  
+
   /**
    * creates a list of the array items which are matched in the given callback function
    *
@@ -211,7 +211,7 @@ Array.include({
   filter: function() {
     return call_method(filter, this, arguments);
   },
-  
+
   /**
    * creates a list of the array items that are not matching the give callback function
    *
@@ -222,7 +222,7 @@ Array.include({
   reject: function() {
     return call_method(reject, this, arguments);
   },
-  
+
   /**
    * checks if any of the array elements is logically true
    *
@@ -233,7 +233,7 @@ Array.include({
   some: function(value) {
     return call_method(some, this, value ? arguments : [boolean_check]);
   },
-  
+
   /**
    * checks if all the array elements are logically true
    *
@@ -244,7 +244,7 @@ Array.include({
   every: function(value) {
     return call_method(every, this, value ? arguments : [boolean_check]);
   },
-  
+
   /**
    * applies the given lambda to each element in the array
    *
@@ -258,7 +258,7 @@ Array.include({
     this.map.apply(this, arguments).forEach(function(value, i) { this[i] = value; }, this);
     return this;
   },
-    
+
   /**
    * similar to the concat function but it adds only the values which are not on the list yet
    *
@@ -270,7 +270,7 @@ Array.include({
     for (var copy = this.clone(), arg, i=0, j, length = arguments.length; i < length; i++) {
       arg = arguments[i];
       arg = ensure_array(arg);
-      
+
       for (j=0; j < arg.length; j++) {
         if (copy.indexOf(arg[j]) == -1) {
           copy.push(arg[j]);
@@ -279,7 +279,7 @@ Array.include({
     }
     return copy;
   },
-  
+
   /**
    * flats out complex array into a single dimension array
    *
@@ -296,7 +296,7 @@ Array.include({
     });
     return copy;
   },
-  
+
   /**
    * returns a copy of the array whithout any null or undefined values
    *
@@ -305,7 +305,7 @@ Array.include({
   compact: function() {
     return this.without(null, undefined);
   },
-  
+
   /**
    * returns a copy of the array which contains only the unique values
    *
@@ -314,7 +314,7 @@ Array.include({
   uniq: function() {
     return [].merge(this);
   },
-  
+
   /**
    * checks if all of the given values
    * exists in the given array
@@ -331,7 +331,7 @@ Array.include({
     }
     return true;
   },
-  
+
   /**
    * returns a copy of the array without the items passed as the arguments
    *
@@ -345,7 +345,7 @@ Array.include({
       return !filter.includes(value);
     });
   },
-  
+
   /**
    * Shuffles the array items in a random order
    *
@@ -353,12 +353,12 @@ Array.include({
    */
   shuffle: function() {
     var shuff = this.clone(), j, x, i = shuff.length;
-    
+
     for (; i > 0; j = Math.random(i-1), x = shuff[--i], shuff[i] = shuff[j], shuff[j] = x) {}
-    
+
     return shuff;
   },
-  
+
   /**
    * Default sort fix for numeric values
    *
@@ -368,7 +368,7 @@ Array.include({
   sort: function(callback) {
     return original_sort.apply(this, (callback || !isNumber(this[0])) ? arguments : [default_sort]);
   },
-  
+
   /**
    * sorts the array by running its items though a lambda or calling their attributes
    *
@@ -378,7 +378,7 @@ Array.include({
    */
   sortBy: function() {
     var pair = guess_callback(arguments, this);
-    
+
     return this.sort(function(a, b) {
       return default_sort(
         pair[0].call(pair[1], a),
@@ -386,7 +386,7 @@ Array.include({
       );
     });
   },
-  
+
   /**
    * Returns the minimal value on the list
    *
@@ -395,7 +395,7 @@ Array.include({
   min: function() {
     return Math.min.apply(Math, this);
   },
-  
+
   /**
    * Returns the maximal value
    *
@@ -404,7 +404,7 @@ Array.include({
   max: function() {
     return Math.max.apply(Math, this);
   },
-  
+
   /**
    * Returns a summ of all the items on the list
    *

@@ -48,7 +48,7 @@ Function.include({
   curry: function() {
     return this.bind.apply(this, [this].concat($A(arguments)));
   },
-  
+
   /**
    * The right side curry feature
    *
@@ -96,7 +96,7 @@ Function.include({
 
     return timer;
   },
-  
+
   /**
    * Chains the given function after the current one
    *

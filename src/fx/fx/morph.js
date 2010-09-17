@@ -30,7 +30,7 @@ function check_border_styles(element, before, after) {
       bd_style = 'border' + direction + 'Style',
       bd_width = 'border' + direction + 'Width',
       bd_color = 'border' + direction + 'Color';
-    
+
     if (bd_style in before && before[bd_style] != after[bd_style]) {
       var style = element._.style;
 
@@ -49,7 +49,7 @@ function check_border_styles(element, before, after) {
 // parses the style hash into a processable format
 function parse_style(values) {
   var result = {}, re = /[\d\.\-]+/g, m, key, value, i;
-  
+
   for (key in values) {
     m = values[key].match(re);
     value = m.map('toFloat');
@@ -57,35 +57,35 @@ function parse_style(values) {
     value.r = value.t[0] === 'rgb(';
 
     if (value.t.length == 1) { value.t.unshift(''); }
-    
+
     for (i=0; i < value.length; i++) {
       value.t.splice(i*2 + 1, 0, value[i]);
     }
     result[key] = value;
   }
-  
+
   return result;
 }
 
 // cleans up and optimizies the styles
 function clean_styles(element, before, after) {
   var remove = [], key;
-  
+
   for (key in after) {
     // checking the height/width options
     if ((key == 'width' || key == 'height') && before[key] == 'auto') {
       before[key] = element._['offset'+key.capitalize()] + 'px';
     }
   }
-  
+
   // IE opacity filter fix
   if (after.filter && !before.filter) {
     before.filter = 'alpha(opacity=100)';
   }
-  
+
   // adjusting the border style
   check_border_styles(element, before, after);
-  
+
   // cleaing up the list
   for (key in after) {
     // proprocessing colors
@@ -100,12 +100,12 @@ function clean_styles(element, before, after) {
 
       if (!after[key] || !before[key]) {  after[key] = before[key] = ''; }
     }
-    
+
     // filling up the missing size
     if (/\d/.test(after[key]) && !/\d/.test(before[key])) {
       before[key] = after[key].replace(/[\d\.\-]+/g, '0');
     }
-    
+
     // removing unprocessable keys
     if (after[key] === before[key] || remove.includes(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
       delete(after[key]);
@@ -122,7 +122,7 @@ function clean_styles(element, before, after) {
  */
 function style_keys(style) {
   var keys = [], border_types = ['Style', 'Color', 'Width'], key, i, j;
-    
+
   for (key in style) {
     if (key.startsWith('border')) {
       for (i=0; i < border_types.length; i++) {
@@ -140,32 +140,32 @@ function style_keys(style) {
       keys.push(key);
     }
   }
-  
+
   return keys;
 }
- 
+
 Fx.Morph = new Class(Fx, {
 
-// protected  
+// protected
 
   // parepares the effect
   prepare: function(style) {
     var keys   = style_keys(style),
         before = this._cloneStyle(this.element, keys),
         after  = this._endStyle(style, keys);
-    
+
     clean_styles(this.element, before, after);
-    
+
     this.before = parse_style(before);
     this.after  = parse_style(after);
   },
-  
+
   render: function(delta) {
     var before, after, value, style = this.element._.style, key, i, l;
     for (key in this.after) {
       before = this.before[key];
       after  = this.after[key];
-      
+
       for (i=0, l = after.length; i < l; i++) {
         value = before[i] + (after[i] - before[i]) * delta;
         if (after.r) {
@@ -173,11 +173,11 @@ Fx.Morph = new Class(Fx, {
         }
         after.t[i*2 + 1] = value;
       }
-      
+
       style[key] = after.t.join('');
     }
   },
-  
+
   /**
    * Returns a hash of the end style
    *
@@ -190,18 +190,18 @@ Fx.Morph = new Class(Fx, {
         .setStyle('position:absolute;z-index:-1;visibility:hidden')
         .setWidth(element.size().x)
         .setStyle(style);
-    
+
     if (element.parent()) {
       element.insert(dummy, 'before');
     }
-    
+
     var after  = this._cloneStyle(dummy, keys);
-    
+
     dummy.remove();
-    
+
     return after;
   },
-  
+
   /**
    * Fast styles cloning
    *
@@ -215,13 +215,13 @@ Fx.Morph = new Class(Fx, {
       if (key in style) {
         clean[key] = ''+ style[key];
       }
-      
+
       // libwebkit bug fix for in case of languages pack applied
       if (key === 'opacity') {
         clean[key] = clean[key].replace(',', '.');
       }
     }
-    
+
     return clean;
   }
 });

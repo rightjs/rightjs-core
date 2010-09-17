@@ -9,14 +9,14 @@ Fx.Slide = new Class(Fx.Twin, {
       direction: 'top'
     })
   },
-  
-// protected  
+
+// protected
   prepare: function(how) {
     this.setHow(how);
-    
+
     var element = old_show.call(this.element);
     this.size = element.size();
-    
+
     this.styles = {};
     $w('overflow height width marginTop marginLeft').each(function(key) {
       this.styles[key] = element._.style[key];
@@ -49,7 +49,7 @@ Fx.Slide = new Class(Fx.Twin, {
 
     } else if (this.how == 'in') {
       var element_style = this.element._.style;
-      
+
       if (['top', 'bottom'].includes(direction)) {
         style.height = size.y + 'px';
         element_style.height = '0px';
@@ -66,7 +66,7 @@ Fx.Slide = new Class(Fx.Twin, {
         element_style.marginTop = margin_top + size.y + 'px';
       }
     }
-    
+
     return style;
   }
 

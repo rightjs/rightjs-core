@@ -15,14 +15,14 @@ if (!RightJS.$E('p').getBoundingClientRect) {
           top      = element.offsetTop,
           left     = element.offsetLeft,
           parent   = element.offsetParent;
-      
+
       while (parent) {
         top  += parent.offsetTop;
         left += parent.offsetLeft;
-        
+
         parent = parent.offsetParent;
       }
-      
+
       return {x: left, y: top};
     }
   });

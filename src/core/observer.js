@@ -1,5 +1,5 @@
 /**
- * standard Observer class. 
+ * standard Observer class.
  *
  * Might be used as a usual class or as a builder over another objects
  *
@@ -11,18 +11,18 @@
  */
 var Observer = RightJS.Observer = new Class({
   include: Options,
-  
+
   /**
    * general constructor
    *
    * @param Object options
    */
   initialize: function(options) {
-    this.setOptions(options);    
+    this.setOptions(options);
     Observer_createShortcuts(this, Class_findSet(this, 'events'));
     return this;
   },
-  
+
   /**
    * binds an event listener
    *
@@ -35,7 +35,7 @@ var Observer = RightJS.Observer = new Class({
    */
   on: function() {
     var args = $A(arguments), event = args.shift(), name;
-    
+
     if (isString(event)) {
       if (!('$listeners' in this)) { this.$listeners = []; }
 
@@ -47,14 +47,14 @@ var Observer = RightJS.Observer = new Class({
 
         case "function":
           var hash = {};
-          
+
           // DON'T move it in the one-line hash variable definition,
           // it causes problems with the Konqueror 3 later on
           hash.e = event;
           hash.f = callback;
           hash.a = args;
           hash.r = name;
-          
+
           this.$listeners.push(hash);
           break;
 
@@ -67,7 +67,7 @@ var Observer = RightJS.Observer = new Class({
             }
           }
       }
-      
+
     } else {
       // assuming it's a hash of key-value pairs
       for (name in event) {
@@ -76,12 +76,12 @@ var Observer = RightJS.Observer = new Class({
         ).concat(args));
       }
     }
-    
-    
-    
+
+
+
     return this;
   },
-  
+
   /**
    * checks if the observer observes given event and/or callback
    *
@@ -95,13 +95,13 @@ var Observer = RightJS.Observer = new Class({
   observes: function(event, callback) {
     if (!isString(event)) { callback = event; event = null; }
     if (isString(callback)) { callback = this[callback]; }
-    
+
     return (this.$listeners || []).some(function(i) {
       return (event && callback) ? i.e === event && i.f === callback :
         event ? i.e === event : i.f === callback;
     });
   },
-  
+
   /**
    * stops observing an event or/and function
    *
@@ -120,16 +120,16 @@ var Observer = RightJS.Observer = new Class({
     } else {
       if (!isString(event)) {  callback = event; event = null; }
       if (isString(callback)){ callback = this[callback]; }
-      
+
       this.$listeners = (this.$listeners || []).filter(function(i) {
         return (event && callback) ? (i.e !== event || i.f !== callback) :
           (event ? i.e !== event : i.f !== callback);
       }, this);
     }
-    
+
     return this;
   },
-  
+
   /**
    * returns the listeners list for the event
    *
@@ -144,7 +144,7 @@ var Observer = RightJS.Observer = new Class({
       return !event || i.e === event;
     }).map(function(i) { return i.f; }).uniq();
   },
-  
+
   /**
    * initiates the event handling
    *
@@ -155,13 +155,13 @@ var Observer = RightJS.Observer = new Class({
    */
   fire: function() {
     var args = $A(arguments), event = args.shift();
-    
+
     (this.$listeners || []).each(function(i) {
       if (i.e === event) {
         i.f.apply(this, i.a.concat(args));
       }
     }, this);
-    
+
     return this;
   }
 }),
@@ -194,6 +194,6 @@ Observer_createShortcuts = Observer.createShortcuts = function(object, names) {
       };
     }
   });
-  
+
   return object;
 };

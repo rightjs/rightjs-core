@@ -30,7 +30,7 @@ function stub_rule(css_rule, tag) {
   first: function(css_rule) {
     return $(this._.querySelector(stub_rule(css_rule, this)));
   },
-  
+
   /**
    * Finds a list of matching nodes, or all the descendant nodes if no css-rule provided
    *
@@ -41,7 +41,7 @@ function stub_rule(css_rule, tag) {
     return $A(this._.querySelectorAll(stub_rule(css_rule, this))).map($);
   }
 });
- 
+
 Element.include({
   /**
    * checks if the element matches this css-rule
@@ -53,12 +53,12 @@ Element.include({
    */
   match: function(css_rule) {
     var result, parent = this._.tagName === 'HTML' ? this._.ownerDocument : this.parents().last();
-    
+
     // if it's a single node putting it into the context
     result = $(parent || $E('p').insert(this)).find(css_rule).include(this);
-    
+
     if (!parent) { this.remove(); }
-    
+
     return result;
   }
 });

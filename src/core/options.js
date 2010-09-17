@@ -19,7 +19,7 @@ var Options = RightJS.Options = {
    */
   setOptions: function(opts) {
     var options = this.options = Object.merge(Class_findSet(this, 'options'), opts), match, key;
-    
+
     // hooking up the observer options
     if (isFunction(this.on)) {
       for (key in options) {
@@ -29,10 +29,10 @@ var Options = RightJS.Options = {
         }
       }
     }
-    
+
     return this;
   },
-  
+
   /**
    * Cuts of an options hash from the end of the arguments list
    * assigns them using the #setOptions method and then
