@@ -14,7 +14,7 @@ var ElementEventsTest = TestCase.create({
   tearDown: function() {
     this.el.remove();
   },
-/*
+
   testObserve: function() {
     var wired = false, context = null, event;
     this.assertSame(this.el, this.el.on('click', function(e) { wired = true; context = this; event = e; }));
@@ -168,7 +168,7 @@ var ElementEventsTest = TestCase.create({
     this.assertSame(this.el, e.target, "testing target");
     this.assertEqual(1, e.which)
   },
-  */
+  
   testStoppinEventByReturnFalse: function() {
     var e1, e2; e1 = e2 = false;
     

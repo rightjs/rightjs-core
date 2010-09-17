@@ -225,7 +225,7 @@ var ElementTest = TestCase.create({
       this.assertEqual(
         '<INPUT type=checkbox CHECKED value=on name=box1>'+
         '<INPUT type=radio CHECKED value=on name=box2>',
-        $E('div').insert([box1, box2])._.innerHTML.replace(/\s+_rid[^=]+="\d+"/mg, '')
+        $E('div').insert([box1, box2])._.innerHTML.replace(/\s+_rjs_id="\d+"/mg, '')
       );
     }
   },

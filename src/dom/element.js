@@ -50,16 +50,17 @@ element_constructor = function(element, options) {
   }
 };
 
-if (Browser.IE) {
-  //
-  // IE browsers have a bug with checked input elements
-  // and we kinda hacking the Element constructor so that
-  // it affected IE browsers only
-  //
+//
+// IE 6,7,8 (not 9!) browsers have a bug with checkbox and radio input elements
+// it doesn't place the 'checked' property correctly, so we kinda hacking
+// the Element constructor a bit for them
+//
+try {
+  document.createElement('<input/>'); // <- works for IE < 9 only
   element_constructor = patch_function(element_constructor, /(\((\w+),\s*(\w+)\)\s*\{)/,
     '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
   );
-}
+} catch (e) {}
 
 /**
  * The actual elements wrapper

@@ -256,7 +256,10 @@ var ElementStructsTest = TestCase.create({
     
     var result = this.el.find('div, p');
     
-    this.assertEqual([el1, el4, el2].sort(), result.map('_').sort());
+    this.assertEqual(
+      [el1, el4, el2].map(TestCaseUtil.to_s.bind(TestCaseUtil)).sort(),
+      result.map('_').map(TestCaseUtil.to_s.bind(TestCaseUtil)).sort()
+    );
     
     this.assert(result[0] instanceof RightJS.Element);
     this.assert(result[1] instanceof RightJS.Element);
@@ -303,7 +306,7 @@ var ElementStructsTest = TestCase.create({
     var element = el || this.el;
     element = '_' in element ? element._ : element;
     return element.innerHTML.toLowerCase()
-      .replace(/\s+</mg, "<").replace(/\s+_rid[^=]+="\d+"/mg, '')
+      .replace(/\s+</mg, "<").replace(/\s+_rjs_id="\d+"/mg, '')
       .replace(/<script[^>]*>([\s\S]*?)<\/script>/img, '');
   },
   
