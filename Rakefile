@@ -43,7 +43,7 @@ $options.reject!{ |o| o == 'no-olds'} if $options.include?('safe')
 ######################################################################
 desc "Cleans up the build directory"
 task :clean do
-  unless $options == ['server']
+  unless $options == ['server'] && File.exists?(BUILD_DIR)
     puts ' * Creating the build dir'
     FileUtils.rm_rf BUILD_DIR
     Dir.mkdir BUILD_DIR
@@ -156,6 +156,8 @@ end
 ######################################################################
 desc "Bulds the server-side version"
 task 'build:server' do
+  Rake::Task['clean'].invoke
+
   puts " * Creating the server side version"
 
   @util = RUtil.new("dist/header.server.js", "dist/layout.server.js")
