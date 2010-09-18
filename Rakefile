@@ -43,7 +43,7 @@ $options.reject!{ |o| o == 'no-olds'} if $options.include?('safe')
 ######################################################################
 desc "Cleans up the build directory"
 task :clean do
-  unless $options == ['server'] or !File.exists?(BUILD_DIR)
+  unless $options == ['server']
     puts ' * Creating the build dir'
     FileUtils.rm_rf BUILD_DIR
     Dir.mkdir BUILD_DIR
