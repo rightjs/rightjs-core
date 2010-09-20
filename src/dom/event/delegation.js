@@ -218,6 +218,17 @@ Object.each({
     return result === doc ? this : result;
   };
 });
+var old_on = String[PROTO].on;
+String[PROTO].on = function(hash) {
+  if (isHash(hash)) {
+    for (var key in hash) {
+      old_on.apply(this, [key].concat([hash[key]]));
+    }
+  } else {
+    old_on.apply(this, arguments);
+  }
+  return this;
+}
 
 /**
  * building the list of String#onEvent shortucts

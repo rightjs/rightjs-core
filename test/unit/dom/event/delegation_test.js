@@ -302,6 +302,24 @@ var EventDelegationTest = TestCase.create({
     this.undoMock($(document), 'delegate');
   },
 
+  testStringOnShortcutWithAHash: function() {
+    var args = [], css_rule = ".some.css-rule";
+
+    this.mock($(document), 'delegate', function() { args.push($A(arguments)); return $(document); });
+
+    this.assertSame(css_rule, css_rule.on({
+      'click': 'argument1',
+      'hover': 'argument2'
+    }));
+
+    this.assertEqual([
+      ['click', css_rule, 'argument1'],
+      ['hover', css_rule, 'argument2']
+    ], args);
+
+    this.undoMock($(document), 'delegate');
+  },
+
   testStringStopObservingShortcut: function() {
     var args, css_rule = ".some.css-rule";
 
