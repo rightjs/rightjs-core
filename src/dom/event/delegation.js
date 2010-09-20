@@ -228,7 +228,7 @@ String[PROTO].on = function(hash) {
     old_on.apply(this, arguments);
   }
   return this;
-}
+};
 
 /**
  * building the list of String#onEvent shortucts

@@ -44,7 +44,7 @@ var Window = RightJS.Window = new Wrapper({
     var win = this._, doc = this.d, body = doc.body, html = doc.documentElement;
 
     return (win.pageXOffset || win.pageYOffset) ? {x: win.pageXOffset, y: win.pageYOffset} :
-      (body.scrollLeft || body.scrollTop) ? {x: body.scrollLeft, y: body.scrollTop} :
+      (body && (body.scrollLeft || body.scrollTop)) ? {x: body.scrollLeft, y: body.scrollTop} :
       {x: html.scrollLeft, y: html.scrollTop};
   },
 
