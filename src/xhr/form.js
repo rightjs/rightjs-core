@@ -33,9 +33,9 @@ Form.include({
     options.method = options.method || this._.method || 'post';
 
     new Xhr(this._.action || document.location.href, options)
-      .onRequest((function() {this.disable.bind(this).delay(20);}).bind(this))
       .onComplete(this.enable.bind(this)).send(this);
 
+    this.disable.bind(this).delay(1); // webkit needs this async call with iframed calls
     return this;
   },
 
