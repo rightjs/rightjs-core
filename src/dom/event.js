@@ -134,7 +134,7 @@ var Event = RightJS.Event = new Wrapper({
     if (this.target instanceof Element) {
       var target   = this.target,
           targets  = [target].concat(target.parents()),
-          search   = this.currentTarget.find(css_rule);
+          search   = this.currentTarget ? this.currentTarget.find(css_rule) : [];
 
       return targets.first(function(element) {
         return search.include(element);

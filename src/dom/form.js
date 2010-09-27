@@ -24,7 +24,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
   initialize: function(in_options) {
     var options = in_options || {}, remote = 'remote' in options, element = options;
 
-    if (isHash(options)) {
+    if (isHash(options) && !isElement(options)) {
       element = 'form';
       options = Object.without(options, 'remote');
     }

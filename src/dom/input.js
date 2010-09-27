@@ -33,7 +33,7 @@ new Wrapper(Element, {
    */
   initialize: function(element, options) {
     // type to tag name conversion
-    if (!element || isHash(element)) {
+    if (!element || (isHash(element) && !isElement(element))) {
       options = element || {};
 
       if (/textarea|select/.test(options.type || '')) {
