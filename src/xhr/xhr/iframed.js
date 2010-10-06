@@ -31,6 +31,8 @@ Xhr.IFramed = new Class({
   onLoad: function() {
     this.status       = 200;
     this.readyState   = 4;
+    
+    this.form.set('target', '');
 
     try {
       this.responseText = window[this.id].document.documentElement.innerHTML;
