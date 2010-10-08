@@ -515,6 +515,16 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('boo hoo', this.el._.innerHTML);
   },
 
+  testText_getter: function() {
+    this.el._.innerHTML = "<b>any</b> <i>banny</i> <u>twenny</u>";
+    this.assertEqual('any banny twenny', this.el.text());
+  },
+
+  testText_setter: function() {
+    this.assertSame(this.el, this.el.text('<li>boo hoo!</li>'));
+    this.assertEqual('&lt;li&gt;boo hoo!&lt;/li&gt;', this.el._.innerHTML);
+  },
+
   testAnotherFrameAccess: function() {
     var id = 'elements_checks_iframe';
 

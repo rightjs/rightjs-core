@@ -84,11 +84,11 @@ Element.include({
 
     if (typeof(content) !== 'object') {
       scripts = content = (''+content);
-    } else if (content && content instanceof Element) {
+    } else if (content instanceof Element) {
       content = content._;
     }
 
-    Element_insertions[position](element, content.tagName ? content :
+    Element_insertions[position](element, content.nodeType ? content :
       Element_createFragment.call(
         (position === 'bottom' || position === 'top') ?
           element : element.parentNode, content
@@ -158,6 +158,22 @@ Element.include({
    */
   html: function(content) {
     return content === undefined ? this._.innerHTML : this.update(content);
+  },
+
+  /**
+   * Works with the Element's innerHTML property as a text
+   * when set something, it will appear as is with everything quoted
+   * when get, will return a string without any tags in it
+   *
+   * @param String text content
+   * @return String text content or Element this
+   */
+  text: function(text) {
+    if (text === undefined) {
+      return this._.innerHTML.stripTags();
+    } else {
+      return this.update(this.document()._.createTextNode(text));
+    }
   },
 
   /**
