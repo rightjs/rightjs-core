@@ -52,7 +52,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
    */
   inputs: function() {
     return this.elements().filter(function(input) {
-      return !['submit', 'button', 'reset', 'image', null].includes(input._.type);
+      return !['submit', 'button', 'reset', 'image', null].include(input._.type);
     });
   },
 
@@ -122,7 +122,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
     this.inputs().each(function(element) {
       input = element._;
       name  = input.name;
-      if (!input.disabled && name && (!['checkbox', 'radio'].includes(input.type) || input.checked)) {
+      if (!input.disabled && name && (!['checkbox', 'radio'].include(input.type) || input.checked)) {
         value = element.getValue();
         if (name.endsWith('[]')) {
           value = (values[name] || []).concat([value]);

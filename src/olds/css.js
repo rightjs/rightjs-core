@@ -112,7 +112,7 @@ if (!document.querySelector) {
 
         if (number == 'n') { return true; }
 
-        if (number.includes('n')) {
+        if (number.include('n')) {
           // parsing out the matching expression
           var a = 0, b = 0;
           if ((m = number.match(/^([+\-]?\d*)?n([+\-]?\d*)?$/))) {
@@ -237,11 +237,11 @@ if (!document.querySelector) {
               'if('+
                 '(o===""&&e.getAttributeNode(k)===null)||'+
                 '(o==="="&&p!=v)||'+
-                '(o==="*="&&!p.includes(v))||'+
+                '(o==="*="&&!p.include(v))||'+
                 '(o==="^="&&!p.startsWith(v))||'+
                 '(o==="$="&&!p.endsWith(v))||'+
-                '(o==="~="&&!p.split(" ").includes(v))||'+
-                '(o==="|="&&!p.split("-").includes(v))'+
+                '(o==="~="&&!p.split(" ").include(v))||'+
+                '(o==="|="&&!p.split("-").include(v))'+
               '){b=true;break;}'+
             '}if(b){continue;}'
           ); }

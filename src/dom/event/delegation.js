@@ -106,7 +106,7 @@
 function build_delegative_listener(css_rule, entry, scope) {
   return function(event) {
     var target = event.target, args = $A(entry), callback = args.shift();
-    if (scope.find(css_rule).includes(target)) {
+    if (scope.find(css_rule).include(target)) {
       if (isFunction(callback)) {
         callback.apply(target, [event].concat(args));
       } else {

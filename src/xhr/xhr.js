@@ -123,7 +123,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     }
 
     if (method == 'get') {
-      if (data) { url += (url.includes('?') ? '&' : '?') + data; }
+      if (data) { url += (url.include('?') ? '&' : '?') + data; }
       data = null;
     }
 

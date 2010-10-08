@@ -342,7 +342,7 @@ Array.include({
   without: function() {
     var filter = $A(arguments);
     return this.filter(function(value) {
-      return !filter.includes(value);
+      return !filter.include(value);
     });
   },
 

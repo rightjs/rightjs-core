@@ -77,7 +77,7 @@ $ext(Object, {
     var filter = $A(arguments), object = filter.shift(), copy = {}, key;
 
     for (key in object) {
-      if (!filter.includes(key)) {
+      if (!filter.include(key)) {
         copy[key] = object[key];
       }
     }

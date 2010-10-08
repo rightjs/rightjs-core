@@ -89,7 +89,7 @@ function clean_styles(element, before, after) {
   // cleaing up the list
   for (key in after) {
     // proprocessing colors
-    if (after[key] !== before[key] && !remove.includes(key) && /color/i.test(key)) {
+    if (after[key] !== before[key] && !remove.include(key) && /color/i.test(key)) {
       if (Browser.Opera) {
         after[key] = after[key].replace(/"/g, '');
         before[key] = before[key].replace(/"/g, '');
@@ -107,7 +107,7 @@ function clean_styles(element, before, after) {
     }
 
     // removing unprocessable keys
-    if (after[key] === before[key] || remove.includes(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
+    if (after[key] === before[key] || remove.include(key) || !/\d/.test(before[key]) || !/\d/.test(after[key])) {
       delete(after[key]);
       delete(before[key]);
     }

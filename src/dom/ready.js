@@ -19,7 +19,7 @@
       // IE and Konqueror browsers
       if ('readyState' in document) {
         (function() {
-          if (['loaded','complete'].includes(document.readyState)) {
+          if (['loaded','complete'].include(document.readyState)) {
             ready();
           } else {
             arguments.callee.delay(50);

@@ -111,7 +111,7 @@ new Wrapper(Element, {
     if (this._.type == 'select-multiple') {
       value = ensure_array(value).map(String);
       $A(this._.getElementsByTagName('option')).each(function(option) {
-        option.selected = value.includes(option.value);
+        option.selected = value.include(option.value);
       });
     } else {
       this._.value = value;

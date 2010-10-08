@@ -39,7 +39,7 @@ Fx.Slide = new Class(Fx.Twin, {
       margin_top  = this.styles.marginTop.toFloat() || 0;
 
     if (this.how == 'out') {
-      style[['top', 'bottom'].includes(direction) ? 'height' : 'width'] = '0px';
+      style[['top', 'bottom'].include(direction) ? 'height' : 'width'] = '0px';
 
       if (direction == 'right') {
         style.marginLeft = margin_left + size.x+'px';
@@ -50,7 +50,7 @@ Fx.Slide = new Class(Fx.Twin, {
     } else if (this.how == 'in') {
       var element_style = this.element._.style;
 
-      if (['top', 'bottom'].includes(direction)) {
+      if (['top', 'bottom'].include(direction)) {
         style.height = size.y + 'px';
         element_style.height = '0px';
       } else {
