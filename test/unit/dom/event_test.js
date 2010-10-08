@@ -47,5 +47,21 @@ var EventTest = TestCase.create({
     this.assertEqual('bar',    event._.bar);
     this.assertEqual('foo',    event.foo);
     this.assertEqual('bar',    event.bar);
+  },
+
+  testEventOffset: function() {
+    var target = new Element('div');
+    var event  = new Event('boo', {
+      target: target
+    });
+
+    target.position = function() {
+      return { x: 100, y: 200 };
+    };
+
+    event.pageX = 110;
+    event.pageY = 220;
+
+    this.assertEqual({x: 10, y: 20}, event.offset());
   }
 });

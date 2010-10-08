@@ -128,8 +128,12 @@ var Event = RightJS.Event = new Wrapper({
    * @return Object {x: ..., y: ...}
    */
   offset: function() {
-    return {x: this.pageX - this.target.position().x,
-        y: this.pageY - this.target.position().y};
+    var element_position = this.target.position();
+
+    return {
+      x: this.pageX - element_position.x,
+      y: this.pageY - element_position.y
+    };
   },
 
   /**
