@@ -123,6 +123,16 @@ var Event = RightJS.Event = new Wrapper({
   },
 
   /**
+   * Returns the event's offset relative to the target element
+   *
+   * @return Object {x: ..., y: ...}
+   */
+  offset: function() {
+    return {x: this.pageX - this.target.position().x,
+        y: this.pageY - this.target.position().y};
+  },
+
+  /**
    * Finds the element between the event target
    * and the boundary element that matches the
    * css-rule
