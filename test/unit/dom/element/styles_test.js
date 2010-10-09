@@ -99,6 +99,11 @@ var ElementStylesTest = TestCase.create({
     this.assertEqual('foo bar', this.el._.className);
   },
 
+  testGetClass: function() {
+    this.el._.className = 'boo hoo';
+    this.assertEqual('boo hoo', this.el.getClass());
+  },
+
   testAddClass: function() {
     this.assertHasNoClassName(this.el._, 'foo');
     this.assertHasNoClassName(this.el._, 'boo');

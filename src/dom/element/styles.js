@@ -98,6 +98,15 @@ Element.include({
   },
 
   /**
+   * Returns the current class-name
+   *
+   * @return String class-name
+   */
+  getClass: function() {
+    return this._.className;
+  },
+
+  /**
    * adds the given class name to the element
    *
    * @param String class name
