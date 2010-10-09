@@ -39,9 +39,9 @@ hack_observer('on',
 hack_observer('stopObserving',
   /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m,
   '$1var r=$4;'+
-  'if(!r)' + (looks_like_ie ?
-    'this._.detachEvent("on"+$2.n,$2.w);' :
-    'this._.removeEventListener($2.n,$2.w,false);'
+  'if(!r)this._.' + (looks_like_ie ?
+    'detachEvent("on"+$2.n,$2.w);' :
+    'removeEventListener($2.n,$2.w,false);'
   )+'$3 r'
 );
 

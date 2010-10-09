@@ -111,6 +111,7 @@ function build_delegative_listener(css_rule, entry, scope) {
         callback.apply(target, [event].concat(args)) :
         target[callback].apply(target, args);
     }
+    return undefined;
   };
 }
 

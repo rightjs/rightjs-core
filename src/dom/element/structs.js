@@ -169,11 +169,8 @@ Element.include({
    * @return String text content or Element this
    */
   text: function(text) {
-    if (text === undefined) {
-      return this._.innerHTML.stripTags();
-    } else {
-      return this.update(this.document()._.createTextNode(text));
-    }
+    return text === undefined ? this._.innerHTML.stripTags() :
+      this.update(this.document()._.createTextNode(text));
   },
 
   /**

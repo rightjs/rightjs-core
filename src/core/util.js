@@ -187,8 +187,9 @@ $ = RightJS.$ = function(object) {
   }
 
   if (object) {
-    if (UID_KEY in object && object[UID_KEY] in Wrappers_Cache) {
-      object = Wrappers_Cache[object[UID_KEY]];
+    var wrapper = UID_KEY in object ? Wrappers_Cache[object[UID_KEY]] : undefined;
+    if (wrapper !== undefined) {
+      object = wrapper;
     } else if (object.nodeType === 1) {
       object = new Element(object);
     } else if (isElement(object.target) || isElement(object.srcElement)) {

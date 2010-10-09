@@ -48,7 +48,7 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
 
 // searches for a suitable class for dynamic typecasting
 Wrapper.Cast = function(unit) {
-  return Element_wrappers[unit.tagName];
+  return unit.tagName in Element_wrappers ? Element_wrappers[unit.tagName] : undefined;
 };
 
 // exposing the cache so it could be manupulated externally
