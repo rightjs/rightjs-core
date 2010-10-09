@@ -1,7 +1,7 @@
 /**
  * The Class unit test-case
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var ClassTest = TestCase.create({
   name: 'ClassTest',
@@ -249,5 +249,17 @@ var ClassTest = TestCase.create({
     var a = new A(), boo = a.boo;
 
     this.assertEqual(a.value, boo());
+  },
+
+  testWrappersDelegation: function() {
+    var MyElement = new Class(Element, {
+      newMethod: function() {}
+    });
+
+    var e = new MyElement('div');
+
+    this.assert(e instanceof MyElement);
+    this.assert(e instanceof Element);
+    this.assert(e.newMethod instanceof Function);
   }
 });

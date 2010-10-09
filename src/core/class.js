@@ -7,11 +7,15 @@
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var Class = RightJS.Class = function() {
   var args = $A(arguments), properties = args.pop() || {},
     parent = args.pop();
+
+  if (parent && parent.ancestors && parent.ancestors[0] === Wrapper) {
+    return new Wrapper(parent, properties);
+  }
 
   // basic class object definition
   function klass() {
@@ -41,7 +45,7 @@ var Class = RightJS.Class = function() {
 /**
  * Class utility methods
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 commons = $w('selfExtended self_extended selfIncluded self_included'),
 extend  = commons.concat($w(PROTO+' parent extend include')),
