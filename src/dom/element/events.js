@@ -27,7 +27,7 @@ hack_observer('on',
 
   '$2.w=function(){'+
     'var a=$A(arguments),_;'+
-    '$2.r&&$2.r!=="stopEvent"?a.shift():_=a[0]=new RightJS.Event(a[0],this);'+
+    '$2.r?a.shift():_=a[0]=new RightJS.Event(a[0],this);'+
     '$2.f.apply($2.t,a.concat($2.a))===false&&_.stop()'+
   '};$2.t=this;' + (
     looks_like_ie ?
@@ -56,11 +56,11 @@ hack_observer('fire',
 // addjusting the arguments list
 hack_observer('fire',
   /((\w+)\.e\s*===\s*(\w+))([^}]+\2\.f\.apply)[^}]+?\.concat\(\w+\)\)/,
-  '$1.type$4(this,(($2.r&&$1.r!=="stopEvent")?[]:[$3]).concat($2.a))'
+  '$1.type$4(this,($2.r?[]:[$3]).concat($2.a))'
 );
 
 // a simple events terminator method to be hooked like this.onClick('stopEvent');
-Element_observer.stopEvent = function(e) { e.stop(); };
+Element_observer.stopEvent = function() { return false; };
 
 // loading the observer interface into the Element object
 Element.include(Element_observer);

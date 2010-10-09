@@ -139,24 +139,18 @@ var ElementEventsTest = TestCase.create({
   testEventByNameCalls: function() {
     var add_class_args;
     var remove_class_args;
-    var stop_event_args;
 
     this.el.addClass    = function() { add_class_args    = $A(arguments); };
     this.el.removeClass = function() { remove_class_args = $A(arguments); };
-    this.el.stopEvent   = function() { stop_event_args   = $A(arguments); };
 
     this.el.on('mouseover', 'addClass', 'test-class');
     this.el.on('mouseout', 'removeClass', 'test-class');
-    this.el.on('click', 'stopEvent');
 
     this.fireMouseOver(this.el._);
     this.fireMouseOut(this.el._);
-    this.fireClick(this.el._);
 
     this.assertEqual(['test-class'], add_class_args);
     this.assertEqual(['test-class'], remove_class_args);
-    this.assertEqual(1, stop_event_args.length);
-    this.assertEqual("click", stop_event_args[0].type);
   },
 
   testW3CEventProperties: function() {
