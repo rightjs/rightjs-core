@@ -175,32 +175,32 @@ var UtilTest = TestCase.create({
   },
 
   test_isElement: function() {
-    this.assert(isElement(document.createElement('div')));
-    this.assert(isElement(document.body));
+    this.assert(isElement(document.createElement('div')) === true);
+    this.assert(isElement(document.body) === true);
 
-    this.assertFalse(isElement(1));
-    this.assertFalse(isElement({}));
-    this.assertFalse(isElement([]));
-    this.assertFalse(isElement('1'));
-    this.assertFalse(isElement(null));
-    this.assertFalse(isElement(false));
-    this.assertFalse(isElement(function() {}));
-    this.assertFalse(isElement(new Element('span')));
-    this.assertFalse(isElement(document.createTextNode('asdfasdfasd')));
+    this.assert(isElement(1) === false);
+    this.assert(isElement({}) === false);
+    this.assert(isElement([]) === false);
+    this.assert(isElement('1') === false);
+    this.assert(isElement(null) === false);
+    this.assert(isElement(false) === false);
+    this.assert(isElement(function() {}) === false);
+    this.assert(isElement(new Element('span')) === false);
+    this.assert(isElement(document.createTextNode('asdfasdfasd')) === false);
   },
 
   testIsNode: function() {
-    this.assert(isNode(document.createElement('div')));
-    this.assert(isNode(document.createTextNode('asdfasdf')));
+    this.assert(isNode(document.createElement('div')) === true);
+    this.assert(isNode(document.createTextNode('asdfasdf')) === true);
 
-    this.assertFalse(isElement(1));
-    this.assertFalse(isElement({}));
-    this.assertFalse(isElement([]));
-    this.assertFalse(isElement('1'));
-    this.assertFalse(isElement(null));
-    this.assertFalse(isElement(false));
-    this.assertFalse(isElement(function() {}));
-    this.assertFalse(isNode(new Element('div')));
+    this.assert(isElement(1) === false);
+    this.assert(isElement({}) === false);
+    this.assert(isElement([]) === false);
+    this.assert(isElement('1') === false);
+    this.assert(isElement(null) === false);
+    this.assert(isElement(false) === false);
+    this.assert(isElement(function() {}) === false);
+    this.assert(isNode(new Element('div')) === false);
   },
 
   test_$A: function() {
