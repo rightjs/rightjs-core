@@ -1,3 +1,14 @@
+2010-10-10 Nikolay V. Nemshilov
+  o Version 2.1.0 Release
+    * Element#getClass method
+    * Element#text method
+    * Event#offset method
+    * Allowing to use `Class` to create wrappers
+    * Making everything run with env.js
+    * UJS listeners now can stop events by `return false`
+    * Cleanups and optimizations
+
+
 2010-03-15 Nikolay V. Nemshilov
   o Version 1.5.6 Release
     * Smooth scrolling support for the window object
@@ -5,7 +16,7 @@
     * Events delegation support for the `focus` and `blur` events
     * IE SELECT and TABLE elements updating method fix
     * IE opacity processing fixes
-    
+
 
 2010-03-01 Nikolay V. Nemshilov
   o Version 1.5.5 Release
@@ -18,7 +29,7 @@
     * Got rid of the `undefined` and `self` references
     * Old IE getElementById method fix
     * IE8 events handling fixes
-    
+
 
 2010-02-06 Nikolay V. Nemshilov aka St.
   o Version 1.5.4 Release
@@ -43,7 +54,7 @@
     * Nuked undocumented events firing shortcuts
     * Native JSON parser use for the Xhr class
     * Window onBlur, onFocus, onScroll shortcuts
-    
+
 
 2009-12-26 Nikolay V. Nemshilov aka St.
   o Version 1.5.2 Release
@@ -51,7 +62,7 @@
     * Fx autofps feature
     * Fx jumpless end style calculations
     * IE Event patch for relatedTarget fixed
-    
+
 
 2009-12-17 Nikolay V. Nemshilov aka St.
   o Version 1.5.1 Release
@@ -75,7 +86,7 @@
     * Options#cutOptions feature
     * Functions binding optimization
     * Manual positions calculations fix
-    
+
 
 2009-09-24 Nikolay V. Nemshilov aka St.
   o Version 1.4.3 Release
