@@ -66,6 +66,7 @@ new Wrapper(Element, {
   insert: function(content, position) {
     old_insert.call(this, content, position);
 
+    // IE gets screwed when SELECT element is updated with async calls
     if (this._.add && Browser.IE) {
       var dummy_option_element = document.createElement('option');
       this._.add(dummy_option_element);
@@ -73,11 +74,9 @@ new Wrapper(Element, {
     }
 
     // FF doesn't marks selected options correctly with a textual content
-    if (this._.tagName === 'SELECT' && isString(content)) {
-      $A(this._.getElementsByTagName('option')).each(function(option) {
-        option.selected = !!option.getAttribute('selected');
-      });
-    }
+    this.find('option').each(function(option) {
+      option._.selected = !!option.get('selected');
+    });
 
     return this;
   },
@@ -99,8 +98,8 @@ new Wrapper(Element, {
    */
   getValue: function() {
     if (this._.type == 'select-multiple') {
-      return $A(this._.getElementsByTagName('option')).map(function(option) {
-        return option.selected ? option.value : null;
+      return this.find('option').map(function(option) {
+        return option._.selected ? option._.value : null;
       }).compact();
     } else {
       return this._.value;
@@ -116,8 +115,8 @@ new Wrapper(Element, {
   setValue: function(value) {
     if (this._.type == 'select-multiple') {
       value = ensure_array(value).map(String);
-      $A(this._.getElementsByTagName('option')).each(function(option) {
-        option.selected = value.include(option.value);
+      this.find('option').each(function(option) {
+        option._.selected = value.include(option._.value);
       });
     } else {
       this._.value = value;
