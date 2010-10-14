@@ -32,9 +32,7 @@ elements_cache = {},
  */
 element_constructor = function(element, options) {
   // building the element
-  this._ = element = (element in elements_cache ? elements_cache[element] :
-    (elements_cache[element] = document.createElement(element))
-  ).cloneNode(false);
+  this._ = element = document.createElement(element);
 
   // applying the options
   if (options !== undefined) {

@@ -3,9 +3,7 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-var old_insert = Element[PROTO].insert,
-
-Input = RightJS.Input =
+var Input = RightJS.Input =
 
 // retgistering the typecasted wrappers
 Element_wrappers.INPUT    =
@@ -54,31 +52,6 @@ new Wrapper(Element, {
    */
   form: function() {
     return $(this._.form);
-  },
-
-  /**
-   * SELECT element has a bug in FF that screws the selected options
-   *
-   * @param mixed content
-   * @param String optional position
-   * @return Input this
-   */
-  insert: function(content, position) {
-    old_insert.call(this, content, position);
-
-    // IE gets screwed when SELECT element is updated with async calls
-    if (this._.add && Browser.IE && !this.first('OPTGROUP')) {
-      var dummy_option_element = document.createElement('option');
-      this._.add(dummy_option_element);
-      this._.removeChild(dummy_option_element);
-    }
-
-    // FF doesn't marks selected options correctly with a textual content
-    this.find('option').each(function(option) {
-      option._.selected = !!option.get('selected');
-    });
-
-    return this;
   },
 
   /**
@@ -216,3 +189,16 @@ new Wrapper(Element, {
   }
 });
 
+// SELECT element has a bug in FF that screws the selected options
+if ($E('select').update('<option selected="true">1</option><option>2</option>')._.value === '2') {
+  Input[PROTO].insert = function(content, position) {
+    Element[PROTO].insert.call(this, content, position);
+
+    // manually resetting the selected option in here
+    this.find('option').each(function(option) {
+      option._.selected = !!option.get('selected');
+    });
+
+    return this;
+  };
+}

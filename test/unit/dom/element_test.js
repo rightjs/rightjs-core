@@ -204,7 +204,8 @@ var ElementTest = TestCase.create({
     var box1 = new Element('input', {
       type: 'checkbox',
       name: 'box1',
-      checked: true
+      checked: true,
+      value: 'on'
     })._;
 
     this.assertEqual('checkbox', box1.type);
@@ -214,7 +215,8 @@ var ElementTest = TestCase.create({
     var box2 = new Element('input', {
       type: 'radio',
       name: 'box2',
-      checked: true
+      checked: true,
+      value: 'on'
     })._;
 
     this.assertEqual('radio', box2.type);
