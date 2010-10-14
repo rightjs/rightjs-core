@@ -66,6 +66,12 @@ new Wrapper(Element, {
   insert: function(content, position) {
     old_insert.call(this, content, position);
 
+    if (this._.add && Browser.IE) {
+      var dummy_option_element = document.createElement('option');
+      this._.add(dummy_option_element);
+      this._.removeChild(dummy_option_element);
+    }
+
     // FF doesn't marks selected options correctly with a textual content
     if (this._.tagName === 'SELECT' && isString(content)) {
       $A(this._.getElementsByTagName('option')).each(function(option) {
@@ -210,3 +216,4 @@ new Wrapper(Element, {
     return value;
   }
 });
+
