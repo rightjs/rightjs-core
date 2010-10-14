@@ -67,7 +67,7 @@ new Wrapper(Element, {
     old_insert.call(this, content, position);
 
     // IE gets screwed when SELECT element is updated with async calls
-    if (this._.add && Browser.IE) {
+    if (this._.add && Browser.IE && !this.first('OPTGROUP')) {
       var dummy_option_element = document.createElement('option');
       this._.add(dummy_option_element);
       this._.removeChild(dummy_option_element);
