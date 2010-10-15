@@ -166,19 +166,40 @@ task 'build:server' do
     source.gsub! /\n\/\/\s+!#server:begin.+?\/\/\s+!#server:end\n/m, ''
     source.gsub! /\/\*\*\s+!#server.+?(?=\/\*\*)/m, ''
     source.gsub! /\n[^\n]+\/\/\s*!#server\s*(\n)/m, '\1'
+    source.gsub! /window([\.\[])/, 'global\1'
     source
   end
   @util.write("#{BUILD_DIR}/#{BUILD_FILE}-server.js")
 end
 
 ######################################################################
+#  Running the console tests
+######################################################################
+desc "Invokes all the console tests"
+task "test" do
+  Rake::Task['test:harm'].invoke
+  Rake::Task['test:node'].invoke
+end
+
+######################################################################
 #  Checking the Harmony
 ######################################################################
 desc "Checks the Harmony compatibility"
-task "harm" do
+task "test:harm" do
   Rake::Task['pack'].invoke
 
   require 'harmony'
   page = Harmony::Page.new
   page.load('build/right-src.js')
 end
+
+desc "Runs the node.js test for the server-side version build"
+task "test:node" do
+  Rake::Task['build:server'].invoke
+
+  puts " * Testing the server-side version on node.js"
+
+  system "node test/tests.server.js"
+end
+
+
