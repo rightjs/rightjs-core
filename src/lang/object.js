@@ -64,6 +64,17 @@ $ext(Object, {
   },
 
   /**
+   * A simple cloning method
+   * NOTE: does not clone the things recoursively!
+   *
+   * @param Object object
+   * @return Object clone
+   */
+  clone: function(object) {
+    return Object.merge(object);
+  },
+
+  /**
    * returns a copy of the object which contains
    * all the same keys/values except the key-names
    * passed the the method arguments

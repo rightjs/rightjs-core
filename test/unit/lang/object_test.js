@@ -57,6 +57,14 @@ var ObjectTest = TestCase.create({
     this.assertEqual({3:3}, o3);
   },
 
+  testClone: function() {
+    var o1 = {1:1};
+    var o2 = Object.clone(o1);
+
+    this.assertEqual(o1, o2);
+    this.assertNotSame(o1, o2);
+  },
+
   testToQueryString: function() {
     this.assertEqual('a=a&b=b&c=%25%23%3F', Object.toQueryString({a:'a', b:'b', c:'%#?'}));
     this.assertEqual('a%5B%5D=1&a%5B%5D=2&a%5B%5D=3', Object.toQueryString({'a[]': [1,2,3]}));
