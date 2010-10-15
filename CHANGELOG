@@ -1,3 +1,10 @@
+2010-10-15 Nikolay Nemshilov
+  o Version 2.1.1 Release
+    * Server side version fix
+    * Event#find method fix
+    * SELECT elements fix for IE
+    * Object.clone method added
+
 2010-10-10 Nikolay V. Nemshilov
   o Version 2.1.0 Release
     * Element#getClass method
