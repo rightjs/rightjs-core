@@ -27,6 +27,13 @@ var ElementStylesTest = TestCase.create({
     this.assertStyle(this.el._, style);
   },
 
+  testSetStyleWithZero: function() {
+    this.el._.style.zIndex = 10;
+    this.el.setStyle('z-index', 0);
+
+    this.assertEqual('0', this.el._.style.zIndex);
+  },
+
   testGetStyleWithElementLevelStyles: function() {
     this.el.setStyle({
       'fontSize': '12px',

@@ -22,7 +22,7 @@ Element.include({
   setStyle: function(hash, value) {
     var key, c_key, style = {}, element_style = this._.style;
 
-    if (value) { style[hash] = value; hash = style; }
+    if (value !== undefined) { style[hash] = value; hash = style; }
     else if(isString(hash)) {
       hash.split(';').each(function(option) {
         var els = option.split(':').map('trim');
