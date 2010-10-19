@@ -84,6 +84,16 @@ assert_equal(['boo', 'hoo'].filter('include', 'bo'), ['boo'], "Array#filter()");
 assert_equal(['boo', 'hoo'].reject('include', 'bo'), ['hoo'], "Array#reject()");
 
 
+// testing the Class
+var A = new rjs.Class();
+assert(typeof(A) === 'function', 'Class creation');
+var a = new A();
+assert(a instanceof A, 'Class instantiation');
+var B = new rjs.Class(A, {});
+var b = new B();
+assert(b instanceof B && b instanceof A, 'Class inheritance');
+
+
 // the footer
 console.log(ljust('', 80, '_'))
 console.log("Total: "+total+" Tests, "+ failed + " Failed");

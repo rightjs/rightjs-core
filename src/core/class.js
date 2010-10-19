@@ -13,9 +13,11 @@ var Class = RightJS.Class = function() {
   var args = $A(arguments), properties = args.pop() || {},
     parent = args.pop();
 
+// !#server:begin
   if (parent && parent.ancestors && parent.ancestors[0] === Wrapper) {
     return new Wrapper(parent, properties);
   }
+// !#server:end
 
   // basic class object definition
   function klass() {
