@@ -231,6 +231,28 @@ Element.include({
     // we need manually reassing the UID_KEY because IE will clone it too
     clone[UID_KEY] = UID++;
     return new Element(clone);
+  },
+
+  /**
+   * Returns an index of the element among the other child elements
+   *
+   * NOTE: doesn't count the textual nodes!
+   *
+   * @return Integer index
+   */
+  index: function() {
+    var node    = this._,
+        sibling = node.parentNode.firstChild,
+        index   = 0;
+
+    while (sibling !== node) {
+      if (sibling.nodeType === 1) { // counting elements only
+        index ++;
+      }
+      sibling = sibling.nextSibling;
+    }
+
+    return index;
   }
 });
 

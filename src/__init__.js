@@ -83,6 +83,7 @@ include_sources_by_modules({
   // the old browsers support hacks
   olds: [
     'olds/ie',
+    'olds/events',
     'olds/konq',
     'olds/css'
   ]

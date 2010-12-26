@@ -575,6 +575,15 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('DIV', clone._.tagName, 'Clone should have correct tag-name');
     this.assertEqual(original.html(), clone.html(), 'Clone should have the same innerHTML');
     this.assertFalse(clone.observes('click'), 'Clone should not inherit the events');
+  },
+
+  testIndex: function() {
+    $E('ul', {
+      // adding some spaces and stuff to check that text nodes are not counted
+      html: "  \n<li>one</li>  \n<li>two</li>  \n<li>three</li>  \n"
+    }).children().each(function(item, index) {
+      this.assertEqual(item.index(), index);
+    }, this);
   }
 });
 
