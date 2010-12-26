@@ -186,7 +186,7 @@ $ = RightJS.$ = function(object) {
     object = document.getElementById(object);
   }
 
-  if (object) {
+  if (object && !(object instanceof Wrapper)) {
     var wrapper = UID_KEY in object ? Wrappers_Cache[object[UID_KEY]] : undefined;
     if (wrapper !== undefined) {
       object = wrapper;

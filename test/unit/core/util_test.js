@@ -225,6 +225,13 @@ var UtilTest = TestCase.create({
     this.assertSame(el, wrap._);
   },
 
+  test_$_ReExtending: function() {
+    var el = new RightJS.Element('div');
+
+    this.assertSame(el, $(el));
+    this.assert(el._rjs_id === undefined, "should not re-register the wrapper");
+  },
+
   test_$_EventAccess: function() {
     var event = {target: document.createElement('div')};
     var wrap  = $(event);
