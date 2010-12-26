@@ -35,10 +35,12 @@ function stub_rule(css_rule, tag) {
    * Finds a list of matching nodes, or all the descendant nodes if no css-rule provided
    *
    * @param String css-rule
+   * @param boolean raw-search
    * @return Array of elements
    */
-  find: function(css_rule) {
-    return $A(this._.querySelectorAll(stub_rule(css_rule, this))).map($);
+  find: function(css_rule, raw) {
+    var result = $A(this._.querySelectorAll(stub_rule(css_rule, this)));
+    return raw === true ? result : result.map($);
   }
 });
 

@@ -402,8 +402,9 @@ if (!document.querySelector) {
         return this.find(css_rule)[0];
       },
 
-      find: function(css_rule) {
-        return select_all(this._, css_rule || '*').map(RightJS.$);
+      find: function(css_rule, raw) {
+        var result = select_all(this._, css_rule || '*');
+        return raw === true ? result : result.map(RightJS.$);
       }
     };
 
