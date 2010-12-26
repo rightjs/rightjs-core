@@ -13,6 +13,24 @@ var methods    = Element.prototype,
     old_remove = methods.remove,
     old_scroll = methods.scrollTo;
 
+/**
+ * Calls the visual effect on the element
+ *
+ * @param Element context
+ * @param String fx-name
+ * @param Object fx-options
+ * @return Element context
+ */
+function call_fx(element, name, params) {
+  var args    = $A(params).compact(),
+      options = isHash(args.last()) ? args.pop() : {},
+      fx      = new Fx[name.capitalize()](element, options);
+
+  fx.start.apply(fx, args);
+
+  return element;
+};
+
 Element.include({
   /**
    * Stops all the visual effects on the element
@@ -32,7 +50,7 @@ Element.include({
    * @return Element this
    */
   hide: function(fx, options) {
-    return (fx && this.visible()) ? this.fx(fx, ['out', options]) : old_hide.call(this);
+    return (fx && this.visible()) ? call_fx(this, fx, ['out', options]) : old_hide.call(this);
   },
 
   /**
@@ -43,7 +61,7 @@ Element.include({
    * @return Element this
    */
   show: function(fx, options) {
-    return (fx && !this.visible()) ? this.fx(fx, ['in', options]) : old_show.call(this);
+    return (fx && !this.visible()) ? call_fx(this, fx, ['in', options]) : old_show.call(this);
   },
 
   /**
@@ -54,7 +72,7 @@ Element.include({
    * @return Element this
    */
   remove: function(fx, options) {
-    return (fx && this.visible()) ? this.fx(fx, ['out', Object.merge(options, {
+    return (fx && this.visible()) ? call_fx(this, fx, ['out', Object.merge(options, {
       onFinish: old_remove.bind(this)
     })]) : old_remove.call(this);
   },
@@ -67,7 +85,7 @@ Element.include({
    * @return Element self
    */
   morph: function(style, options) {
-    return this.fx('morph', [style, options || {}]); // <- don't replace with arguments
+    return call_fx(this, 'morph', [style, options || {}]); // <- don't replace with arguments
   },
 
   /**
@@ -79,7 +97,7 @@ Element.include({
    * @return Element self
    */
   highlight: function() {
-    return this.fx('highlight', arguments);
+    return call_fx(this, 'highlight', arguments);
   },
 
   /**
@@ -89,7 +107,7 @@ Element.include({
    * @return Element self
    */
   fade: function() {
-    return this.fx('fade', arguments);
+    return call_fx(this, 'fade', arguments);
   },
 
   /**
@@ -100,7 +118,7 @@ Element.include({
    * @return Element self
    */
   slide: function() {
-    return this.fx('slide', arguments);
+    return call_fx(this, 'slide', arguments);
   },
 
   /**
@@ -111,7 +129,7 @@ Element.include({
    * @return Element this
    */
   scroll: function(value, options) {
-    return this.fx('scroll', [value, options||{}]);
+    return call_fx(this, 'scroll', [value, options||{}]);
   },
 
   /**
@@ -124,19 +142,5 @@ Element.include({
    */
   scrollTo: function(value, options) {
     return isHash(options) ? this.scroll(value, options) : old_scroll.apply(this, arguments);
-  },
-
-
-// protected
-
-  // runs an Fx on the element
-  fx: function(name, params) {
-    var args = $A(params).compact(), options = isHash(args.last()) ? args.pop() : {},
-      fx = new Fx[name.capitalize()](this, options);
-
-    fx.start.apply(fx, args);
-
-    return this;
   }
-
 });
