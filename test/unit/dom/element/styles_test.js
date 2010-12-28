@@ -31,7 +31,7 @@ var ElementStylesTest = TestCase.create({
     this.el._.style.zIndex = 10;
     this.el.setStyle('z-index', 0);
 
-    this.assertEqual('0', this.el._.style.zIndex);
+    this.assert(this.el._.style.zIndex == '0');
   },
 
   testGetStyleWithElementLevelStyles: function() {

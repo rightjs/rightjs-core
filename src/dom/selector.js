@@ -41,10 +41,8 @@ function stub_rule(css_rule, tag) {
   find: function(css_rule, raw) {
     var result = $A(this._.querySelectorAll(stub_rule(css_rule, this)));
     return raw === true ? result : result.map($);
-  }
-});
+  },
 
-Element.include({
   /**
    * checks if the element matches this css-rule
    *
@@ -54,12 +52,25 @@ Element.include({
    * @return Boolean check result
    */
   match: function(css_rule) {
-    var result, parent = this._.tagName === 'HTML' ? this._.ownerDocument : this.parents().last();
+    // finding the top parent element (the element might not be on the document)
+    var element = this._, parent = element, result, faking = false;
 
-    // if it's a single node putting it into the context
-    result = $(parent || $E('p').insert(this)).find(css_rule).include(this);
+    while (parent.parentNode !== null && parent.parentNode.nodeType !== 11) {
+      parent = parent.parentNode;
+    }
 
-    if (!parent) { this.remove(); }
+    // creating a fake context when needed
+    if (element === parent) {
+      parent = document.createElement('div');
+      parent.appendChild(element);
+      faking = true;
+    }
+
+    result = $(parent).find(css_rule, true).indexOf(element) !== -1;
+
+    if (faking) {
+      parent.removeChild(element);
+    }
 
     return result;
   }
