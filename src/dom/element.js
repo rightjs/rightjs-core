@@ -56,7 +56,7 @@ element_constructor = function(element, options) {
 try {
   document.createElement('<input/>'); // <- works for IE < 9 only
   element_constructor = patch_function(element_constructor, /(\((\w+),\s*(\w+)\)\s*\{)/,
-    '$1if($2==="input"&&$3)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
+    '$1if($2==="input"&&$3!==undefined)$2="<input name="+$3.name+" type="+$3.type+($3.checked?" checked":"")+"/>";'
   );
 } catch (e) {}
 

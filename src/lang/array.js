@@ -6,34 +6,76 @@
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var original_sort = A_proto.sort,
 
-build_loop = function(pre, body, ret) {
-  return eval('[function(c,s){'+
-    'for(var '+pre+'i=0,l=this.length;i<l;i++){'+
-      body.replace('_', 'c.call(s,this[i],i,this)') +
-    '}' +
-    ret +
-  '}]')[0];
+// JavaScript 1.6 methods recatching up or faking
+for_each = A_proto.forEach || function(callback, scope) {
+  for (var i=0; i < this.length; i++) {
+    callback.call(scope, this[i], i, this);
+  }
 },
 
-// JavaScript 1.6 methods recatching up or faking
-for_each = A_proto.forEach || build_loop('', '_', ''),
-filter   = A_proto.filter  || build_loop('r=[],j=0,', 'if(_)r[j++]=this[i]', 'return r'),
-reject   =                    build_loop('r=[],j=0,', 'if(!_)r[j++]=this[i]', 'return r'),
-map      = A_proto.map     || build_loop('r=[],', 'r[i]=_', 'return r'),
-some     = A_proto.some    || build_loop('', 'if(_)return true', 'return false'),
-every    = A_proto.every   || build_loop('', 'if(!_)return false', 'return true'),
-first    = build_loop('', 'if(_)return this[i]', 'return [][0]'),
+filter   = A_proto.filter || function(callback, scope) {
+  for (var result=[], j=0, i=0; i < this.length; i++) {
+    if (callback.call(scope, this[i], i, this)) {
+      result[j++] = this[i];
+    }
+  }
+  return result;
+},
+
+reject   = function(callback, scope) {
+  for (var result=[], j=0, i=0; i < this.length; i++) {
+    if (!callback.call(scope, this[i], i, this)) {
+      result[j++] = this[i];
+    }
+  }
+  return result;
+},
+
+map      = A_proto.map || function(callback, scope) {
+  for (var result=[], i=0; i < this.length; i++) {
+    result[i] = callback.call(scope, this[i], i, this);
+  }
+  return result;
+},
+
+some     = A_proto.some || function(callback, scope) {
+  for (var i=0; i < this.length; i++) {
+    if (callback.call(scope, this[i], i, this)) {
+      return true;
+    }
+  }
+  return false;
+},
+
+every    = A_proto.every || function(callback, scope) {
+  for (var i=0; i < this.length; i++) {
+    if (!callback.call(scope, this[i], i, this)) {
+      return false;
+    }
+  }
+  return true;
+},
+
+first    = function(callback, scope) {
+  for (var i=0; i < this.length; i++) {
+    if (callback.call(scope, this[i], i, this)) {
+      return this[i];
+    }
+  }
+  return undefined;
+},
+
 last     = function(callback, scope) {
   for (var i=this.length-1; i > -1; i--) {
     if (callback.call(scope, this[i], i, this)) {
       return this[i];
     }
   }
-  return null;
+  return undefined;
 };
 
 
@@ -45,9 +87,9 @@ last     = function(callback, scope) {
 function guess_callback(argsi, array) {
   var callback = argsi[0], args = slice.call(argsi, 1), scope = array, attr;
 
-  if (isString(callback)) {
+  if (typeof(callback) === 'string') {
     attr = callback;
-    if (array.length && isFunction(array[0][attr])) {
+    if (array.length !== 0 && typeof(array[0][attr]) === 'function') {
       callback = function(object) { return object[attr].apply(object, args); };
     } else {
       callback = function(object) { return object[attr]; };
@@ -59,15 +101,17 @@ function guess_callback(argsi, array) {
   return [callback, scope];
 }
 
+// defining the manual break errors class
+function Break() {}
+Break.prototype = Error.prototype;
+
 // calls the given method with preprocessing the arguments
 function call_method(func, scope, args) {
-  var result;
-
   try {
-    result = func.apply(scope, guess_callback(args, scope));
-  } catch(e) { if (!(e instanceof RightJS.Break)) { throw(e); } }
+    return func.apply(scope, guess_callback(args, scope));
+  } catch(e) { if (!(e instanceof Break)) { throw(e); } }
 
-  return result;
+  return undefined;
 }
 
 // checks the value as a boolean
@@ -90,7 +134,7 @@ Array.include({
    * @return Integer index or -1 if not found
    */
   indexOf: A_proto.indexOf || function(value, from) {
-    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0, l = this.length; i < l; i++) {
+    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0; i < this.length; i++) {
       if (this[i] === value) {
         return i;
       }
@@ -138,7 +182,7 @@ Array.include({
    * @return mixed a random item
    */
   random: function() {
-    return this.length ? this[Math.random(this.length-1)] : null;
+    return this.length === 0 ? undefined : this[Math.random(this.length-1)];
   },
 
   /**
@@ -165,7 +209,7 @@ Array.include({
    * @return boolean check result
    */
   empty: function() {
-    return !this.length;
+    return this.length === 0;
   },
 
   /**
@@ -267,11 +311,10 @@ Array.include({
    * @return Array new merged
    */
   merge: function() {
-    for (var copy = this.clone(), arg, i=0, j, length = arguments.length; i < length; i++) {
-      arg = arguments[i];
-      arg = ensure_array(arg);
+    for (var copy = this.clone(), arg, i=0; i < arguments.length; i++) {
+      arg = ensure_array(arguments[i]);
 
-      for (j=0; j < arg.length; j++) {
+      for (var j=0; j < arg.length; j++) {
         if (copy.indexOf(arg[j]) == -1) {
           copy.push(arg[j]);
         }
@@ -324,8 +367,8 @@ Array.include({
    * @return boolean check result
    */
   includes: function() {
-    for (var i=0, length = arguments.length; i < length; i++) {
-      if (this.indexOf(arguments[i]) == -1) {
+    for (var i=0; i < arguments.length; i++) {
+      if (this.indexOf(arguments[i]) === -1) {
         return false;
       }
     }
@@ -340,9 +383,9 @@ Array.include({
    * @return Array filtered copy
    */
   without: function() {
-    var filter = $A(arguments);
+    var filter = slice.call(arguments);
     return this.filter(function(value) {
-      return !filter.include(value);
+      return filter.indexOf(value) === -1;
     });
   },
 
@@ -411,11 +454,9 @@ Array.include({
    * @return Number a summ of values on the list
    */
   sum: function() {
-    for(var i=0,l=this.length,sum=0; i < l; sum += this[i++]) {}
+    for(var sum=0, i=0; i<this.length; sum += this[i++]) {}
     return sum;
   }
 });
 
-$alias(A_proto, {
-  include: 'includes'
-});
+A_proto.include = A_proto.includes;

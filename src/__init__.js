@@ -20,8 +20,7 @@ include_sources_by_modules({
 
     'core/class',
     'core/options',
-    'core/observer',
-    'core/break'
+    'core/observer'
   ],
 
   dom: [

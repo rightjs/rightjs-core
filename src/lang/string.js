@@ -172,4 +172,4 @@ String.include({
 
 });
 
-$alias(String[PROTO], {include: 'includes'});
+String[PROTO].include = String[PROTO].includes;

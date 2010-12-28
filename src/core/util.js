@@ -65,7 +65,7 @@ $eval = RightJS.$eval = function(text) {
  * @throws Break
  */
 $break = RightJS.$break = function() {
-  throw new RightJS.Break();
+  throw new Break();
 },
 
 /**
