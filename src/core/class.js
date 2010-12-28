@@ -21,12 +21,7 @@ var Class = RightJS.Class = function() {
 
   // basic class object definition
   function klass() {
-    if ('prebind' in this && isArray(this.prebind)) {
-      this.prebind.each(function(method) {
-        this[method] = this[method].bind(this);
-      }, this);
-    }
-
+    Class_checkPrebind(this);
     return this.initialize ? this.initialize.apply(this, arguments) : this;
   }
 
@@ -179,4 +174,18 @@ function Class_findSet(object, property) {
     holder = candidates.first(function(o) { return o && (upcased in o || capcased in o); });
 
   return holder ? holder[upcased] || holder[capcased] : null;
+}
+
+/**
+ * Handles the 'prebind' feature for Class instances
+ *
+ * @param Class instance
+ * @return void
+ */
+function Class_checkPrebind(object) {
+  if ('prebind' in object && isArray(object.prebind)) {
+    object.prebind.each(function(method) {
+      object[method] = object[method].bind(object);
+    });
+  }
 }

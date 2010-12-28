@@ -18,11 +18,16 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
 
     // dynamically typecasting in case if the user is creating
     // an element of a subtype via the basic Element constructor
-    if (this.constructor === Element && (cast = Wrapper.Cast(unit)) !== undefined) {
-      instance = new cast(unit);
-      if ('$listeners' in this) {
-        instance.$listeners = this.$listeners;
+    if (this.constructor === Element) {
+      if ((cast = Wrapper.Cast(unit)) !== undefined) {
+        instance = new cast(unit);
+        if ('$listeners' in this) {
+          instance.$listeners = this.$listeners;
+        }
       }
+    } else {
+      // checking for prebinds in the subclasses
+      Class_checkPrebind(this);
     }
 
     uid  = UID_KEY in unit ? unit[UID_KEY] : (unit[UID_KEY] = UID++);

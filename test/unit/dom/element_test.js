@@ -138,6 +138,30 @@ var ElementTest = TestCase.create({
     this.assertEqual('HOO', MyElement.BOO);
   },
 
+  testCustomWrapperWithPrebinds: function() {
+    var MyElement = new Class(Element, {
+      prebind: ['test1', 'test2'],
+
+      test1: function() {
+        this.name = 'test1';
+      },
+
+      test2: function() {
+        this.name = 'test2';
+      }
+    });
+
+    var el = new MyElement('div');
+    var test1 = el.test1;
+    var test2 = el.test2;
+
+    test1();
+    this.assertEqual('test1', el.name);
+
+    test2();
+    this.assertEqual('test2', el.name);
+  },
+
   testWrapperCaching: function() {
     var element = new Element('div', {id: 'my-div'}).insertTo(document.body);
 
