@@ -1,9 +1,9 @@
 /**
  * A smooth scrolling visual effect
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
-Fx.Scroll = new Class(Fx, {
+Fx.Scroll = new Class(Fx.Attr, {
 
   initialize: function(element, options) {
     element = $(element);
@@ -12,18 +12,12 @@ Fx.Scroll = new Class(Fx, {
   },
 
   prepare: function(value) {
-    var before = this.before = {}, element = this.element._;
+    var attrs = {};
 
-    this.after  = value;
+    if ('x' in value) { attrs.scrollLeft = value.x; }
+    if ('y' in value) { attrs.scrollTop  = value.y; }
 
-    if ('x' in value) { before.x = element.scrollLeft; }
-    if ('y' in value) { before.y = element.scrollTop;  }
-  },
-
-  render: function(delta) {
-    var before = this.before, key;
-    for (key in before) {
-      this.element._['scroll' + (key == 'x' ? 'Left' : 'Top')] = before[key] + (this.after[key] - before[key]) * delta;
-    }
+    this.$super(attrs);
   }
+
 });

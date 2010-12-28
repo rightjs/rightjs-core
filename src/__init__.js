@@ -72,6 +72,7 @@ include_sources_by_modules({
     'fx/fx/twin',
     'fx/fx/slide',
     'fx/fx/fade',
+    'fx/fx/attr',
     'fx/fx/scroll'
   ],
 
