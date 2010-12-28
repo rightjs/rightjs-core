@@ -75,10 +75,9 @@ var Fx = RightJS.Fx = new Class(Observer, {
    */
   start: function() {
     if (this.queue(arguments)) { return this; }
-    this.prepare.apply(this, arguments);
 
-    var options = this.options,
-        duration  = Fx.Durations[options.duration] || options.duration;
+    var options  = this.options,
+        duration = this.duration = Fx.Durations[options.duration] || options.duration;
     this.transition = Fx.Transitions[options.transition] || options.transition;
 
     this.steps  = (duration / 1000 * this.options.fps).ceil();
@@ -87,6 +86,8 @@ var Fx = RightJS.Fx = new Class(Observer, {
     if (this.cr) {
       this.cr.push(this); // adding this effect to the list of currently active
     }
+
+    this.prepare.apply(this, arguments);
 
     return this.fire('start', this).startTimer();
   },

@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
  */
+if (!Browser.NativeFx) {
 var FxMorphTest = TestCase.create({
   name: 'FxMorphTest',
 
@@ -85,3 +86,4 @@ var FxMorphTest = TestCase.create({
     }
   }
 });
+}
