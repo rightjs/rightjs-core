@@ -64,7 +64,7 @@ try {
  * The actual elements wrapper
  *
  */
-var Element = RightJS.Element = new Wrapper({
+var Element = RightJS.Element = new Class(Wrapper, {
   /**
    * constructor
    *
@@ -77,16 +77,11 @@ var Element = RightJS.Element = new Wrapper({
    */
   initialize: function(element, options) {
     if (typeof element === 'string') {
-      this.construct(element, options);
+      element_constructor.call(this, element, options);
     } else {
       this._ = element;
     }
-  },
-
-// protected
-
-  // constructs the event
-  construct: element_constructor
+  }
 });
 
 Element.Wrappers = Element_wrappers;

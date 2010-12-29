@@ -10,33 +10,36 @@
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var Class = RightJS.Class = function() {
-  var args = $A(arguments), properties = args.pop() || {},
-    parent = args.pop();
+  var args   = $A(arguments),
+      props  = args.pop() || {},
+      parent = args.pop(),
+      klass  = arguments[2]; // you can send your own klass as the third argument
+
+  // if only the parent class has been specified
+  if (!args.length && !isHash(props)) {
+    parent = props; props = {};
+  }
 
 // !#server:begin
-  if (parent && parent.ancestors && parent.ancestors[0] === Wrapper) {
-    return new Wrapper(parent, properties);
+  if (!klass && parent && (parent === Wrapper || (parent.ancestors || []).include(Wrapper))) {
+    klass = Wrapper_makeKlass();
   }
 // !#server:end
 
-  // basic class object definition
-  function klass() {
+  klass = klass || function() {
     Class_checkPrebind(this);
-    return this.initialize ? this.initialize.apply(this, arguments) : this;
-  }
-
-  // if only the parent class has been specified
-  if (!args.length && !isHash(properties)) {
-    parent = properties; properties = {};
-  }
+    return 'initialize' in this ?
+      this.initialize.apply(this, arguments) :
+      this;
+  };
 
   // attaching main class-level methods
   $ext(klass, Class_Methods).inherit(parent);
 
   // catching the injections
-  Class_attachInjections(klass, properties);
+  Class_attachInjections(klass, props);
 
-  return klass.include(properties);
+  return klass.include(props);
 },
 
 /**
@@ -44,11 +47,12 @@ var Class = RightJS.Class = function() {
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-commons = $w('selfExtended self_extended selfIncluded self_included'),
-extend  = commons.concat($w(PROTO+' parent extend include')),
-include = commons.concat(['constructor']),
 clean_module = function (module, ext) {
-  return Object.without.apply(Object, [module].concat(ext ? extend : include));
+  return Object.without.apply(Object, [module].concat(
+    $w('selfExtended self_extended selfIncluded self_included').concat(
+      ext ? $w(PROTO+' parent extend include') : ['constructor']
+    )
+  ));
 },
 
 Class_Methods = {

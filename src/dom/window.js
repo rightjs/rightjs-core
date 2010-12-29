@@ -3,18 +3,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-var Window = RightJS.Window = new Wrapper({
-  /**
-   * Basic constructor
-   *
-   * @param Window dom-window reference
-   * @return void
-   */
-  initialize: function(window) {
-    this._ = window;
-    this.d = window.document;
-  },
-
+var Window = RightJS.Window = new Class(Wrapper, {
   /**
    * Generic API reference
    *
@@ -30,7 +19,7 @@ var Window = RightJS.Window = new Wrapper({
    * @return Object x: d+, y: d+
    */
   size: function() {
-    var win = this._, html = this.d.documentElement;
+    var win = this._, html = win.document.documentElement;
     return win.innerWidth ? {x: win.innerWidth, y: win.innerHeight} :
       {x: html.clientWidth, y: html.clientHeight};
   },
@@ -41,7 +30,7 @@ var Window = RightJS.Window = new Wrapper({
    * @return Object x: d+, y: d+
    */
   scrolls: function() {
-    var win = this._, doc = this.d, body = doc.body, html = doc.documentElement;
+    var win = this._, doc = win.document, body = doc.body, html = doc.documentElement;
 
     return (win.pageXOffset || win.pageYOffset) ? {x: win.pageXOffset, y: win.pageYOffset} :
       (body && (body.scrollLeft || body.scrollTop)) ? {x: body.scrollLeft, y: body.scrollTop} :

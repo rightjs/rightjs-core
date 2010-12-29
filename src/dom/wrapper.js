@@ -8,10 +8,24 @@
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 
-var Wrapper = RightJS.Wrapper = function(parent, methods) {
+var Wrapper = RightJS.Wrapper = new Class({
+  // predefining the property in the prototype
+  _: undefined,
 
-  // creating the actual wrapper class
-  var Klass = function(object, options) {
+  /**
+   * Default constructor
+   *
+   * @param mixed raw dom unit
+   * @return void
+   */
+  initialize: function(raw_object) {
+    this._ = raw_object;
+  }
+});
+
+// instantiating the actual class object for a wrapper
+function Wrapper_makeKlass() {
+  return function(object, options) {
     this.initialize(object, options);
 
     var instance = this, unit = instance._, uid, cast;
@@ -34,22 +48,7 @@ var Wrapper = RightJS.Wrapper = function(parent, methods) {
 
     return (Wrappers_Cache[uid] = instance);
   };
-
-  // finding the parent
-  if (!methods) {
-    methods = parent;
-    parent  = null;
-  }
-
-  // hooking up the extedning tools and methods
-  $ext(Klass, Class_Methods).inherit(parent || Wrapper);
-
-  // checking for the injections
-  Class_attachInjections(Klass, methods);
-
-  // including the basic tools
-  return Klass.include({_: undefined}, methods);
-};
+}
 
 // searches for a suitable class for dynamic typecasting
 Wrapper.Cast = function(unit) {

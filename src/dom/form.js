@@ -8,7 +8,7 @@
  * Copyright (C) 2009-2010 Nikolay Nemshilov
  */
 
-var Form = RightJS.Form = Element_wrappers.FORM = new Wrapper(Element, {
+var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
   /**
    * constructor
    *

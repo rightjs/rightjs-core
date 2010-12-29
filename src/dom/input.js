@@ -12,7 +12,7 @@ Element_wrappers.SELECT   =
 Element_wrappers.TEXTAREA =
 Element_wrappers.OPTGROUP =
 
-new Wrapper(Element, {
+new Class(Element, {
   /**
    * Constructor
    *

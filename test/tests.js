@@ -19,6 +19,8 @@ run_tests({
   BrowserTest:           'unit/dom/browser',
   CookieTest:            'unit/dom/cookie',
 
+  WrapperTest:           'unit/dom/wrapper',
+
   EventTest:             'unit/dom/event',
   EventBubblingTest:     'unit/dom/event/bubbling',
   EventDelegationTest:   'unit/dom/event/delegation',

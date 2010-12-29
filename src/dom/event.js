@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-var Event = RightJS.Event = new Wrapper({
+var Event = RightJS.Event = new Class(Wrapper, {
   // predefining the keys to spped up the assignments
   type:          null,
 
