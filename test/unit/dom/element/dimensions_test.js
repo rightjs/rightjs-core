@@ -87,10 +87,6 @@ var ElementDimensionsTest = TestCase.create({
     this.assertEqual({x: 400, y: 240}, this.div.size());
   },
 
-  testSizesAlias: function() {
-    this.assertSame(Element.prototype.sizes, Element.prototype.size);
-  },
-
   testPosition: function() {
     var pos = this.div.position();
 

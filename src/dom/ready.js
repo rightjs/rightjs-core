@@ -36,25 +36,3 @@
 
   Observer_createShortcuts(proto, ['ready']);
 });
-
-/**
- * Deprecated method names aliases
- *
- * In RightJS 2 some methods were renamed so those are the aliases
- * to support the old API
- *
- * NOTE: Will be nuked in couple of releases!
- */
-$alias(Element[PROTO], {
-  subNodes: 'children',
-  sizes:    'size',
-  select:   'find'
-});
-
-$alias(Document[PROTO], {
-  select:   'find'
-});
-
-$alias(Window[PROTO], {
-  sizes: 'size'
-});

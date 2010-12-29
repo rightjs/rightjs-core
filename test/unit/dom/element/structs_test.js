@@ -105,10 +105,6 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual([d2], el.children('#b'));
   },
 
-  testSubNodesAlias: function() {
-    this.assertSame(Element.prototype.subNodes, Element.prototype.children);
-  },
-
   testSiblings: function() {
     var el1 = document.createElement('div');
     var el2 = document.createElement('p');
@@ -264,10 +260,6 @@ var ElementStructsTest = TestCase.create({
     this.assert(result[0] instanceof RightJS.Element);
     this.assert(result[1] instanceof RightJS.Element);
     this.assert(result[2] instanceof RightJS.Element);
-  },
-
-  testSelectAlias: function() {
-    this.assertSame(Element.prototype.select, Element.prototype.find);
   },
 
   testMatch: function() {

@@ -40,10 +40,6 @@ var WindowTest = TestCase.create({
     this.assertEqual(height, size.y);
   },
 
-  testSizesAlias: function() {
-    this.assertSame(Window.prototype.sizes, Window.prototype.size, "the deprecated alias");
-  },
-
   testScrolls: function() {
     if (Browser.Konqueror) return;
 
