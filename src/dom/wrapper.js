@@ -38,6 +38,10 @@ function Wrapper_makeKlass() {
   return function(object, options) {
     Class_checkPrebind(this);
     this.initialize(object, options);
-    Wrappers_Cache[$uid(this._)] = this;
+    var item = this._, uid = UID_KEY in item ? item[UID_KEY] :
+      // NOTE we use positive indexes for dom-elements and negative for everything else
+      (item[UID_KEY] = (item.nodeType === 1 ? 1 : -1) * UID++);
+
+    Wrappers_Cache[uid] = this;
   };
 }

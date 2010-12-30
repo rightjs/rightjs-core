@@ -227,10 +227,7 @@ Element.include({
    * @return Element new clone
    */
   clone: function() {
-    var clone = this._.cloneNode(true);
-    // we need manually reassing the UID_KEY because IE will clone it too
-    clone[UID_KEY] = UID++;
-    return new Element(clone);
+    return new Element(this._.cloneNode(true));
   },
 
   /**

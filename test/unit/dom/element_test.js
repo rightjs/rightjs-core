@@ -128,5 +128,13 @@ var ElementTest = TestCase.create({
     this.assertSame(input, input.___foo('some-title'));
     this.assertEqual('some-title', input.title);
     this.assertEqual('some-title-id', input.id);
+  },
+
+  testUIDMarkers: function() {
+    var div = new Element('div', {html: 'test'});
+    var tmp = new Element('div').append(div);
+
+    this.assertEqual('<div>test</div>', tmp.html().toLowerCase(),
+      "checking that there are no UID markers in the HTML code");
   }
 });

@@ -17,7 +17,9 @@ PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
 HTML = document.documentElement, UID = 1,  // !#server
-Wrappers_Cache = [], UID_KEY = '_rjs_id',
+Wrappers_Cache = [], UID_KEY =
+'uniqueNumber' in HTML ? 'uniqueNumber' :  // !#server
+'_rjs_id',
 
 /**
  * extends the first object with the keys and values of the second one
