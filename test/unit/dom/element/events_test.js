@@ -134,6 +134,19 @@ var ElementEventsTest = TestCase.create({
 
   testStopEvent: function() {
     this.assert(typeof(this.el.stopEvent) == 'function');
+
+    var el = new Element('div');
+    var ev = new Event('test');
+    var stopped = false;
+
+    ev.stop = function() {
+      stopped = true;
+    };
+
+    el.on('test', 'stopEvent');
+    el.fire(ev);
+
+    this.assert(stopped);
   },
 
   testEventByNameCalls: function() {

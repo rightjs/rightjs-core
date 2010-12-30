@@ -26,8 +26,8 @@ hack_observer('on',
   (Browser.Konqueror  ? 'if($2.n==="contextmenu")$2.n="rightclick";'    : '') +
 
   '$2.w=function(){'+
-    'var a=$A(arguments),_;'+
-    '$2.r?a.shift():_=a[0]=new RightJS.Event(a[0],this);'+
+    'var a=$A(arguments),_=new RightJS.Event(a[0],this);'+
+    '$2.r?a.shift():a[0]=_;'+
     '$2.f.apply($2.t,a.concat($2.a))===false&&_.stop()'+
   '};$2.t=this;' + (
     looks_like_ie ?
@@ -49,14 +49,14 @@ hack_observer('stopObserving',
 hack_observer('fire',
   /(\w+)(\s*=\s*(\w+).shift\(\))/,
   '$1$2;$1=$1 instanceof RightJS.Event?$1:'+
-  'new RightJS.Event($1,Object.merge({target:this._},$3[0]))'+
-  ';$1.currentTarget=this'
+  'new RightJS.Event($1,Object.merge({target:this._},$3[0]));'+
+  '$1.currentTarget=this'
 );
 
 // addjusting the arguments list
 hack_observer('fire',
   /((\w+)\.e\s*===\s*(\w+))([^}]+\2\.f\.apply)[^}]+?\.concat\(\w+\)\)/,
-  '$1.type$4(this,($2.r?[]:[$3]).concat($2.a))'
+  '$1.type$4(this,($2.r?[]:[$3]).concat($2.a))===false&&$1.stop()'
 );
 
 // a simple events terminator method to be hooked like this.onClick('stopEvent');
