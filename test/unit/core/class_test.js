@@ -227,9 +227,9 @@ var ClassTest = TestCase.create({
       say: function() { return 'C' + this.$super(); }
     });
 
-    this.assertEqual([], A.ancestors);
-    this.assertEqual([A], B.ancestors);
-    this.assertEqual([B, A], C.ancestors);
+    this.assertEqual([Class], A.ancestors);
+    this.assertEqual([A, Class], B.ancestors);
+    this.assertEqual([B, A, Class], C.ancestors);
 
     this.assertEqual('BA', new B().say());
     this.assertEqual('CBA', new C().say());
@@ -261,5 +261,27 @@ var ClassTest = TestCase.create({
     this.assert(e instanceof MyElement);
     this.assert(e instanceof Element);
     this.assert(e.newMethod instanceof Function);
+  },
+
+  testSuperParent: function() {
+    var Klass1 = new Class({
+
+    });
+
+    var Klass2 = new Class(Klass1, {
+
+    });
+
+    var Klass3 = new Class(Element, {
+      initialize: function() { this.$super('div'); }
+    });
+
+    var k1 = new Klass1();
+    var k2 = new Klass2();
+    var k3 = new Klass3();
+
+    this.assert(k1 instanceof Class);
+    this.assert(k2 instanceof Class);
+    this.assert(k3 instanceof Class);
   }
 });

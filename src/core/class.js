@@ -34,7 +34,7 @@ var Class = RightJS.Class = function() {
   };
 
   // attaching main class-level methods
-  $ext(klass, Class_Methods).inherit(parent);
+  $ext(klass, Class_Methods).inherit(parent || Class);
 
   // catching the injections
   Class_attachInjections(klass, props);
@@ -141,6 +141,9 @@ Class_Methods = {
     return this;
   }
 };
+
+// hooking up the class-methods to the root class
+$ext(Class, Class_Methods);
 
 /**
  * Processess the functionality injection properties
