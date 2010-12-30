@@ -30,50 +30,7 @@ var Event = RightJS.Event = new Class(Wrapper, {
    * @param HTMLElement the bound element
    * @return void
    */
-  initialize: function(event, bound_element) {
-    if (typeof event === 'string') {
-      event = Object.merge({type: event}, bound_element);
-      this.stopped = event.bubbles === false;
-
-      if (isHash(bound_element)) {
-        $ext(this, bound_element);
-      }
-    }
-
-    this._             = event;
-    this.type          = event.type;
-
-    this.which         = event.which;
-    this.keyCode       = event.keyCode;
-
-    this.target        = $(event.target);
-    this.currentTarget = $(event.currentTarget);
-    this.relatedTarget = $(event.relatedTarget);
-
-    this.pageX         = event.pageX;
-    this.pageY         = event.pageY;
-
-    if (!('target' in event) && 'srcElement' in event) {
-      // grabbin the IE properties
-      this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
-
-      // faking the target property
-      this.target = $(event.srcElement) || bound_element;
-
-      // faking the relatedTarget, currentTarget and other targets
-      this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : this.target;
-      this.currentTarget = bound_element;
-
-      // faking the mouse position
-      var scrolls = this.target.window().scrolls();
-
-      this.pageX = event.clientX + scrolls.x;
-      this.pageY = event.clientY + scrolls.y;
-    } else if (event.target && 'nodeType' in event.target && event.target.nodeType === 3) {
-      // Safari fix
-      this.target = $(event.target.parentNode);
-    }
-  },
+  initialize: Event_Klass, // the actual initialization happens in the Klass function
 
   /**
    * Stops the event bubbling process
@@ -159,6 +116,58 @@ var Event = RightJS.Event = new Class(Wrapper, {
 
     return undefined;
   }
-}),
+}, Event_Klass),
 
 Event_delegation_shortcuts = [];
+
+/**
+ * Event's own Klass function, we don't need to check
+ * nothing in here, don't need to hit the wrappers cache and so one
+ *
+ * @param raw dom-event or an event-name
+ * @param bounding element or an object with options
+ */
+function Event_Klass(event, bound_element) {
+  if (typeof event === 'string') {
+    event = Object.merge({type: event}, bound_element);
+    this.stopped = event.bubbles === false;
+
+    if (isHash(bound_element)) {
+      $ext(this, bound_element);
+    }
+  }
+
+  this._             = event;
+  this.type          = event.type;
+
+  this.which         = event.which;
+  this.keyCode       = event.keyCode;
+
+  this.target        = $(event.target);
+  this.currentTarget = $(event.currentTarget);
+  this.relatedTarget = $(event.relatedTarget);
+
+  this.pageX         = event.pageX;
+  this.pageY         = event.pageY;
+
+  if ('srcElement' in event) {
+    // grabbin the IE properties
+    this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
+
+    // faking the target property
+    this.target = $(event.srcElement) || bound_element;
+
+    // faking the relatedTarget, currentTarget and other targets
+    this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : this.target;
+    this.currentTarget = bound_element;
+
+    // faking the mouse position
+    var scrolls = this.target.window().scrolls();
+
+    this.pageX = event.clientX + scrolls.x;
+    this.pageY = event.clientY + scrolls.y;
+  } else if (event.target && 'nodeType' in event.target && event.target.nodeType === 3) {
+    // Safari fix
+    this.target = $(event.target.parentNode);
+  }
+}
