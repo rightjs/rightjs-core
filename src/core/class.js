@@ -10,7 +10,7 @@
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
 var Class = RightJS.Class = function() {
-  var args   = $A(arguments),
+  var args   = $A(arguments).slice(0,2),
       props  = args.pop() || {},
       parent = args.pop(),
       klass  = arguments[2]; // you can send your own klass as the third argument
