@@ -12,7 +12,7 @@ var Element_observer = Observer_create({});
 // the reason is in building flat and fast functions
 //
 function hack_observer(name, re, text) {
-  Element_observer[name] = patch_function(Element_observer[name], re, text);
+  Element_observer[name] = eval('['+ Element_observer[name].toString().replace(re, text) + ']')[0];
 }
 
 hack_observer('on',
@@ -57,6 +57,12 @@ hack_observer('fire',
 hack_observer('fire',
   /((\w+)\.e\s*===\s*(\w+))([^}]+\2\.f\.apply)[^}]+?\.concat\(\w+\)\)/,
   '$1.type$4(this,($2.r?[]:[$3]).concat($2.a))===false&&$1.stop()'
+);
+
+// makding the events bubble
+hack_observer('fire',
+  /(\w+)(\s*=\s*\w+\.shift[\s\S]+)(return this)/m,
+  '$1$2var p=!$1.stopped&&this.parent&&this.parent();p&&p.fire&&p.fire($1);$3'
 );
 
 // a simple events terminator method to be hooked like this.onClick('stopEvent');

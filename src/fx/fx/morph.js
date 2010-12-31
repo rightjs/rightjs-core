@@ -8,7 +8,7 @@
 //       and as the darn thing is pretty buggy we won't
 //       use their css-transitions for now
 var native_fx_prefix = ['-webkit-', '-o-', '-moz-', '-ms-', ''].first(function(name) {
-  return name + 'transition' in document.documentElement.style;
+  return name + 'transition' in HTML.style;
 }),
 native_fx_transition = native_fx_prefix     + 'transition',
 native_fx_property   = native_fx_transition + '-property',
@@ -24,33 +24,30 @@ native_fx_functions  = {
   Lin: 'linear'
 };
 
-if (Browser.NativeFx = native_fx_prefix !== undefined) {
+Fx.Morph = new Class(Fx, {
 
-  Fx.Morph = new Class(Fx, {
+  prepare: function(style) {
+    var old_style = Object.only(
+      this.element.computedStyles(),
+      native_fx_property,
+      native_fx_duration,
+      native_fx_function
+    ), element_style = this.element._.style;
 
-    prepare: function(style) {
-      var old_style = Object.only(
-        this.element.computedStyles(),
-        native_fx_property,
-        native_fx_duration,
-        native_fx_function
-      ), element_style = this.element._.style;
+    this.onFinish(function() {
+      this.element.setStyle(old_style);
+    });
 
-      this.onFinish(function() {
-        this.element.setStyle(old_style);
-      });
+    // setting up the transition
+    element_style[native_fx_property] = 'all';
+    element_style[native_fx_duration] = this.duration +'ms';
+    element_style[native_fx_function] = native_fx_functions[this.options.transition] || this.options.transition;
 
-      // setting up the transition
-      element_style[native_fx_property] = 'all';
-      element_style[native_fx_duration] = this.duration +'ms';
-      element_style[native_fx_function] = native_fx_functions[this.options.transition] || this.options.transition;
+    this.element.setStyle(style);
+  }
+});
 
-      this.element.setStyle(style);
-    }
-  });
-
-} else {
-
+if (native_fx_prefix === undefined) {
 
 // a list of common style names to compact the code a bit
 var directions = $w('Top Left Right Bottom');

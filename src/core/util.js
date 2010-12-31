@@ -16,10 +16,8 @@ var
 PROTO = 'prototype', A_proto = Array[PROTO],
 to_s = Object[PROTO].toString, slice = A_proto.slice,
 dummy = function() { return function() {}; },
-HTML = document.documentElement, UID = 1,  // !#server
-Wrappers_Cache = [], UID_KEY =
-'uniqueNumber' in HTML ? 'uniqueNumber' :  // !#server
-'_rjs_id',
+HTML = document.documentElement, UID = 1,       // !#server
+Wrappers_Cache = [], UID_KEY = 'uniqueNumber',  // DON'T change the UID_KEY!
 
 /**
  * extends the first object with the keys and values of the second one
@@ -298,19 +296,6 @@ for (; i < natives.length; i++) {
 // referring those two as well
 RightJS.Object = Object;
 RightJS.Math   = Math;
-
-
-/** #!server
- * A functions brutal hackery helper
- *
- * @param Function original function
- * @param RegExp expression
- * @param String replacement
- * @return freshly hacked function
- */
-function patch_function(func, re, replacement) {
-  return eval('['+ func.toString().replace(re, replacement) + ']')[0];
-}
 
 /**
  * Checks if the data is an array and if not,

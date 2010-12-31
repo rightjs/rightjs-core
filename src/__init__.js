@@ -50,7 +50,7 @@ include_sources_by_modules({
 
   // NOTE: this one should be after the 'form' module!
   events: [
-    'dom/event/bubbling',
+    'dom/event/focusin',
     'dom/event/delegation'
   ],
 
