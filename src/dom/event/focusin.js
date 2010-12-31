@@ -26,7 +26,7 @@ function focus_boobler(raw_event) {
  * manually like they were normal events
  *
  */
-if (Browser.IE) {
+if (looks_like_ie) {
   document.attachEvent('onfocusin',  focus_boobler);
   document.attachEvent('onfocusout', focus_boobler);
 } else {

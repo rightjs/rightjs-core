@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RightJS - Effects Test</title>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript" src="../util/test/tools.js"></script>
+    <script type="text/javascript">
+      initialize_core_test_page();
+    </script>
+    <script type="text/javascript">
+      $(document).onReady(function() {
+        $w('one two three').each(function(id) {
+          [$(id), '.'+id].each(function(thing) {
+            thing.onMouseenter('addClass', id+'-in')
+              .onMouseleave('removeClass', id+'-in')
+//              .onMouseenter(function() { console.log("Entering: ", id); })
+//              .onMouseleave(function() { console.log("Leaving:  ", id); })
+          });
+        });
+      });
+    </script>
+    <style type="text/css">
+      div.test-block {
+        float: left;
+        margin-right: 3em;
+      }
+      div.test-block div {
+        float: left;
+        display: inline-block;
+        display: inline;
+        zoom: 1;
+        background: #EEE;
+        border: 1px solid #bbb;
+        border-radius: .25em;
+        -moz-border-radius: .25em;
+        -webkit-border-radius: .25em;
+        padding: 2em;
+        position: relative;
+      }
+      div.test-block div:hover {
+        border-color: #888;
+      }
+      div.test-block h3 {
+        margin: 0;
+        margin-bottom: 1em;
+      }
+      #three, .three {
+        right: -5em;
+      }
+      .one-in {
+        background: #FEE !important;
+      }
+      .two-in {
+        background: #EFE !important;
+      }
+      .three-in {
+        background: #EEF !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>MouseEnter/MouseLeave Events Test</h2>
+    <p>
+      <div class="test-block">
+        <h3>Direct Handling</h3>
+        <div id="one">
+          <div id="two">
+            <div id="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block">
+        <h3>UJS Handling</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <p class="white-space"></p>
+  </body>
+</html>

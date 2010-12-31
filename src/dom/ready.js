@@ -14,7 +14,7 @@
   proto.on = function(name) {
     if (name == 'ready' && !this._wR) {
       var document = this._, ready = this.fire.bind(this, 'ready');
-      document = document.nodeType == 9 ? document : document.document;
+      document = document.document || document;
 
       // IE and Konqueror browsers
       if ('readyState' in document) {

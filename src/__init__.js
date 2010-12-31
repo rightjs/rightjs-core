@@ -51,6 +51,7 @@ include_sources_by_modules({
   // NOTE: this one should be after the 'form' module!
   events: [
     'dom/event/focusin',
+    'dom/event/mouseio',
     'dom/event/delegation'
   ],
 
