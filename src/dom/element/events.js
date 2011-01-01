@@ -25,12 +25,15 @@ hack_observer('on',
   (Browser.Gecko      ? 'if($2.e==="mousewheel")$2.n="DOMMouseScroll";' : '') +
   (Browser.Konqueror  ? 'if($2.e==="contextmenu")$2.n="rightclick";'    : '') +
 
-  '$2.w=$2.e==="mouseenter"||$2.e==="mouseleave"?'+
-    'function(){}:'  + // so IE didn't bother, coz we handle it in the mouseio module
-  'function(e){'+
-    'e=new RightJS.Event(e,this);'+
-    '$2.f.apply($2.t,($2.r?[]:[e]).concat($2.a))===false&&e.stop()'+
-  '};'+
+  'if($2.e==="mouseenter"||$2.e==="mouseleave"){'+
+    'mouse_io_active=true;' +
+    '$2.w=function(){};'    + // so IE didn't bother, coz we handle it in the mouseio module
+  '}else{' +
+    '$2.w=function(e){'+
+      'e=new RightJS.Event(e,this);'+
+      '$2.f.apply($2.t,($2.r?[]:[e]).concat($2.a))===false&&e.stop()'+
+    '};'+
+  '}'+
   '$2.t=this;' +(
     looks_like_ie ?
       '$2.w=$2.w.bind(this);this._.attachEvent("on"+$2.n,$2.w);' :
