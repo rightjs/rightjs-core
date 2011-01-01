@@ -3,80 +3,104 @@
  *
  * Copyright (C) 2008-2010 Nikolay Nemshilov
  */
-var Element_observer = Observer_create({});
+[Element, Document, Window].each('include', Object.merge(Observer_create({}), {
+  /**
+   * The basic events handling attachment method
+   * SEE Observer#on for more details about supported arguments
+   *
+   * @returnt this
+   */
+  on: function() {
+    Observer_on(this, arguments, function(hash) {
 
-//
-// HACK HACK HACK
-//
-// I'm kinda patching the observer methods manually in here
-// the reason is in building flat and fast functions
-//
-function hack_observer(name, re, text) {
-  Element_observer[name] = eval('['+ Element_observer[name].toString().replace(re, text) + ']')[0];
-}
+      if (hash.e === 'mouseenter' || hash.e === 'mouseleave') {
+        mouse_io_activate();
+        hash.n = hash.e;
+        hash.w = dummy(); // so IE didn't bother
+      } else {
+        if (hash.e === 'contextmenu' && Browser.Konqueror) {
+          hash.n = 'rightclick';
+        } else if (hash.e === 'mousewheel' && Browser.Gecko) {
+          hash.n = 'DOMMouseScroll';
+        } else {
+          hash.n = hash.e;
+        }
 
-hack_observer('on',
-  /(\$listeners\.push\((\w+?)\);)/,
+        hash.w = function(event) {
+          event = new Event(event, hash.t);
+          if (hash.f.apply(hash.t, (hash.r?[]:[event]).concat(hash.a)) === false) {
+            event.stop();
+          }
+        }
+      }
 
-  // aliasing the 'rightclick' to the 'contextmenu' event
-  '$1$2.e=$2.n=$2.e==="rightclick"?"contextmenu":$2.e;'+
+      if (looks_like_ie) {
+        hash.t._.attachEvent('on'+hash.n, hash.w);
+      } else {
+        hash.t._.addEventListener(hash.n, hash.w, false);
+      }
 
-  // swapping a browser related event names
-  (Browser.Gecko      ? 'if($2.e==="mousewheel")$2.n="DOMMouseScroll";' : '') +
-  (Browser.Konqueror  ? 'if($2.e==="contextmenu")$2.n="rightclick";'    : '') +
+      return hash;
+    });
 
-  'if($2.e==="mouseenter"||$2.e==="mouseleave"){'+
-    'mouse_io_active=true;' +
-    '$2.w=function(){};'    + // so IE didn't bother, coz we handle it in the mouseio module
-  '}else{' +
-    '$2.w=function(e){'+
-      'e=new RightJS.Event(e,this);'+
-      '$2.f.apply($2.t,($2.r?[]:[e]).concat($2.a))===false&&e.stop()'+
-    '};'+
-  '}'+
-  '$2.t=this;' +(
-    looks_like_ie ?
-      '$2.w=$2.w.bind(this);this._.attachEvent("on"+$2.n,$2.w);' :
-      'this._.addEventListener($2.n,$2.w,false);'
-  )
-);
+    return this;
+  },
 
-hack_observer('stopObserving',
-  /(function\s*\((\w+)\)\s*\{\s*)(return\s*)([^}]+)/m,
-  '$1var r=$4;'+
-  'if(!r)this._.' + (looks_like_ie ?
-    'detachEvent("on"+$2.n,$2.w);' :
-    'removeEventListener($2.n,$2.w,false);'
-  )+'$3 r'
-);
+  /**
+   * Stops an event handling
+   *
+   * @param String event name or a function callback
+   * @param function callback or nothing
+   * @return this
+   */
+  stopObserving: function(event, callback) {
+    Observer_stopObserving(this, event, callback, function(hash) {
+      if (looks_like_ie) {
+        hash.t._.detachEvent('on'+ hash.n, hash.w);
+      } else {
+        hash.t._.removeEventListener(hash.n, hash.w, false);
+      }
+    });
 
-// adding the event generator
-hack_observer('fire',
-  /(\w+)(\s*=\s*(\w+).shift\(\))/,
-  '$1$2;$1=$1 instanceof RightJS.Event?$1:'+
-  'new RightJS.Event($1,RightJS.Object.merge({target:this._},$3[0]));'+
-  '$1.currentTarget=this'
-);
+    return this;
+  },
 
-// addjusting the arguments list
-hack_observer('fire',
-  /((\w+)\.e\s*===\s*(\w+))([^}]+\2\.f\.apply)[^}]+?\.concat\(\w+\)\)/,
-  '$1.type$4(this,($2.r?[]:[$3]).concat($2.a))===false&&$1.stop()'
-);
+  /**
+   * Artificially trigers the event on the element
+   *
+   * @param string event name or an Event instance
+   * @param Object options
+   * @return this
+   */
+  fire: function(event, options) {
+    var parent = this.parent && this.parent();
 
-// makding the events bubble
-hack_observer('fire',
-  /(\w+)(\s*=\s*\w+\.shift[\s\S]+)(return this)/m,
-  '$1$2var p=!$1.stopped&&this.parent&&this.parent();p&&p.fire&&p.fire($1);$3'
-);
+    if (!(event instanceof Event)) {
+      event = new Event(event, Object.merge({target: this._}, options));
+    }
 
-// a simple events terminator method to be hooked like this.onClick('stopEvent');
-Element_observer.stopEvent = function() { return false; };
+    event.currentTarget = this;
 
-// loading the observer interface into the Element object
-Element.include(Element_observer);
-Document.include(Element_observer);
-Window.include(Element_observer);
+    (this.$listeners || []).each(function(hash) {
+      if (hash.e === event.type && hash.f.apply(this, (hash.r?[]:[event]).concat(hash.a)) === false) {
+        event.stop();
+      }
+    }, this);
+
+    if (!event.stopped && parent && parent.fire) {
+      parent.fire(event);
+    }
+
+    return this;
+  },
+
+  /**
+   * a simple events terminator method to be hooked like this.onClick('stopEvent');
+   *
+   * @return false
+   */
+  stopEvent: function() { return false; }
+}));
 
 // couple more shortcuts for the window
 Observer_createShortcuts(Window[PROTO], $w('blur focus scroll resize load'));

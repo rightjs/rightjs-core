@@ -7,7 +7,7 @@
  *   The naming principle is inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var Observer = RightJS.Observer = new Class({
   include: Options,
@@ -34,51 +34,7 @@ var Observer = RightJS.Observer = new Class({
    * @return Observer self
    */
   on: function() {
-    var args = $A(arguments), event = args.shift(), name;
-
-    if (isString(event)) {
-      if (!('$listeners' in this)) { this.$listeners = []; }
-
-      var callback = args.shift();
-      switch (typeof callback) {
-        case "string":
-          name     = callback;
-          callback = this[callback];
-
-        case "function":
-          var hash = {};
-
-          // DON'T move it in the one-line hash variable definition,
-          // it causes problems with the Konqueror 3 later on
-          hash.e = event;
-          hash.f = callback;
-          hash.a = args;
-          hash.r = name;
-
-          this.$listeners.push(hash);
-          break;
-
-        default:
-          if (isArray(callback)) {
-            for (var i=0; i < callback.length; i++) {
-              this.on.apply(this, [event].concat(
-                ensure_array(callback[i])
-              ).concat(args));
-            }
-          }
-      }
-
-    } else {
-      // assuming it's a hash of key-value pairs
-      for (name in event) {
-        this.on.apply(this, [name].concat(
-          ensure_array(event[name])
-        ).concat(args));
-      }
-    }
-
-
-
+    Observer_on(this, arguments, function(h) { return h; });
     return this;
   },
 
@@ -113,20 +69,7 @@ var Observer = RightJS.Observer = new Class({
    * @return Observer self
    */
   stopObserving: function(event, callback) {
-    if (isHash(event)) {
-      for (var key in event) {
-        this.stopObserving(key, event[key]);
-      }
-    } else {
-      if (!isString(event)) {  callback = event; event = null; }
-      if (isString(callback)){ callback = this[callback]; }
-
-      this.$listeners = (this.$listeners || []).filter(function(i) {
-        return (event && callback) ? (i.e !== event || i.f !== callback) :
-          (event ? i.e !== event : i.f !== callback);
-      }, this);
-    }
-
+    Observer_stopObserving(this, event, callback, dummy());
     return this;
   },
 
@@ -197,3 +140,66 @@ Observer_createShortcuts = Observer.createShortcuts = function(object, names) {
 
   return object;
 };
+
+function Observer_on(object, o_args, preprocess) {
+  var args     = slice.call(o_args, 2),
+      event    = o_args[0],
+      callback = o_args[1],
+      name     = false;
+
+  if (isString(event)) {
+    switch (typeof callback) {
+      case "string":
+        name     = callback;
+        callback = object[callback];
+
+      case "function":
+        ('$listeners' in object ? object.$listeners : (
+          object.$listeners = []
+        )).push(preprocess({
+          e: event, f: callback, a: args, r: name, t: object
+        }));
+        break;
+
+      default:
+        if (isArray(callback)) {
+          for (var i=0; i < callback.length; i++) {
+            object.on.apply(object, [event].concat(
+              ensure_array(callback[i])
+            ).concat(args));
+          }
+        }
+    }
+
+  } else {
+    // assuming it's a hash of key-value pairs
+    args = slice.call(o_args, 1);
+
+    for (name in event) {
+      object.on.apply(object, [name].concat(
+        ensure_array(event[name])
+      ).concat(args));
+    }
+  }
+}
+
+function Observer_stopObserving(object, event, callback, preprocess) {
+  if (isHash(event)) {
+    for (var key in event) {
+      object.stopObserving(key, event[key]);
+    }
+  } else {
+    if (!isString(event)) {  callback = event; event = null; }
+    if (isString(callback)){ callback = object[callback]; }
+
+    object.$listeners = (object.$listeners || []).filter(function(i) {
+      var result = (event && callback) ?
+        (i.e !== event || i.f !== callback) :
+        (event ? i.e !== event : i.f !== callback);
+
+      if (!result) { preprocess(i); }
+
+      return result;
+    });
+  }
+}

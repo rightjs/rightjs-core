@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
-var mouse_io_index = [], mouse_io_active = false;
+var mouse_io_index = [], mouse_io_inactive = true;
 
 /**
  * Fires the actual mouseenter/mouseleave event
@@ -27,40 +27,38 @@ function mouse_io_fire(element, uid, enter) {
  * @return void
  */
 function mouse_io_handler(e) {
-  if (mouse_io_active) {
-    var target  = e.target        || e.srcElement,
-        from    = e.relatedTarget || e.fromElement,
-        element = target,
-        passed  = false,
-        uid, event;
+  var target  = e.target        || e.srcElement,
+      from    = e.relatedTarget || e.fromElement,
+      element = target,
+      passed  = false,
+      uid, event;
 
-    while (element.nodeType === 1) {
-      uid = $uid(element);
+  while (element.nodeType === 1) {
+    uid = $uid(element);
 
-      if (!mouse_io_index[uid]) {
-        mouse_io_fire(element, uid,
-          mouse_io_index[uid] = true
+    if (!mouse_io_index[uid]) {
+      mouse_io_fire(element, uid,
+        mouse_io_index[uid] = true
+      );
+    }
+
+    if (element === from) {
+      passed = true;
+    }
+
+    element = element.parentNode;
+  }
+
+  if (from && !passed) {
+    while (from.nodeType === 1 && from !== target) {
+      uid = $uid(from);
+      if (mouse_io_index[uid]) {
+        mouse_io_fire(from, uid,
+          mouse_io_index[uid] = false
         );
       }
 
-      if (element === from) {
-        passed = true;
-      }
-
-      element = element.parentNode;
-    }
-
-    if (from && !passed) {
-      while (from.nodeType === 1 && from !== target) {
-        uid = $uid(from);
-        if (mouse_io_index[uid]) {
-          mouse_io_fire(from, uid,
-            mouse_io_index[uid] = false
-          );
-        }
-
-        from = from.parentNode;
-      }
+      from = from.parentNode;
     }
   }
 }
@@ -78,13 +76,23 @@ function mouse_io_reset() {
   });
 }
 
-if (looks_like_ie) {
-  document.attachEvent('onmouseover', mouse_io_handler);
-  wondow.attachEvent('blur', mouse_io_reset);
-} else {
-  document.addEventListener('mouseover', mouse_io_handler, false);
-  window.addEventListener('blur', mouse_io_reset, false);
-}
+/**
+ * Activating the mouse-io events emulation
+ *
+ * @return void
+ */
+function mouse_io_activate() {
+  if (mouse_io_inactive) {
+    mouse_io_inactive = false;
 
+    if (looks_like_ie) {
+      document.attachEvent('onmouseover', mouse_io_handler);
+      window.attachEvent('blur', mouse_io_reset);
+    } else {
+      document.addEventListener('mouseover', mouse_io_handler, false);
+      window.attachEvent('blur', mouse_io_handler, false);
+    }
+  }
+}
 
 Element_add_event_shortcuts('mouseenter mouseleave');
