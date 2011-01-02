@@ -115,24 +115,6 @@ var Fx = RightJS.Fx = new Class(Observer, {
     return this.stopTimer().unreg().fire('cancel');
   },
 
-  /**
-   * pauses the transition
-   *
-   * @return Fx this
-   */
-  pause: function() {
-    return this.stopTimer();
-  },
-
-  /**
-   * resumes a paused transition
-   *
-   * @return Fx this
-   */
-  resume: function() {
-    return this.startTimer();
-  },
-
 // protected
   // dummy method, should be implemented in a subclass
   prepare: function(values) {},

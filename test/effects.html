@@ -140,6 +140,23 @@
       <a href="" onclick="return reset_test(this)">Reset</a>
     </p>
 
+    <h2>Test Stopping Fx</h2>
+    <p>
+      <div class="test-container">
+        <div class="testee" id="stop-test">Stop Me</div>
+      </div>
+      <textarea style="margin: 1em 0">$('stop-test').morph({
+  width:      '400px',
+  background: 'green'
+}, {duration: 2000});
+
+window.setTimeout(function() {
+  $('stop-test').stop();
+}, 500);</textarea>
+      <a href="" onclick="return run_test(this)">Run</a>
+      <a href="" onclick="return reset_test(this)">Reset</a>
+    </p>
+
     <div style="height: 16em"></div>
   </body>
 </html>

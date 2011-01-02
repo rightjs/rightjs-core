@@ -34,9 +34,17 @@ Fx.Morph = new Class(Fx, {
       native_fx_function
     ), element_style = this.element._.style;
 
-    this.onFinish(function() {
-      this.element.setStyle(old_style);
-    });
+    function reset() {
+      for (var key in old_style) {
+        element_style[key] = old_style[key];
+      }
+    }
+
+    this
+      .onFinish(reset)
+      .onCancel(function() { reset();
+        element_style[native_fx_property] = 'none';
+      });
 
     // setting up the transition
     element_style[native_fx_property] = 'all';
