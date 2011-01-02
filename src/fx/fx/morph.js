@@ -1,19 +1,20 @@
 /**
  * This class provides the basic effect for styles manipulation
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 
-// NOTE: OPERA needs those attributes camelized
-//       and as the darn thing is pretty buggy we won't
-//       use their css-transitions for now
-var native_fx_prefix = ['-webkit-', '-o-', '-moz-', '-ms-', ''].first(function(name) {
-  return name + 'transition' in HTML.style;
+/////////////////////////////////////////////////////////////////////////////
+// Native css-transitions based implementation
+/////////////////////////////////////////////////////////////////////////////
+
+var native_fx_prefix = ['WebkitT', 'OT', 'MozT', 'MsT', 't'].first(function(name) {
+  return name + 'ransition' in HTML.style;
 }),
-native_fx_transition = native_fx_prefix     + 'transition',
-native_fx_property   = native_fx_transition + '-property',
-native_fx_duration   = native_fx_transition + '-duration',
-native_fx_function   = native_fx_transition + '-timing-function',
+native_fx_transition = native_fx_prefix     + 'ransition',
+native_fx_property   = native_fx_transition + 'Property',
+native_fx_duration   = native_fx_transition + 'Duration',
+native_fx_function   = native_fx_transition + 'TimingFunction',
 
 // basic transition algorithm replacements
 native_fx_functions  = {
@@ -24,38 +25,130 @@ native_fx_functions  = {
   Lin: 'linear'
 };
 
+function native_fx_prepare(style) {
+  var options = this.options,
+      element = this.element,
+      element_style = element._.style,
+      old_style = Object.only(
+        element.computedStyles(),
+        native_fx_property,
+        native_fx_duration,
+        native_fx_function
+      );
+
+  function reset_transitions_style() {
+    for (var key in old_style) {
+      element_style[key] = old_style[key];
+    }
+  }
+
+  this
+    .onFinish(reset_transitions_style)
+    .onCancel(function() {
+      element_style[native_fx_property] = 'none';
+      setTimeout(reset_transitions_style, 1);
+    });
+
+  // setting up the transition
+  element_style[native_fx_property] = 'all';
+  element_style[native_fx_duration] = (Fx.Durations[options.duration] || options.duration) +'ms';
+  element_style[native_fx_function] = native_fx_functions[options.transition] || options.transition;
+
+  setTimeout(function() { element.setStyle(style); }, 0);
+}
+
+// NOTE: OPERA's css-transitions are a bit jerky so we disable them by default
+Fx.Options.engine = native_fx_prefix === undefined || Browser.Opera ? 'javascript' : 'native';
+
+////////////////////////////////////////////////////////////////////////////
+// Manual version
+////////////////////////////////////////////////////////////////////////////
+
 Fx.Morph = new Class(Fx, {
+// protected
 
+  // parepares the effect
   prepare: function(style) {
-    var old_style = Object.only(
-      this.element.computedStyles(),
-      native_fx_property,
-      native_fx_duration,
-      native_fx_function
-    ), element_style = this.element._.style;
+    if (this.options.engine === 'native') {
+      this.render = this.transition = dummy();
+      native_fx_prepare.call(this, style);
+    } else {
+      var keys   = style_keys(style),
+          before = this._cloneStyle(this.element, keys),
+          after  = this._endStyle(style, keys);
 
-    function reset() {
-      for (var key in old_style) {
-        element_style[key] = old_style[key];
+      clean_styles(this.element, before, after);
+
+      this.before = parse_style(before);
+      this.after  = parse_style(after);
+    }
+  },
+
+  render: function(delta) {
+    var before, after, value, style = this.element._.style, key, i, l;
+    for (key in this.after) {
+      before = this.before[key];
+      after  = this.after[key];
+
+      for (i=0, l = after.length; i < l; i++) {
+        value = before[i] + (after[i] - before[i]) * delta;
+        if (after.r) {
+          value = Math.round(value);
+        }
+        after.t[i*2 + 1] = value;
+      }
+
+      style[key] = after.t.join('');
+    }
+  },
+
+  /**
+   * Returns a hash of the end style
+   *
+   * @param Object style
+   * @return Object end style
+   */
+  _endStyle: function(style, keys) {
+    var element = this.element,
+        dummy   = element.clone()
+        .setStyle('position:absolute;z-index:-1;visibility:hidden')
+        .setWidth(element.size().x)
+        .setStyle(style);
+
+    if (element.parent()) {
+      element.insert(dummy, 'before');
+    }
+
+    var after  = this._cloneStyle(dummy, keys);
+
+    dummy.remove();
+
+    return after;
+  },
+
+  /**
+   * Fast styles cloning
+   *
+   * @param Element element
+   * @param Array style keys
+   * @return Hash of styles
+   */
+  _cloneStyle: function(element, keys) {
+    for (var i=0, len = keys.length, style = element.computedStyles(), clean = {}, key; i < len; i++) {
+      key = keys[i];
+      if (key in style) {
+        clean[key] = ''+ style[key];
+      }
+
+      // libwebkit bug fix for in case of languages pack applied
+      if (key === 'opacity') {
+        clean[key] = clean[key].replace(',', '.');
       }
     }
 
-    this
-      .onFinish(reset)
-      .onCancel(function() { reset();
-        element_style[native_fx_property] = 'none';
-      });
-
-    // setting up the transition
-    element_style[native_fx_property] = 'all';
-    element_style[native_fx_duration] = this.duration +'ms';
-    element_style[native_fx_function] = native_fx_functions[this.options.transition] || this.options.transition;
-
-    this.element.setStyle(style);
+    return clean;
   }
 });
-
-if (native_fx_prefix === undefined) {
 
 // a list of common style names to compact the code a bit
 var directions = $w('Top Left Right Bottom');
@@ -191,88 +284,4 @@ function style_keys(style) {
   }
 
   return keys;
-}
-
-Fx.Morph = new Class(Fx, {
-
-// protected
-
-  // parepares the effect
-  prepare: function(style) {
-    var keys   = style_keys(style),
-        before = this._cloneStyle(this.element, keys),
-        after  = this._endStyle(style, keys);
-
-    clean_styles(this.element, before, after);
-
-    this.before = parse_style(before);
-    this.after  = parse_style(after);
-  },
-
-  render: function(delta) {
-    var before, after, value, style = this.element._.style, key, i, l;
-    for (key in this.after) {
-      before = this.before[key];
-      after  = this.after[key];
-
-      for (i=0, l = after.length; i < l; i++) {
-        value = before[i] + (after[i] - before[i]) * delta;
-        if (after.r) {
-          value = Math.round(value);
-        }
-        after.t[i*2 + 1] = value;
-      }
-
-      style[key] = after.t.join('');
-    }
-  },
-
-  /**
-   * Returns a hash of the end style
-   *
-   * @param Object style
-   * @return Object end style
-   */
-  _endStyle: function(style, keys) {
-    var element = this.element,
-        dummy   = element.clone()
-        .setStyle('position:absolute;z-index:-1;visibility:hidden')
-        .setWidth(element.size().x)
-        .setStyle(style);
-
-    if (element.parent()) {
-      element.insert(dummy, 'before');
-    }
-
-    var after  = this._cloneStyle(dummy, keys);
-
-    dummy.remove();
-
-    return after;
-  },
-
-  /**
-   * Fast styles cloning
-   *
-   * @param Element element
-   * @param Array style keys
-   * @return Hash of styles
-   */
-  _cloneStyle: function(element, keys) {
-    for (var i=0, len = keys.length, style = element.computedStyles(), clean = {}, key; i < len; i++) {
-      key = keys[i];
-      if (key in style) {
-        clean[key] = ''+ style[key];
-      }
-
-      // libwebkit bug fix for in case of languages pack applied
-      if (key === 'opacity') {
-        clean[key] = clean[key].replace(',', '.');
-      }
-    }
-
-    return clean;
-  }
-});
-
 }

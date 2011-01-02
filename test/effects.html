@@ -145,10 +145,10 @@
       <div class="test-container">
         <div class="testee" id="stop-test">Stop Me</div>
       </div>
-      <textarea style="margin: 1em 0">$('stop-test').morph({
+      <textarea style="margin: 1em 0; height: 10em">$('stop-test').morph({
   width:      '400px',
   background: 'green'
-}, {duration: 2000});
+}, {duration: 1000});
 
 window.setTimeout(function() {
   $('stop-test').stop();

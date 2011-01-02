@@ -5,7 +5,7 @@
  *   The basic principles, structures and naming system are inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 var Fx = RightJS.Fx = new Class(Observer, {
   extend: {
@@ -76,12 +76,11 @@ var Fx = RightJS.Fx = new Class(Observer, {
   start: function() {
     if (this.queue(arguments)) { return this; }
 
-    var options  = this.options,
-        duration = this.duration = Fx.Durations[options.duration] || options.duration;
-    this.transition = Fx.Transitions[options.transition] || options.transition;
-
-    this.steps  = (duration / 1000 * this.options.fps).ceil();
-    this.number = 1;
+    var options    = this.options,
+        duration   = Fx.Durations[options.duration] || options.duration,
+        transition = Fx.Transitions[options.transition] || options.transition,
+        steps      = (duration / 1000 * this.options.fps).ceil(),
+        interval   = (1000 / this.options.fps).round();
 
     if (this.cr) {
       this.cr.push(this); // adding this effect to the list of currently active
@@ -89,7 +88,9 @@ var Fx = RightJS.Fx = new Class(Observer, {
 
     this.prepare.apply(this, arguments);
 
-    return this.fire('start', this).startTimer();
+    fx_start_timer(this, transition, interval, steps);
+
+    return this.fire('start', this);
   },
 
   /**
@@ -98,7 +99,8 @@ var Fx = RightJS.Fx = new Class(Observer, {
    * @return Fx this
    */
   finish: function() {
-    return this.stopTimer().unreg().fire('finish').next();
+    fx_stop_timer(this);
+    return this.unreg().fire('finish').next();
   },
 
   /**
@@ -112,44 +114,16 @@ var Fx = RightJS.Fx = new Class(Observer, {
    */
   cancel: function() {
     this.ch.clean();
-    return this.stopTimer().unreg().fire('cancel');
+    fx_stop_timer(this);
+    return this.unreg().fire('cancel');
   },
 
 // protected
   // dummy method, should be implemented in a subclass
-  prepare: function(values) {},
+  prepare: dummy(),
 
   // dummy method, processes the element properties
-  render: function(delta) {},
-
-  // the periodically called method
-  // NOTE: called outside of the instance scope!
-  step: function(that) {
-    if (that.number > that.steps) {
-      that.finish();
-    } else {
-      if (!that.w) {
-        that.w = true;
-        that.render(that.transition(that.number / that.steps));
-        that.w = false;
-      }
-      that.number ++;
-    }
-  },
-
-  // starts the effect timer
-  startTimer: function() {
-    this.timer = this.step.periodical((1000 / this.options.fps).round(), this);
-    return this;
-  },
-
-  // stops the effect timer
-  stopTimer: function() {
-    if (this.timer) {
-      this.timer.stop();
-    }
-    return this;
-  },
+  render: dummy(),
 
   // handles effects queing
   // should return false if there's no queue and true if there is a queue
@@ -187,3 +161,36 @@ var Fx = RightJS.Fx = new Class(Observer, {
   }
 
 });
+
+/**
+ * Initializes the fx rendering timer
+ *
+ * @param Fx fx
+ * @param Function transition stops calculator
+ * @param Float interval
+ * @param Integer number of steps
+ * @return void
+ */
+function fx_start_timer(fx, transition, interval, steps) {
+  var number = 1;
+  fx._timer = setInterval(function() {
+    if (number > steps) {
+      fx.finish();
+    } else {
+      fx.render(transition(number/steps));
+      number ++;
+    }
+  }, interval);
+}
+
+/**
+ * Cancels the Fx rendering timer (if any)
+ *
+ * @param Fx fx
+ * @return void
+ */
+function fx_stop_timer(fx) {
+  if (fx._timer) {
+    clearInterval(fx._timer);
+  }
+}
