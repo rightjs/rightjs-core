@@ -47,10 +47,7 @@ var Fx = RightJS.Fx = new Class(Observer, {
       Lin: function(i) {
         return i;
       }
-    },
-
-    ch: [], // scheduled effects registries
-    cr: []  // currently running effects registries
+    }
   },
 
   /**
@@ -60,12 +57,8 @@ var Fx = RightJS.Fx = new Class(Observer, {
    */
   initialize: function(element, options) {
     this.$super(options);
-
-    if ((this.element = element = $(element))) {
-      var uid = $uid(element);
-      this.ch = (Fx.ch[uid] = Fx.ch[uid] || []);
-      this.cr = (Fx.cr[uid] = Fx.cr[uid] || []);
-    }
+    this.element = $(element)
+    fx_register(this);
   },
 
   /**
@@ -74,7 +67,7 @@ var Fx = RightJS.Fx = new Class(Observer, {
    * @return Fx this
    */
   start: function() {
-    if (this.queue(arguments)) { return this; }
+    if (fx_add_to_queue(this, arguments)) { return this; }
 
     var options    = this.options,
         duration   = Fx.Durations[options.duration] || options.duration,
@@ -82,9 +75,7 @@ var Fx = RightJS.Fx = new Class(Observer, {
         steps      = (duration / 1000 * this.options.fps).ceil(),
         interval   = (1000 / this.options.fps).round();
 
-    if (this.cr) {
-      this.cr.push(this); // adding this effect to the list of currently active
-    }
+    fx_mark_current(this);
 
     this.prepare.apply(this, arguments);
 
@@ -100,7 +91,10 @@ var Fx = RightJS.Fx = new Class(Observer, {
    */
   finish: function() {
     fx_stop_timer(this);
-    return this.unreg().fire('finish').next();
+    fx_remove_from_queue(this);
+    this.fire('finish');
+    fx_run_next(this);
+    return this;
   },
 
   /**
@@ -113,9 +107,9 @@ var Fx = RightJS.Fx = new Class(Observer, {
    * @return Fx this
    */
   cancel: function() {
-    this.ch.clean();
     fx_stop_timer(this);
-    return this.unreg().fire('cancel');
+    fx_remove_from_queue(this);
+    return this.fire('cancel');
   },
 
 // protected
@@ -123,44 +117,85 @@ var Fx = RightJS.Fx = new Class(Observer, {
   prepare: dummy(),
 
   // dummy method, processes the element properties
-  render: dummy(),
+  render: dummy()
+}),
 
-  // handles effects queing
-  // should return false if there's no queue and true if there is a queue
-  queue: function(args) {
-    var chain = this.ch, queue = this.options.queue;
+// global effects registry
+scheduled_fx = [], running_fx = [];
 
-    if (!chain || this.$ch) {
-      return (this.$ch = false);
-    }
+/**
+ * Registers the element in the effects queue
+ *
+ * @param Fx effect
+ * @return void
+ */
+function fx_register(fx) {
+  if (fx.element) {
+    var uid = $uid(fx.element);
+    fx.ch = (scheduled_fx[uid] = scheduled_fx[uid] || []);
+    fx.cr = (running_fx[uid]   = running_fx[uid]   || []);
+  }
+}
 
-    if (queue) {
-      chain.push([args, this]);
-    }
+/**
+ * Registers the effect in the effects queue
+ *
+ * @param Fx fx
+ * @param Arguments original arguments list
+ * @return boolean true if it queued and false if it's ready to go
+ */
+function fx_add_to_queue(fx, args) {
+  var chain = fx.ch, queue = fx.options.queue;
 
-    return queue && chain[0][1] !== this;
-  },
-
-  // calls for the next effect in the queue
-  next: function() {
-    var chain = this.ch, next = chain.shift();
-    if ((next = chain[0])) {
-      next[1].$ch = true;
-      next[1].start.apply(next[1], next[0]);
-    }
-    return this;
-  },
-
-  // unregisters this effect out of the currently running list
-  unreg: function() {
-    var currents = this.cr;
-    if (currents) {
-      currents.splice(currents.indexOf(this), 1);
-    }
-    return this;
+  if (!chain || fx.$ch) {
+    return (fx.$ch = false);
   }
 
-});
+  if (queue) {
+    chain.push([args, fx]);
+  }
+
+  return queue && chain[0][1] !== fx;
+}
+
+/**
+ * Puts the fx into the list of currently running effects
+ *
+ * @param Fx fx
+ * @return void
+ */
+function fx_mark_current(fx) {
+  if (fx.cr) {
+    fx.cr.push(fx);
+  }
+}
+
+/**
+ * Removes the fx from the queue
+ *
+ * @param Fx fx
+ * @return void
+ */
+function fx_remove_from_queue(fx) {
+  var currents = fx.cr;
+  if (currents) {
+    currents.splice(currents.indexOf(fx), 1);
+  }
+}
+
+/**
+ * Tries to invoke the next effect in the queue
+ *
+ * @param Fx fx
+ * @return void
+ */
+function fx_run_next(fx) {
+  var chain = fx.ch, next = chain.shift();
+  if ((next = chain[0])) {
+    next[1].$ch = true;
+    next[1].start.apply(next[1], next[0]);
+  }
+}
 
 /**
  * Initializes the fx rendering timer
