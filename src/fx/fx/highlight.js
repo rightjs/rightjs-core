@@ -1,7 +1,7 @@
 /**
  * the elements hightlighting effect
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 Fx.Highlight = new Class(Fx.Morph, {
   extend: {
@@ -21,19 +21,22 @@ Fx.Highlight = new Class(Fx.Morph, {
    * @return self
    */
   prepare: function(start, end) {
-    var element = this.element, style = element._.style, end_color = end || element.getStyle('backgroundColor');
+    var element       = this.element,
+        element_style = element._.style,
+        style_name    = 'backgroundColor',
+        end_color     = end || element.getStyle(style_name);
 
     if (is_transparent(end_color)) {
-      this.onFinish(function() { style.backgroundColor = 'transparent'; });
+      this.onFinish(function() { element_style[style_name] = 'transparent'; });
 
       // trying to find the end color
-      end_color = [element].concat(element.parents()).map(function(node) {
-        var bg = node.getStyle('backgroundColor');
-        return (bg && !is_transparent(bg)) ? bg : null;
-      }).compact().first() || '#FFF';
+      end_color = [element].concat(element.parents())
+        .map('getStyle', style_name)
+        .reject(is_transparent)
+        .compact().first() || '#FFF';
     }
 
-    style.backgroundColor = (start || this.options.color);
+    element_style[style_name] = (start || this.options.color);
 
     return this.$super({backgroundColor: end_color});
   }

@@ -194,3 +194,11 @@ function fx_stop_timer(fx) {
     clearInterval(fx._timer);
   }
 }
+/*
+function cubic_bezier(p, i) {
+  // (1-i)^3*p[0] + 3*(1-i)^2*i*p[1] + 3*(1-i)*i^2*p[2] + i^3*[3];
+  return (1-i) * (1-i) * (1-i) * p[0] +
+    3 * (1-i) * (1-i) * i * p[1] +
+    3 * (1-i) * i * i * p[2] +
+    i * i * i * p[3];
+}*/

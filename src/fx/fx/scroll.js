@@ -1,14 +1,20 @@
 /**
  * A smooth scrolling visual effect
  *
- * Copyright (C) 2009-2010 Nikolay Nemshilov
+ * Copyright (C) 2009-2011 Nikolay Nemshilov
  */
 Fx.Scroll = new Class(Fx.Attr, {
 
   initialize: function(element, options) {
     element = $(element);
     // swapping the actual scrollable when it's the window
-    this.$super(element instanceof Window ? element._.document[Browser.WebKit ? 'body' : 'documentElement'] : element, options);
+    this.$super(
+      element instanceof Window ?
+        element._.document[
+          Browser.WebKit ? 'body' : 'documentElement'
+        ] : element,
+      options
+    );
   },
 
   prepare: function(value) {

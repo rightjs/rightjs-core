@@ -1,7 +1,7 @@
 /**
  * this is a superclass for the bidirectional effects
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 Fx.Twin = new Class(Fx.Morph, {
 
@@ -11,7 +11,7 @@ Fx.Twin = new Class(Fx.Morph, {
    * @return Fx self
    */
   finish: function() {
-    if (this.how == 'out') {
+    if (this.how === 'out') {
       old_hide.call(this.element);
     }
 
@@ -28,7 +28,7 @@ Fx.Twin = new Class(Fx.Morph, {
   setHow: function(how) {
     this.how = how || 'toggle';
 
-    if (this.how == 'toggle') {
+    if (this.how === 'toggle') {
       this.how = this.element.visible() ? 'out' : 'in';
     }
   }
