@@ -1,7 +1,7 @@
 /**
  * The form input element class
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 var Input = RightJS.Input =
 
@@ -115,7 +115,7 @@ new Class(Element, {
   focus: function() {
     this._.focus();
     this.focused = true;
-    if (Browser.IE) { this.fire('focus', {bubbles: false}); }
+    if (Browser_IE) { this.fire('focus', {bubbles: false}); }
     return this;
   },
 
@@ -127,7 +127,7 @@ new Class(Element, {
   blur: function() {
     this._.blur();
     this.focused = false;
-    if (Browser.IE) { this.fire('blur', {bubbles: false}); }
+    if (Browser_IE) { this.fire('blur', {bubbles: false}); }
     return this;
   },
 

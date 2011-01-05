@@ -1,7 +1,7 @@
 /**
  * This module provides correct focus/blur events bubbling
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 
 /**
@@ -26,7 +26,7 @@ function focus_boobler(raw_event) {
  * manually like they were normal events
  *
  */
-if (looks_like_ie) {
+if (Browser_IE) {
   document.attachEvent('onfocusin',  focus_boobler);
   document.attachEvent('onfocusout', focus_boobler);
 } else {

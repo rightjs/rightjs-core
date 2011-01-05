@@ -58,7 +58,7 @@ function native_fx_prepare(style) {
 }
 
 // NOTE: OPERA's css-transitions are a bit jerky so we disable them by default
-Fx.Options.engine = native_fx_prefix === undefined || Browser.Opera ? 'javascript' : 'native';
+Fx.Options.engine = native_fx_prefix === undefined || Browser_Opera ? 'javascript' : 'native';
 
 ////////////////////////////////////////////////////////////////////////////
 // Manual version
@@ -128,7 +128,7 @@ function style_keys(style) {
       add_variants(keys, key, directions);
     } else if (key.startsWith('background')) {
       add_variants(keys, 'background', ['Color', 'Position', 'PositionX', 'PositionY']);
-    } else if (key === 'opacity' && Browser.IE) {
+    } else if (key === 'opacity' && Browser_IE) {
       keys.push('filter');
     } else {
       keys.push(key);
@@ -211,7 +211,7 @@ function clean_styles(element, before, after) {
   for (key in after) {
     // proprocessing colors
     if (after[key] !== before[key] && /color/i.test(key)) {
-      if (Browser.Opera) {
+      if (Browser_Opera) {
         after[key] = after[key].replace(/"/g, '');
         before[key] = before[key].replace(/"/g, '');
       }

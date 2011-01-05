@@ -7,7 +7,7 @@
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - Dojo      (www.dojotoolkit.org)      Copyright (C) The Dojo Foundation
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 Element.include({
   /**
@@ -38,13 +38,13 @@ Element.include({
       c_key = key.indexOf('-') < 0 ? key : key.camelize();
 
       if (key === 'opacity') {
-        if (Browser.IE) {
+        if (Browser_IE) {
           element_style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
         } else {
           element_style.opacity = hash[key];
         }
       } else if (key === 'float') {
-        c_key = Browser.IE ? 'styleFloat' : 'cssFloat';
+        c_key = Browser_IE ? 'styleFloat' : 'cssFloat';
       }
 
       element_style[c_key] = hash[key];
@@ -166,18 +166,18 @@ function clean_style(style, in_key) {
 
   switch (key) {
     case 'opacity':
-      value = !Browser.IE ? style[key].replace(',', '.') :
+      value = !Browser_IE ? style[key].replace(',', '.') :
         ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
       break;
 
     case 'float':
-      key = Browser.IE ? 'styleFloat' : 'cssFloat';
+      key = Browser_IE ? 'styleFloat' : 'cssFloat';
 
     default:
       value = style[key];
 
       // Opera returns named colors with quotes
-      if (Browser.Opera && /color/i.test(key) && value) {
+      if (Browser_Opera && /color/i.test(key) && value) {
         value = value.replace(/"/g, '');
       }
   }

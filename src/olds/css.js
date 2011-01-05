@@ -5,10 +5,11 @@
  *   - Sizzle    (http://sizzlejs.org)      Copyright (C) John Resig
  *   - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
-if (!document.querySelector) {
-  (function(RightJS) {
+(function(RightJS) {
+
+  if (!document.querySelector) {
     /**
      * The token searchers collection
      */
@@ -408,10 +409,9 @@ if (!document.querySelector) {
       }
     };
 
-    dom_extension.select = dom_extension.find;
-
     // hooking up the rightjs wrappers with the new methods
     RightJS.Element.include(dom_extension);
     RightJS.Document.include(dom_extension);
-  })(RightJS);
-}
+  }
+
+})(RightJS);

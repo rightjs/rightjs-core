@@ -34,7 +34,7 @@
         };
       }
 
-      if (looks_like_ie) {
+      if (Browser_IE) {
         hash.t._.attachEvent('on'+hash.n, hash.w);
       } else {
         hash.t._.addEventListener(hash.n, hash.w, false);
@@ -55,7 +55,7 @@
    */
   stopObserving: function(event, callback) {
     Observer_stopObserving(this, event, callback, function(hash) {
-      if (looks_like_ie) {
+      if (Browser_IE) {
         hash.t._.detachEvent('on'+ hash.n, hash.w);
       } else {
         hash.t._.removeEventListener(hash.n, hash.w, false);

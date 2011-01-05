@@ -86,7 +86,7 @@ var ElementTest = TestCase.create({
     this.assertEqual('box2',  box2.name);
     this.assertEqual(true,    box2.checked);
 
-    if (Browser.OLD) {
+    if (Browser.OLD && !document.querySelector) {
       this.assertEqual(
         '<INPUT type=checkbox CHECKED value=on name=box1>'+
         '<INPUT type=radio CHECKED value=on name=box2>',

@@ -7,9 +7,9 @@
  * finds the core inclusion tag and uses it's src attribute
  * to dynamically load the olds patch
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
-if (!document.querySelector) {
+if (RightJS.Browser.OLD) {
   document.write('<script src="' +
     RightJS.$A(document.getElementsByTagName('script')).last()
       .src.replace(/(^|\/)(right)([^\/]+)$/, '$1$2-olds$3') +

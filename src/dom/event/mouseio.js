@@ -1,7 +1,7 @@
 /**
  * Provides the mouse enter/leave events handling emulation
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 var mouse_io_index = [], mouse_io_inactive = true;
 
@@ -85,7 +85,7 @@ function mouse_io_activate() {
   if (mouse_io_inactive) {
     mouse_io_inactive = false;
 
-    if (looks_like_ie) {
+    if (Browser_IE) {
       document.attachEvent('onmouseover', mouse_io_handler);
       window.attachEvent('blur', mouse_io_reset);
     } else {

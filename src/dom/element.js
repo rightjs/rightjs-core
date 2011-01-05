@@ -44,6 +44,7 @@ make_element = function (tag, options) {
 //
 try {
   document.createElement('<input/>'); // <- works for IE < 9 only
+  Browser.OLD = true; // forcing IE8 to load the olds module
 
   make_element = function(tag, options) {
     if (tag === 'input' && options !== undefined) {

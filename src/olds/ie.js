@@ -3,9 +3,9 @@
  *
  *   Keep them in one place so they were more compact
  *
- * Copyright (C) 2009-2010 Nikolay Nemshilov
+ * Copyright (C) 2009-2011 Nikolay Nemshilov
  */
-if (RightJS.Browser.OLD) {
+if (RightJS.Browser.OLD && RightJS.Browser.IE) {
   // loads DOM element extensions for selected elements
   $ = RightJS.$ = (function(old_function) {
     return function(id) {
