@@ -5,7 +5,7 @@
  * so that we could control the common functionality
  * among all the wrappers
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 
 var Wrapper = RightJS.Wrapper = new Class({
@@ -87,7 +87,7 @@ Wrapper.Cast = function(unit) {
  */
 function Event_Klass(event, bound_element) {
   if (typeof event === 'string') {
-    event = Object.merge({type: event}, bound_element);
+    event = $ext({type: event}, bound_element);
     this.stopped = event.bubbles === false;
 
     if (isHash(bound_element)) {

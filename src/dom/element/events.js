@@ -1,9 +1,9 @@
 /**
  * DOM Element events handling methods
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
-[Element, Document, Window].each('include', Object.merge(Observer_create({}), {
+[Element, Document, Window].each('include', $ext(Observer_create({}), {
   /**
    * The basic events handling attachment method
    * SEE Observer#on for more details about supported arguments
@@ -76,7 +76,7 @@
     var parent = this.parent && this.parent();
 
     if (!(event instanceof Event)) {
-      event = new Event(event, Object.merge({target: this._}, options));
+      event = new Event(event, $ext({target: this._}, options));
     }
 
     event.currentTarget = this;

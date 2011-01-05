@@ -7,7 +7,7 @@
  *   The additional method names are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var Event = RightJS.Event = new Class(Wrapper, {
   // predefining the keys to spped up the assignments

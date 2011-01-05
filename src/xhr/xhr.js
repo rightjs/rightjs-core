@@ -7,7 +7,7 @@
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - jQuery    (http://jquery.com)        Copyright (C) John Resig
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 var Xhr = RightJS.Xhr = new Class(Observer, {
   extend: {
@@ -44,7 +44,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
      * @return Xhr request
      */
     load: function(url, options) {
-      return new this(url, Object.merge({method: 'get'}, options)).send();
+      return new this(url, $ext({method: 'get'}, options)).send();
     }
   },
 

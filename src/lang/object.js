@@ -5,7 +5,7 @@
  *   Some functionality is inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 $ext(Object, {
   /**
@@ -134,10 +134,13 @@ $ext(Object, {
    * @return Object merged object
    */
   merge: function() {
-    var object = {}, i=0, length = arguments.length;
-    for (; i < length; i++) {
-      if (isHash(arguments[i])) {
-        $ext(object, arguments[i]);
+    var object = {}, i=0, args=arguments, key;
+    for (; i < args.length; i++) {
+      if (isHash(args[i])) {
+        for (key in args[i]) {
+          object[key] = isHash(args[i][key]) && !(args[i][key] instanceof Class) ?
+            Object.merge(object[key], args[i][key]) : args[i][key];
+        }
       }
     }
     return object;

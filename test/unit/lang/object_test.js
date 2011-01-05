@@ -1,7 +1,7 @@
 /**
  * The Object unit test-case
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var ObjectTest = TestCase.create({
   name: 'ObjectTest',
@@ -55,6 +55,22 @@ var ObjectTest = TestCase.create({
     this.assertEqual({1:1}, o1);
     this.assertEqual({2:2}, o2);
     this.assertEqual({3:3}, o3);
+  },
+
+  testDeepMerge: function() {
+    var o1 = {a: {b: {c: 'd'}, e: 'f'}};
+    var o2 = {a: {b: {c: 'd', e: 'f'}}};
+
+    var o = Object.merge(o1, o2);
+
+    this.assertEqual(
+      {a: {b: {c: 'd', e: 'f', }, e: 'f'}}, o,
+      "getting sure it was actually merged"
+    );
+    this.assert(
+      o.a !== o1.a && o.a !== o2.a && o.a.b !== o1.a.b && o.a.b !== o2.a.b,
+      "checking that all the keys were delinked"
+    );
   },
 
   testClone: function() {

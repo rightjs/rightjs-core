@@ -6,7 +6,7 @@
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - jQuery    (http://jquery.com)        Copyright (C) John Resig
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
 
 /**
@@ -18,7 +18,7 @@
  */
 function remote_send(event, options) {
   event.stop();
-  this.send(Object.merge({spinner: this.first('.spinner')}, options));
+  this.send($ext({spinner: this.first('.spinner')}, options));
 }
 
 Form.include({

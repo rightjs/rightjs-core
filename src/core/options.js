@@ -8,7 +8,7 @@
  *   The idea of the module is inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 var Options = RightJS.Options = {
   /**
@@ -18,7 +18,7 @@ var Options = RightJS.Options = {
    * @return Object current instance
    */
   setOptions: function(opts) {
-    var options = this.options = Object.merge(Class_findSet(this, 'options'), opts), match, key;
+    var options = this.options = $ext($ext({}, Class_findSet(this, 'options')), opts), match, key;
 
     // hooking up the observer options
     if (isFunction(this.on)) {

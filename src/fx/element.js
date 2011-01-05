@@ -5,7 +5,7 @@
  *   Some ideas are inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 var methods    = Element.prototype,
     old_hide   = methods.hide,
@@ -72,7 +72,7 @@ Element.include({
    * @return Element this
    */
   remove: function(fx, options) {
-    return (fx && this.visible()) ? call_fx(this, fx, ['out', Object.merge(options, {
+    return (fx && this.visible()) ? call_fx(this, fx, ['out', $ext(options || {}, {
       onFinish: old_remove.bind(this)
     })]) : old_remove.call(this);
   },
