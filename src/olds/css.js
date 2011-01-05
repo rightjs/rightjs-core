@@ -8,8 +8,17 @@
  * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
 (function(RightJS) {
+  var has_native_css_selector = !! document.querySelector,
+      needs_css_engine_patch  = !has_native_css_selector;
 
-  if (!document.querySelector) {
+  try {
+    // forcing IE8 to use our help
+    document.createElement('<input/>');
+    needs_css_engine_patch = true;
+  } catch(e) {}
+
+
+  if (needs_css_engine_patch) {
     /**
      * The token searchers collection
      */
@@ -23,7 +32,7 @@
       '>': function(element, tag) {
         var result = [], node = element.firstChild;
         while (node) {
-          if (tag == '*' || node.tagName == tag) {
+          if (tag === '*' || node.tagName === tag) {
             result.push(node);
           }
           node = node.nextSibling;
@@ -35,7 +44,7 @@
       '+': function(element, tag) {
         while ((element = element.nextSibling)) {
           if (element.tagName) {
-            return (tag == '*' || element.tagName == tag) ? [element] : [];
+            return (tag === '*' || element.tagName === tag) ? [element] : [];
           }
         }
         return [];
@@ -45,7 +54,7 @@
       '~': function(element, tag) {
         var result = [];
         while ((element = element.nextSibling)) {
-          if (tag == '*' || element.tagName == tag) {
+          if (tag === '*' || element.tagName === tag) {
             result.push(element);
           }
         }
@@ -58,8 +67,16 @@
      * Collection of pseudo selector matchers
      */
     var pseudos = {
+      not: function(css_rule) {
+        return !RightJS.$(this).match(css_rule);
+      },
+
       checked: function() {
         return this.checked;
+      },
+
+      enabled: function() {
+        return !this.disabled;
       },
 
       disabled: function() {
@@ -67,13 +84,13 @@
       },
 
       empty: function() {
-        return !(this.innerText || this.innerHTML || this.textContent || '').length;
+        return (this.innerHTML || '') === '';
       },
 
       'first-child': function(tag_name) {
         var node = this;
         while ((node = node.previousSibling)) {
-          if (node.tagName && (!tag_name || node.tagName == tag_name)) {
+          if (node.tagName && (!tag_name || node.tagName === tag_name)) {
             return false;
           }
         }
@@ -81,13 +98,13 @@
       },
 
       'first-of-type': function() {
-        return arguments[1]['first-child'].call(this, this.tagName);
+        return pseudos['first-child'].call(this, this.tagName);
       },
 
       'last-child': function(tag_name) {
         var node = this;
         while ((node = node.nextSibling)) {
-          if (node.tagName && (!tag_name || node.tagName == tag_name)) {
+          if (node.tagName && (!tag_name || node.tagName === tag_name)) {
             return false;
           }
         }
@@ -95,55 +112,65 @@
       },
 
       'last-of-type': function() {
-        return arguments[1]['last-child'].call(this, this.tagName);
+        return pseudos['last-child'].call(this, this.tagName);
       },
 
-      'only-child': function(tag_name, matchers) {
-        return matchers['first-child'].call(this, tag_name) &&
-          matchers['last-child'].call(this, tag_name);
+      'only-child': function(tag_name) {
+        return pseudos['first-child'].call(this, tag_name) &&
+          pseudos['last-child'].call(this, tag_name);
       },
 
       'only-of-type': function() {
-        return arguments[1]['only-child'].call(this, this.tagName, arguments[1]);
+        return pseudos['only-child'].call(this, this.tagName);
       },
 
-      'nth-child': function(number, matchers, tag_name) {
+      'nth-child': function(number, tag_name, reverse) {
         if (!this.parentNode) { return false; }
         number = number.toLowerCase();
 
-        if (number == 'n') { return true; }
+        if (number === 'n') { return true; }
+        if (number === 'odd') { number = '2n+1'; }
+        if (number === 'even') { number = '2n'; }
 
         if (number.include('n')) {
           // parsing out the matching expression
           var a = 0, b = 0;
           if ((m = number.match(/^([+\-]?\d*)?n([+\-]?\d*)?$/))) {
-            a = m[1] == '-' ? -1 : parseInt(m[1], 10) || 1;
+            a = m[1] === '-' ? -1 : parseInt(m[1], 10) || 1;
             b = parseInt(m[2], 10) || 0;
           }
 
           // getting the element index
           var index = 1, node = this;
-          while ((node = node.previousSibling)) {
-            if (node.tagName && (!tag_name || node.tagName == tag_name)) { index++; }
+          while ((node = reverse ? node.nextSibling : node.previousSibling)) {
+            if (node.tagName && (!tag_name || node.tagName === tag_name)) { index++; }
           }
 
           return (index - b) % a === 0 && (index - b) / a >= 0;
 
         } else {
-          return matchers.index.call(this, number.toInt() - 1, matchers, tag_name);
+          return pseudos.index.call(this, number.toInt() - 1, tag_name, reverse);
         }
       },
 
       'nth-of-type': function(number) {
-        return arguments[1]['nth-child'].call(this, number, arguments[1], this.tagName);
+        return pseudos['nth-child'].call(this, number, this.tagName);
+      },
+
+      'nth-last-child': function(number) {
+        return pseudos['nth-child'].call(this, number, null, true);
+      },
+
+      'nth-last-of-type': function(number) {
+        return pseudos['nth-child'].call(this, number, this.tagName, true);
       },
 
     // protected
-      index: function(number, matchers, tag_name) {
+      index: function(number, tag_name, reverse) {
         number = RightJS.isString(number) ? number.toInt() : number;
         var node = this, count = 0;
-        while ((node = node.previousSibling)) {
-          if (node.tagName && (!tag_name || node.tagName == tag_name) && ++count > number) { return false; }
+        while ((node = reverse ? node.nextSibling : node.previousSibling)) {
+          if (node.tagName && (!tag_name || node.tagName === tag_name) && ++count > number) { return false; }
         }
         return count == number;
       }
@@ -182,7 +209,7 @@
         // extracting the pseudos
         if ((match = atom.match(pseudo_re))) {
           pseudo = match[1];
-          values_of_pseudo = match[3] == '' ? null : match[3];
+          values_of_pseudo = match[3] === '' ? null : match[3];
           atom = atom.replace(match[0], '');
         }
 
@@ -221,10 +248,10 @@
           if (classes.length) { patch_filter(
             'if(e.className){'+
               'var n=e.className.split(" ");'+
-              'if(n.length==1&&c.indexOf(n[0])==-1)continue;'+
+              'if(n.length===1&&c.indexOf(n[0])===-1)continue;'+
               'else{'+
                 'for(var i=0,l=c.length,b=false;i<l;i++)'+
-                  'if(n.indexOf(c[i])==-1){'+
+                  'if(n.indexOf(c[i])===-1){'+
                     'b=true;break;}'+
 
               'if(b)continue;}'+
@@ -249,7 +276,7 @@
 
           // adding the pseudo matchers check
           if (pseudo in pseudos) {
-            patch_filter('if(!S[P].call(e,V,S))continue;');
+            patch_filter('if(!S[P].call(e,V))continue;');
           }
 
           //
@@ -355,7 +382,7 @@
         while ((m = chunker.exec(css_rule))) {
           token = m[1];
 
-          if (token == '+' || token == '>' || token == '~') {
+          if (token === '+' || token === '>' || token === '~') {
             rel = token;
           } else {
             rule.push([rel, token]);
@@ -404,7 +431,18 @@
       },
 
       find: function(css_rule, raw) {
-        var result = select_all(this._, css_rule || '*');
+        var result, rule = css_rule || '*', element = this._, tag = element.tagName;
+
+        if (has_native_css_selector) {
+          try { // trying to reuse native css-engine under IE8
+            result = $A(element.querySelectorAll(tag ? rule.replace(/(^|,)/g, '$1'+ tag + ' ') : rule));
+          } catch(e) { // if it fails use our own engine
+            result = select_all(element, rule);
+          }
+        } else {
+          result = select_all(element, rule);
+        }
+
         return raw === true ? result : result.map(RightJS.$);
       }
     };

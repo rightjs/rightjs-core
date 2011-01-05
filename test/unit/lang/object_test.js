@@ -64,7 +64,7 @@ var ObjectTest = TestCase.create({
     var o = Object.merge(o1, o2);
 
     this.assertEqual(
-      {a: {b: {c: 'd', e: 'f', }, e: 'f'}}, o,
+      {a: {b: {c: 'd', e: 'f'}, e: 'f'}}, o,
       "getting sure it was actually merged"
     );
     this.assert(

@@ -1,7 +1,7 @@
 /**
  * The Element unit common methods module test-case
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 var SelectorTest = TestCase.create({
   name: "SelectorTest",
@@ -37,19 +37,19 @@ var SelectorTest = TestCase.create({
     }
   },
 
-  assertMatchRule: function(css_rule, elementst, message) {
-    var elements = elementst instanceof Array ? elementst : [elementst];
-    elements.each(function(element) {
+  assertMatchRule: function(css_rule, elements, message) {
+    (elements instanceof Array ? elements : [elements]).each(function(element) {
       if (!$(element).match(css_rule)) {
+        alert("Element "+element.tagName+" should match: '" + css_rule + "'");
         this.throw_problem("Element should match the rule '"+css_rule+"'", message);
       }
     }, this);
   },
 
-  assertNotMatchRule: function(css_rule, elementst, message) {
-    var elements = elementst instanceof Array ? elementst : [elementst];
-    elements.each(function(element) {
+  assertNotMatchRule: function(css_rule, elements, message) {
+    (elements instanceof Array ? elements : [elements]).each(function(element) {
       if ($(element).match(css_rule)) {
+        alert("Element "+element.tagName+" should not match: '" + css_rule + "'");
         this.throw_problem("Element should not match the rule '"+css_rule+"'", message);
       }
     }, this);
@@ -251,26 +251,26 @@ var SelectorTest = TestCase.create({
   },
 
   testPseudoMatch: function() {
-    if (!Browser.OLD && Browser.IE) return; // IE8 has problems with the native selectors
-
     var div = $E('div').insertTo(this.container);
 
     this.assertMatchRule('*:empty', div);
+    this.assertNotMatchRule('*:not(:empty)', div);
     div._.innerHTML = 'something';
     this.assertNotMatchRule('*:empty', div);
+    this.assertMatchRule('*:not(:empty)', div);
 
     var element = $E('input', {type: 'checkbox'});
     div.insert(element);
 
     this.assertNotMatchRule('input:checked', element);
     element._.checked = true;
-    if (!Browser.Opera && !Browser.OLD) // opera doesn't get it somehow
-      this.assertMatchRule('input:checked', element);
+    this.assertMatchRule('input:checked', element);
 
     this.assertNotMatchRule('input:disabled', element);
+    this.assertMatchRule('input:enabled', element);
     element._.disabled = true;
-    if (!Browser.Opera) // opera doesn't get it somehow
-      this.assertMatchRule('input:disabled', element);
+    this.assertMatchRule('input:disabled', element);
+    this.assertNotMatchRule('input:enabled', element);
 
     this.assertMatchRule('*:only-child', element);
 
@@ -291,6 +291,12 @@ var SelectorTest = TestCase.create({
 
     this.assertNotMatchRule('*:nth-child(1)', element2);
     this.assertNotMatchRule('*:nth-child(2)', element);
+
+    this.assertMatchRule('*:nth-last-child(1)', element2);
+    this.assertMatchRule('*:nth-last-child(2)', element);
+
+    this.assertNotMatchRule('*:nth-last-child(1)', element);
+    this.assertNotMatchRule('*:nth-last-child(2)', element2);
 
     var element3 = document.createElement('div');
     div.insert(element3);
@@ -337,6 +343,15 @@ var SelectorTest = TestCase.create({
     this.assertMatchRule('*:nth-child(3n-1)', element2);
     this.assertNotMatchRule('*:nth-child(3n-1)', element3);
 
+    // trying the 'odd' 'even' values
+    this.assertNotMatchRule('*:nth-child(even)', element);
+    this.assertMatchRule('*:nth-child(even)', element2);
+    this.assertNotMatchRule('*:nth-child(even)', element3);
+
+    this.assertMatchRule('*:nth-child(odd)', element);
+    this.assertNotMatchRule('*:nth-child(odd)', element2);
+    this.assertMatchRule('*:nth-child(odd)', element3);
+
     // testing pseudo selectors with types
     var element4 = document.createElement('div');
     div.insert(element4);
@@ -369,5 +384,15 @@ var SelectorTest = TestCase.create({
     this.assertNotMatchRule('*:nth-of-type(1)', element2);
     this.assertNotMatchRule('*:nth-of-type(2)', element3);
     this.assertNotMatchRule('*:nth-of-type(1)', element4);
+
+    this.assertMatchRule('*:nth-last-of-type(2)', element);
+    this.assertMatchRule('*:nth-last-of-type(1)', element2);
+    this.assertMatchRule('*:nth-last-of-type(2)', element3);
+    this.assertMatchRule('*:nth-last-of-type(1)', element4);
+
+    this.assertNotMatchRule('*:nth-last-of-type(1)', element);
+    this.assertNotMatchRule('*:nth-last-of-type(2)', element2);
+    this.assertNotMatchRule('*:nth-last-of-type(1)', element3);
+    this.assertNotMatchRule('*:nth-last-of-type(2)', element4);
   }
 });
