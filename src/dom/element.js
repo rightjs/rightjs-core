@@ -85,35 +85,3 @@ function Element_initialize(inst, element, options) {
     inst._ = element;
   }
 }
-
-/**
- * Element's own Klass function
- * we need that because it does some dynamic typecasting mumbo jumbo
- * plus we would like to optimize some stuff here and there
- *
- * @param raw dom element or the tag name
- * @param Object options
- * @return Element instance
- */
-function Element_Klass(element, options) {
-  Element_initialize(this, element, options);
-
-  var inst = this, raw = inst._, cast = Wrapper.Cast(raw),
-      uid = UID_KEY in raw ? raw[UID_KEY] : (raw[UID_KEY] = UID++);
-
-  if (cast !== undefined) {
-    inst = new cast(raw);
-    if ('$listeners' in this) {
-      inst.$listeners = this.$listeners;
-    }
-  }
-
-  Wrappers_Cache[uid] = inst;
-
-  return inst;
-}
-
-// searches for a suitable class for dynamic typecasting
-Wrapper.Cast = function(unit) {
-  return unit.tagName in Element_wrappers ? Element_wrappers[unit.tagName] : undefined;
-};

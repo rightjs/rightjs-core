@@ -29,21 +29,6 @@ var FxTest = TestCase.create({
     this.assertEqual('Exp', fx.options.transition);
   },
 
-  testStepsCalculation: function() {
-    var fx = new Fx();
-    fx.startTimer = function() { return this; };
-    fx.start();
-
-    this.assertEqual(Browser.IE ? 16 : 24, fx.steps);
-    this.assertEqual(1,  fx.number);
-
-    fx.options.duration = 800;
-    fx.start();
-
-    this.assertEqual(Browser.IE ? 32 : 48, fx.steps);
-    this.assertEqual(1,  fx.number);
-  },
-
   testTransitions: function() {
     for (var name in Fx.Transitions) {
       for (var i=0; i <= 1; i+= 0.02)

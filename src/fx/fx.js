@@ -57,7 +57,7 @@ var Fx = RightJS.Fx = new Class(Observer, {
    */
   initialize: function(element, options) {
     this.$super(options);
-    this.element = $(element)
+    this.element = $(element);
     fx_register(this);
   },
 
@@ -130,11 +130,9 @@ scheduled_fx = [], running_fx = [];
  * @return void
  */
 function fx_register(fx) {
-  if (fx.element) {
-    var uid = $uid(fx.element);
-    fx.ch = (scheduled_fx[uid] = scheduled_fx[uid] || []);
-    fx.cr = (running_fx[uid]   = running_fx[uid]   || []);
-  }
+  var uid = $uid(fx.element || {});
+  fx.ch = (scheduled_fx[uid] = scheduled_fx[uid] || []);
+  fx.cr = (running_fx[uid]   = running_fx[uid]   || []);
 }
 
 /**
@@ -229,11 +227,3 @@ function fx_stop_timer(fx) {
     clearInterval(fx._timer);
   }
 }
-/*
-function cubic_bezier(p, i) {
-  // (1-i)^3*p[0] + 3*(1-i)^2*i*p[1] + 3*(1-i)*i^2*p[2] + i^3*[3];
-  return (1-i) * (1-i) * (1-i) * p[0] +
-    3 * (1-i) * (1-i) * i * p[1] +
-    3 * (1-i) * i * i * p[2] +
-    i * i * i * p[3];
-}*/

@@ -29,7 +29,7 @@ function call_fx(element, name, params) {
   fx.start.apply(fx, args);
 
   return element;
-};
+}
 
 Element.include({
   /**

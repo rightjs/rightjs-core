@@ -31,7 +31,7 @@
           if (hash.f.apply(hash.t, (hash.r?[]:[event]).concat(hash.a)) === false) {
             event.stop();
           }
-        }
+        };
       }
 
       if (looks_like_ie) {

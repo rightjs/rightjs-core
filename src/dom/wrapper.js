@@ -45,3 +45,87 @@ function Wrapper_makeKlass() {
     Wrappers_Cache[uid] = this;
   };
 }
+
+/**
+ * Element's own Klass function
+ * we need that because it does some dynamic typecasting mumbo jumbo
+ * plus we would like to optimize some stuff here and there
+ *
+ * @param raw dom element or the tag name
+ * @param Object options
+ * @return Element instance
+ */
+function Element_Klass(element, options) {
+  Element_initialize(this, element, options);
+
+  var inst = this, raw = inst._, cast = Wrapper.Cast(raw),
+      uid = UID_KEY in raw ? raw[UID_KEY] : (raw[UID_KEY] = UID++);
+
+  if (cast !== undefined) {
+    inst = new cast(raw);
+    if ('$listeners' in this) {
+      inst.$listeners = this.$listeners;
+    }
+  }
+
+  Wrappers_Cache[uid] = inst;
+
+  return inst;
+}
+
+// searches for a suitable class for dynamic typecasting
+Wrapper.Cast = function(unit) {
+  return unit.tagName in Element_wrappers ? Element_wrappers[unit.tagName] : undefined;
+};
+
+/**
+ * Event's own Klass function, we don't need to check
+ * nothing in here, don't need to hit the wrappers cache and so one
+ *
+ * @param raw dom-event or an event-name
+ * @param bounding element or an object with options
+ */
+function Event_Klass(event, bound_element) {
+  if (typeof event === 'string') {
+    event = Object.merge({type: event}, bound_element);
+    this.stopped = event.bubbles === false;
+
+    if (isHash(bound_element)) {
+      $ext(this, bound_element);
+    }
+  }
+
+  this._             = event;
+  this.type          = event.type;
+
+  this.which         = event.which;
+  this.keyCode       = event.keyCode;
+
+  this.target        = $(event.target);
+  this.currentTarget = $(event.currentTarget);
+  this.relatedTarget = $(event.relatedTarget);
+
+  this.pageX         = event.pageX;
+  this.pageY         = event.pageY;
+
+  if ('srcElement' in event) {
+    // grabbin the IE properties
+    this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
+
+    // faking the target property
+    this.target = $(event.srcElement) || bound_element;
+
+    // faking the relatedTarget, currentTarget and other targets
+    this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : this.target;
+    this.currentTarget = bound_element;
+
+    // faking the mouse position
+    var scrolls = this.target.window().scrolls();
+
+    this.pageX = event.clientX + scrolls.x;
+    this.pageY = event.clientY + scrolls.y;
+  } else if (event.target && 'nodeType' in event.target && event.target.nodeType === 3) {
+    // Safari fix
+    this.target = $(event.target.parentNode);
+  }
+}
