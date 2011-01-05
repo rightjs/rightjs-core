@@ -1,7 +1,7 @@
 /**
  * The Input unit tests
  *
- * Copyright (C) 2009 Nikolay Nemshilov
+ * Copyright (C) 2009-2011 Nikolay Nemshilov
  */
 var InputTest = TestCase.create({
   name: 'InputTest',
@@ -103,6 +103,20 @@ var InputTest = TestCase.create({
 
     this.assertSame(select, select.setValue(['1', 2]));
     this.assertEqual(['1','2'], select.getValue());
+  },
+
+  testSetValueForEmptyValue: function() {
+    // testing FF bug #406
+
+    var select = new Element('div').html(
+      '<select>'+
+        '<option value=""></option>' +
+        '<option value="1" selected="true">1</option>' +
+      '</select>'
+    ).first('select');
+
+    select.setValue('');
+    this.assertEqual('', select.value());
   },
 
   testDisable: function() {
