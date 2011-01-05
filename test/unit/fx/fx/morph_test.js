@@ -1,9 +1,9 @@
 /**
  * The Fx.Style unit tests
  *
- * Copyright (C) 2008-2009 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
-if (!Browser.NativeFx) {
+if (Fx.Options.engine === 'javascript') {
 var FxMorphTest = TestCase.create({
   name: 'FxMorphTest',
 
