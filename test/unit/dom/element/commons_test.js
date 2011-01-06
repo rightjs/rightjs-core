@@ -36,6 +36,14 @@ var ElementCommonsTest = TestCase.create({
     this.assertEqual('boo', label._.getAttribute('for'));
   },
 
+  testSetStyle: function() {
+    this.el.set('style', 'height:100px');
+    this.assertEqual('100px', this.el._.style.height);
+
+    this.el.set('style', {height: '200px'});
+    this.assertEqual('200px', this.el._.style.height);
+  },
+
   testGet: function() {
     this.el._.id = 'something';
     this.assertEqual(this.el._.id, this.el.get('id'));

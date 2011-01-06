@@ -21,11 +21,15 @@ Element.include({
     var key, element = this._;
 
     for (key in hash) {
-      // some attributes are not available as properties
-      if (!(key in element)) {
-        element.setAttribute(key, ''+hash[key]);
+      if (key === 'style') {
+        this.setStyle(hash[key]);
+      } else {
+        // some attributes are not available as properties
+        if (!(key in element)) {
+          element.setAttribute(key, ''+hash[key]);
+        }
+        element[key] = hash[key];
       }
-      element[key] = hash[key];
     }
 
     return this;
