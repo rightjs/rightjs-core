@@ -169,7 +169,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     if (!xhr || xhr.canceled) { return this; }
 
     xhr.abort();
-    xhr.onreadystatechange = dummy();
+    xhr.onreadystatechange = function() {};
     xhr.canceled = true;
 
     return this.fire('cancel');

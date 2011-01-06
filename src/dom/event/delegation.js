@@ -1,7 +1,7 @@
 /**
  * This module the standard events delegation interface
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2011 Nikolay Nemshilov
  */
 [Element, Document].each('include', {
   /**
@@ -208,7 +208,7 @@ Object.each({
   stopObserving: 'undelegate',
   observes:      'delegates'
 }, function(name, method) {
-  String[PROTO][name] = function() {
+  String.prototype[name] = function() {
     var doc = $(document), args = $A(arguments), result;
 
     args.splice(1,0,''+this);
@@ -217,8 +217,8 @@ Object.each({
     return result === doc ? this : result;
   };
 });
-var old_on = String[PROTO].on;
-String[PROTO].on = function(hash) {
+var old_on = String.prototype.on;
+String.prototype.on = function(hash) {
   if (isHash(hash)) {
     for (var key in hash) {
       old_on.apply(this, [key].concat([hash[key]]));
@@ -238,7 +238,7 @@ String[PROTO].on = function(hash) {
  *    "#css.rule".onMouseover('method_name');
  */
 Event_delegation_shortcuts.each(function(name) {
-  String[PROTO]['on'+name.capitalize()] = function() {
+  String.prototype['on'+name.capitalize()] = function() {
     return this.on.apply(this, [name].concat($A(arguments)));
   };
 });

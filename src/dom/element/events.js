@@ -16,7 +16,7 @@
       if (hash.e === 'mouseenter' || hash.e === 'mouseleave') {
         mouse_io_activate();
         hash.n = hash.e;
-        hash.w = dummy(); // so IE didn't bother
+        hash.w = function() {}; // so IE didn't bother
       } else {
         if (hash.e === 'contextmenu' && Browser.Konqueror) {
           hash.n = 'rightclick';
@@ -103,7 +103,7 @@
 }));
 
 // couple more shortcuts for the window
-Observer_createShortcuts(Window[PROTO], $w('blur focus scroll resize load'));
+Observer_createShortcuts(Window.prototype, $w('blur focus scroll resize load'));
 
 /**
  * Registers a list of event-binding shortcuts like
@@ -117,8 +117,8 @@ function Element_add_event_shortcuts(tokens) {
   tokens = $w(tokens);
   Event_delegation_shortcuts = Event_delegation_shortcuts.concat(tokens);
 
-  Observer_createShortcuts(Element[PROTO], tokens);
-  Observer_createShortcuts(Document[PROTO], tokens);
+  Observer_createShortcuts(Element.prototype, tokens);
+  Observer_createShortcuts(Document.prototype, tokens);
 }
 
 Element_add_event_shortcuts(

@@ -114,10 +114,10 @@ var Fx = RightJS.Fx = new Class(Observer, {
 
 // protected
   // dummy method, should be implemented in a subclass
-  prepare: dummy(),
+  prepare: function() {},
 
   // dummy method, processes the element properties
-  render: dummy()
+  render: function() {}
 }),
 
 // global effects registry

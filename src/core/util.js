@@ -6,16 +6,14 @@
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 
 /**
  * Some top-level variables to shortify the things
  */
-var
-PROTO = 'prototype', A_proto = Array[PROTO],
-to_s = Object[PROTO].toString, slice = A_proto.slice,
-dummy = function() { return function() {}; },
+var A_proto = Array.prototype,
+to_s = Object.prototype.toString, slice = A_proto.slice,
 HTML = document.documentElement, UID = 1,       // !#server
 Wrappers_Cache = [], UID_KEY = 'uniqueNumber',  // DON'T change the UID_KEY!
 
@@ -280,7 +278,7 @@ var i=0, natives = 'Array Function Number String Date RegExp'.split(' '),
 include_native = function() {
   for (var i=0; i < arguments.length; i++) {
     if (isHash(arguments[i])) {
-      $ext(this[PROTO],  arguments[i]);
+      $ext(this.prototype,  arguments[i]);
       $ext(this.Methods, arguments[i]);
     }
   }

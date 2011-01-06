@@ -7,7 +7,7 @@
  *   The trim function taken from work of Steven Levithan
  *     - http://blog.stevenlevithan.com/archives/faster-trim-javascript
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 String.include({
   /**
@@ -33,7 +33,7 @@ String.include({
    *
    * @return String trimmed version
    */
-  trim: String[PROTO].trim || function() {
+  trim: String.prototype.trim || function() {
     var str = this.replace(/^\s\s*/, ''), i = str.length;
     while ((/\s/).test(str.charAt(--i))) {}
     return str.slice(0, i + 1);
@@ -172,4 +172,4 @@ String.include({
 
 });
 
-String[PROTO].include = String[PROTO].includes;
+String.prototype.include = String.prototype.includes;

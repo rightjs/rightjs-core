@@ -5,7 +5,7 @@
  *   The basic principles of the module are inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2009-2010 Nikolay Nemshilov
+ * Copyright (C) 2009-2011 Nikolay Nemshilov
  */
 
 var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
@@ -169,6 +169,6 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
 Element_add_event_shortcuts('submit reset focus blur disable enable change');
 
 // deprecated alias
-$alias(Form[PROTO], {
+$alias(Form.prototype, {
   getElements: 'elements'
 });

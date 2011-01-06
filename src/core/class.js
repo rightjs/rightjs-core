@@ -7,7 +7,7 @@
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var Class = RightJS.Class = function() {
   var args   = $A(arguments).slice(0,2),
@@ -37,7 +37,13 @@ var Class = RightJS.Class = function() {
   $ext(klass, Class_Methods).inherit(parent || Class);
 
   // catching the injections
-  Class_attachInjections(klass, props);
+  ['extend', 'include'].each(function(name) {
+    var modules = props[name];
+    if (isHash(modules) || isArray(modules)) {
+      klass[name].apply(klass, ensure_array(modules));
+      delete(props[name]);
+    }
+  });
 
   return klass.include(props);
 },
@@ -45,16 +51,8 @@ var Class = RightJS.Class = function() {
 /**
  * Class utility methods
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
-clean_module = function (module, ext) {
-  return Object.without.apply(Object, [module].concat(
-    $w('selfExtended self_extended selfIncluded self_included').concat(
-      ext ? $w(PROTO+' parent extend include') : ['constructor']
-    )
-  ));
-},
-
 Class_Methods = {
   /**
    * Makes the class get inherited from another one
@@ -64,10 +62,10 @@ Class_Methods = {
    */
   inherit: function(parent) {
     // handling the parent class assign
-    if (parent && parent[PROTO]) {
-      var s_klass = dummy();
-      s_klass[PROTO] = parent[PROTO];
-      this[PROTO] = new s_klass();
+    if (parent && parent.prototype) {
+      var s_klass = function() {};
+      s_klass.prototype = parent.prototype;
+      this.prototype = new s_klass();
       this.parent = parent;
     }
 
@@ -78,7 +76,7 @@ Class_Methods = {
       parent = parent.parent;
     }
 
-    return (this[PROTO].constructor = this);
+    return (this.prototype.constructor = this);
   },
 
   /**
@@ -119,7 +117,7 @@ Class_Methods = {
    * @return Class the klass
    */
   include: function() {
-    var ancestors = (this.ancestors || []).map(PROTO);
+    var ancestors = (this.ancestors || []).map('prototype');
 
     $A(arguments).filter(isHash).each(function(module) {
       var callback = module.selfIncluded || module.self_included;
@@ -127,7 +125,7 @@ Class_Methods = {
       Object.each(clean_module(module, false), function(key, method) {
         var ancestor = ancestors.first(function(proto) { return key in proto && isFunction(proto[key]); });
 
-        this[PROTO][key] = !ancestor ? method : function() {
+        this.prototype[key] = !ancestor ? method : function() {
           this.$super = ancestor[key];
           return method.apply(this, arguments);
         };
@@ -144,22 +142,14 @@ Class_Methods = {
 
 // hooking up the class-methods to the root class
 $ext(Class, Class_Methods);
+Class.prototype.$super = undefined;
 
-/**
- * Processess the functionality injection properties
- *
- * @param Function klass
- * @param Object properties
- * @return void
- */
-function Class_attachInjections(klass, properties) {
-  ['extend', 'include'].each(function(name) {
-    var modules = properties[name];
-    if (isHash(modules) || isArray(modules)) {
-      klass[name].apply(klass, ensure_array(modules));
-      delete(properties[name]);
-    }
-  });
+function clean_module(module, ext) {
+  return Object.without.apply(Object, [module].concat(
+    $w('selfExtended self_extended selfIncluded self_included').concat(
+      ext ? $w('prototype parent extend include') : ['constructor']
+    )
+  ));
 }
 
 /**

@@ -191,8 +191,8 @@ new Class(Element, {
 
 // SELECT element has a bug in FF that screws the selected options
 if ($E('select').update('<option selected="true">1</option><option>2</option>')._.value === '2') {
-  Input[PROTO].insert = function(content, position) {
-    Element[PROTO].insert.call(this, content, position);
+  Input.prototype.insert = function(content, position) {
+    Element.prototype.insert.call(this, content, position);
 
     // manually resetting the selected option in here
     this.find('option').each(function(option) {

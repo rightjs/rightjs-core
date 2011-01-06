@@ -60,13 +60,13 @@
         }
         return result;
       }
-    };
+    },
 
 
     /**
      * Collection of pseudo selector matchers
      */
-    var pseudos = {
+    pseudos = {
       not: function(node, css_rule) {
         return !RightJS.$(node).match(css_rule);
       },
@@ -149,15 +149,15 @@
       'nth-last-of-type': function(node, number) {
         return pseudos['nth-child'](node, number, node.nodeName, true);
       }
-    };
+    },
 
     // the regexps collection
-    var chunker   = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?/g;
-    var id_re     = /#([\w\-_]+)/;
-    var tag_re    = /^[\w\*]+/;
-    var class_re  = /\.([\w\-\._]+)/;
-    var pseudo_re = /:([\w\-]+)(\((.+?)\))*$/;
-    var attrs_re  = /\[((?:[\w\-]*:)?[\w\-]+)\s*(?:([!\^$*~|]?=)\s*((['"])([^\4]*?)\4|([^'"][^\]]*?)))?\]/;
+    chunker   = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?/g,
+    id_re     = /#([\w\-_]+)/,
+    tag_re    = /^[\w\*]+/,
+    class_re  = /\.([\w\-\._]+)/,
+    pseudo_re = /:([\w\-]+)(\((.+?)\))*$/,
+    attrs_re  = /\[((?:[\w\-]*:)?[\w\-]+)\s*(?:([!\^$*~|]?=)\s*((['"])([^\4]*?)\4|([^'"][^\]]*?)))?\]/,
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,8 +169,8 @@
      * @param String atom definition
      * @return Object atom matcher
      */
-    var atoms_cache = {};
-    function build_atom(in_atom) {
+    atoms_cache = {},
+    build_atom = function(in_atom) {
       if (!atoms_cache[in_atom]) {
         var id, tag, classes, attrs, pseudo, values_of_pseudo, match, func, desc = {}, atom = in_atom;
 
@@ -205,7 +205,7 @@
                   parseInt(m[2], 10) || 0
                 ];
               } else {
-                values_of_pseudo = [parseInt(values_of_pseudo), undefined];
+                values_of_pseudo = [parseInt(values_of_pseudo, 10), undefined];
               }
             }
           }
@@ -299,7 +299,7 @@
       }
 
       return atoms_cache[in_atom];
-    }
+    },
 
     /**
      * Builds a single selector out of a simple rule chunk
@@ -307,8 +307,8 @@
      * @param Array of a single rule tokens
      * @return Function selector
      */
-    var tokens_cache = {};
-    function build_selector(rule) {
+    tokens_cache = {},
+    build_selector = function(rule) {
       var rule_key = rule.join('');
       if (!tokens_cache[rule_key]) {
         for (var i=0; i < rule.length; i++) {
@@ -364,7 +364,7 @@
         };
       }
       return tokens_cache[rule_key];
-    }
+    },
 
 
     /**
@@ -373,8 +373,8 @@
      * @param String raw css-rule
      * @return Array of selectors
      */
-    var selectors_cache = {}, chunks_cache = {};
-    function split_rule_to_selectors(css_rule) {
+    selectors_cache = {}, chunks_cache = {},
+    split_rule_to_selectors = function(css_rule) {
       if (!selectors_cache[css_rule]) {
         chunker.lastIndex = 0;
 
@@ -399,7 +399,7 @@
         selectors_cache[css_rule] = rules;
       }
       return selectors_cache[css_rule];
-    }
+    },
 
 
     /**
@@ -410,14 +410,14 @@
      * @param String raw css-rule
      * @return Array search result
      */
-    function select_all(element, css_rule) {
+    select_all = function(element, css_rule) {
       var selectors = split_rule_to_selectors(css_rule), result = [];
       for (var i=0, length = selectors.length; i < length; i++) {
         result = result.concat(selectors[i](element));
       }
 
       return result;
-    }
+    },
 
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -425,7 +425,7 @@
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // the previous dom-selection methods replacement
-    var dom_extension = {
+    dom_extension = {
       first: function(css_rule) {
         return this.find(css_rule)[0];
       },

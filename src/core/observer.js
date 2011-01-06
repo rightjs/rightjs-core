@@ -50,7 +50,7 @@ var Observer = RightJS.Observer = new Class({
    */
   observes: function(event, callback) {
     if (!isString(event)) { callback = event; event = null; }
-    if (isString(callback)) { callback = this[callback]; }
+    if (isString(callback)) { callback = callback in this ? this[callback] : null; }
 
     return (this.$listeners || []).some(function(i) {
       return (event && callback) ? i.e === event && i.f === callback :
@@ -69,7 +69,7 @@ var Observer = RightJS.Observer = new Class({
    * @return Observer self
    */
   stopObserving: function(event, callback) {
-    Observer_stopObserving(this, event, callback, dummy());
+    Observer_stopObserving(this, event, callback, function() {});
     return this;
   },
 
@@ -117,7 +117,7 @@ var Observer = RightJS.Observer = new Class({
  * @return Object extended object
  */
 Observer_create = Observer.create =  function(object, events) {
-  $ext(object, Object.without(Observer[PROTO], 'initialize', 'setOptions'), true);
+  $ext(object, Object.without(Observer.prototype, 'initialize', 'setOptions'), true);
   return Observer_createShortcuts(object, events || Class_findSet(object, 'events'));
 },
 
@@ -151,7 +151,7 @@ function Observer_on(object, o_args, preprocess) {
     switch (typeof callback) {
       case "string":
         name     = callback;
-        callback = object[callback];
+        callback = callback in object ? object[callback] : function() {};
 
       case "function":
         ('$listeners' in object ? object.$listeners : (

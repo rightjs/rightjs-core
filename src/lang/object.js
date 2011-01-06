@@ -139,7 +139,7 @@ $ext(Object, {
       if (isHash(args[i])) {
         for (key in args[i]) {
           object[key] = isHash(args[i][key]) && !(args[i][key] instanceof Class) ?
-            Object.merge(object[key], args[i][key]) : args[i][key];
+            Object.merge(key in object ? object[key] : {}, args[i][key]) : args[i][key];
         }
       }
     }

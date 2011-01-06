@@ -5,10 +5,10 @@
  *   The basic principles of the module are originated from
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2009-2010 Nikolay Nemshilov
+ * Copyright (C) 2009-2011 Nikolay Nemshilov
  */
 [Window, Document].each(function(object) {
-  var proto = object[PROTO], old_on = proto.on;
+  var proto = object.prototype, old_on = proto.on;
 
   // redefining the observer method to catch up
   proto.on = function(name) {

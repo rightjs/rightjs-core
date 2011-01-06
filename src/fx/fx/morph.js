@@ -70,7 +70,7 @@ Fx.Morph = new Class(Fx, {
   // parepares the effect
   prepare: function(style) {
     if (this.options.engine === 'native' && native_fx_prefix !== undefined) {
-      this.render = this.transition = dummy();
+      this.render = this.transition = function() {};
       native_fx_prepare.call(this, style);
     } else {
       var keys   = style_keys(style),
