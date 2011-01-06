@@ -67,112 +67,87 @@
      * Collection of pseudo selector matchers
      */
     var pseudos = {
-      not: function(css_rule) {
-        return !RightJS.$(this).match(css_rule);
+      not: function(node, css_rule) {
+        return !RightJS.$(node).match(css_rule);
       },
 
-      checked: function() {
-        return this.checked;
+      checked: function(node) {
+        return node.checked === true;
       },
 
-      enabled: function() {
-        return !this.disabled;
+      enabled: function(node) {
+        return node.disabled === false;
       },
 
-      disabled: function() {
-        return this.disabled;
+      disabled: function(node) {
+        return node.disabled === true;
       },
 
-      empty: function() {
-        return (this.innerHTML || '') === '';
+      selected: function(node) {
+        return node.selected === true;
       },
 
-      'first-child': function(tag_name) {
-        var node = this;
+      empty: function(node) {
+        return !node.firstChild;
+      },
+
+      'first-child': function(node, node_name) {
         while ((node = node.previousSibling)) {
-          if (node.tagName && (!tag_name || node.tagName === tag_name)) {
+          if (node.nodeType === 1 && (node_name === null || node.nodeName === node_name)) {
             return false;
           }
         }
         return true;
       },
 
-      'first-of-type': function() {
-        return pseudos['first-child'].call(this, this.tagName);
+      'first-of-type': function(node) {
+        return pseudos['first-child'](node, node.nodeName);
       },
 
-      'last-child': function(tag_name) {
-        var node = this;
+      'last-child': function(node, node_name) {
         while ((node = node.nextSibling)) {
-          if (node.tagName && (!tag_name || node.tagName === tag_name)) {
+          if (node.nodeType === 1 && (node_name === null || node.nodeName === node_name)) {
             return false;
           }
         }
         return true;
       },
 
-      'last-of-type': function() {
-        return pseudos['last-child'].call(this, this.tagName);
+      'last-of-type': function(node) {
+        return pseudos['last-child'](node, node.nodeName);
       },
 
-      'only-child': function(tag_name) {
-        return pseudos['first-child'].call(this, tag_name) &&
-          pseudos['last-child'].call(this, tag_name);
+      'only-child': function(node, node_name) {
+        return pseudos['first-child'](node, node_name) &&
+          pseudos['last-child'](node, node_name);
       },
 
-      'only-of-type': function() {
-        return pseudos['only-child'].call(this, this.tagName);
+      'only-of-type': function(node) {
+        return pseudos['only-child'](node, node.nodeName);
       },
 
-      'nth-child': function(number, tag_name, reverse) {
-        if (!this.parentNode) { return false; }
-        number = number.toLowerCase();
+      'nth-child': function(node, number, node_name, reverse) {
+        var index = 1, a = number[0], b = number[1];
 
-        if (number === 'n') { return true; }
-        if (number === 'odd') { number = '2n+1'; }
-        if (number === 'even') { number = '2n'; }
-
-        if (number.include('n')) {
-          // parsing out the matching expression
-          var a = 0, b = 0;
-          if ((m = number.match(/^([+\-]?\d*)?n([+\-]?\d*)?$/))) {
-            a = m[1] === '-' ? -1 : parseInt(m[1], 10) || 1;
-            b = parseInt(m[2], 10) || 0;
+        while ((node = (reverse === true) ? node.nextSibling : node.previousSibling)) {
+          if (node.nodeType === 1 && (node_name === undefined || node.nodeName === node_name)) {
+            index++;
           }
-
-          // getting the element index
-          var index = 1, node = this;
-          while ((node = reverse ? node.nextSibling : node.previousSibling)) {
-            if (node.tagName && (!tag_name || node.tagName === tag_name)) { index++; }
-          }
-
-          return (index - b) % a === 0 && (index - b) / a >= 0;
-
-        } else {
-          return pseudos.index.call(this, number.toInt() - 1, tag_name, reverse);
         }
+
+        return (b === undefined ? (index === a) : ((index - b) % a === 0 && (index - b) / a >= 0));
       },
 
-      'nth-of-type': function(number) {
-        return pseudos['nth-child'].call(this, number, this.tagName);
+      'nth-of-type': function(node, number) {
+        return pseudos['nth-child'](node, number, node.nodeName);
       },
 
-      'nth-last-child': function(number) {
-        return pseudos['nth-child'].call(this, number, null, true);
+      'nth-last-child': function(node, number) {
+        return pseudos['nth-child'](node, number, undefined, true);
       },
 
-      'nth-last-of-type': function(number) {
-        return pseudos['nth-child'].call(this, number, this.tagName, true);
-      },
-
-    // protected
-      index: function(number, tag_name, reverse) {
-        number = RightJS.isString(number) ? number.toInt() : number;
-        var node = this, count = 0;
-        while ((node = reverse ? node.nextSibling : node.previousSibling)) {
-          if (node.tagName && (!tag_name || node.tagName === tag_name) && ++count > number) { return false; }
-        }
-        return count == number;
+      'nth-last-of-type': function(node, number) {
+        return pseudos['nth-child'](node, number, node.nodeName, true);
       }
     };
 
@@ -210,6 +185,31 @@
         if ((match = atom.match(pseudo_re))) {
           pseudo = match[1];
           values_of_pseudo = match[3] === '' ? null : match[3];
+
+          if (pseudo.startsWith('nth')) {
+            // preparsing the nth-child pseoudo numbers
+            values_of_pseudo = values_of_pseudo.toLowerCase();
+
+            if (values_of_pseudo === 'n') {
+              // no need in the pseudo then
+              pseudo = null;
+              values_of_pseudo = null;
+            } else {
+              if (values_of_pseudo === 'odd')  { values_of_pseudo = '2n+1'; }
+              if (values_of_pseudo === 'even') { values_of_pseudo = '2n';   }
+
+              var m = /^([+\-]?\d*)?n([+\-]?\d*)?$/.exec(values_of_pseudo);
+              if (m) {
+                values_of_pseudo = [
+                  m[1] === '-' ? -1 : parseInt(m[1], 10) || 1,
+                  parseInt(m[2], 10) || 0
+                ];
+              } else {
+                values_of_pseudo = [parseInt(values_of_pseudo), undefined];
+              }
+            }
+          }
+
           atom = atom.replace(match[0], '');
         }
 
@@ -261,9 +261,9 @@
           // adding the attributes matching conditions
           if (attrs) { patch_filter(
             'var p,o,v,k,b=false;'+
-            'for (k in a){p=e.getAttribute(k)||"";o=a[k].o||"";v=a[k].v||"";'+
+            'for (k in a){p=k==="class"?e.className:(e.getAttribute(k)||"");o=a[k].o||"";v=a[k].v||"";'+
               'if('+
-                '(o===""&&e.getAttributeNode(k)===null)||'+
+                '(o===""&&(k==="class"||k==="lang"?(p===""):(e.getAttributeNode(k)===null)))||'+
                 '(o==="="&&p!=v)||'+
                 '(o==="*="&&!p.include(v))||'+
                 '(o==="^="&&!p.startsWith(v))||'+
@@ -276,7 +276,7 @@
 
           // adding the pseudo matchers check
           if (pseudo in pseudos) {
-            patch_filter('if(!S[P].call(e,V))continue;');
+            patch_filter('if(!S[P](e,V))continue;');
           }
 
           //

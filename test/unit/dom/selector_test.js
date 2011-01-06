@@ -40,7 +40,7 @@ var SelectorTest = TestCase.create({
   assertMatchRule: function(css_rule, elements, message) {
     (elements instanceof Array ? elements : [elements]).each(function(element) {
       if (!$(element).match(css_rule)) {
-        alert("Element "+element.tagName+" should match: '" + css_rule + "'");
+        alert("Element "+(element._||element).nodeName+" should match: '" + css_rule + "'");
         this.throw_problem("Element should match the rule '"+css_rule+"'", message);
       }
     }, this);
@@ -49,7 +49,7 @@ var SelectorTest = TestCase.create({
   assertNotMatchRule: function(css_rule, elements, message) {
     (elements instanceof Array ? elements : [elements]).each(function(element) {
       if ($(element).match(css_rule)) {
-        alert("Element "+element.tagName+" should not match: '" + css_rule + "'");
+        alert("Element "+(element._||element).nodeName+" should not match: '" + css_rule + "'");
         this.throw_problem("Element should not match the rule '"+css_rule+"'", message);
       }
     }, this);
@@ -242,12 +242,31 @@ var SelectorTest = TestCase.create({
   },
 
   testAttrsExistanceMatch: function() {
-    var element = $E('div', {id: 'boo', 'data-zing': ''});
+    var element = $E('div', {id: 'boo', 'data-zing': ''}).insertTo(this.container);
 
     this.assertMatchRule('[id]', element);
     this.assertMatchRule('[data-zing]', element);
+    this.assertMatchRule('[id][data-zing]', element);
 
     this.assertNotMatchRule('[data-not-set]', element);
+    this.assertNotMatchRule('[id][data-not-set]', element);
+  },
+
+  testMatchClassViaAttr: function() {
+    var element = $E('div', {'class': 'boo-hoo'}).insertTo(this.container);
+
+    this.assertMatchRule('[class]', element);
+    this.assertMatchRule('[class=boo-hoo]', element);
+    this.assertMatchRule('[class^=boo]', element);
+    this.assertMatchRule('[class$=hoo]', element);
+    this.assertMatchRule('[class*=oo]', element);
+    this.assertMatchRule('[class|=boo]', element);
+
+    this.assertNotMatchRule('[class~=boo]', element);
+    this.assertNotMatchRule('[class~=hoo]', element);
+
+    var element2 = $E('div').insertTo(this.container);
+    this.assertNotMatchRule('[class]', element2);
   },
 
   testPseudoMatch: function() {
