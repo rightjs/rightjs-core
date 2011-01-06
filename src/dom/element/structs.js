@@ -13,12 +13,12 @@
  *   The insertions system implementation is inspired by
  *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 
 Element.include({
   parent: function(css_rule) {
-    return css_rule ? this.parents(css_rule)[0] : $(this._.parentNode || null); // <- IE6 need that || null
+    return css_rule ? this.parents(css_rule)[0] : wrap(this._.parentNode || null); // <- IE6 need that || null
   },
 
   parents: function(css_rule) {
@@ -262,11 +262,11 @@ Element.include({
  * @return Array found elements
  */
 function recursively_collect(where, attr, css_rule) {
-  var node = where._, result = [];
+  var node = where._, result = [], i=0, no_rule = !css_rule;
 
   while ((node = node[attr])) {
-    if (node.tagName && (!css_rule || $(node).match(css_rule))) {
-      result.push($(node));
+    if (node.nodeType === 1 && (no_rule || wrap(node).match(css_rule))) {
+      result[i++] = wrap(node);
     }
   }
 

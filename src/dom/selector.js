@@ -4,20 +4,8 @@
  * NOTE: this module is just a wrap over the native CSS-selectors feature
  *       see the olds/css.js file for the manual selector code
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
-
-/**
- * Native css-selectors include the current element into the search context
- * and as we actually search only inside of the element we add it's tag
- * as a scope for the search
- */
-function stub_rule(css_rule, tag) {
-  var rule = css_rule || '*', element = tag._,
-    tag_name = 'tagName' in element ? element.tagName : null;
-
-  return tag_name === null ? rule : rule.replace(/(^|,)/g, '$1'+ tag_name + ' ');
-}
 
 [Element, Document].each('include', {
   /**
@@ -28,7 +16,7 @@ function stub_rule(css_rule, tag) {
    * @return Element matching node or null
    */
   first: function(css_rule) {
-    return $(this._.querySelector(stub_rule(css_rule, this)));
+    return wrap(this._.querySelector(css_rule || '*'));
   },
 
   /**
@@ -39,8 +27,17 @@ function stub_rule(css_rule, tag) {
    * @return Array of elements
    */
   find: function(css_rule, raw) {
-    var result = $A(this._.querySelectorAll(stub_rule(css_rule, this)));
-    return raw === true ? result : result.map($);
+    var query = this._.querySelectorAll(css_rule || '*'), result = [], i=0, l = query.length;
+
+    if (raw === true) {
+      result = $A(query);
+    } else {
+      for (; i < l; i++) {
+        result[i] = wrap(query[i]);
+      }
+    }
+
+    return result;
   },
 
   /**
@@ -66,7 +63,7 @@ function stub_rule(css_rule, tag) {
       faking = true;
     }
 
-    result = $(parent).find(css_rule, true).indexOf(element) !== -1;
+    result = wrap(parent).find(css_rule, true).indexOf(element) !== -1;
 
     if (faking) {
       parent.removeChild(element);

@@ -51,7 +51,7 @@ new Class(Element, {
    * @return Form wrapped form
    */
   form: function() {
-    return $(this._.form);
+    return wrap(this._.form);
   },
 
   /**

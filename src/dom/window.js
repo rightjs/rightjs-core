@@ -1,7 +1,7 @@
 /**
  * the window object extensions
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var Window = RightJS.Window = new Class(Wrapper, {
   /**
@@ -46,9 +46,10 @@ var Window = RightJS.Window = new Class(Wrapper, {
    * @return window self
    */
   scrollTo: function(left, top, fx_options) {
-    var left_pos = left, top_pos = top, element = $(left); // moving the values into new vars so they didn't get screwed later on
+    var left_pos = left, top_pos = top,
+        element = isNumber(left) ? null : $(left);
 
-    if(element && element instanceof Element) {
+    if(element instanceof Element) {
       left = element.position();
     }
 

@@ -63,7 +63,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
    * @return Input field
    */
   input: function(name) {
-    return $(this._[name]);
+    return wrap(this._[name]);
   },
 
   /**

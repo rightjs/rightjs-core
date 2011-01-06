@@ -16,7 +16,7 @@ var mouse_io_index = [], mouse_io_inactive = true;
 function mouse_io_fire(element, uid, enter) {
   var event = new Event(enter ? 'mouseenter' : 'mouseleave', {target: element}).stop();
   event.target.fire(event);
-  $(document).fire(event);
+  wrap(document).fire(event);
 }
 
 /**

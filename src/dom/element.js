@@ -76,7 +76,6 @@ function Element_initialize(inst, element, options) {
           case 'id':    inst._.id        = options[key]; break;
           case 'html':  inst._.innerHTML = options[key]; break;
           case 'class': inst._.className = options[key]; break;
-          case 'style': inst.setStyle(options[key]);     break;
           case 'on':    inst.on(options[key]);           break;
           default:      inst.set(key, options[key]);
         }

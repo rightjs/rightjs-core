@@ -101,9 +101,9 @@ function Event_Klass(event, bound_element) {
   this.which         = event.which;
   this.keyCode       = event.keyCode;
 
-  this.target        = $(event.target);
-  this.currentTarget = $(event.currentTarget);
-  this.relatedTarget = $(event.relatedTarget);
+  this.target        = wrap(event.target);
+  this.currentTarget = wrap(event.currentTarget);
+  this.relatedTarget = wrap(event.relatedTarget);
 
   this.pageX         = event.pageX;
   this.pageY         = event.pageY;
@@ -113,10 +113,10 @@ function Event_Klass(event, bound_element) {
     this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
 
     // faking the target property
-    this.target = $(event.srcElement) || bound_element;
+    this.target = wrap(event.srcElement) || bound_element;
 
     // faking the relatedTarget, currentTarget and other targets
-    this.relatedTarget = this.target._ === event.fromElement ? $(event.toElement) : this.target;
+    this.relatedTarget = this.target._ === event.fromElement ? wrap(event.toElement) : this.target;
     this.currentTarget = bound_element;
 
     // faking the mouse position
@@ -126,6 +126,34 @@ function Event_Klass(event, bound_element) {
     this.pageY = event.clientY + scrolls.y;
   } else if (event.target && 'nodeType' in event.target && event.target.nodeType === 3) {
     // Safari fix
-    this.target = $(event.target.parentNode);
+    this.target = wrap(event.target.parentNode);
   }
+}
+
+/**
+ * Private quick wrapping function, unlike `$`
+ * it doesn't search by ID and handle double-wrapps
+ * just pure dom-wrapping functionality
+ *
+ * @param raw dom unit
+ * @return Wrapper dom-wrapper
+ */
+function wrap(object) {
+  if (object !== null && object !== undefined) {
+    var wrapper = UID_KEY in object ? Wrappers_Cache[object[UID_KEY]] : undefined;
+
+    if (wrapper !== undefined) {
+      return wrapper;
+    } else if (object.nodeType === 1) {
+      return new Element(object);
+    } else if (object.nodeType === 9) {
+      return new Document(object);
+    } else if (object.window == object) {
+      return new Window(object);
+    } else if (isElement(object.target) || isElement(object.srcElement)) {
+      return new Event(object);
+    }
+  }
+
+  return object;
 }

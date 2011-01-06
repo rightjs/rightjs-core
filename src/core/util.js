@@ -180,26 +180,13 @@ isNode = RightJS.isNode = function(value) {
  * @return Element or null
  */
 $ = RightJS.$ = function(object) {
-  if (typeof object === 'string') {
+  if (object instanceof Wrapper) {
+    return object;
+  } else if (typeof object === 'string') {
     object = document.getElementById(object);
   }
 
-  if (object && !(object instanceof Wrapper)) {
-    var wrapper = UID_KEY in object ? Wrappers_Cache[object[UID_KEY]] : undefined;
-    if (wrapper !== undefined) {
-      object = wrapper;
-    } else if (object.nodeType === 1) {
-      object = new Element(object);
-    } else if (isElement(object.target) || isElement(object.srcElement)) {
-      object = new Event(object);
-    } else if (object.nodeType === 9) {
-      object = new Document(object);
-    } else if (object.window == object) {
-      object = new Window(object);
-    }
-  }
-
-  return object;
+  return wrap(object);
 },
 
 /** !#server

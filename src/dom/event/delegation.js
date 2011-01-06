@@ -1,7 +1,7 @@
 /**
  * This module the standard events delegation interface
  *
- * Copyright (C) 2011 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 [Element, Document].each('include', {
   /**
@@ -209,7 +209,7 @@ Object.each({
   observes:      'delegates'
 }, function(name, method) {
   String.prototype[name] = function() {
-    var doc = $(document), args = $A(arguments), result;
+    var doc = wrap(document), args = $A(arguments), result;
 
     args.splice(1,0,''+this);
     result = doc[method].apply(doc, args);

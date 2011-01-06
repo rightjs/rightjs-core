@@ -56,7 +56,7 @@ var SelectorTest = TestCase.create({
   },
 
   testSearch: function() {
-    var block = document.createElement('div');
+    var block = document.createElement('blockquote');
     var el1   = document.createElement('div');
     var el11  = document.createElement('input');
     var el12  = document.createElement('div');

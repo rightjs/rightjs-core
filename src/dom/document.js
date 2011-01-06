@@ -1,11 +1,11 @@
 /**
  * A simple document wrapper
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 var Document = RightJS.Document = new Class(Wrapper, {
   // returns the window reference
   window: function() {
-    return $(this._.defaultView || this._.parentWindow);
+    return wrap(this._.defaultView || this._.parentWindow);
   }
 });
