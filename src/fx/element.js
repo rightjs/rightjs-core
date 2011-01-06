@@ -10,6 +10,7 @@
 var methods    = Element.prototype,
     old_hide   = methods.hide,
     old_show   = methods.show,
+    old_toggle = methods.toggle,
     old_remove = methods.remove,
     old_scroll = methods.scrollTo;
 
@@ -62,6 +63,17 @@ Element.include({
    */
   show: function(fx, options) {
     return (fx && !this.visible()) ? call_fx(this, fx, ['in', options]) : old_show.call(this);
+  },
+
+  /**
+   * Toggles the element state with visual effect
+   *
+   * @param String fx name
+   * @param Object fx options
+   * @return Element this
+   */
+  toggle: function(fx, options) {
+    return fx ? call_fx(this, fx, ['toggle', options]) : old_toggle.call(this);
   },
 
   /**

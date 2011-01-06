@@ -5,7 +5,7 @@
  *   Most of the naming system in the module inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 Element.include({
   /**
@@ -102,11 +102,9 @@ Element.include({
   /**
    * shows the element
    *
-   * @param String optional effect name
-   * @param Object the optional effect options
    * @return Element self
    */
-  show: function(effect, options) {
+  show: function() {
     if (this.hidden()) {
       // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
       var element = this._, value = element.tagName == 'DIV' ? 'block' : 'inline';
@@ -120,12 +118,10 @@ Element.include({
   /**
    * toggles the visibility state of the element
    *
-   * @param String optional effect name
-   * @param Object the optional effect options
    * @return Element self
    */
-  toggle: function(effect, options) {
-    return this[this.visible() ? 'hide' : 'show'](effect, options);
+  toggle: function() {
+    return this[this.visible() ? 'hide' : 'show']();
   },
 
   /**
