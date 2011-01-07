@@ -130,7 +130,7 @@ scheduled_fx = [], running_fx = [];
  * @return void
  */
 function fx_register(fx) {
-  var uid = $uid(fx.element || {});
+  var uid = $uid((fx.element || {})._ || {});
   fx.ch = (scheduled_fx[uid] = scheduled_fx[uid] || []);
   fx.cr = (running_fx[uid]   = running_fx[uid]   || []);
 }

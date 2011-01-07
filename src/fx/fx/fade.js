@@ -8,7 +8,7 @@ Fx.Fade = new Class(Fx.Twin, {
     this.setHow(how);
 
     if (this.how === 'in') {
-      old_show.call(this.element.setStyle({opacity: 0}));
+      this.element.setStyle({opacity: 0}).show();
     }
 
     return this.$super({opacity: this.how === 'in' ? 1 : 0});

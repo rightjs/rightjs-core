@@ -80,19 +80,15 @@ Event_delegation_shortcuts.each(function(name) {
  *   "#css.rule".setStyle({color: 'red'});
  *
  */
-var key, methods = (RightJS.Input || RightJS.Element).prototype;
-
-for (key in methods) {
-  if (isFunction(methods[key]) && !(key in String.prototype)) {
-    String.prototype[key] = (function(method) {
-      return function() {
-        var nodes = wrap(document).find(this, true), i=0, l = nodes.length, element;
-        for (; i < l; i++) {
-          element = wrap(nodes[i]);
-          element[method].apply(element, arguments);
-        }
-        return this;
+Object.each((RightJS.Input || RightJS.Element).prototype, function(name, method) {
+  if (isFunction(method) && !(name in String.prototype)) {
+    String.prototype[name] = function() {
+      var nodes = wrap(document).find(this, true), i=0, l = nodes.length, element;
+      for (; i < l; i++) {
+        element = wrap(nodes[i]);
+        element[name].apply(element, arguments);
       }
-    })(key);
+      return this;
+    };
   }
-}
+});

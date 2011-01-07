@@ -283,5 +283,31 @@ var ClassTest = TestCase.create({
     this.assert(k1 instanceof Class);
     this.assert(k2 instanceof Class);
     this.assert(k3 instanceof Class);
+  },
+
+  testModuleSuperCalls: function() {
+    var Klass = new Class({
+      method: function() {
+        return 'original';
+      }
+    });
+
+    this.assertEqual('original', new Klass().method());
+
+    Klass.include({
+      method: function() {
+        return this.$super() + '+module1';
+      }
+    });
+
+    this.assertEqual('original+module1', new Klass().method());
+
+    Klass.include({
+      method: function() {
+        return this.$super() + '+module2';
+      }
+    });
+
+    this.assertEqual('original+module1+module2', new Klass().method());
   }
 });

@@ -12,7 +12,7 @@ Fx.Twin = new Class(Fx.Morph, {
    */
   finish: function() {
     if (this.how === 'out') {
-      old_hide.call(this.element);
+      this.element.hide();
     }
 
     return this.$super();

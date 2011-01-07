@@ -38,11 +38,8 @@ var Event = RightJS.Event = new Class(Wrapper, {
    * @return RightJS.Event this
    */
   stopPropagation: function() {
-    if ('stopPropagation' in this._) {
-      this._.stopPropagation();
-    } else {
-      this._.cancelBubble = true;
-    }
+    try {        this._.stopPagination();
+    } catch(e) { this._.cancelBubble = true; }
     this.stopped = true;
     return this;
   },
@@ -53,11 +50,8 @@ var Event = RightJS.Event = new Class(Wrapper, {
    * @return RightJS.Event this
    */
   preventDefault: function() {
-    if ('preventDefault' in this._) {
-      this._.preventDefault();
-    } else {
-      this._.returnValue = false;
-    }
+    try {        this._.preventDefault();
+    } catch(e) { this._.returnValue = false; }
     return this;
   },
 

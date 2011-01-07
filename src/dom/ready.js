@@ -7,14 +7,10 @@
  *
  * Copyright (C) 2009-2011 Nikolay Nemshilov
  */
-[Window, Document].each(function(object) {
-  var proto = object.prototype, old_on = proto.on;
-
-  // redefining the observer method to catch up
-  proto.on = function(name) {
-    if (name == 'ready' && !this._wR) {
+Document.include({
+  on: function(name) {
+    if (name === 'ready' && !this._iR) {
       var document = this._, ready = this.fire.bind(this, 'ready');
-      document = document.document || document;
 
       // IE and Konqueror browsers
       if ('readyState' in document) {
@@ -29,10 +25,11 @@
         document.addEventListener('DOMContentLoaded', ready, false);
       }
 
-      this._wR = true;
+      this._iR = true;
     }
-    return old_on.apply(this, arguments);
-  };
 
-  Observer_createShortcuts(proto, ['ready']);
+    return this.$super.apply(this, arguments);
+  }
 });
+
+Observer_createShortcuts(Document.prototype, ['ready']);

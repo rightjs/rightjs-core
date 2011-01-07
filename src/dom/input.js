@@ -62,7 +62,7 @@ new Class(Element, {
    * @return Input this
    */
   insert: function(content, position) {
-    Element.prototype.insert.call(this, content, position);
+    this.$super(content, position);
 
     // manually resetting the selected option in here
     this.find('option').each(function(option) {

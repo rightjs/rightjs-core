@@ -19,7 +19,7 @@ var Observer = RightJS.Observer = new Class({
    */
   initialize: function(options) {
     this.setOptions(options);
-    Observer_createShortcuts(this, Class_findSet(this, 'events'));
+    Observer_createShortcuts(this, Class_findSet(this, 'Events'));
     return this;
   },
 
@@ -118,7 +118,7 @@ var Observer = RightJS.Observer = new Class({
  */
 Observer_create = Observer.create =  function(object, events) {
   $ext(object, Object.without(Observer.prototype, 'initialize', 'setOptions'), true);
-  return Observer_createShortcuts(object, events || Class_findSet(object, 'events'));
+  return Observer_createShortcuts(object, events || Class_findSet(object, 'Events'));
 },
 
 /**
