@@ -1,7 +1,7 @@
 /**
  * The source code initialization script
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 include_sources_by_modules({
   core: [
@@ -52,7 +52,9 @@ include_sources_by_modules({
   events: [
     'dom/event/focusin',
     'dom/event/mouseio',
-    'dom/event/delegation'
+    'dom/event/delegation',
+
+    'dom/string'
   ],
 
   xhr: [
