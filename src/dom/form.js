@@ -167,8 +167,3 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
 
 // creating the event shortcuts
 Element_add_event_shortcuts('submit reset focus blur disable enable change');
-
-// deprecated alias
-$alias(Form.prototype, {
-  getElements: 'elements'
-});

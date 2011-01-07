@@ -1,7 +1,7 @@
 /**
  * The Form unit tests
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov aka St. <nemshilov#gma-ilc-om>
+ * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
 var FormTest = TestCase.create({
   name: 'FormTest',
@@ -66,12 +66,12 @@ var FormTest = TestCase.create({
     });
   },
 
-  testGetElements: function() {
+  testElements: function() {
     var form = this.setForm();
 
-    this.assertEqual(11, form.getElements().length);
+    this.assertEqual(11, form.elements().length);
 
-    form.getElements().each(function(element) {
+    form.elements().each(function(element) {
       this.assert('getValue' in element, "elements should be wrapped");
     }, this);
   },
@@ -97,7 +97,7 @@ var FormTest = TestCase.create({
 
     this.assertSame(form, form.blur());
 
-    form.getElements().each(function(element) {
+    form.elements().each(function(element) {
       this.assertFalse(element.focused);
     }, this);
   },
@@ -117,7 +117,7 @@ var FormTest = TestCase.create({
 
     this.assertSame(form, form.enable());
 
-    form.getElements().each(function(element) {
+    form.elements().each(function(element) {
       this.assertFalse(element._.disabled);
     }, this);
   },

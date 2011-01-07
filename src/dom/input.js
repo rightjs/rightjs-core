@@ -55,6 +55,24 @@ new Class(Element, {
   },
 
   /**
+   * Overloading the method to fix some issues with IE and FF
+   *
+   * @param mixed content
+   * @param string optional position
+   * @return Input this
+   */
+  insert: function(content, position) {
+    Element.prototype.insert.call(this, content, position);
+
+    // manually resetting the selected option in here
+    this.find('option').each(function(option) {
+      option._.selected = !!option.get('selected');
+    });
+
+    return this;
+  },
+
+  /**
    * Overloading the method so it always called the '#insert' method
    *
    * @param mixed content
@@ -188,17 +206,3 @@ new Class(Element, {
     return value;
   }
 });
-
-// SELECT element has a bug in FF that screws the selected options
-if ($E('select').update('<option selected="true">1</option><option>2</option>')._.value === '2') {
-  Input.prototype.insert = function(content, position) {
-    Element.prototype.insert.call(this, content, position);
-
-    // manually resetting the selected option in here
-    this.find('option').each(function(option) {
-      option._.selected = !!option.get('selected');
-    });
-
-    return this;
-  };
-}
