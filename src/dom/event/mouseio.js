@@ -16,20 +16,20 @@ var mouse_io_index = [], mouse_io_inactive = true;
 function mouse_io_fire(element, uid, enter) {
   var event = new Event(enter ? 'mouseenter' : 'mouseleave', {
     bubbles:       false,
-    target:        element,
-    currentTarget: document
-  });
+    target:        element
+  }),
+  doc_wrap = wrap(document);
 
   // replacing the #find method so that UJS didn't
   // get broke with trying to find nested elements
   event.find = function(css_rule) {
-    return this.currentTarget.find(css_rule, true)
+    return doc_wrap.find(css_rule, true)
       .indexOf(this.target._) === -1 ?
         undefined : this.target;
   };
 
   event.target.fire(event);
-  event.currentTarget.fire(event);
+  doc_wrap.fire(event);
 }
 
 /**

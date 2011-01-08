@@ -81,10 +81,8 @@
       event = new Event(event, $ext({target: this._}, options));
     }
 
-    // setting up the currentTarget reference if someone forgot it
-    if (!event.currentTarget) {
-      event.currentTarget = this;
-    }
+    // setting up the currentTarget reference
+    event.currentTarget = this;
 
     (this.$listeners || []).each(function(hash) {
       if (hash.e === event.type && hash.f.apply(this, (hash.r?[]:[event]).concat(hash.a)) === false) {
