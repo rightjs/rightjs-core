@@ -14,9 +14,22 @@ var mouse_io_index = [], mouse_io_inactive = true;
  * @return void
  */
 function mouse_io_fire(element, uid, enter) {
-  var event = new Event(enter ? 'mouseenter' : 'mouseleave', {target: element}).stop();
+  var event = new Event(enter ? 'mouseenter' : 'mouseleave', {
+    bubbles:       false,
+    target:        element,
+    currentTarget: document
+  });
+
+  // replacing the #find method so that UJS didn't
+  // get broke with trying to find nested elements
+  event.find = function(css_rule) {
+    return this.currentTarget.find(css_rule, true)
+      .indexOf(this.target._) === -1 ?
+        undefined : this.target;
+  };
+
   event.target.fire(event);
-  wrap(document).fire(event);
+  event.currentTarget.fire(event);
 }
 
 /**
@@ -90,7 +103,7 @@ function mouse_io_activate() {
       window.attachEvent('blur', mouse_io_reset);
     } else {
       document.addEventListener('mouseover', mouse_io_handler, false);
-      window.attachEvent('blur', mouse_io_handler, false);
+      window.addEventListener('blur', mouse_io_reset, false);
     }
   }
 }

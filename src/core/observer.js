@@ -157,7 +157,7 @@ function Observer_on(object, o_args, preprocess) {
         ('$listeners' in object ? object.$listeners : (
           object.$listeners = []
         )).push(preprocess({
-          e: event, f: callback, a: args, r: name, t: object
+          e: event, f: callback, a: args, r: name || false, t: object
         }));
         break;
 

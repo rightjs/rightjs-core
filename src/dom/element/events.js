@@ -16,7 +16,9 @@
       if (hash.e === 'mouseenter' || hash.e === 'mouseleave') {
         mouse_io_activate();
         hash.n = hash.e;
-        hash.w = function() {}; // so IE didn't bother
+        hash.w = function() {};
+        // NOTE: we don't attach this listener to the actual element!
+        //       so it didn't screw with IE's native enter/leave handlers
       } else {
         if (hash.e === 'contextmenu' && Browser.Konqueror) {
           hash.n = 'rightclick';
@@ -32,12 +34,12 @@
             event.stop();
           }
         };
-      }
 
-      if (Browser_IE) {
-        hash.t._.attachEvent('on'+hash.n, hash.w);
-      } else {
-        hash.t._.addEventListener(hash.n, hash.w, false);
+        if (Browser_IE) {
+          hash.t._.attachEvent('on'+hash.n, hash.w);
+        } else {
+          hash.t._.addEventListener(hash.n, hash.w, false);
+        }
       }
 
       return hash;
@@ -79,7 +81,10 @@
       event = new Event(event, $ext({target: this._}, options));
     }
 
-    event.currentTarget = this;
+    // setting up the currentTarget reference if someone forgot it
+    if (!event.currentTarget) {
+      event.currentTarget = this;
+    }
 
     (this.$listeners || []).each(function(hash) {
       if (hash.e === event.type && hash.f.apply(this, (hash.r?[]:[event]).concat(hash.a)) === false) {
@@ -87,7 +92,8 @@
       }
     }, this);
 
-    if (!event.stopped && parent && parent.fire) {
+    // manually bypassing the event to the parent one if it should bubble
+    if (parent && !(event.bubbles === false || event.stopped)) {
       parent.fire(event);
     }
 

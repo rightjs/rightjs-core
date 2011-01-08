@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RightJS UJS Test</title>
+    <script type="text/javascript" src="../util/test/tools.js"></script>
+    <script type="text/javascript">
+      initialize_core_test_page();
+    </script>
+    <script type="text/javascript">
+      // the click tests
+      "#click-test-1 .one".onClick('toggleClass', 'red');
+      "#click-test-2 .two".onClick('toggleClass', 'green');
+      "#click-test-3 .three".onClick('toggleClass', 'blue');
+
+      // mouse over/out tests
+      "#hover-test-1 .one".onMouseover('addClass', 'red').onMouseout('removeClass', 'red');
+      "#hover-test-2 .two".onMouseover('addClass', 'green').onMouseout('removeClass', 'green');
+      "#hover-test-3 .three".onMouseover('addClass', 'blue').onMouseout('removeClass', 'blue');
+
+      // the focuse/blur tests
+      "#focus-test-1 .one".onFocus('addClass', 'red').onBlur('removeClass', 'red');
+      "#focus-test-2 .two".onFocus('addClass', 'green').onBlur('removeClass', 'green');
+      "#focus-test-3 .three".onFocus('addClass', 'blue').onBlur('removeClass', 'blue');
+    </script>
+    <style type="text/css">
+      div.test-block {
+        float: left;
+        margin-right: 3em;
+      }
+      div.test-block div {
+        float: left;
+        display: inline-block;
+        display: inline;
+        zoom: 1;
+        background: #EEE;
+        border: 1px solid #bbb;
+        border-radius: .25em;
+        -moz-border-radius: .25em;
+        -webkit-border-radius: .25em;
+        padding: 2em;
+        position: relative;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+      }
+      div.test-block div:hover, div.test-block input:hover {
+        border-color: #888;
+      }
+      div.test-block h3 {
+        margin: 0;
+        margin-bottom: 1em;
+        font-family: inherit;
+        font-size: 10pt;
+      }
+      #three, .three {
+        right: -5em;
+      }
+      div.test-block input {
+        font-size: 200%;
+        width: 2.5em;
+        position: relative;
+        padding: .25em;
+        right: -2.5em;
+      }
+      .red {
+        background: #FCC !important;
+      }
+      .green {
+        background: #CFC !important;
+      }
+      .blue {
+        background: #CCF !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Simple Clicks Catcher</h2>
+    <p>
+      <div class="test-block" id="click-test-1">
+        <h3>Bottom one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block" id="click-test-2">
+        <h3>Middle one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block" id="click-test-3">
+        <h3>Top one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <h2>Hovers Handler</h2>
+    <p>
+      <div class="test-block" id="hover-test-1">
+        <h3>Bottom one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block" id="hover-test-2">
+        <h3>Middle one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block" id="hover-test-3">
+        <h3>Top one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <h2>Focus/Blur Test</h2>
+    <p>
+      <div class="test-block" id="focus-test-1">
+        <h3>Bottom one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <input type="text" value="Boo!" class="three" />
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block" id="focus-test-2">
+        <h3>Middle one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <input type="text" value="Boo!" class="three" />
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block" id="focus-test-3">
+        <h3>Top one is wired</h3>
+        <div class="one">
+          <div class="two">
+            <input type="text" value="Boo!" class="three" />
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <p class="white-space"></p>
+  </body>
+</html>

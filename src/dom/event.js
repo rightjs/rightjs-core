@@ -102,7 +102,7 @@ var Event = RightJS.Event = new Class(Wrapper, {
 
       while (target) {
         if (search.indexOf(target) !== -1) {
-          return target;
+          return wrap(target);
         }
         target = target.parentNode;
       }

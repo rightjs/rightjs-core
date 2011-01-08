@@ -103,15 +103,24 @@
   }
 });
 
+/**
+ * Builds the actual event listener that will delegate stuff
+ * to other elements as they reach the element where the listener
+ * attached
+ *
+ * @param String css rule
+ * @param Arguments the original arguments list
+ * @param Object scope
+ * @return Function the actual event listener
+ */
 function build_delegative_listener(css_rule, entry, scope) {
+  var args = $A(entry), callback = args.shift();
   return function(event) {
-    var target = event.target, args = $A(entry), callback = args.shift();
-    if (scope.find(css_rule).include(target)) {
-      return isFunction(callback) ?
-        callback.apply(target, [event].concat(args)) :
-        target[callback].apply(target, args);
-    }
-    return undefined;
+    var target = event.find(css_rule);
+    return target === undefined ? target :
+      typeof(callback) === 'string' ?
+        target[callback].apply(target, args) :
+        callback.apply(target, [event].concat(args));
   };
 }
 

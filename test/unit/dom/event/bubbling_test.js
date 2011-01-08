@@ -42,9 +42,9 @@ var EventBubblingTest = TestCase.create({
     this.assertSame(e3, target_2);
     this.assertSame(e3, target_3);
 
-    // checking that the 'currentTarget' was properly swapped during the bubble
-    this.assertSame(e1, current_1);
-    this.assertSame(e2, current_2);
+    // checking that the 'currentTarget' stayed the same during the bubble
+    this.assertSame(e3, current_1);
+    this.assertSame(e3, current_2);
     this.assertSame(e3, current_3);
   },
 
