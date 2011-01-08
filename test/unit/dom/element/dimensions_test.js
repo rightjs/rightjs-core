@@ -8,8 +8,8 @@ var ElementDimensionsTest = TestCase.create({
 
   E: function(tag, options) {
     // creating an element in the scope of the working frame
-    var element = new Element(tag, options);
-    element._ = this.doc.createElement(tag);
+    var element = new Element(this.doc.createElement(tag), options);
+
     if (options && options.style) {
       for (var key in options.style) {
         element._.style[key] = options.style[key];
@@ -40,7 +40,7 @@ var ElementDimensionsTest = TestCase.create({
 
     // makes the window scroll down
     this.spoof = this.E('div', {
-      style: 'height: 2000px'
+      style: {height: '2000px'}
     }).insertTo(doc.body, 'top');
 
     win.scrollTo(0, 100);

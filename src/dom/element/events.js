@@ -91,7 +91,7 @@
     }, this);
 
     // manually bypassing the event to the parent one if it should bubble
-    if (parent && !(event.bubbles === false || event.stopped)) {
+    if (parent && parent.fire && !(!event.bubbles === false || event.stopped)) {
       parent.fire(event);
     }
 
