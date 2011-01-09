@@ -12,7 +12,8 @@ Fx.Twin = new Class(Fx.Morph, {
    */
   finish: function() {
     if (this.how === 'out') {
-      this.element.hide();
+      // calling 'prototype' to prevent circular calls from subclasses
+      Element.prototype.hide.call(this.element);
     }
 
     return this.$super();

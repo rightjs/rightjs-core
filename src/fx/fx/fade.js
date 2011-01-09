@@ -8,7 +8,8 @@ Fx.Fade = new Class(Fx.Twin, {
     this.setHow(how);
 
     if (this.how === 'in') {
-      this.element.setStyle({opacity: 0}).show();
+      // calling 'prototype' to prevent circular calls from subclasses
+      Element.prototype.show.call(this.element.setStyle({opacity: 0}));
     }
 
     return this.$super({opacity: this.how === 'in' ? 1 : 0});
