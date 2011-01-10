@@ -83,10 +83,15 @@ Event_delegation_shortcuts.each(function(name) {
 Object.each((RightJS.Input || RightJS.Element).prototype, function(name, method) {
   if (isFunction(method) && !(name in String.prototype)) {
     String.prototype[name] = function() {
-      var nodes = wrap(document).find(this, true), i=0, l = nodes.length, element;
+      var nodes = wrap(document).find(this, true), i=0, l = nodes.length, element, result;
       for (; i < l; i++) {
         element = wrap(nodes[i]);
-        element[name].apply(element, arguments);
+        result  = element[name].apply(element, arguments);
+
+        // in case of data-retrieving calls, return the first result
+        if (result !== element) {
+          return result;
+        }
       }
       return this;
     };
