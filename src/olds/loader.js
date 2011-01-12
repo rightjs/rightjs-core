@@ -10,8 +10,13 @@
  * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
 if (RightJS.Browser.OLD) {
-  document.write('<script src="' +
-    RightJS.$A(document.getElementsByTagName('script')).last()
-      .src.replace(/(^|\/)(right)([^\/]+)$/, '$1$2-olds$3') +
-  '"></script>');
+  (function(d) {
+    var script  = d.createElement('script'),
+        scripts = d.getElementsByTagName('script'),
+        rjs_spt = scripts[scripts.length - 1];
+
+    script.src = rjs_spt.src.replace(/(^|\/)(right)([^\/]+)$/, '$1$2-olds$3');
+
+    rjs_spt.parentNode.appendChild(script);
+  })(document);
 }
