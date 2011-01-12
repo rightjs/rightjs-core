@@ -49,7 +49,7 @@ $ext = RightJS.$ext = function(dest, source, dont_overwrite) {
 $eval = RightJS.$eval = function(text) {
   if (text) {
     if ('execScript' in window) {
-      $(document).window()._.execScript(text);
+      current_Document.window()._.execScript(text);
     } else {
       $E('script', {text: text}).insertTo(HTML);
     }
@@ -193,11 +193,11 @@ $ = RightJS.$ = function(object) {
  * Finds all the elements in the document by the given css_rule
  *
  * @param String element
- * @param Object optional context
+ * @param Boolean raw search marker
  * @return Array search result
  */
-$$ = RightJS.$$ = function(css_rule, context) {
-  return $(context || document).find(css_rule);
+$$ = RightJS.$$ = function(css_rule, raw) {
+  return current_Document.find(css_rule, raw);
 },
 
 /** !#server

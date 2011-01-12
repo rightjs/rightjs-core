@@ -84,7 +84,7 @@ $w('Element Input Form').each(function(klass) {
   Object.each(klass in RightJS ? RightJS[klass].prototype : {}, function(name, method) {
     if (isFunction(method) && !(name in String.prototype)) {
       String.prototype[name] = function() {
-        var nodes = current_Document.find(this, true), i=0, l = nodes.length, first=true, element, result;
+        var nodes = $$(this, true), i=0, l = nodes.length, first=true, element, result;
         for (; i < l; i++) {
           element = wrap(nodes[i]);
           result  = element[name].apply(element, arguments);

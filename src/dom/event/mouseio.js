@@ -17,19 +17,18 @@ function mouse_io_fire(element, uid, enter) {
   var event = new Event(enter ? 'mouseenter' : 'mouseleave', {
     bubbles:       false,
     target:        element
-  }),
-  doc_wrap = wrap(document);
+  });
 
   // replacing the #find method so that UJS didn't
   // get broke with trying to find nested elements
   event.find = function(css_rule) {
-    return doc_wrap.find(css_rule, true)
+    return $$(css_rule, true)
       .indexOf(this.target._) === -1 ?
         undefined : this.target;
   };
 
   event.target.fire(event);
-  doc_wrap.fire(event);
+  current_Document.fire(event);
 }
 
 /**

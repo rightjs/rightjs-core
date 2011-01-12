@@ -8,4 +8,7 @@ var Document = RightJS.Document = new Class(Wrapper, {
   window: function() {
     return wrap(this._.defaultView || this._.parentWindow);
   }
-});
+}),
+
+// a common local wrapped document reference
+current_Document = wrap(document);

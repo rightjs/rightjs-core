@@ -27,12 +27,12 @@
    * @return Array of elements
    */
   find: function(css_rule, raw) {
-    var query = this._.querySelectorAll(css_rule || '*'), result = [], i=0, l = query.length;
+    var query = this._.querySelectorAll(css_rule || '*'), result, i=0, l = query.length;
 
     if (raw === true) {
       result = $A(query);
     } else {
-      for (; i < l; i++) {
+      for (result = []; i < l; i++) {
         result[i] = wrap(query[i]);
       }
     }

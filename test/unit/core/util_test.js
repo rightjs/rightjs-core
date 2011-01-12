@@ -308,6 +308,16 @@ var UtilTest = TestCase.create({
     this.assertSame(el, res2[0]._);
   },
 
+  test_$$_raw_search: function() {
+    var el = this.getFreshNode();
+    el.className = 'raw-search-test';
+
+    var result = $$('div.raw-search-test', true);
+
+    this.assertSame(el, result[0]);
+    this.assertEqual(1, result.length);
+  },
+
   test_$w: function() {
     this.assertEqual(['any', 'beny', 'crubs'], $w("any    beny  \n\n\t crubs "));
   },
