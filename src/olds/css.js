@@ -172,12 +172,12 @@
     atoms_cache = {},
     build_atom = function(in_atom) {
       if (!atoms_cache[in_atom]) {
-        var id, tag, classes, attrs, pseudo, values_of_pseudo, match, func, desc = {}, atom = in_atom;
+        var id, tag, classes, classes_length, attrs, pseudo, values_of_pseudo, match, func, desc = {}, atom = in_atom;
 
         // grabbing the attributes
         while((match = atom.match(attrs_re))) {
           attrs = attrs || {};
-          attrs[match[1]] = { o: match[2], v: match[5] || match[6] };
+          attrs[match[1]] = { o: match[2] || '', v: match[5] || match[6] || '' };
           atom = atom.replace(match[0], '');
         }
 
@@ -217,82 +217,88 @@
         id      = (atom.match(id_re)    || [1, null])[1];
         tag     = (atom.match(tag_re)   || '*').toString().toUpperCase();
         classes = (atom.match(class_re) || [1, ''])[1].split('.').without('');
+        classes_length = classes.length;
 
         desc.tag = tag;
 
-        //
-        // HACK HACK HACK
-        //
-        // building the matcher function
-        //
-        // NOTE: we kinda compile a cutom filter function in here
-        //       the point is to create a maximally optimized method
-        //       that will make only this atom checks and will filter
-        //       a list of elements in a single call
-        //
         if (id || classes.length || attrs || pseudo) {
-          var filter = 'function(y){'+
-            'var e,r=[],z=0,x=y.length;'+
-            'for(;z<x;z++){'+
-              'e=y[z];_f_'+
-            '}return r}';
+          // optimizing a bit the values for quiker runtime checks
+          id      = id     || false;
+          attrs   = attrs  || false;
+          pseudo  = pseudo in pseudos ? pseudos[pseudo] : false;
+          classes = classes_length ? classes : false;
 
-          var patch_filter = function(code) {
-            filter = filter.replace('_f_', code + '_f_');
+          desc.filter = function(elements) {
+            var node, result = [], i=0, j=0, l = elements.length;
+            for (; i < l; i++) {
+              node   = elements[i];
+
+              //////////////////////////////////////////////
+              // ID check
+              //
+              if (id !== false && node.id !== id) {
+                continue;
+              }
+
+              //////////////////////////////////////////////
+              // Class names check
+              if (classes !== false) {
+                var names = node.className.split(' '),
+                    names_length = names.length,
+                    x = 0, failed = false;
+
+                for (; x < classes_length; x++) {
+                  for (var y=0, found = false; y < names_length; y++) {
+                    if (classes[x] === names[y]) {
+                      found = true;
+                      break;
+                    }
+                  }
+
+                  if (!found) {
+                    failed = true;
+                    break;
+                  }
+                }
+
+                if (failed) { continue; }
+              }
+
+              ///////////////////////////////////////////////
+              // Attributes check
+              if (attrs !== false) {
+                var key, attr, operand, value, failed = false;
+                for (key in attrs) {
+                  attr = key === 'class' ? node.className : (node.getAttribute(key) || '');
+                  operand = attrs[key].o;
+                  value   = attrs[key].v;
+
+                  if (
+                    (operand === ''   && (key === 'class'|| key === 'lang' ? (attr === '') : (node.getAttributeNode(k) === null))) ||
+                    (operand === '='  && attr !== value) ||
+                    (operand === '*=' && attr.indexOf(value) === -1) ||
+                    (operand === '^=' && attr.indexOf(value) !== 0)  ||
+                    (operand === '$=' && attr.substring(attr.length - value.length) !== value) ||
+                    (operand === '~=' && attr.split(' ').indexOf(value) === -1) ||
+                    (operand === '|=' && attr.split('-').indexOf(value) === -1)
+                  ) { failed = true; break; }
+                }
+
+                if (failed) { continue; }
+              }
+
+              ///////////////////////////////////////////////
+              // Pseudo selectors check
+              if (pseudo !== false) {
+                if (!pseudo(node, values_of_pseudo)) {
+                  continue;
+                }
+              }
+
+              result[j++] = element;
+            }
+            return result;
           };
-
-          // adding the ID check conditions
-          if (id) { patch_filter('if(e.id!=i)continue;'); }
-
-          // adding the classes matching code
-          if (classes.length) { patch_filter(
-            'if(e.className){'+
-              'var n=e.className.split(" ");'+
-              'if(n.length===1&&c.indexOf(n[0])===-1)continue;'+
-              'else{'+
-                'for(var i=0,l=c.length,b=false;i<l;i++)'+
-                  'if(n.indexOf(c[i])===-1){'+
-                    'b=true;break;}'+
-
-              'if(b)continue;}'+
-            '}else continue;'
-          ); }
-
-          // adding the attributes matching conditions
-          if (attrs) { patch_filter(
-            'var p,o,v,k,b=false;'+
-            'for (k in a){p=k==="class"?e.className:(e.getAttribute(k)||"");o=a[k].o||"";v=a[k].v||"";'+
-              'if('+
-                '(o===""&&(k==="class"||k==="lang"?(p===""):(e.getAttributeNode(k)===null)))||'+
-                '(o==="="&&p!=v)||'+
-                '(o==="*="&&!p.include(v))||'+
-                '(o==="^="&&!p.startsWith(v))||'+
-                '(o==="$="&&!p.endsWith(v))||'+
-                '(o==="~="&&!p.split(" ").include(v))||'+
-                '(o==="|="&&!p.split("-").include(v))'+
-              '){b=true;break;}'+
-            '}if(b){continue;}'
-          ); }
-
-          // adding the pseudo matchers check
-          if (pseudo in pseudos) {
-            patch_filter('if(!S[P](e,V))continue;');
-          }
-
-          //
-          // HACK HACK HACK
-          //
-          // Here we separate the names space from the outside
-          // and inside of the function, so that when this thing
-          // is optimized by the code compiler, it kept the necessary
-          // variable names intackt
-          //
-          desc.filter = eval(
-            "[function(i,t,c,a,P,V,S,s){return eval('['+s+']')[0]}]"
-          )[0](
-            id,tag,classes,attrs,pseudo,values_of_pseudo,pseudos,
-            filter.replace('_f_', 'r.push(e)')
-          );
         }
 
         atoms_cache[in_atom] = desc;
