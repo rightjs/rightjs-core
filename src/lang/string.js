@@ -134,9 +134,9 @@ String.include({
    * @return boolean check result
    */
   startsWith: function(string, ignorecase) {
-    var start_str = this.substr(0, string.length);
-    return ignorecase ? start_str.toLowerCase() === string.toLowerCase() :
-      start_str === string;
+    return (ignorecase !== true ? this.indexOf(string) :
+      this.toLowerCase().indexOf(string.toLowerCase())
+    ) === 0;
   },
 
   /**
@@ -147,9 +147,10 @@ String.include({
    * @return boolean check result
    */
   endsWith: function(string, ignorecase) {
-    var end_str = this.substring(this.length - string.length);
-    return ignorecase ? end_str.toLowerCase() === string.toLowerCase() :
-      end_str === string;
+    return this.length - (
+      ignorecase !== true ? this.lastIndexOf(string) :
+        this.toLowerCase().lastIndexOf(string.toLowerCase())
+    ) === string.length;
   },
 
   /**
@@ -158,7 +159,7 @@ String.include({
    * @return Integer or NaN
    */
   toInt: function(base) {
-    return parseInt(this, base || 10);
+    return parseInt(this, base === undefined ? 10 : base);
   },
 
   /**
@@ -167,7 +168,7 @@ String.include({
    * @return Float or NaN
    */
   toFloat: function(strict) {
-    return parseFloat(strict ? this : this.replace(',', '.').replace(/(\d)-(\d)/g, '$1.$2'));
+    return parseFloat(strict === true ? this : this.replace(',', '.').replace(/(\d)-(\d)/g, '$1.$2'));
   }
 
 });
