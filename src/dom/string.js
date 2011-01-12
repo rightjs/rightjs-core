@@ -38,12 +38,12 @@ Object.each({
   observes:      'delegates'
 }, function(name, method) {
   String.prototype[name] = function() {
-    var doc = wrap(document), args = $A(arguments), result;
+    var args = $A(arguments), result;
 
     args.splice(1,0,''+this);
-    result = doc[method].apply(doc, args);
+    result = current_Document[method].apply(current_Document, args);
 
-    return result === doc ? this : result;
+    return result === current_Document ? this : result;
   };
 });
 var old_on = String.prototype.on;
@@ -80,26 +80,26 @@ Event_delegation_shortcuts.each(function(name) {
  *   "#css.rule".setStyle({color: 'red'});
  *
  */
-Object.each((RightJS.Input || RightJS.Element).prototype, function(name, method) {
-  if (isFunction(method) && !(name in String.prototype)) {
-    var doc = wrap(document);
+$w('Element Input Form').each(function(klass) {
+  Object.each(klass in RightJS ? RightJS[klass].prototype : {}, function(name, method) {
+    if (isFunction(method) && !(name in String.prototype)) {
+      String.prototype[name] = function() {
+        var nodes = current_Document.find(this, true), i=0, l = nodes.length, first=true, element, result;
+        for (; i < l; i++) {
+          element = wrap(nodes[i]);
+          result  = element[name].apply(element, arguments);
 
-    String.prototype[name] = function() {
-      var nodes = doc.find(this, true), i=0, l = nodes.length, first=true, element, result;
-      for (; i < l; i++) {
-        element = wrap(nodes[i]);
-        result  = element[name].apply(element, arguments);
-
-        // checking if that's a data-retrieving call
-        if (first) {
-          if (result !== element) {
-            return result;
+          // checking if that's a data-retrieving call
+          if (first) {
+            if (result !== element) {
+              return result;
+            }
+            first = false;
           }
-          first = false;
         }
-      }
 
-      return null; // don't return the string itself in here, it will screw with data-retrieving calls on empty collections
-    };
-  }
+        return null; // don't return the string itself in here, it will screw with data-retrieving calls on empty collections
+      };
+    }
+  });
 });
