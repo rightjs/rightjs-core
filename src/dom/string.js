@@ -82,18 +82,24 @@ Event_delegation_shortcuts.each(function(name) {
  */
 Object.each((RightJS.Input || RightJS.Element).prototype, function(name, method) {
   if (isFunction(method) && !(name in String.prototype)) {
+    var doc = wrap(document);
+
     String.prototype[name] = function() {
-      var nodes = wrap(document).find(this, true), i=0, l = nodes.length, element, result;
+      var nodes = doc.find(this, true), i=0, l = nodes.length, first=true, element, result;
       for (; i < l; i++) {
         element = wrap(nodes[i]);
         result  = element[name].apply(element, arguments);
 
-        // in case of data-retrieving calls, return the first result
-        if (result !== element) {
-          return result;
+        // checking if that's a data-retrieving call
+        if (first) {
+          if (result !== element) {
+            return result;
+          }
+          first = false;
         }
       }
-      return this;
+
+      return null; // don't return the string itself in here, it will screw with data-retrieving calls on empty collections
     };
   }
 });
