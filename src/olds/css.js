@@ -17,7 +17,6 @@
     needs_css_engine_patch = true;
   } catch(e) {}
 
-
   if (needs_css_engine_patch) {
     /**
      * The token searchers collection
@@ -441,7 +440,7 @@
 
         if (has_native_css_selector) {
           try { // trying to reuse native css-engine under IE8
-            result = $A(element.querySelectorAll(tag ? rule.replace(/(^|,)/g, '$1'+ tag + ' ') : rule));
+            result = $A(element.querySelectorAll(rule));
           } catch(e) { // if it fails use our own engine
             result = select_all(element, rule);
           }
