@@ -5,7 +5,6 @@
  */
 var doc_ready = false, win_ready = false;
 RightJS.$(document).onReady(function() { doc_ready = true;  });
-RightJS.$(window).onReady(function() { win_ready = true; });
 
 var DomTest = TestCase.create({
   name: 'DomTest',
@@ -80,6 +79,5 @@ var DomTest = TestCase.create({
 
   testDocumentReady: function() {
     this.assert(doc_ready);
-    this.assert(win_ready);
   }
 });
