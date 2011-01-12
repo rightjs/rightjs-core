@@ -229,7 +229,7 @@
           classes = classes_length ? classes : false;
 
           desc.filter = function(elements) {
-            var node, result = [], i=0, j=0, l = elements.length;
+            var node, result = [], i=0, j=0, l = elements.length, failed;
             for (; i < l; i++) {
               node   = elements[i];
 
@@ -245,7 +245,7 @@
               if (classes !== false) {
                 var names = node.className.split(' '),
                     names_length = names.length,
-                    x = 0, failed = false;
+                    x = 0; failed = false;
 
                 for (; x < classes_length; x++) {
                   for (var y=0, found = false; y < names_length; y++) {
@@ -267,7 +267,7 @@
               ///////////////////////////////////////////////
               // Attributes check
               if (attrs !== false) {
-                var key, attr, operand, value, failed = false;
+                var key, attr, operand, value; failed = false;
                 for (key in attrs) {
                   attr = key === 'class' ? node.className : (node.getAttribute(key) || '');
                   operand = attrs[key].o;
@@ -295,7 +295,7 @@
                 }
               }
 
-              result[j++] = element;
+              result[j++] = node;
             }
             return result;
           };
