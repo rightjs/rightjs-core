@@ -120,7 +120,7 @@ function Event_Klass(event, bound_element) {
     this.currentTarget = bound_element;
 
     // faking the mouse position
-    var scrolls = this.target.window().scrolls();
+    var scrolls = this.target.win().scrolls();
 
     this.pageX = event.clientX + scrolls.x;
     this.pageY = event.clientY + scrolls.y;

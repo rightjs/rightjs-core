@@ -76,11 +76,11 @@ var ElementDimensionsTest = TestCase.create({
   },
 
   testDocumentReference: function() {
-    this.assertSame($(this.doc), this.div.document());
+    this.assertSame($(this.doc), this.div.doc());
   },
 
   testWindowReference: function() {
-    this.assertSame($(this.win), this.div.window());
+    this.assertSame($(this.win), this.div.win());
   },
 
   testSize: function() {

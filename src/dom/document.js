@@ -5,7 +5,7 @@
  */
 var Document = RightJS.Document = new Class(Wrapper, {
   // returns the window reference
-  window: function() {
+  win: function() {
     return wrap(this._.defaultView || this._.parentWindow);
   }
 }),

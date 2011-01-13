@@ -170,7 +170,7 @@ Element.include({
    */
   text: function(text) {
     return text === undefined ? this._.innerHTML.stripTags() :
-      this.update(this.document()._.createTextNode(text));
+      this.update(this.doc()._.createTextNode(text));
   },
 
   /**

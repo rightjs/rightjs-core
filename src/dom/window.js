@@ -4,14 +4,6 @@
  * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var Window = RightJS.Window = new Class(Wrapper, {
-  /**
-   * Generic API reference
-   *
-   * @return Window this
-   */
-  window: function() {
-    return this;
-  },
 
   /**
    * returns the inner-size of the window

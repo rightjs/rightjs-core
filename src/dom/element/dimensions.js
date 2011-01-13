@@ -10,7 +10,7 @@ Element.include({
    *
    * @return RightJS.Document
    */
-  document: function() {
+  doc: function() {
     return wrap(this._.ownerDocument);
   },
 
@@ -19,8 +19,8 @@ Element.include({
    *
    * @return RightJS.Window
    */
-  window: function() {
-    return this.document().window();
+  win: function() {
+    return this.doc().win();
   },
 
   /**
@@ -41,8 +41,8 @@ Element.include({
    */
   position: function() {
     var rect    = this._.getBoundingClientRect(),
-        html    = this.document()._.documentElement,
-        scrolls = this.window().scrolls();
+        html    = this.doc()._.documentElement,
+        scrolls = this.win().scrolls();
 
     return {
       x: rect.left + scrolls.x - html.clientLeft,
@@ -187,7 +187,7 @@ Element.include({
    * @return Element self
    */
   scrollThere: function(options) {
-    this.window().scrollTo(this, options);
+    this.win().scrollTo(this, options);
     return this;
   }
 });
