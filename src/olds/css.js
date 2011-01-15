@@ -273,7 +273,7 @@
                   value   = attrs[key].v;
 
                   if (
-                    (operand === ''   && (key === 'class'|| key === 'lang' ? (attr === '') : (node.getAttributeNode(k) === null))) ||
+                    (operand === ''   && (key === 'class'|| key === 'lang' ? (attr === '') : (node.getAttributeNode(key) === null))) ||
                     (operand === '='  && attr !== value) ||
                     (operand === '*=' && attr.indexOf(value) === -1) ||
                     (operand === '^=' && attr.indexOf(value) !== 0)  ||
