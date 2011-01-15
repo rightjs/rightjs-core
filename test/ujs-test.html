@@ -21,6 +21,17 @@
       "#focus-test-1 .one".onFocus('addClass', 'red').onBlur('removeClass', 'red');
       "#focus-test-2 .two".onFocus('addClass', 'green').onBlur('removeClass', 'green');
       "#focus-test-3 .three".onFocus('addClass', 'blue').onBlur('removeClass', 'blue');
+
+      // making some dynamic content
+      $(document).onReady(function() {
+        $w('click hover focus').each(function(name) {
+          $w('3 2').each(function(num) {
+            $(name+'-test-1').clone()
+              .set('id', name+'-test-'+num)
+              .insertTo(name+'-test-1', 'after');
+          });
+        });
+      });
     </script>
     <style type="text/css">
       div.test-block {
@@ -86,24 +97,6 @@
         </div>
       </div>
 
-      <div class="test-block" id="click-test-2">
-        <h3>Middle one is wired</h3>
-        <div class="one">
-          <div class="two">
-            <div class="three">Boo!</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="test-block" id="click-test-3">
-        <h3>Top one is wired</h3>
-        <div class="one">
-          <div class="two">
-            <div class="three">Boo!</div>
-          </div>
-        </div>
-      </div>
-
       <div style="clear: both"></div>
     </p>
 
@@ -118,24 +111,6 @@
         </div>
       </div>
 
-      <div class="test-block" id="hover-test-2">
-        <h3>Middle one is wired</h3>
-        <div class="one">
-          <div class="two">
-            <div class="three">Boo!</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="test-block" id="hover-test-3">
-        <h3>Top one is wired</h3>
-        <div class="one">
-          <div class="two">
-            <div class="three">Boo!</div>
-          </div>
-        </div>
-      </div>
-
       <div style="clear: both"></div>
     </p>
 
@@ -143,24 +118,6 @@
     <p>
       <div class="test-block" id="focus-test-1">
         <h3>Bottom one is wired</h3>
-        <div class="one">
-          <div class="two">
-            <input type="text" value="Boo!" class="three" />
-          </div>
-        </div>
-      </div>
-
-      <div class="test-block" id="focus-test-2">
-        <h3>Middle one is wired</h3>
-        <div class="one">
-          <div class="two">
-            <input type="text" value="Boo!" class="three" />
-          </div>
-        </div>
-      </div>
-
-      <div class="test-block" id="focus-test-3">
-        <h3>Top one is wired</h3>
         <div class="one">
           <div class="two">
             <input type="text" value="Boo!" class="three" />
