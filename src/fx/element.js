@@ -14,7 +14,7 @@ Element.include({
    * @return Element this
    */
   stop: function() {
-    (running_fx[$uid(this._)] || []).each('cancel');
+    fx_cancel_all(this);
     return this;
   },
 

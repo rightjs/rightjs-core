@@ -196,6 +196,20 @@ function fx_run_next(fx) {
 }
 
 /**
+ * Cancels all currently running and scheduled effects
+ * on the element
+ *
+ * @param Element element
+ * @return void
+ */
+function fx_cancel_all(element) {
+  var uid = $uid(element._);
+
+  (running_fx[uid] || []).each('cancel');
+  (scheduled_fx[uid] || []).splice(0);
+}
+
+/**
  * Initializes the fx rendering timer
  *
  * @param Fx fx
