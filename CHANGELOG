@@ -1,3 +1,17 @@
+2011-01-16 Nikolay Nemshilov
+  o Version 2.2.0 Release
+    * Native css-transitions for Fx
+    * Mouseenter/mouseleave events support
+    * Better UJS implementation
+    * DOM-shortcuts for strings
+    * Supercalls on modules
+    * Class and Wrapper Merge
+    * Object.merge with deep merge
+    * Fullstack CSS3 search support
+    * Element#index method
+    * Raw DOM search
+
+
 2010-10-15 Nikolay Nemshilov
   o Version 2.1.1 Release
     * Server side version fix
