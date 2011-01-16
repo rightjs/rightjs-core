@@ -4,6 +4,15 @@
  * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var Window = RightJS.Window = new Class(Wrapper, {
+  /**
+   * Selfreference to have a common interface with the rest of the wrappers
+   * in case of events handling
+   *
+   * @return Window
+   */
+  win: function() {
+    return this;
+  },
 
   /**
    * returns the inner-size of the window
