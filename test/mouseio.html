@@ -18,6 +18,30 @@
           });
         });
       });
+
+      "#complex-case".on({
+        mouseenter: function() {
+          this.addClass('complex-case-hover');
+//          console.log('entering DIV');
+        },
+        mouseleave: function() {
+          this.removeClass('complex-case-hover');
+//          console.log('leaving  DIV');
+        }
+      })
+
+      "#complex-case ul".on({
+        mouseenter: function(e) {
+//          console.log("entering UL", e.position());
+          this.addClass('complex-case-ul-hover');
+        },
+
+        mouseleave: function(e) {
+//          console.log("leaving  UL", e.position());
+          this.removeClass('complex-case-ul-hover');
+        }
+      });
+
     </script>
     <style type="text/css">
       div.test-block {
@@ -56,6 +80,22 @@
       .three-in {
         background: #DDF !important;
       }
+
+      #complex-case {
+        background: #EEE;
+        border: 1px solid #bbb;
+        border-radius: .25em;
+        -moz-border-radius: .25em;
+        -webkit-border-radius: .25em;
+        padding: 1em;
+        width: 20em;
+      }
+      .complex-case-hover {
+        background: #FFd !important;
+      }
+      .complex-case-ul-hover {
+        background: #FdF !important;
+      }
     </style>
   </head>
 
@@ -81,6 +121,20 @@
       </div>
 
       <div style="clear: both"></div>
+    </p>
+
+    <h2>More Complicated Case</h2>
+    <p>
+      <div id="complex-case">
+        <ul>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+        </ul>
+      </div>
     </p>
 
     <p class="white-space"></p>

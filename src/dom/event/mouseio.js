@@ -8,16 +8,17 @@ var mouse_io_index = [], mouse_io_inactive = true;
 /**
  * Fires the actual mouseenter/mouseleave event
  *
+ * @param original event
  * @param raw dom element
  * @param integer uid
  * @param boolean mouseenter or mouseleave
  * @return void
  */
-function mouse_io_fire(element, uid, enter) {
-  var event = new Event(enter ? 'mouseenter' : 'mouseleave', {
-    bubbles:       false,
-    target:        element
-  });
+function mouse_io_fire(raw, element, uid, enter) {
+  var event = new Event(raw);
+  event.type    = enter === true ? 'mouseenter' : 'mouseleave';
+  event.bubbles = false;
+  event.target  = wrap(element);
 
   // replacing the #find method so that UJS didn't
   // get broke with trying to find nested elements
@@ -43,13 +44,14 @@ function mouse_io_handler(e) {
       from    = e.relatedTarget || e.fromElement,
       element = target,
       passed  = false,
+      parents = [],
       uid, event;
 
   while (element.nodeType === 1) {
     uid = $uid(element);
 
-    if (!mouse_io_index[uid]) {
-      mouse_io_fire(element, uid,
+    if (mouse_io_index[uid] === undefined) {
+      mouse_io_fire(e, element, uid,
         mouse_io_index[uid] = true
       );
     }
@@ -58,15 +60,17 @@ function mouse_io_handler(e) {
       passed = true;
     }
 
+    parents.push(element);
+
     element = element.parentNode;
   }
 
   if (from && !passed) {
-    while (from.nodeType === 1 && from !== target) {
+    while (from.nodeType === 1 && parents.indexOf(from) === -1) {
       uid = $uid(from);
-      if (mouse_io_index[uid]) {
-        mouse_io_fire(from, uid,
-          mouse_io_index[uid] = false
+      if (mouse_io_index[uid] !== undefined) {
+        mouse_io_fire(e, from, uid,
+          mouse_io_index[uid] = undefined
         );
       }
 
@@ -80,10 +84,10 @@ function mouse_io_handler(e) {
  *
  * @return void
  */
-function mouse_io_reset() {
+function mouse_io_reset(e) {
   mouse_io_index.each(function(value, uid) {
     if (value && Wrappers_Cache[uid]) {
-      mouse_io_fire(Wrappers_Cache[uid]._, uid, false);
+      mouse_io_fire(e, Wrappers_Cache[uid]._, uid, false);
     }
   });
 }
