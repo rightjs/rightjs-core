@@ -101,32 +101,29 @@ function Event_Klass(event, bound_element) {
   this.which         = event.which;
   this.keyCode       = event.keyCode;
 
-  this.target        = wrap(event.target);
+  this.target        = wrap(
+    // Webkit throws events on textual nodes as well, gotta fix that
+    'target' in event && 'nodeType' in event.target && event.target.nodeType === 3 ?
+      event.target.parentNode : event.target);
+
   this.currentTarget = wrap(event.currentTarget);
   this.relatedTarget = wrap(event.relatedTarget);
 
   this.pageX         = event.pageX;
   this.pageY         = event.pageY;
 
-  if ('srcElement' in event) {
-    // grabbin the IE properties
+  // Converting IE properties into W3C ones
+  if (!('target' in event) && 'srcElement' in event) {
     this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
 
-    // faking the target property
-    this.target = wrap(event.srcElement) || bound_element;
-
-    // faking the relatedTarget, currentTarget and other targets
+    this.target        = wrap(event.srcElement) || bound_element;
     this.relatedTarget = this.target._ === event.fromElement ? wrap(event.toElement) : this.target;
     this.currentTarget = bound_element;
 
-    // faking the mouse position
     var scrolls = this.target.win().scrolls();
 
     this.pageX = event.clientX + scrolls.x;
     this.pageY = event.clientY + scrolls.y;
-  } else if (event.target && 'nodeType' in event.target && event.target.nodeType === 3) {
-    // Safari fix
-    this.target = wrap(event.target.parentNode);
   }
 }
 
