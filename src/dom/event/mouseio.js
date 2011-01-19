@@ -66,7 +66,7 @@ function mouse_io_handler(e) {
   }
 
   if (from && !passed) {
-    while (from.nodeType === 1 && parents.indexOf(from) === -1) {
+    while (from !== null && from.nodeType === 1 && parents.indexOf(from) === -1) {
       uid = $uid(from);
       if (mouse_io_index[uid] !== undefined) {
         mouse_io_fire(e, from, uid,
