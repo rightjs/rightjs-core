@@ -453,8 +453,8 @@
     };
 
     // hooking up the rightjs wrappers with the new methods
-    RightJS.Element.include(dom_extension);
-    RightJS.Document.include(dom_extension);
+    RightJS.$ext(RightJS.Element.prototype, dom_extension);
+    RightJS.$ext(RightJS.Document.prototype, dom_extension);
   }
 
 })(RightJS);
