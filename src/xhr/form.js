@@ -32,10 +32,23 @@ Form.include({
     options = options || {};
     options.method = options.method || this._.method || 'post';
 
-    new Xhr(this._.action || document.location.href, options)
+    this.xhr = new Xhr(this._.action || document.location.href, options)
       .onComplete(this.enable.bind(this)).send(this);
 
     this.disable.bind(this).delay(1); // webkit needs this async call with iframed calls
+    return this;
+  },
+
+  /**
+   * Cancels current Xhr request (if there are any)
+   *
+   * @return Form this
+   */
+  cancelXhr: function() {
+    if (this.xhr instanceof Xhr) {
+      this.xhr.cancel();
+    }
+
     return this;
   },
 
