@@ -1,7 +1,7 @@
 /**
  * The DOM Element unit handling
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 
 var Element = RightJS.Element = new Class(Wrapper, {
@@ -42,10 +42,7 @@ make_element = function (tag, options) {
 // it doesn't place the 'checked' property correctly, plus there are some issues
 // with clonned SELECT objects, so we are replaceing the elements maker in here
 //
-try {
-  document.createElement('<input/>'); // <- works for IE < 9 only
-  Browser.OLD = true; // forcing IE8 to load the olds module
-
+if (IE8_OR_LESS) {
   make_element = function(tag, options) {
     if (tag === 'input' && options !== undefined) {
       tag = '<input name="'+ options.name +
@@ -56,7 +53,7 @@ try {
 
     return document.createElement(tag);
   };
-} catch (e) {}
+}
 
 /**
  * Basic element's constructor

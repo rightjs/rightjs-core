@@ -20,7 +20,7 @@ var Fx = RightJS.Fx = new Class(Observer, {
 
     // default options
     Options: {
-      fps:        Browser_IE ? 40 : 60,
+      fps:        IE8_OR_LESS ? 40 : 60,
       duration:   'normal',
       transition: 'Sin',
       queue:      true

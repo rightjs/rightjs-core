@@ -1,7 +1,7 @@
 /**
  * The Element unit events related methods test-case
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var ElementEventsTest = TestCase.create({
   name: 'ElementEventsTest',
@@ -172,6 +172,7 @@ var ElementEventsTest = TestCase.create({
     this.el.on('click', function(ev) { e = ev; });
     this.fireClick(this.el._);
 
+    this.assertNotNull(e, "event should be bypassed");
     this.assertSame(this.el, e.target, "testing target");
     this.assertEqual(1, e.which)
   },

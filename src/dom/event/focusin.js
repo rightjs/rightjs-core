@@ -15,7 +15,7 @@ function focus_boobler(raw_event) {
       target = event.target,
       parent = target.parent && target.parent();
 
-  event.type = (raw_event.type === 'focusin' || raw_event.type === 'focus') ? 'focus' : 'blur';
+  event.type = raw_event.type === 'focusin' || raw_event.type === 'focus' ? 'focus' : 'blur';
 
   if (parent) { parent.fire(event); }
 }
@@ -26,7 +26,7 @@ function focus_boobler(raw_event) {
  * manually like they were normal events
  *
  */
-if (Browser_IE) {
+if (IE8_OR_LESS) {
   document.attachEvent('onfocusin',  focus_boobler);
   document.attachEvent('onfocusout', focus_boobler);
 } else {

@@ -35,7 +35,7 @@
           }
         };
 
-        if (Browser_IE) {
+        if (IE8_OR_LESS) {
           hash.t._.attachEvent('on'+hash.n, hash.w);
         } else {
           hash.t._.addEventListener(hash.n, hash.w, false);
@@ -57,7 +57,7 @@
    */
   stopObserving: function(event, callback) {
     Observer_stopObserving(this, event, callback, function(hash) {
-      if (Browser_IE) {
+      if (IE8_OR_LESS) {
         hash.t._.detachEvent('on'+ hash.n, hash.w);
       } else {
         hash.t._.removeEventListener(hash.n, hash.w, false);
@@ -91,7 +91,7 @@
     }, this);
 
     // manually bypassing the event to the parent one if it should bubble
-    if (parent && parent.fire && !(event.bubbles === false || event.stopped)) {
+    if (parent && parent.fire && !event.stopped) {
       parent.fire(event);
     }
 

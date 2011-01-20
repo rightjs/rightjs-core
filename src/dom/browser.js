@@ -15,6 +15,16 @@ Browser = RightJS.Browser = {
   MobileSafari: /Apple.*Mobile.*Safari/.test(agent),
   Konqueror:    agent.include('Konqueror'),
 
-  // marker for the browsers which require the olds module
-  OLD:          !document.querySelector
-};
+  // internal marker for the browsers which require the olds module
+  OLD:          !document.querySelector,
+  // internal marker for IE browsers version <= 8
+  IE8L:         false
+},
+
+IE8_OR_LESS = false;
+
+try {
+  // checking if that an IE version <= 8
+  document.createElement('<input/>');
+  Browser.OLD = Browser.IE8L = IE8_OR_LESS = true;
+} catch(e) {}

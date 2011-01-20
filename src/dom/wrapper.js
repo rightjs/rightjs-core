@@ -82,11 +82,12 @@ Wrapper.Cast = function(unit) {
  * Event's own Klass function, we don't need to check
  * nothing in here, don't need to hit the wrappers cache and so one
  *
- * @param raw dom-event or an event-name
+ * @param raw dom-event or a string event-name
  * @param bounding element or an object with options
+ * @return void
  */
 function Event_Klass(event, bound_element) {
-  if (typeof event === 'string') {
+  if (typeof(event) === 'string') {
     event = $ext({type: event}, bound_element);
     this.stopped = event.bubbles === false;
 
@@ -104,7 +105,8 @@ function Event_Klass(event, bound_element) {
   this.target        = wrap(
     // Webkit throws events on textual nodes as well, gotta fix that
     'target' in event && 'nodeType' in event.target && event.target.nodeType === 3 ?
-      event.target.parentNode : event.target);
+      event.target.parentNode : event.target
+  );
 
   this.currentTarget = wrap(event.currentTarget);
   this.relatedTarget = wrap(event.relatedTarget);
@@ -112,9 +114,9 @@ function Event_Klass(event, bound_element) {
   this.pageX         = event.pageX;
   this.pageY         = event.pageY;
 
-  // Converting IE properties into W3C ones
-  if (!('target' in event) && 'srcElement' in event) {
-    this.which = event.button == 2 ? 3 : event.button == 4 ? 2 : 1;
+  // making old IE attrs looks like w3c standards
+  if (IE8_OR_LESS && 'srcElement' in event) {
+    this.which         = event.button === 2 ? 3 : event.button === 4 ? 2 : 1;
 
     this.target        = wrap(event.srcElement) || bound_element;
     this.relatedTarget = this.target._ === event.fromElement ? wrap(event.toElement) : this.target;
@@ -126,6 +128,7 @@ function Event_Klass(event, bound_element) {
     this.pageY = event.clientY + scrolls.y;
   }
 }
+
 
 /**
  * Private quick wrapping function, unlike `$`

@@ -11,11 +11,9 @@
   var has_native_css_selector = !! document.querySelector,
       needs_css_engine_patch  = !has_native_css_selector;
 
-  try {
-    // forcing IE8 to use our help
-    document.createElement('<input/>');
+  if (RightJS.Browser.IE8L) {
     needs_css_engine_patch = true;
-  } catch(e) {}
+  }
 
   if (needs_css_engine_patch) {
     /**
