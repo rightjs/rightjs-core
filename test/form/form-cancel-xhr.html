@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RightJS Form - Cancel Xhr Test</title>
+    <script type="text/javascript" src="../../util/test/tools.js"></script>
+    <script type="text/javascript">
+      initialize_core_test_page();
+    </script>
+    <script type="text/javascript">
+      $(document).onReady(function() {
+        "form".enable();
+      });
+
+      "form".onSubmit(function() {
+        var options = {}, form = this;
+
+        form.set('action', 'http://localhost:4567');
+        form.set('method', 'post');
+
+        switch (form.get('id')) {
+          case 'xhr-test':
+            options.onComplete = function() {
+              console.log(this.text);
+            };
+            break;
+          case 'iframe-test':
+            break;
+          case 'jsonp-test':
+            break;
+        }
+
+        form.send(options);
+
+        (function() {
+          form.cancelXhr();
+          console.log('Canceled!');
+        }).delay(1);
+
+        return false;
+      });
+    </script>
+    <style type="text/css">
+      .spinner {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Simple Xhr Cancel Test</h2>
+    <form id="xhr-test">
+      <input type="text" name="response" value="alert('boo!');" />
+      <input type="submit" value="Send" />
+      <span class="spinner">Spinner</span>
+    </form>
+
+    <h2>IFramed Request Test</h2>
+    <form id="iframe-test" enctype="multipart/form-data">
+      <input type="file" name="boo" />
+      <input type="hidden" name="response" value="<script>console.log('Hello from the server!');</script>" />
+      <input type="submit" value="Send" />
+      <span class="spinner">Spinner</span>
+    </form>
+
+    <h2>JSONP Request Test</h2>
+    <form id="jsonp-test">
+      <input type="text" name="response" value="alert('Boo!')" />
+      <input type="submit" value="Send" />
+      <span class="spinner">Spinner</span>
+    </form>
+  </body>
+</html>

@@ -31,7 +31,7 @@ Xhr.IFramed = new Class({
   onLoad: function() {
     this.status       = 200;
     this.readyState   = 4;
-    
+
     this.form.set('target', '');
 
     try {
@@ -39,5 +39,9 @@ Xhr.IFramed = new Class({
     } catch(e) { }
 
     this.onreadystatechange();
+  },
+
+  abort: function() {
+    $(this.id).set('src', 'about:blank');
   }
 });
