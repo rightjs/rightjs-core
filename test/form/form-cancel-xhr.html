@@ -26,6 +26,10 @@
           case 'iframe-test':
             break;
           case 'jsonp-test':
+            options.jsonp = true;
+            options.onComplete = function() {
+              console.log(this.json);
+            }
             break;
         }
 
@@ -64,7 +68,7 @@
 
     <h2>JSONP Request Test</h2>
     <form id="jsonp-test">
-      <input type="text" name="response" value="alert('Boo!')" />
+      <input type="text" name="response" value="{data: 'from the server'}" />
       <input type="submit" value="Send" />
       <span class="spinner">Spinner</span>
     </form>

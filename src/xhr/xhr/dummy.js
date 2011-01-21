@@ -6,7 +6,6 @@
  */
 Xhr.Dummy = {
   open:               function() {},
-  abort:              function() {},
   setRequestHeader:   function() {},
   onreadystatechange: function() {}
 };

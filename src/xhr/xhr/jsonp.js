@@ -1,7 +1,7 @@
 /**
  * The JSONP Xhr request tonnel
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 Xhr.JSONP = new Class({
   include: Xhr.Dummy,
@@ -65,5 +65,15 @@ Xhr.JSONP = new Class({
     this.xhr.json = this.xhr.responseJSON = data;
 
     this.onreadystatechange();
+  },
+
+  /**
+   * We can't really cancel a JSONP request
+   * but we can prevent the default handler to ckick in
+   *
+   * @return void
+   */
+  abort: function() {
+    window[this.name] = function() {};
   }
 });

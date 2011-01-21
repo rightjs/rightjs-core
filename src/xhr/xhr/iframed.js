@@ -2,7 +2,7 @@
  * This unit presents a fake drop in replacement for the XmlHTTPRequest unit
  * but works with an iframe targeting in the background
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 Xhr.IFramed = new Class({
   include: Xhr.Dummy,
@@ -17,7 +17,7 @@ Xhr.IFramed = new Class({
     this.form = form;
     this.id   = 'xhr_'+ new Date().getTime();
 
-    form.insert('<i><iframe name="'+this.id+'" id="'+this.id+
+    this.form.doc().first('body').append('<i><iframe name="'+this.id+'" id="'+this.id+
       '" width="0" height="0" frameborder="0" src="about:blank"></iframe></i>',
       'after');
 

@@ -10,7 +10,11 @@ require 'sinatra'
 
 get '/' do
   sleep 3
-  params[:response] || ''
+  if params[:callback]
+    "#{params[:callback]}(#{params[:response]})"
+  else
+    params[:response] || ''
+  end
 end
 
 post '/' do

@@ -22,7 +22,10 @@ Form.include({
     this.xhr = new Xhr(
       this._.action || document.location.href,
       $ext({spinner: this.first('.spinner')}, options)
-    ).onComplete(this.enable.bind(this)).send(this);
+    )
+    .onComplete(this.enable.bind(this))
+    .onCancel(this.enable.bind(this))
+    .send(this);
 
     this.disable.bind(this).delay(1); // webkit needs this async call with iframed calls
     return this;
