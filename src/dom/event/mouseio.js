@@ -18,6 +18,7 @@ function mouse_io_fire(raw, element, uid, enter) {
   var event = new Event(raw);
   event.type    = enter === true ? 'mouseenter' : 'mouseleave';
   event.bubbles = false;
+  event.stopped = true;
   event.target  = wrap(element);
 
   // replacing the #find method so that UJS didn't

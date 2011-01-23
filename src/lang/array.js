@@ -103,7 +103,6 @@ function guess_callback(argsi, array) {
 
 // defining the manual break errors class
 function Break() {}
-Break.prototype = Error.prototype;
 
 // calls the given method with preprocessing the arguments
 function call_method(func, scope, args) {

@@ -187,12 +187,10 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
       return new Xhr.JSONP(this);
     } else if (this.form && this.form.first('input[type=file]')) {
       return new Xhr.IFramed(this.form);
+    } else if ('ActiveXObject' in window){
+      return new ActiveXObject('MSXML2.XMLHTTP');
     } else {
-      try {
-        return new XMLHttpRequest();
-      } catch(e) {
-        return new ActiveXObject('MSXML2.XMLHTTP');
-      }
+      return new XMLHttpRequest();
     }
   },
 
@@ -245,20 +243,14 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
 
   // sanitizes the json-response texts
   sanitizedJSON: function() {
-    try {
-      return JSON.parse(this.text);
-    } catch(e) {
-      // manual json consistancy check
-      if (window.JSON || !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
-        if (this.secureJSON) {
-          throw "JSON error: "+this.text;
-        }
-        return null;
+    if (!(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
+      if (this.secureJSON) {
+        throw "JSON error: "+this.text;
       }
+      return null;
     }
 
-    // the fallback JSON extraction
-    return eval("("+this.text+")");
+    return 'JSON' in window ? JSON.parse(this.text) : eval("("+this.text+")");
   },
 
   // initializes the request callbacks

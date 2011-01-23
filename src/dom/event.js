@@ -38,11 +38,12 @@ var Event = RightJS.Event = new Class(Wrapper, {
    * @return RightJS.Event this
    */
   stopPropagation: function() {
-    if (IE8_OR_LESS) {
-      this._.cancelBubble = true;
-    } else {
+    if (this._.stopPropagation) {
       this._.stopPropagation();
+    } else {
+      this._.cancelBubble = true;
     }
+
     this.stopped = true;
     return this;
   },
@@ -53,11 +54,12 @@ var Event = RightJS.Event = new Class(Wrapper, {
    * @return RightJS.Event this
    */
   preventDefault: function() {
-    if (IE8_OR_LESS) {
-      this._.returnValue = false;
-    } else {
+    if (this._.preventDefault) {
       this._.preventDefault();
+    } else {
+      this._.returnValue = false;
     }
+
     return this;
   },
 
