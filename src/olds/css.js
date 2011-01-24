@@ -8,7 +8,7 @@
  * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
 (function(RightJS) {
-  var has_native_css_selector = !! document.querySelector,
+  var has_native_css_selector = !!document.querySelector,
       needs_css_engine_patch  = !has_native_css_selector;
 
   if (RightJS.Browser.IE8L) {
@@ -65,7 +65,7 @@
      */
     pseudos = {
       not: function(node, css_rule) {
-        return !RightJS.$(node).match(css_rule);
+        return node.nodeType === 1 && !RightJS.$(node).match(css_rule);
       },
 
       checked: function(node) {
@@ -319,7 +319,7 @@
         }
 
         // creates a list of uniq nodes
-        var _uid = $uid;
+        var _uid = RightJS.$uid;
         var uniq = function(elements) {
           var uniq = [], uids = [], uid;
           for (var i=0, length = elements.length; i < length; i++) {
