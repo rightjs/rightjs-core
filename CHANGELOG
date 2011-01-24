@@ -1,3 +1,13 @@
+2011-01-24 Nikolay Nemshilov
+  o Version 2.2.1 Release
+    * IE6 fixes in the css-selectors engine
+    * IE9 fixes in the events processing
+    * WebKit fixes in the mouseio module
+    * Form#send now hooks the '.spinner' elements
+    * JSONP/IFramed requests are now cancelable
+    * Form#cancelXhr method to cancel current xhrs
+    * try/catch blocks cleanups
+
 2011-01-16 Nikolay Nemshilov
   o Version 2.2.0 Release
     * Native css-transitions for Fx
