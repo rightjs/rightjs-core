@@ -84,15 +84,20 @@ var Event = RightJS.Event = new Class(Wrapper, {
   /**
    * Returns the event's offset relative to the target element
    *
-   * @return Object {x: ..., y: ...}
+   * @return Object {x: ..., y: ...} or null
    */
   offset: function() {
-    var element_position = this.target.position();
+    if(this.target instanceof Element) {
+      var element_position = this.target.position();
 
-    return {
-      x: this.pageX - element_position.x,
-      y: this.pageY - element_position.y
-    };
+      return {
+        x: this.pageX - element_position.x,
+        y: this.pageY - element_position.y
+      };
+    }
+
+    // triggered outside browser window (at toolbar etc.)
+    return null;
   },
 
   /**

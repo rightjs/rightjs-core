@@ -63,5 +63,18 @@ var EventTest = TestCase.create({
     event.pageY = 220;
 
     this.assertEqual({x: 10, y: 20}, event.offset());
+  },
+
+  // XXX: figure out how to get this run
+  testEventOffsetTargetNotElement: function() {
+    var target = null;
+    var event  = new Event('boo', {
+      target: target
+    });
+
+    event.pageX = 110;
+    event.pageY = 220;
+
+    this.assertEqual(null, event.offset());
   }
 });
