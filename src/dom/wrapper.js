@@ -104,7 +104,7 @@ function Event_Klass(event, bound_element) {
 
   this.target        = wrap(
     // Webkit throws events on textual nodes as well, gotta fix that
-    'target' in event && 'nodeType' in event.target && event.target.nodeType === 3 ?
+    event.target && 'nodeType' in event.target && event.target.nodeType === 3 ?
       event.target.parentNode : event.target
   );
 
