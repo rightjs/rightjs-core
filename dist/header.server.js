@@ -1,10 +1,8 @@
 /**
- * RightJS, http://rightjs.org
- * Released under the MIT license
+ * RightJS v%{version} the server-side version
+ * Released under terms of the MIT license
+ * Visit http://rightjs.org for more details
  *
- * NOTE: This is a server-side build of RightJS
- *       ready to be used with Node.JS
- *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 

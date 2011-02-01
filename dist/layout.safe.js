@@ -1,7 +1,7 @@
 /**
  * The safe-mode layout
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2010-2011 Nikolay Nemshilov
  */
 var RightJS = (function(window, src) {
   // premassaging the source code, swapping the document reference where needed

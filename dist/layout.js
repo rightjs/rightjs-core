@@ -1,7 +1,7 @@
 /**
  * The basic layout for RightJS builds
  *
- * Copyright (C) 2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
 var RightJS = (function(window, document, Object, Array, String, Function, Number, Math) {
 

@@ -1,0 +1,238 @@
+/**
+ * All sorts of Nake tasks to run with NodeJS
+ *
+ * Copyright (C) 2011 Nikolay Nemshilov
+ */
+
+var // the build settings
+RIGHTJS_VERSION = '2.2.1',
+BUILD_DIRECTORY = 'build',
+BUILD_FILENAME  = 'right';
+
+
+var // importint the Nake tools
+Nake            = require('./util/lib/nake'),
+task            = Nake.task,
+namespace       = Nake.namespace;
+
+Nake.Default    = 'build'; // making the build by default
+
+
+var // sources processing tools
+Source          = require('./util/build/source').Source,
+build           = null; // global build reference
+
+
+////////////////////////////////////////////////////////////////
+// Parsing the options
+////////////////////////////////////////////////////////////////
+var fs   = require('fs');
+var argv = process.ARGV;
+var options = argv[argv.length - 1];
+
+if (options.startsWith('OPTIONS=')) {
+  options = options.split('=')[1].split(',');
+} else {
+  options = [];
+}
+
+if (options.include('server') && options.include('no-olds')) {
+  options.splice(options.indexOf('no-olds'), 1);
+}
+
+// finding the available building options
+var js_sources  = {};
+var init_script = fs.readFileSync('src/__init__.js') + '';
+
+init_script.replace(/([a-z]+):\s*\[([^\]]+?)\]/img, function(m, module, files) {
+  js_sources[module] = [];
+
+  files.replace(/('|")([\w\d\_\/]+)\1/ig, function(m1, m2, file) {
+    js_sources[module].push(file);
+  });
+});
+
+
+////////////////////////////////////////////////////////////////
+// Utility tasks
+////////////////////////////////////////////////////////////////
+task('clean', 'Clean up the build directory', function() {
+  try {
+    this.step("Deleting olds directory");
+
+    fs.readdirSync(BUILD_DIRECTORY).each(function(file) {
+      fs.unlinkSync(BUILD_DIRECTORY + '/' + file);
+    });
+    fs.rmdirSync(BUILD_DIRECTORY);
+  } catch(e) {}
+
+  this.step("Creating the build directory");
+  fs.mkdirSync(BUILD_DIRECTORY, 0755);
+});
+
+
+task('pack', 'Pack the source code into a single file', function() {
+  this.step('Cleaning up the build directory');
+  Nake.run('clean', true);
+
+  this.step('Compiling the source file');
+
+  var modules = [], files = [];
+
+  for (var module in js_sources) {
+    if (!options.include('no-'+ module)) {
+      modules.push(module);
+      files = files.concat(js_sources[module]);
+    }
+  }
+
+  // creating the build
+  build = new Source({
+    files:   files,
+    layout:  'dist/layout.js',
+    header:  'dist/header.js',
+    holders: {
+      modules: modules.join('", "'),
+      version: RIGHTJS_VERSION
+    }
+  });
+
+  if (options.include('no-olds')) {
+    build.patch(function(source) {
+      return source + fs.readFileSync('src/olds/loader.js');
+    });
+  }
+
+  build.write(BUILD_DIRECTORY + '/' + BUILD_FILENAME);
+});
+
+
+task('check', 'Run JSLint on the source code', function() {
+  this.step('Packing the source code');
+  Nake.run('pack', true);
+
+  this.step('Running JSLint');
+  build.check('dist/lint.js');
+});
+
+
+
+//////////////////////////////////////////////////////////////////
+// Building tasks
+//////////////////////////////////////////////////////////////////
+task('build', 'Build the source code', function() {
+  if (options.include('safe')) {
+    this.step('Creating safe-mode build');
+    Nake.run('build:safe', true);
+  } else if (options.include('server')) {
+    this.step("Creating server-side build");
+    Nake.run('build:server', true);
+  } else {
+    this.step("Creating the standard build");
+    Nake.run('build:standard', true);
+
+    if (options.include('no-olds')) {
+      this.step("Building the olds module");
+      Nake.run('build:olds', true);
+    }
+  }
+});
+
+namespace('build', function() {
+  task('standard', 'Build standard module', function() {
+    this.step("Packing the source code");
+    Nake.run('pack', true);
+    build.compress();
+  });
+
+  task('olds', 'Build the old browsers support module', function() {
+    var olds = new Source({
+      files: js_sources.olds,
+      header: 'dist/header.olds.js',
+      layout: 'dist/layout.olds.js'
+    });
+
+    olds.write(BUILD_DIRECTORY + '/' + BUILD_FILENAME + '-olds');
+    olds.compress();
+  });
+
+  task('safe', 'Build the safe-mode version', function() {
+    this.step('Creating the standard build');
+    Nake.run('build:standard', true);
+
+    this.step('Creating safe-mode version');
+    var safe_mode = new Source({
+      header: 'dist/header.safe.js',
+      layout: 'dist/layout.safe.js'
+    });
+
+    safe_mode.patch(function(source) {
+      var layout = this.read(this.layout).split('%{source_code}');
+
+      // reading the original source
+      source = fs.readFileSync(BUILD_DIRECTORY + '/' + BUILD_FILENAME + '.js') + '';
+      source = source.replace(/^\s*\/\*(\s|.)+?\*\/\s*/m, '').trim();
+      source = "'" + source
+        .replace(/\\/mg, "\\\\")
+        .replace(/\n/mg, " '+\n'")
+        .replace(/'/mg,  "\\'") +
+      ";'";
+
+      source = layout[0] + source + layout[1];
+
+      // repatching the version number
+      var match = source.match(/version\s*(:|=)\s*('|")(.+?)\2/i);
+      if (match) {
+        this.header = this.header.replace('%{version}', match[3]);
+      }
+
+      return source;
+    });
+
+    safe_mode.write(BUILD_DIRECTORY + '/' + BUILD_FILENAME + '-safe');
+    safe_mode.compress();
+  });
+
+  task('server', 'Build the server side version', function() {
+    var server = new Source({
+      files: js_sources.core,
+      header: 'dist/header.server.js',
+      layout: 'dist/layout.server.js',
+      holders: {
+        version: RIGHTJS_VERSION,
+        modules: 'core'
+      }
+    });
+
+    server.patch(function(source) {
+      return source
+        // removing dom related util methods and hacks
+        .replace(/\n\/\/\s+!#server:begin(\s|.)+?\/\/\s+!#server:end\n/mg, '')
+        .replace(/\/\*\*\s+!#server(\s|.)+?(?=\/\*\*)/mg, '')
+        .replace(/\n[^\n]+\/\/\s*!#server\s*(\n)/mg, '$1')
+        .replace(/window([\.\[])/g, 'global$1');
+    });
+
+    server.write(BUILD_DIRECTORY + '/' + BUILD_FILENAME + '-server');
+  });
+});
+
+
+
+//////////////////////////////////////////////////////////////////
+// Testing tasks
+//////////////////////////////////////////////////////////////////
+task('test', "Run all the tests on the sources", function() {
+  this.step('Running server-side test');
+  Nake.run('test:server', true);
+});
+
+namespace('test', function() {
+  task('server', "Run server-side version test", function() {
+    this.step("Creating the server-side build");
+    Nake.run('build:server', true);
+
+    this.step("Running the server-side tests");
+    require('./test/tests.server.js');
+  });
+});

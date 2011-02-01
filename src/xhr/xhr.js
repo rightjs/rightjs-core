@@ -250,7 +250,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
       return null;
     }
 
-    return 'JSON' in window ? JSON.parse(this.text) : eval("("+this.text+")");
+    return 'JSON' in window ? JSON.parse(this.text) : (new Function("return "+this.text))();
   },
 
   // initializes the request callbacks

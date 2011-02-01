@@ -1,14 +1,14 @@
 /**
  * Konqueror browser fixes
  *
- * Copyright (C) 2009-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2009-2011 Nikolay V. Nemshilov
  */
 
 /**
  * manual position calculator, it works for Konqueror and also
  * for old versions of Opera and FF
  */
-if (!RightJS.$E('p').getBoundingClientRect) {
+if (!RightJS.$E('p')._.getBoundingClientRect) {
   RightJS.Element.include({
     position: function() {
       var element  = this._,
