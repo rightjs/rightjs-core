@@ -109,7 +109,11 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
    * @return Xhr self
    */
   send: function(params) {
-    var add_params = {}, url = this.url, method = this.method.toLowerCase(), headers = this.headers, key, xhr;
+    var add_params = {},
+        url = this.url,
+        method  = this.method.toLowerCase(),
+        headers = this.headers,
+        key, xhr;
 
     if (method == 'put' || method == 'delete') {
       add_params._method = method;
@@ -243,14 +247,17 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
 
   // sanitizes the json-response texts
   sanitizedJSON: function() {
-    if (!(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
+    if (!(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(
+      this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, '')
+    )) {
       if (this.secureJSON) {
         throw "JSON error: "+this.text;
       }
       return null;
     }
 
-    return 'JSON' in window ? JSON.parse(this.text) : (new Function("return "+this.text))();
+    return 'JSON' in window ? JSON.parse(this.text) :
+      (new Function("return "+this.text))();
   },
 
   // initializes the request callbacks

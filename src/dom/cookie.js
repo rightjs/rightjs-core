@@ -74,8 +74,10 @@ var Cookie = RightJS.Cookie = new Class({
    * @return mixed saved value or null if nothing found
    */
   get: function() {
-    var value = this.options.document.cookie.match('(?:^|;)\\s*' + RegExp.escape(this.name) + '=([^;]*)');
-    return (value) ? decodeURIComponent(value[1]) : null;
+    var value = this.options.document.cookie.match(
+      '(?:^|;)\\s*' + RegExp.escape(this.name) + '=([^;]*)'
+    );
+    return value ? decodeURIComponent(value[1]) : null;
   },
 
   /**

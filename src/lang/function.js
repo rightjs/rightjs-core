@@ -5,7 +5,7 @@
  *   Some of the functionality inspired by
  *     - Prototype (http://prototypejs.org)   Copyright (C) Sam Stephenson
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 Function.include({
   /**
@@ -19,7 +19,10 @@ Function.include({
   bind: function() {
     var args = $A(arguments), scope = args.shift(), func = this;
     return function() {
-      return func.apply(scope, (args.length || arguments.length) ? args.concat($A(arguments)) : args);
+      return func.apply(scope,
+        (args.length !== 0 || arguments.length !== 0) ?
+          args.concat($A(arguments)) : args
+      );
     };
   },
 

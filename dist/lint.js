@@ -5,5 +5,8 @@
  */
 var options = {};
 var okays   = [
-  '      current_Document.win()._.execScript(text);'
+  '      current_Document.win()._.execScript(text);',
+  'Do not use Number as a constructor.',
+  "Expected a 'break' statement before 'case'.",
+  "The Function constructor is eval."
 ];

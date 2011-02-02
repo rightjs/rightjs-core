@@ -98,7 +98,9 @@ $w('Element Input Form').each(function(klass) {
           }
         }
 
-        return null; // don't return the string itself in here, it will screw with data-retrieving calls on empty collections
+        // don't return the string itself in here,
+        // it will screw with data-retrieving calls on empty collections
+        return null;
       };
     }
   });

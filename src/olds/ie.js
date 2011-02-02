@@ -12,7 +12,9 @@ if (RightJS.Browser.OLD && RightJS.Browser.IE) {
       var element = old_function(id);
 
       // old IE browses match both, ID and NAME
-      if (element && element instanceof RightJS.Element && RightJS.isString(id) && element._.id !== id) {
+      if (element && element instanceof RightJS.Element &&
+        RightJS.isString(id) && element._.id !== id
+      ) {
         element = RightJS.$(document).first('#'+ id);
       }
 

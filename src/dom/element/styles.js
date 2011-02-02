@@ -70,10 +70,12 @@ Element.include({
    *
    * @return Object/CSSDefinition computed styles
    */
-  computedStyles: function() {
-    var element = this._;
-    //     old IE,                 IE8,                    W3C
-    return element.currentStyle || element.runtimeStyle || element.ownerDocument.defaultView.getComputedStyle(element, null) || {};
+  computedStyles: HTML.currentStyle ? function() {
+    return this._.currentStyle;
+  } : HTML.runtimeStyle ? function() {
+    return this._.runtimeStyle;
+  } : function() {
+    return this._.ownerDocument.defaultView.getComputedStyle(this._, null);
   },
 
   /**
@@ -161,26 +163,26 @@ Element.include({
  * @param String style-key
  * @return String clean style
  */
-function clean_style(style, in_key) {
-  var value, key = in_key.camelize();
+function clean_style(style, key) {
+  key = key.camelize();
 
-  switch (key) {
-    case 'opacity':
-      value = !Browser_IE ? style[key].replace(',', '.') :
-        ((/opacity=(\d+)/i.exec(style.filter || '') || ['', '100'])[1].toInt() / 100)+'';
-      break;
-
-    case 'float':
-      key = Browser_IE ? 'styleFloat' : 'cssFloat';
-
-    default:
-      value = style[key];
-
-      // Opera returns named colors with quotes
-      if (Browser_Opera && /color/i.test(key) && value) {
-        value = value.replace(/"/g, '');
-      }
+  if (key === 'opacity') {
+    return Browser_IE ? (
+      (/opacity=(\d+)/i.exec(style.filter || '') ||
+      ['', '100'])[1].toInt() / 100
+    )+'' :style[key].replace(',', '.');
   }
 
-  return value || null;
+  if (key === 'float') {
+    key = Browser_IE ? 'styleFloat' : 'cssFloat';
+  }
+
+  var value = style[key];
+
+  // Opera returns named colors with quotes
+  if (Browser_Opera && /color/i.test(key) && value) {
+    value = value.replace(/"/g, '');
+  }
+
+  return value;
 }

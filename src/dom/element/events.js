@@ -85,7 +85,9 @@
     event.currentTarget = this;
 
     (this.$listeners || []).each(function(hash) {
-      if (hash.e === event.type && hash.f.apply(this, (hash.r?[]:[event]).concat(hash.a)) === false) {
+      if (hash.e === event.type &&
+        hash.f.apply(this, (hash.r?[]:[event]).concat(hash.a)) === false
+      ) {
         event.stop();
       }
     }, this);
@@ -126,5 +128,6 @@ function Element_add_event_shortcuts(tokens) {
 }
 
 Element_add_event_shortcuts(
-  'click rightclick contextmenu mousedown mouseup mouseover mouseout mousemove keypress keydown keyup'
+  'click rightclick contextmenu mousedown mouseup '+
+  'mouseover mouseout mousemove keypress keydown keyup'
 );

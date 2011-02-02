@@ -18,7 +18,9 @@
 
 Element.include({
   parent: function(css_rule) {
-    return css_rule ? this.parents(css_rule)[0] : wrap(this._.parentNode || null); // <- IE6 need that || null
+    return css_rule ? this.parents(css_rule)[0] :
+      isElement(this._.parentNode) ? // <- IE6 sometimes has a fragment node in there
+      wrap(this._.parentNode) : null;
   },
 
   parents: function(css_rule) {
@@ -70,7 +72,7 @@ Element.include({
    * The content might be one of the following data
    *
    *  o) an element instance
-   *  o) a String, which will be converted into content to insert (all the scripts will be parsed out and executed)
+   *  o) a String (all the scripts will be parsed out and executed)
    *  o) a list of Elements
    *  o) a hash like {position: content}
    *

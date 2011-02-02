@@ -237,7 +237,9 @@ function clean_styles(element, before, after) {
 
 // cloning the element current styles hash
 function clone_style(element, keys) {
-  for (var i=0, len = keys.length, style = element.computedStyles(), clean = {}, key; i < len; i++) {
+  var i=0, len = keys.length, style = element.computedStyles(), clean = {}, key;
+
+  for (; i < len; i++) {
     key = keys[i];
     if (key in style) {
       clean[key] = ''+ style[key];

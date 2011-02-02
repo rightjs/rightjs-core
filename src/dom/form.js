@@ -122,7 +122,9 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
     this.inputs().each(function(element) {
       input = element._;
       name  = input.name;
-      if (!input.disabled && name && (!['checkbox', 'radio'].include(input.type) || input.checked)) {
+      if (!input.disabled && name && (
+        !['checkbox', 'radio'].include(input.type) || input.checked
+      )) {
         value = element.getValue();
         if (name.endsWith('[]')) {
           value = (values[name] || []).concat([value]);

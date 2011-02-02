@@ -130,7 +130,10 @@ Observer_create = Observer.create =  function(object, events) {
  */
 Observer_createShortcuts = Observer.createShortcuts = function(object, names) {
   (names || []).each(function(name) {
-    var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g, function(match, pre, chr) { return chr.toUpperCase(); });
+    var method_name = 'on'+name.replace(/(^|_|:)([a-z])/g,
+      function(match, pre, chr) { return chr.toUpperCase(); }
+    );
+
     if (!(method_name in object)) {
       object[method_name] = function() {
         return this.on.apply(this, [name].concat($A(arguments)));

@@ -18,7 +18,9 @@ var Options = RightJS.Options = {
    * @return Object current instance
    */
   setOptions: function(opts) {
-    var options = this.options = $ext($ext({}, Object.clone(Class_findSet(this, 'Options'))), opts), match, key;
+    var options = this.options = $ext($ext({},
+      Object.clone(Class_findSet(this, 'Options'))), opts
+    ), match, key;
 
     // hooking up the observer options
     if (isFunction(this.on)) {

@@ -125,7 +125,9 @@ Class_Methods = {
   }
 },
 
-Class_module_callback_names = $w('selfExtended self_extended selfIncluded self_included extend include');
+Class_module_callback_names = $w(
+  'selfExtended self_extended selfIncluded self_included extend include'
+);
 
 // hooking up the class-methods to the root class
 $ext(Class, Class_Methods);

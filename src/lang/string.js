@@ -54,10 +54,13 @@ String.include({
    * @return String without scripts
    */
   stripScripts: function(option) {
-    var scripts = '', text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/img, function(match, source) {
-      scripts += source + "\n";
-      return '';
-    });
+    var scripts = '', text = this.replace(
+      /<script[^>]*>([\s\S]*?)<\/script>/img,
+      function(match, source) {
+        scripts += source + "\n";
+        return '';
+      }
+    );
 
     if (option === true) {
       $eval(scripts);
@@ -168,7 +171,8 @@ String.include({
    * @return Float or NaN
    */
   toFloat: function(strict) {
-    return parseFloat(strict === true ? this : this.replace(',', '.').replace(/(\d)-(\d)/g, '$1.$2'));
+    return parseFloat(strict === true ? this :
+      this.replace(',', '.').replace(/(\d)-(\d)/, '$1.$2'));
   }
 
 });
