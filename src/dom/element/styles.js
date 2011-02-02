@@ -71,9 +71,9 @@ Element.include({
    * @return Object/CSSDefinition computed styles
    */
   computedStyles: HTML.currentStyle ? function() {
-    return this._.currentStyle;
+    return this._.currentStyle || {};
   } : HTML.runtimeStyle ? function() {
-    return this._.runtimeStyle;
+    return this._.runtimeStyle || {};
   } : function() {
     return this._.ownerDocument.defaultView.getComputedStyle(this._, null);
   },

@@ -222,23 +222,6 @@ $w = RightJS.$w = function(string) {
 },
 
 /**
- * converts any iterables into an array
- *
- * @param Object iterable
- * @return Array list
- */
-$A = RightJS.$A = function(it) {
-  try {
-    return slice.call(it);
-  } catch(e) {
-    for (var a=[], i=0, length = it.length; i < length; i++) {
-      a[i] = it[i];
-    }
-    return a;
-  }
-},
-
-/**
  * generates an unique id for an object
  *
  * @param Object object
@@ -246,7 +229,34 @@ $A = RightJS.$A = function(it) {
  */
 $uid = RightJS.$uid = function(item) {
   return UID_KEY in item ? item[UID_KEY] : (item[UID_KEY] = UID++);
+},
+
+/**
+ * converts any iterables into an array
+ *
+ * @param Object iterable
+ * @return Array list
+ */
+$A = RightJS.$A = function(it) {
+  return slice.call(it, 0);
 };
+
+/** !#server
+ * IE needs a patch for the $A function
+ * because it doesn't handle all the cases
+ */
+if (!A_proto.map) {
+  $A = RightJS.$A = function(it) {
+    try {
+      return slice.call(it, 0);
+    } catch(e) {
+      for (var a=[], i=0, length = it.length; i < length; i++) {
+        a[i] = it[i];
+      }
+      return a;
+    }
+  }
+}
 
 /** !#server
  * Internet Explorer needs some additional mumbo-jumbo in here
