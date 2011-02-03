@@ -160,7 +160,7 @@ isArray = RightJS.isArray = function(value) {
  * @return boolean check result
  */
 isElement = RightJS.isElement = function(value) {
-  return !!(value && value.tagName);
+  return value != null && value.nodeType === 1;
 },
 
 /** !#server
@@ -170,7 +170,7 @@ isElement = RightJS.isElement = function(value) {
  * @return boolean check result
  */
 isNode = RightJS.isNode = function(value) {
-  return !!(value && value.nodeType);
+  return value != null && value.nodeType != null;
 },
 
 /** !#server

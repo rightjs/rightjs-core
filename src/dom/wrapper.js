@@ -139,7 +139,7 @@ function Event_Klass(event, bound_element) {
  * @return Wrapper dom-wrapper
  */
 function wrap(object) {
-  if (object !== null && object !== undefined) {
+  if (object != null) {
     var wrapper = UID_KEY in object ? Wrappers_Cache[object[UID_KEY]] : undefined;
 
     if (wrapper !== undefined) {
