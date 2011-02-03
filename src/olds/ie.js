@@ -7,7 +7,7 @@
  */
 if (RightJS.Browser.OLD && RightJS.Browser.IE) {
   // loads DOM element extensions for selected elements
-  $ = RightJS.$ = (function(old_function) {
+  window.$ = RightJS.$ = (function(old_function) {
     return function(id) {
       var element = old_function(id);
 

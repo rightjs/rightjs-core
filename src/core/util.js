@@ -264,8 +264,7 @@ if (!A_proto.map) {
 if (isHash(HTML)) {
   isHash = RightJS.isHash = function(value) {
     return to_s.call(value) === '[object Object]' &&
-      value !== null && typeof(value) !== 'undefined' &&
-      typeof(value.hasOwnProperty) !== 'undefined';
+      value != null && value.hasOwnProperty != null;
   };
 }
 /**
