@@ -37,7 +37,9 @@ function Wrapper_makeKlass() {
    */
   return function(object, options) {
     Class_checkPrebind(this);
-    this.initialize(object, options);
+
+    this.initialize.apply(this, arguments); // <- there might be a different number of args in a subclass
+
     var item = this._, uid = UID_KEY in item ? item[UID_KEY] :
       // NOTE we use positive indexes for dom-elements and negative for everything else
       (item[UID_KEY] = (item.nodeType === 1 ? 1 : -1) * UID++);
@@ -62,7 +64,7 @@ function Element_Klass(element, options) {
       uid = UID_KEY in raw ? raw[UID_KEY] : (raw[UID_KEY] = UID++);
 
   if (cast !== undefined) {
-    inst = new cast(raw);
+    inst = new cast(raw, options);
     if ('$listeners' in this) {
       inst.$listeners = this.$listeners;
     }
@@ -104,7 +106,7 @@ function Event_Klass(event, bound_element) {
 
   this.target        = wrap(
     // Webkit throws events on textual nodes as well, gotta fix that
-    event.target && 'nodeType' in event.target && event.target.nodeType === 3 ?
+    event.target != null && 'nodeType' in event.target && event.target.nodeType === 3 ?
       event.target.parentNode : event.target
   );
 

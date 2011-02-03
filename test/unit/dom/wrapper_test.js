@@ -118,6 +118,31 @@ var WrapperTest = TestCase.create({
       "private wrappers should not get involved in the typecasting");
   },
 
+  testPrivateWrapperWithMoreThanTwoArguments: function() {
+    var MyElement = new Class(Element, {
+      initialize: function(p1, p2, p3, p4) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.p4 = p4;
+
+        this.$super('div', {id: 'boo-hoo'});
+      }
+    });
+
+    var el = new MyElement('1', '2', '3', '4');
+
+    this.assert(el instanceof Element);
+
+    this.assertEqual('1', el.p1);
+    this.assertEqual('2', el.p2);
+    this.assertEqual('3', el.p3);
+    this.assertEqual('4', el.p4);
+
+    this.assertEqual("DIV", el._.tagName);
+    this.assertEqual('boo-hoo', el._.id);
+  },
+
   testWithInjections: function() {
     var MyElement = new Class(Element, {
       include: [{boo: 'hoo'}],
