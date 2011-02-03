@@ -255,7 +255,7 @@ if (!A_proto.map) {
       }
       return a;
     }
-  }
+  };
 }
 
 /** !#server

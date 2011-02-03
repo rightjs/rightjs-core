@@ -25,7 +25,7 @@ String.include({
    * @return boolean check result
    */
   blank: function() {
-    return (/^\s*$/).test(this);
+    return this == false;
   },
 
   /**
