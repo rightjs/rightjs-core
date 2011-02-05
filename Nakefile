@@ -236,3 +236,9 @@ namespace('test', function() {
     require('./test/tests.server.js');
   });
 });
+
+
+// manual kick-in in case the thing was called without 'nake'
+if (!(process.ARGV[1] || '').endsWith('nake')) {
+  Nake.start();
+}
