@@ -1,8 +1,9 @@
 /**
  * The Element unit common methods module test-case
  *
- * Copyright (C) 2008-2010 Nikolay Nemshilov
+ * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
+document.write('<st'+'yle>div.test-show-1234{display:none}</st'+'yle>');
 var ElementCommonsTest = TestCase.create({
   name: 'ElementCommonsTest',
 
@@ -85,6 +86,14 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(this.el._)
     this.assertSame(this.el, this.el.show());
     this.assertVisible(this.el._);
+  },
+
+  testShowWithCSS: function() {
+    this.el.setClass('test-show-1234').insertTo(document.body);
+    this.assertEqual('none', this.el.getStyle('display'));
+    this.assertSame(this.el, this.el.show());
+    this.assertEqual('block', this.el.getStyle('display'));
+    this.el.remove();
   },
 
   testHideShowPrevDisplayRestoration: function() {

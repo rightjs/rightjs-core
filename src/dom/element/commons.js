@@ -110,10 +110,21 @@ Element.include({
    */
   show: function() {
     if (this.hidden()) {
-      // setting 'block' for the divs and 'inline' for the other elements hidden on the css-level
-      var element = this._, value = element.tagName == 'DIV' ? 'block' : 'inline';
+      var element   = this._, value = this._d, dummy;
 
-      element.style.display = this._d == 'none' ? value : this._d || value;
+      // trying to guess the default 'style.display' for this kind of elements
+      if (!value || value === 'none') {
+        dummy = $E(element.tagName).insertTo(HTML);
+        value = dummy.getStyle('display');
+        dummy.remove();
+      }
+
+      // failsafe in case the user been naughty
+      if (value === 'none') {
+        value = 'block';
+      }
+
+      element.style.display = value;
     }
 
     return this;
