@@ -1,0 +1,140 @@
+html, body {
+  font-family: Verdana, Helvetica, sans-serif;
+  font-size: 10pt;
+  margin: 0;
+  padding: 0;
+}
+html {
+  background: #EEE;
+  height: 100%;
+  padding: 0 9em;
+}
+body {
+  background: #FFF;
+  min-height: 100%;
+  border: 1px solid #DDD;
+  border-top: none;
+  border-bottom: none;
+  padding: 0 30pt;
+  _padding-right: 0;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Trebuchet MS", Garuda, sans-serif;
+  margin-top: 1.5em;
+  margin-bottom: 0;
+  color: #333;
+  font-weight: normal;
+}
+
+h1#header {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin-left: -30pt;
+  margin-top: 0;
+  margin-bottom: 1em;
+  display: block;
+  background: #444;
+  color: white;
+  font-size: 2.4em;
+  padding: .6em 30pt;
+  _width: auto;
+  border-bottom: 4pt solid #999;
+}
+h1#header a {
+  position: absolute;
+  top: 3.5em;
+  right: 3.5em;
+  font-size: 10pt;
+  color: white;
+  outline: none;
+}
+h1#header a.safe {
+  top: 1em;
+}
+
+h1#header ul#modes {
+  position: absolute;
+  font-size: 10pt;
+  right: 3.5em;
+  top: 1em;
+  margin: 0;
+  padding: 0;
+}
+
+h1#header ul#modes a {
+  position: static;
+  bottom: auto;
+  right: auto;
+}
+h1#header ul#modes li,
+h1#header ul#modes li a {
+  color: #888;
+}
+h1#header ul#modes li.current,
+h1#header ul#modes li.current a {
+  color: white;
+}
+
+a {
+  color: brown;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+input[type=text], input[type=password], textarea {
+  border: 1px solid #bbb;
+  font-size: 1em;
+  width: 16em;
+  padding: .1em;
+  -moz-border-radius: .2em;
+  -webkit-border-radius: .2em;
+}
+
+textarea {
+  width: 30em;
+  height: 6em;
+}
+
+a img {
+  border: 2px solid brown;
+  padding: 2px;
+  background: white;
+  vertical-align: top;
+  -moz-border-radius: .24em;
+  -webkit-border-radius: .24em;
+}
+
+p.white-space {
+  display: block;
+  height: 12em;
+  margin: 0;
+  padding: 0;
+}
+
+div.output-monitor {
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  padding: 0 .2em;
+  width: 6em;
+  -moz-border-radius: .2em;
+  -webkit-border-radius: .2em;
+}
+
+/** The testcase styles */
+div#testcase-inline-report-block {
+  display: block;
+  position: static;
+  border: none;
+  width: auto;
+  margin-top: -2em;
+  _margin-right: 30pt;
+}
+
+div#testcase-inline-report-block div.title {
+  border: none;
+  background: none;
+}

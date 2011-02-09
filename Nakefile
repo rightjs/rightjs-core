@@ -11,7 +11,7 @@ BUILD_FILENAME  = 'right';
 
 var // importint the Nake tools
 on_npm          = process.ARGV[1].match(/nake$/),
-Nake            = require(on_npm ? 'nake' : './util/lib/nake'),
+Nake            = require(on_npm ? 'nake' : './util/nake'),
 task            = Nake.task,
 namespace       = Nake.namespace;
 
@@ -19,7 +19,7 @@ Nake.Default    = 'build'; // making the build by default
 
 
 var // sources processing tools
-Source          = require('./util/build/source').Source,
+Source          = require('./util/source').Source,
 build           = null; // global build reference
 
 

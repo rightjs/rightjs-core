@@ -3,13 +3,8 @@
   <head>
     <title>RightJS - Test</title>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <script type="text/javascript" src="../util/test/tools.js"></script>
+    <script type="text/javascript" src="../util/tools.js?core"></script>
     <script type="text/javascript">
-      initialize_core_test_page();
-    </script>
-    <script type="text/javascript">
-      // calling it in a separate script so tests were working
-      // with the no-olds build in IE6
       include_js("test/tests" + (in_safe_mode ? ".safe" : ""));
     </script>
   </head>
