@@ -18,9 +18,11 @@
 
 Element.include({
   parent: function(css_rule) {
+    var parent = this._.parentNode, parent_type = parent && parent.nodeType;
+
     return css_rule ? this.parents(css_rule)[0] :
-      isElement(this._.parentNode) ? // <- IE6 sometimes has a fragment node in there
-      wrap(this._.parentNode) : null;
+      (parent_type === 1 || parent_type === 9) ? // <- IE6 sometimes has a fragment node in there
+      wrap(parent) : null;
   },
 
   parents: function(css_rule) {
