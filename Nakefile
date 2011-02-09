@@ -9,9 +9,9 @@ RIGHTJS_VERSION = '2.2.1',
 BUILD_DIRECTORY = 'build',
 BUILD_FILENAME  = 'right';
 
-
 var // importint the Nake tools
-Nake            = require('./util/lib/nake'),
+on_npm          = !!process.ARGV[1].match(/nake$/),
+Nake            = require(on_npm ? 'nake' : './util/lib/nake'),
 task            = Nake.task,
 namespace       = Nake.namespace;
 
@@ -237,8 +237,7 @@ namespace('test', function() {
   });
 });
 
-
 // manual kick-in in case the thing was called without 'nake'
-if (!(process.ARGV[1] || '').endsWith('nake')) {
+if (!on_npm) {
   Nake.start();
 }
