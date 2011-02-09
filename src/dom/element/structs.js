@@ -171,7 +171,7 @@ Element.include({
    * @return String text content or Element this
    */
   text: function(text) {
-    return text === undefined ? this._.innerHTML.stripTags() :
+    return text === undefined ? (this._.textContent || this._.innerText) :
       this.update(this.doc()._.createTextNode(text));
   },
 

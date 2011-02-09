@@ -510,6 +510,9 @@ var ElementStructsTest = TestCase.create({
   testText_getter: function() {
     this.el._.innerHTML = "<b>any</b> <i>banny</i> <u>twenny</u>";
     this.assertEqual('any banny twenny', this.el.text());
+
+    this.el._.innerHTML = "Beevis &amp; Butthead";
+    this.assertEqual('Beevis & Butthead', this.el.text());
   },
 
   testText_setter: function() {
