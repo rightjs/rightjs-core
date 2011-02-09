@@ -84,7 +84,7 @@ Element.include({
    */
   insert: function(content, position) {
     var scripts = null, element = this._;
-    position = (position||'bottom').toLowerCase();
+    position = (position === undefined ? 'bottom' : position).toLowerCase();
 
     if (typeof(content) !== 'object') {
       scripts = content = (''+content);
@@ -93,7 +93,7 @@ Element.include({
     }
 
     Element_insertions[position](element, content.nodeType ? content :
-      Element_createFragment.call(
+      Element_createFragment(
         (position === 'bottom' || position === 'top') ?
           element : element.parentNode, content
       )
@@ -332,9 +332,9 @@ $alias(Element_wraps, {
 var fragment = document.createDocumentFragment(),
     tmp_cont = document.createElement('DIV');
 
-function Element_createFragment(content) {
+function Element_createFragment(context, content) {
   if (typeof(content) === 'string') {
-    var tag   = this.tagName,
+    var tag   = context.tagName,
         tmp   = tmp_cont,
         wrap  = Element_wraps[tag] || ['', '', 1],
         depth = wrap[2];
@@ -348,12 +348,17 @@ function Element_createFragment(content) {
     content = tmp.childNodes;
   }
 
-  for (var i=0, length = content.length, node; i < length; i++) {
-    // in case of NodeList unit, the elements will be removed out of the list during the appends
-    // therefore if that's an array we use the 'i' variable, and if it's a collection of nodes
-    // then we always hit the first element of the stack
-    node = content[content.length === length ? i : 0];
-    fragment.appendChild(node instanceof Element ? node._ : node);
+  var i=0, length = content.length, node;
+
+  if (!content.concat && content.item) { // assuming it's a nodes-list
+    for (; i < length; i++) {
+      fragment.appendChild(content[0]);
+    }
+  } else { // if it's an Array of things
+    for (; i < length; i++) {
+      node = content[i];
+      fragment.appendChild(node instanceof Element ? node._ : node);
+    }
   }
 
   return fragment;
