@@ -1,44 +1,47 @@
-# Welcome to RightJS Core!
+# Welcome Home!
 
-RightJS is a fine JavaScript framework full of sweet goodness and serious
-kick-assery.
-
+RightJS is a fine JavaScript framework that's designed to make you happy.
 It lives over here <http://rightjs.org>, go check it, you won't regret!
 
-# Build
 
-To build the darn thing you need to hook up the `rightjs-util` submodule first
+## How To Build
 
-    git submodule init
-    git submodule update
+To build the core on your own, you'll need [NodeJS](http://nodejs.org) and
+if you also have [npm](http://npmjs.org) you might want to install the
+[nake](https://github.com/MadRabbit/Nake) tools
 
-After that you'll need `Ruby` and `Java`. Then just say
+    npm install nake
 
-    rake build
+After that either run `nake`
 
-If you don't have `Java` you can build the script using the Google's API
+    nake build
 
-    rake build REMOTE=true
+or, if you don't have [npm](http://npmjs.org), just run the `Nakefile`
+directly with [NodeJS](http://nodejs.org)
 
-There are also the following options to switch off some modules like that
+    node Nakefile build
 
-    rake build OPTIONS=no-form,no-xhr,no-cookie
+Try, `-l` or `--list` key to see which other tasks are available
 
-The list of options goes like that
 
-  * `no-form` - no advanced forms features
-  * `no-events` - no events delegation featuers
+## Options
+
+You can switch off some modules from the core by using the `OPTIONS` key
+
+    nake build OPTIONS=no-olds,no-fx
+
+The list of available options is the following
+
+  * `no-form` - no advanced form features
+  * `no-events` - no events delegation features
   * `no-cookie` - no cookies module
   * `no-xhr` - no ajax support
-  * `no-fx` - no visual effects
-  * `no-olds` - puts the old browsers support in a separate file
-  * `safe` - builds the safe-mode version
-  
-Enjoy!
+  * `no-fx` - no visual effects module
+  * `no-olds` - puts the old browsers support in a separated file
 
 
-# License
+## License
 
 The code released under terms of the MIT License
 
-Copyright (C) 2008-2010 Nikolay Nemshilov
+Copyright (C) 2008-2011 Nikolay Nemshilov
