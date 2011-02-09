@@ -10,7 +10,7 @@ BUILD_DIRECTORY = 'build',
 BUILD_FILENAME  = 'right';
 
 var // importint the Nake tools
-on_npm          = !!process.ARGV[1].match(/nake$/),
+on_npm          = process.ARGV[1].match(/nake$/),
 Nake            = require(on_npm ? 'nake' : './util/lib/nake'),
 task            = Nake.task,
 namespace       = Nake.namespace;
