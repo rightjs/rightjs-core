@@ -84,7 +84,7 @@ Element.include({
    */
   insert: function(content, position) {
     var scripts = null, element = this._;
-    position = (position === undefined ? 'bottom' : position).toLowerCase();
+    position = position === undefined ? 'bottom' : position;
 
     if (typeof(content) !== 'object') {
       scripts = content = (''+content);
@@ -92,11 +92,12 @@ Element.include({
       content = content._;
     }
 
-    Element_insertions[position](element, content.nodeType ? content :
-      Element_createFragment(
-        (position === 'bottom' || position === 'top') ?
-          element : element.parentNode, content
-      )
+    Element_insertions[position](element,
+      content.nodeType === undefined ?
+        Element_createFragment(
+          (position === 'bottom' || position === 'top') ?
+            element : element.parentNode, content
+        ) : content
     );
 
     if (scripts !== null) { scripts.evalScripts(); }
@@ -336,27 +337,24 @@ function Element_createFragment(context, content) {
   if (typeof(content) === 'string') {
     var tag   = context.tagName,
         tmp   = tmp_cont,
-        wrap  = Element_wraps[tag] || ['', '', 1],
+        wrap  = tag in Element_wraps ? Element_wraps[tag] : ['', '', 1],
         depth = wrap[2];
 
     tmp.innerHTML = wrap[0] + '<'+ tag + '>' + content + '</'+ tag + '>' + wrap[1];
 
-    while (depth-- > 0) {
+    while (depth-- !== 0) {
       tmp = tmp.firstChild;
     }
 
     content = tmp.childNodes;
-  }
 
-  var i=0, length = content.length, node;
-
-  if (!content.concat && content.item) { // assuming it's a nodes-list
-    for (; i < length; i++) {
+    while (content.length !== 0) {
       fragment.appendChild(content[0]);
     }
-  } else { // if it's an Array of things
-    for (; i < length; i++) {
-      node = content[i];
+
+  } else {
+    for (var i=0, length = content.length, node; i < length; i++) {
+      node = content[content.length === length ? i : 0];
       fragment.appendChild(node instanceof Element ? node._ : node);
     }
   }
