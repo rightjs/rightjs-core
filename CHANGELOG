@@ -1,3 +1,15 @@
+2011-02-12 Nikolay Nemshilov
+  o Version 2.2.2 Release
+    * Switching from Ruby/GCL to Node/Ugly
+    * Element#insert optimizations
+    * Event constructor fixes/optimizations
+    * The olds module cleanups
+    * Event#offset fix in case if `target` is not an element
+    * Element#parent fix for IE6 and document fragments
+    * Element#show fix to guess the default `style.display` property correctly
+    * Wrapper fix that allows any number of arguments in constructors of Element subclasses
+
+
 2011-01-24 Nikolay Nemshilov
   o Version 2.2.1 Release
     * IE6 fixes in the css-selectors engine
