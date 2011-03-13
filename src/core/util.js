@@ -170,7 +170,9 @@ isElement = RightJS.isElement = function(value) {
  * @return boolean check result
  */
 isNode = RightJS.isNode = function(value) {
-  return value !== null && value.nodeType !== null;
+  // we're actually checking for undefined rather than null
+  // but this saves bytes
+  return value != null && value.nodeType != null;
 },
 
 /** !#server
@@ -264,7 +266,7 @@ if (!A_proto.map) {
 if (isHash(HTML)) {
   isHash = RightJS.isHash = function(value) {
     return to_s.call(value) === '[object Object]' &&
-      value !== null && value.hasOwnProperty !== null;
+      value != null && value.hasOwnProperty != null;
   };
 }
 /**
