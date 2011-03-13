@@ -135,7 +135,7 @@ $ext(Object, {
    */
   merge: function() {
     var object = {}, i=0, args=arguments, key;
-    for (; i < args.length; i++) {
+    for (l = args.length; i < l; i++) {
       if (isHash(args[i])) {
         for (key in args[i]) {
           object[key] = isHash(args[i][key]) && !(args[i][key] instanceof Class) ?
@@ -156,7 +156,7 @@ $ext(Object, {
     var tokens = [], key, value, encode = encodeURIComponent;
     for (key in object) {
       value = ensure_array(object[key]);
-      for (var i=0; i < value.length; i++) {
+      for (var i=0, l = value.length; i < l; i++) {
         tokens.push(encode(key) +'='+ encode(value[i]));
       }
     }
