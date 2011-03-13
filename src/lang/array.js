@@ -11,7 +11,6 @@
 var original_sort = A_proto.sort,
 
 // JavaScript 1.6 methods recatching up or faking
-// Loop performance: http://robertnyman.com/2008/04/11/javascript-loop-performance/
 for_each = A_proto.forEach || function(callback, scope) {
   for (var i=0, l=this.length; i < l; i++) {
     callback.call(scope, this[i], i, this);
