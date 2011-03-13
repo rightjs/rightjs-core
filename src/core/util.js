@@ -160,7 +160,7 @@ isArray = RightJS.isArray = function(value) {
  * @return boolean check result
  */
 isElement = RightJS.isElement = function(value) {
-  return value != null && value.nodeType === 1;
+  return value !== null && value.nodeType === 1;
 },
 
 /** !#server
@@ -170,7 +170,7 @@ isElement = RightJS.isElement = function(value) {
  * @return boolean check result
  */
 isNode = RightJS.isNode = function(value) {
-  return value != null && value.nodeType != null;
+  return value !== null && value.nodeType !== null;
 },
 
 /** !#server
@@ -264,7 +264,7 @@ if (!A_proto.map) {
 if (isHash(HTML)) {
   isHash = RightJS.isHash = function(value) {
     return to_s.call(value) === '[object Object]' &&
-      value != null && value.hasOwnProperty != null;
+      value !== null && value.hasOwnProperty !== null;
   };
 }
 /**
