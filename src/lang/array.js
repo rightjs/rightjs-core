@@ -11,14 +11,15 @@
 var original_sort = A_proto.sort,
 
 // JavaScript 1.6 methods recatching up or faking
+// Loop performance: http://robertnyman.com/2008/04/11/javascript-loop-performance/
 for_each = A_proto.forEach || function(callback, scope) {
-  for (var i=0; i < this.length; i++) {
+  for (var i=0, l=this.length; i < l; i++) {
     callback.call(scope, this[i], i, this);
   }
 },
 
 filter   = A_proto.filter || function(callback, scope) {
-  for (var result=[], j=0, i=0; i < this.length; i++) {
+  for (var result=[], j=0, i=0, l=this.length; i < l; i++) {
     if (callback.call(scope, this[i], i, this)) {
       result[j++] = this[i];
     }
@@ -27,7 +28,7 @@ filter   = A_proto.filter || function(callback, scope) {
 },
 
 reject   = function(callback, scope) {
-  for (var result=[], j=0, i=0; i < this.length; i++) {
+  for (var result=[], j=0, i=0, l=this.length; i < l; i++) {
     if (!callback.call(scope, this[i], i, this)) {
       result[j++] = this[i];
     }
@@ -36,14 +37,14 @@ reject   = function(callback, scope) {
 },
 
 map      = A_proto.map || function(callback, scope) {
-  for (var result=[], i=0; i < this.length; i++) {
+  for (var result=[], i=0, l=this.length; i < l; i++) {
     result[i] = callback.call(scope, this[i], i, this);
   }
   return result;
 },
 
 some     = A_proto.some || function(callback, scope) {
-  for (var i=0; i < this.length; i++) {
+  for (var i=0, l=this.length; i < l; i++) {
     if (callback.call(scope, this[i], i, this)) {
       return true;
     }
@@ -52,7 +53,7 @@ some     = A_proto.some || function(callback, scope) {
 },
 
 every    = A_proto.every || function(callback, scope) {
-  for (var i=0; i < this.length; i++) {
+  for (var i=0, l=this.length; i < l; i++) {
     if (!callback.call(scope, this[i], i, this)) {
       return false;
     }
@@ -61,7 +62,7 @@ every    = A_proto.every || function(callback, scope) {
 },
 
 first    = function(callback, scope) {
-  for (var i=0; i < this.length; i++) {
+  for (var i=0, l=this.length; i < l; i++) {
     if (callback.call(scope, this[i], i, this)) {
       return this[i];
     }
@@ -133,7 +134,7 @@ Array.include({
    * @return Integer index or -1 if not found
    */
   indexOf: A_proto.indexOf || function(value, from) {
-    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0; i < this.length; i++) {
+    for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0, l=this.length; i < l; i++) {
       if (this[i] === value) {
         return i;
       }
@@ -453,7 +454,7 @@ Array.include({
    * @return Number a summ of values on the list
    */
   sum: function() {
-    for(var sum=0, i=0; i<this.length; sum += this[i++]) {}
+    for(var sum=0, i=0, l=this.length; i < l; sum += this[i++]) {}
     return sum;
   }
 });
