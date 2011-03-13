@@ -272,7 +272,7 @@ if (isHash(HTML)) {
  */
 var i=0, natives = 'Array Function Number String Date RegExp'.split(' '),
 include_native = function() {
-  for (var i=0; i < arguments.length; i++) {
+  for (var i=0, l = arguments.length; i < l; i++) {
     if (isHash(arguments[i])) {
       $ext(this.prototype,  arguments[i]);
       $ext(this.Methods, arguments[i]);
@@ -280,7 +280,7 @@ include_native = function() {
   }
 };
 
-for (; i < natives.length; i++) {
+for (var l = natives.length; i < l; i++) {
   $ext(RightJS[natives[i]] = window[natives[i]], {
     Methods: {},
     include: include_native
