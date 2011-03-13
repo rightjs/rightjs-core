@@ -160,8 +160,6 @@ isArray = RightJS.isArray = function(value) {
  * @return boolean check result
  */
 isElement = RightJS.isElement = function(value) {
-  // we're actually checking for undefined rather than null
-  // but this saves bytes
   return value != null && value.nodeType === 1;
 },
 
