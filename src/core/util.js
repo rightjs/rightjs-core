@@ -160,7 +160,9 @@ isArray = RightJS.isArray = function(value) {
  * @return boolean check result
  */
 isElement = RightJS.isElement = function(value) {
-  return value !== null && value.nodeType === 1;
+  // we're actually checking for undefined rather than null
+  // but this saves bytes
+  return value != null && value.nodeType === 1;
 },
 
 /** !#server
@@ -170,8 +172,6 @@ isElement = RightJS.isElement = function(value) {
  * @return boolean check result
  */
 isNode = RightJS.isNode = function(value) {
-  // we're actually checking for undefined rather than null
-  // but this saves bytes
   return value != null && value.nodeType != null;
 },
 
