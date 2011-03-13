@@ -104,7 +104,7 @@ Class_Methods = {
     $A(arguments).filter(isHash).each(function(module) {
       Object.each(Class_clean_module(module, false), function(name, method) {
         // searching for the super-method
-        for (var super_method, i=0; i < klasses.length; i++) {
+        for (var super_method, i=0, l = klasses.length; i < l; i++) {
           if (name in klasses[i].prototype) {
             super_method = klasses[i].prototype[name];
             break;
@@ -166,7 +166,7 @@ function Class_findSet(object, property) {
     candidates  = [object, constructor].concat(constructor.ancestors || []),
     i = 0;
 
-  for (; i < candidates.length; i++) {
+  for (l = candidates.length; i < l; i++) {
     if (upcased in candidates[i]) {
       return candidates[i][upcased];
     } else if (property in candidates[i]) {

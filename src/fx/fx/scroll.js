@@ -11,7 +11,7 @@ Fx.Scroll = new Class(Fx.Attr, {
     this.$super(
       element instanceof Window ?
         element._.document[
-          Browser.WebKit ? 'body' : 'documentElement'
+          'body' in element._.document ? 'body' : 'documentElement'
         ] : element,
       options
     );
