@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008-2011 Nikolay Nemshilov
  */
-var RightJS = (function(window, document, Object, Array, String, Function, Number, Math) {
+var RightJS = (function(window, document, Object, Array, String, Function, Number, Math, undefined) {
 
 %{source_code}
 
