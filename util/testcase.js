@@ -93,8 +93,8 @@ var TestCaseUtil = {
           for (var i=0; i < offset; i++) {
             offset_s += '  ';
           }
-          object_s = object instanceof Array ? 
-            "[" + entries.join(",\n "+ offset_s) + "\n"+offset_s+"]" : 
+          object_s = object instanceof Array ?
+            "[" + entries.join(",\n "+ offset_s) + "\n"+offset_s+"]" :
             "{" + entries.join(",\n "+ offset_s) + "\n"+offset_s+"}" ;
         }
       }
@@ -248,7 +248,7 @@ TestCaseUtil.Array = {
 /* ------------------------------------------------------------------- */
 
 TestCaseUtil.Event = {
-  KEY_UP: 38, 
+  KEY_UP: 38,
   observe: function(elementt, name, callback) {
     var element = TestCaseUtil.$(elementt);
     if (element.addEventListener) {
@@ -364,7 +364,7 @@ TestCaseUtil.Element.Selector = {
         case '~': founds = this._find_late_siblings(element, css_atom);         break;
         default:  founds = this._find_descendants(element, css_atom);
       }
-      if (css_rule.length > 0) { 
+      if (css_rule.length > 0) {
         var sub_founds = [];
         for (var i=0; i < founds.length; i++) {
           var css_rule_clone = [];
@@ -381,7 +381,7 @@ TestCaseUtil.Element.Selector = {
     var founds = [], child = element.firstChild;
     while (child) {
       if (child.nodeType == 1) {
-        if (this._fully_match_atom(child, css_atom, element) && 
+        if (this._fully_match_atom(child, css_atom, element) &&
             !TestCaseUtil.Array.include(founds, child)) {
               founds.push(child);
         }
@@ -455,10 +455,10 @@ TestCaseUtil.Element.Selector = {
     while (node) {
       if (node.nodeType == 1) {
         if (found)
-          return false; 
+          return false;
         else
           found = node;
-      } 
+      }
       node = node.nextSibling;
     }
     return found == child;
@@ -467,7 +467,7 @@ TestCaseUtil.Element.Selector = {
     if (typeof css_atom == 'string')
       css_atom = TestCaseUtil.Element.Selector._parse_atom(css_atom);
     return (css_atom.tag_name == '*' || element.tagName == css_atom.tag_name)
-      && TestCaseUtil.Element.has_class_names(element, css_atom.class_names) 
+      && TestCaseUtil.Element.has_class_names(element, css_atom.class_names)
       && TestCaseUtil.Element.Selector._match_css_attributes(element, css_atom.attrs)
       && (!css_atom.id || element.id == css_atom.id);
   },
@@ -507,7 +507,7 @@ TestCaseUtil.Element.Selector = {
           rule: rule.substring(0, separator_pos).replace(/^\s+|\s+$/g, ''),
           rel: relation
         });
-        relation = match[2]; 
+        relation = match[2];
         rule = rule.substr(separator_pos+(match[1].length==1 ? 1 : match[1].length-1)).replace(/^\s+|\s+$/g, '');
       }
       recognized_rule.push({ rule: rule, rel: relation });
@@ -518,10 +518,10 @@ TestCaseUtil.Element.Selector = {
     return recognized_rules;
   },
   _id_re: /#[^\[\.]*/,
-  _attrs_re: /\[((?:[\w-]*:)?[\w-]+)\s*(?:([!^$*~|]?=)\s*((['"])([^\4]*?)\4|([^'"][^\]]*?)))?\]/, 
+  _attrs_re: /\[((?:[\w-]*:)?[\w-]+)\s*(?:([!^$*~|]?=)\s*((['"])([^\4]*?)\4|([^'"][^\]]*?)))?\]/,
   _parse_atom: function(rule) {
     var atom = {
-      tag_name: '*',      
+      tag_name: '*',
       id: null,
       class_names: [],
       pseudo: null,
@@ -572,7 +572,7 @@ TestCaseUtil.Diff = {
   },
   _string_diff: function(str1, str2) {
     return this.__compact(
-      this.__calc_diff(str1.split("\n"), str2.split("\n")), 
+      this.__calc_diff(str1.split("\n"), str2.split("\n")),
       function (group, entry) { return group +"\n"+ entry; }
     );
   },
@@ -681,7 +681,7 @@ TestCaseUtil.Cookie = {
       document.cookie = "test_cookie=test";
       var value = document.cookie.indexOf("test_cookie=test")!=-1;
     } catch (e) {}
-    
+
     return value;
   },
   set: function(key, value, keep_days) {
@@ -748,7 +748,7 @@ TestCase.Starter = {
     test.passed = 0;
     test.failed = 0;
     test.assertions = 0;
-    if (this.reporter && this.reporter.ui_builder && 
+    if (this.reporter && this.reporter.ui_builder &&
         this.reporter.ui_builder.test_is_skipped(test)) {
           test.skipped = true;
           this.reporter.ui_builder.create_summary_report(this.reporter.current_test_block, test);
@@ -765,7 +765,7 @@ TestCase.Starter = {
         var test_start_assertion_num = test.assertions;
         try {
           test[name]();
-          if (test.manual_failure) 
+          if (test.manual_failure)
             throw new TestCase.Exception(test.manual_failure);
           test.passed++;
           this._report_test_passed(name);
@@ -805,7 +805,7 @@ TestCase.Starter = {
     for (key in test)
       if (key.substring(0, 4) == "test" && typeof test[key] == 'function')
         test_method_names.push(key);
-    if (navigator.userAgent.indexOf("MSIE") != -1) { test_method_names.reverse(true); } 
+    if (navigator.userAgent.indexOf("MSIE") != -1) { test_method_names.reverse(true); }
     return test_method_names;
   },
   _call_setup: function(test) {
@@ -837,7 +837,7 @@ TestCase.Starter = {
     if (this.reporter) {
       this.reporter.test_failed(test_name, error, assertion_num);
     } else {
-      throw error; 
+      throw error;
     }
   }
 };
@@ -993,22 +993,22 @@ TestCase.Mocking.FakeXMLHttpRequest = TestCaseUtil.create_class({
       headers: {}
     }, options || {});
     this.onreadystatechange = function() {};
-    this.readyState = 0; 
+    this.readyState = 0;
   },
   __onSend: function() {
-    this.readyState = 2; 
+    this.readyState = 2;
     this.status = this.fakeData.status;
     this.onreadystatechange();
-    this.readyState = 3; 
+    this.readyState = 3;
     this.responseText = '';
     this.onreadystatechange();
-    this.readyState = 4; 
+    this.readyState = 4;
     this.responseText = this.fakeData.text;
     this.responseXML = this.fakeData.xml;
     this.onreadystatechange();
   },
   open: function(method, url, async, user, password) {
-    this.readyState = 1; 
+    this.readyState = 1;
   },
   send: function(data) {
     this.sentData = data;
@@ -1232,8 +1232,8 @@ TestCase.Fires = {
     if (document.createEvent) {
       element.dispatchEvent(event);
     } else {
-      if (TestCaseUtil.Element.up(element, 'body')) { 
-        if (event.eventType != 'onmiddleclick') 
+      if (TestCaseUtil.Element.up(element, 'body')) {
+        if (event.eventType != 'onmiddleclick')
           element.fireEvent(event.eventType, event);
       } else {
         this.fail("Please put your element on the page to fire an event on it in IE");
@@ -1258,7 +1258,7 @@ TestCase.Fires = {
     var event = this._create_ie_event(eventName, options);
     event.clientX = options.pointerX;
     event.clientY = options.pointerY;
-    event.button = options.button == 1 ? 4 : options.button; 
+    event.button = options.button == 1 ? 4 : options.button;
     return event;
   },
   _create_key_event: function(element, eventName, options) {
@@ -1410,7 +1410,7 @@ TestCase.Assertions = {
   },
   assert_equal: function(expected, testing, message) {
     if (!TestCaseUtil.equal(expected, testing))
-      this.throw_unexp(expected, testing, message, true); 
+      this.throw_unexp(expected, testing, message, true);
   },
   assert_not_equal: function(expected, testing, message) {
     if (TestCaseUtil.equal(expected, testing))
@@ -1479,7 +1479,7 @@ TestCase.Assertions = {
     }
     return params;
   },
-  _type_of: function(object, _type) { 
+  _type_of: function(object, _type) {
     switch(_type) {
       case 'number':
       case Number: return typeof object == 'number';
@@ -1497,7 +1497,7 @@ TestCase.Assertions = {
     );
   },
   assert_not_called: function() {
-    var problems = []; 
+    var problems = [];
     this._execute_wrapped_call( arguments, problems,
       function(flag, call) {
         if (flag) problems.push("Attribute '"+call[1]+"' was unexpetedly called");
@@ -1647,7 +1647,7 @@ TestCase.Assertions = {
       }
     };
     if (!TestCaseUtil.equal(style, element_style))
-      this.throw_unexp("Element has style:\n "+TestCaseUtil.to_s(style), 
+      this.throw_unexp("Element has style:\n "+TestCaseUtil.to_s(style),
         TestCaseUtil.to_s(element_style), message);
   },
   __get_element_style: function(element) {
@@ -1760,8 +1760,11 @@ var TestSuite = TestCaseUtil.create_class({
     return this;
   },
   run: function(title) {
-    for (var i=0; i < this.test_cases.length; i++)
-      this.test_cases[i].run();
+    for (var i=0; i < this.test_cases.length; i++) {
+      if (this.test_cases[i]) {
+        this.test_cases[i].run();
+      }
+    }
     return this;
   },
   run_on_load: function() {
@@ -1793,7 +1796,7 @@ var TestReporter = TestCaseUtil.create_class({
     this.current_test = test;
     this.current_test_block = this.ui_builder.create_test_block(test, this.report_container);
     this.current_test_done_bar = this.ui_builder.create_done_bar(this.current_test_block);
-    this.current_test.__start_time = new Date().getTime(); 
+    this.current_test.__start_time = new Date().getTime();
   },
   test_started: function(test_name) {},
   test_passed: function(test_name) {
@@ -1919,10 +1922,10 @@ TestReporter.UIBuilder = TestCaseUtil.create_class({
   _formatted_value: function(value) {
     var value_s = TestCaseUtil.to_pretty_s(value);
     if (value_s.length > this.MAX_UNFOLDED_VALUE_LENGTH) {
-      return "<span class='formatted-value short-version'>"+ 
+      return "<span class='formatted-value short-version'>"+
                value_s.substr(0, this.MAX_UNFOLDED_VALUE_LENGTH).replace(/</g, '&lt;').replace(/ /g, '&nbsp;') +
              "</span>" +
-             "<span class='formatted-value full-version'>"+ 
+             "<span class='formatted-value full-version'>"+
                value_s.replace(/</g, '&lt;').replace(/ /g, '&nbsp;') +
              "</span>" +
              '<a href="" class="folding-toggler" title="Toggle the value" onclick="'+
@@ -1935,7 +1938,7 @@ TestReporter.UIBuilder = TestCaseUtil.create_class({
                "} else {"+
                  "short_version.style.display = 'block';"+
                  "full_version.style.display = 'none';"+
-                 "this.innerHTML = 'Full version';"+ 
+                 "this.innerHTML = 'Full version';"+
                "}"+
              'return false;">Full version</a>';
     }
@@ -1965,7 +1968,7 @@ TestReporter.UIBuilder = TestCaseUtil.create_class({
             diff_entries.push('<span class="'+key+'">'+ value.replace(/</g, '&lt;').replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;') +'</span>');
           }
           return '<label>Diff:</label><span class="report-text">'+
-                   '<span class="diff-block">'+ 
+                   '<span class="diff-block">'+
                      (is_array ? '[' : '')+
                      diff_entries.join(is_array ? ',<br/>&nbsp;' : '<br/>') +
                      (is_array ? "<br/>]" : '') +
@@ -2008,7 +2011,7 @@ TestReporter.UIBuilder = TestCaseUtil.create_class({
     return failed_test_source_popup;
   },
   _paint_source_code: function(failed_test_code, e, assertion_numt) {
-    if (TestCaseUtil.Browser.IE) failed_test_code = failed_test_code.replace(/\n/mg, "<br/>\n").replace(/ /mg, "&nbsp;"); 
+    if (TestCaseUtil.Browser.IE) failed_test_code = failed_test_code.replace(/\n/mg, "<br/>\n").replace(/ /mg, "&nbsp;");
     var assertion_num = assertion_numt - 1;
     var asserts_counter = 0;
     var assertion_matches = failed_test_code.match(/this\.assert.+(\n|;)/ig);
