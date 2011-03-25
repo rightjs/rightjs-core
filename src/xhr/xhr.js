@@ -62,6 +62,11 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
     // copying some options to the instance level attributes
     $ext(this.$super(options), this.options);
 
+    // merging in the global params
+    if (this.params != Xhr.Options.params) {
+      this.params = this.prepareData(Xhr.Options.params, this.params);
+    }
+
     // removing the local spinner if it's the same as the global one
     if (Xhr.Options.spinner && $(this.spinner) === $(Xhr.Options.spinner)) {
       this.spinner = null;
