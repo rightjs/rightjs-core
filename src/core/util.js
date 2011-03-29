@@ -273,7 +273,7 @@ if (isHash(HTML)) {
 var i=0, natives = 'Array Function Number String Date RegExp'.split(' ');
 
 for (; i < natives.length; i++) {
-  RightJS[natives[i]] = extend_native(window[natives[i]]);
+  RightJS[natives[i]] = extend_native(new Function('return '+ natives[i])());
 }
 
 // referring those two as well
