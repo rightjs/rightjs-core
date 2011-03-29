@@ -270,26 +270,30 @@ if (isHash(HTML)) {
 /**
  * Generating methods for native units extending
  */
-var i=0, natives = 'Array Function Number String Date RegExp'.split(' '),
-include_native = function() {
-  for (var i=0, l = arguments.length; i < l; i++) {
-    if (isHash(arguments[i])) {
-      $ext(this.prototype,  arguments[i]);
-      $ext(this.Methods, arguments[i]);
-    }
-  }
-};
+var i=0, natives = 'Array Function Number String Date RegExp'.split(' ');
 
-for (var l = natives.length; i < l; i++) {
-  $ext(RightJS[natives[i]] = window[natives[i]], {
-    Methods: {},
-    include: include_native
-  });
+for (; i < natives.length; i++) {
+  RightJS[natives[i]] = extend_native(window[natives[i]]);
 }
 
 // referring those two as well
 RightJS.Object = Object;
 RightJS.Math   = Math;
+
+// adds a standard '.include' method to the native unit
+function extend_native(klass) {
+  return $ext(klass, {
+    Methods: {},
+    include: function() {
+      for (var i=0, l = arguments.length; i < l; i++) {
+        if (isHash(arguments[i])) {
+          $ext(klass.prototype, arguments[i]);
+          $ext(klass.Methods,   arguments[i]);
+        }
+      }
+    }
+  });
+}
 
 /**
  * Checks if the data is an array and if not,
