@@ -16,7 +16,7 @@
    * @return Element matching node or null
    */
   first: function(css_rule) {
-    return wrap(this._.querySelector(css_rule || '*'));
+    return !css_rule && this._.firstElementChild !== undefined ? wrap(this._.firstElementChild) : wrap(this._.querySelector(css_rule || '*'));
   },
 
   /**
