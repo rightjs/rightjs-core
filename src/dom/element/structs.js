@@ -48,11 +48,11 @@ Element.include({
   },
 
   next: function(css_rule) {
-    return this.nextSiblings(css_rule)[0];
+    return !css_rule && this._.nextElementSibling !== undefined ? wrap(this._.nextElementSibling) : this.nextSiblings(css_rule)[0];
   },
 
   prev: function(css_rule) {
-    return this.prevSiblings(css_rule)[0];
+    return !css_rule && this._.previousElementSibling !== undefined ? wrap(this._.previousElementSibling) : this.prevSiblings(css_rule)[0];
   },
 
   /**
