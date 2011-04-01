@@ -71,7 +71,7 @@ var FxMorphTest = TestCase.create({
   testOpacityProcessing: function() {
     this.fx.start({opacity: 0.5});
 
-    if (Browser.IE) {
+    if (Browser.IE8L) {
       this.assertEqual(['filter'], Object.keys(this.fx.before));
       this.assertEqual(['filter'], Object.keys(this.fx.after));
 

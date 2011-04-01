@@ -37,12 +37,8 @@ Element.include({
     for (key in hash) {
       c_key = key.indexOf('-') < 0 ? key : key.camelize();
 
-      if (key === 'opacity') {
-        if (Browser_IE) {
-          element_style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
-        } else {
-          element_style.opacity = hash[key];
-        }
+      if (IE_OPACITY && key === 'opacity') {
+        element_style.filter = 'alpha(opacity='+ hash[key] * 100 +')';
       } else if (key === 'float') {
         c_key = Browser_IE ? 'styleFloat' : 'cssFloat';
       }
@@ -167,7 +163,7 @@ function clean_style(style, key) {
   key = key.camelize();
 
   if (key === 'opacity') {
-    return Browser_IE ? (
+    return IE_OPACITY ? (
       (/opacity=(\d+)/i.exec(style.filter || '') ||
       ['', '100'])[1].toInt() / 100
     )+'' :style[key].replace(',', '.');

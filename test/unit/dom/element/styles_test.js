@@ -55,7 +55,7 @@ var ElementStylesTest = TestCase.create({
   testSetOpacityStyle: function() {
     this.el.setStyle('opacity', 0.4);
 
-    if (Browser.IE) {
+    if (Browser.IE8L) {
       this.assertEqual('alpha(opacity=40)', this.el._.style.filter);
     } else {
       this.assertEqual('0.4', this.el._.style.opacity);

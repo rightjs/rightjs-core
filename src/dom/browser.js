@@ -21,7 +21,8 @@ Browser = RightJS.Browser = {
   IE8L:         false
 },
 
-IE8_OR_LESS = false;
+IE8_OR_LESS = false,
+IE_OPACITY  = !('opacity' in HTML.style) && ('filter' in HTML.style);
 
 try {
   // checking if that an IE version <= 8

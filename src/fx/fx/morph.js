@@ -128,7 +128,7 @@ function style_keys(style) {
       add_variants(keys, key, directions);
     } else if (key.startsWith('background')) {
       add_variants(keys, 'background', ['Color', 'Position', 'PositionX', 'PositionY']);
-    } else if (key === 'opacity' && Browser_IE) {
+    } else if (key === 'opacity' && IE_OPACITY) {
       keys.push('filter');
     } else {
       keys.push(key);
@@ -200,7 +200,7 @@ function clean_styles(element, before, after) {
   }
 
   // IE opacity filter fix
-  if (after.filter && !before.filter) {
+  if (IE_OPACITY && after.filter && !before.filter) {
     before.filter = 'alpha(opacity=100)';
   }
 
@@ -241,13 +241,14 @@ function clone_style(element, keys) {
 
   for (; i < len; i++) {
     key = keys[i];
+
     if (key in style) {
       clean[key] = ''+ style[key];
-    }
 
-    // libwebkit bug fix for in case of languages pack applied
-    if (key === 'opacity') {
-      clean[key] = clean[key].replace(',', '.');
+      // libwebkit bug fix for in case of languages pack applied
+      if (key === 'opacity') {
+        clean[key] = clean[key].replace(',', '.');
+      }
     }
   }
 
