@@ -5,7 +5,7 @@
  */
 
 var // the build settings
-RIGHTJS_VERSION = '2.2.2',
+RIGHTJS_VERSION = '2.2.3',
 BUILD_DIRECTORY = 'build',
 BUILD_FILENAME  = 'right';
 

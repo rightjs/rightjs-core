@@ -1,3 +1,13 @@
+2011-04-02 Nikolay Nemshilov
+  o Version 2.2.3 Release
+    * IE9 opacity effects bugfix
+    * Element#first #next #prev methods optimization
+    * Array methods for old browsers optimization
+    * Fixes to make it run on Mozilla Jetpack
+    * Xhr fix to merge global parameters with local ones
+    * Build optimization
+
+
 2011-02-12 Nikolay Nemshilov
   o Version 2.2.2 Release
     * Switching from Ruby/GCL to Node/Ugly
