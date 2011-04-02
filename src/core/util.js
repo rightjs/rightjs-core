@@ -267,19 +267,11 @@ if (isHash(HTML)) {
       value != null && value.hasOwnProperty != null;
   };
 }
+
+
 /**
  * Generating methods for native units extending
  */
-var i=0, natives = 'Array Function Number String Date RegExp'.split(' ');
-
-for (; i < natives.length; i++) {
-  RightJS[natives[i]] = extend_native(new Function('return '+ natives[i])());
-}
-
-// referring those two as well
-RightJS.Object = Object;
-RightJS.Math   = Math;
-
 // adds a standard '.include' method to the native unit
 function extend_native(klass) {
   return $ext(klass, {
@@ -294,6 +286,15 @@ function extend_native(klass) {
     }
   });
 }
+
+for (var i=0, natives = 'Array Function Number String Date RegExp'.split(' '); i < natives.length; i++) {
+  RightJS[natives[i]] = extend_native(new Function('return '+ natives[i])());
+}
+
+// referring those two as well
+RightJS.Object = Object;
+RightJS.Math   = Math;
+
 
 /**
  * Checks if the data is an array and if not,

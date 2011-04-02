@@ -14,5 +14,6 @@ var okays   = [
   '    return this == false;',
   'Do not use Number as a constructor.',
   "Expected a 'break' statement before 'case'.",
-  "The Function constructor is eval."
+  "The Function constructor is eval.",
+  'var RightJS = (function(window, document, Object, Array, String, Function, Number, Math, undefined) {'
 ];
