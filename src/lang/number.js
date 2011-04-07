@@ -23,17 +23,33 @@ Number.include({
   },
 
   upto: function(number, callback, scope) {
-    for (var i=this+0; i <= number; i++) {
-      callback.call(scope, i);
+    if (callback === undefined) {
+      var numbers = [];
+      for (var i=this+0; i <= number; i++) {
+        numbers.push(i);
+      }
+      return numbers;
+    } else {
+      for (var i=this+0; i <= number; i++) {
+        callback.call(scope, i);
+      }
+      return this;
     }
-    return this;
   },
 
   downto: function(number, callback, scope) {
-    for (var i=this+0; i >= number; i--) {
-      callback.call(scope, i);
+    if (callback === undefined) {
+      var numbers = [];
+      for (var i=this+0; i >= number; i--) {
+        numbers.push(i);
+      }
+      return numbers;
+    } else {
+      for (var i=this+0; i >= number; i--) {
+        callback.call(scope, i);
+      }
+      return this;
     }
-    return this;
   },
 
   abs: function() {
