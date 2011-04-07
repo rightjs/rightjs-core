@@ -24,23 +24,35 @@ var NumberTest = TestCase.create({
   },
 
   testUpto: function() {
-    this.list = [];
-
-    (2).upto(8, function(i) {
-      this.list.push(i);
-    }, this);
+    this.list = (2).upto(8);
 
     this.assertEqual([2,3,4,5,6,7,8], this.list);
   },
 
+  testUptoWithCallback: function() {
+    this.list = [];
+
+    (2).upto(8, function(i) {
+      this.list.push(i * 2);
+    }, this);
+
+    this.assertEqual([4,6,8,10,12,14,16], this.list);
+  },
+
   testDownto: function() {
+    this.list = (8).downto(4);
+
+    this.assertEqual([8,7,6,5,4], this.list);
+  },
+
+  testDowntoWithCallback: function() {
     this.list = [];
 
     (8).downto(4, function(i) {
-      this.list.push(i);
+      this.list.push(i / 2);
     }, this);
 
-    this.assertEqual([8,7,6,5,4], this.list);
+    this.assertEqual([4,3.5,3,2.5,2], this.list);
   },
 
   testAbs: function() {
