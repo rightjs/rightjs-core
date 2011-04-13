@@ -5,7 +5,7 @@
  *   Some methods inspired by
  *     - Ruby      (http://www.ruby-lang.org) Copyright (C) Yukihiro Matsumoto
  *
- * Copyright (C) 2008-2010 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 Number.include({
   /**
@@ -23,33 +23,44 @@ Number.include({
   },
 
   upto: function(number, callback, scope) {
-    if (callback === undefined) {
-      var numbers = [];
-      for (var i=this+0; i <= number; i++) {
-        numbers.push(i);
-      }
-      return numbers;
-    } else {
-      for (var i=this+0; i <= number; i++) {
-        callback.call(scope, i);
-      }
-      return this;
+    for (var i=this+0; i <= number; i++) {
+      callback.call(scope, i);
     }
+    return this;
   },
 
   downto: function(number, callback, scope) {
-    if (callback === undefined) {
-      var numbers = [];
-      for (var i=this+0; i >= number; i--) {
-        numbers.push(i);
-      }
-      return numbers;
-    } else {
-      for (var i=this+0; i >= number; i--) {
-        callback.call(scope, i);
-      }
-      return this;
+    for (var i=this+0; i >= number; i--) {
+      callback.call(scope, i);
     }
+    return this;
+  },
+
+  /**
+   * Maps a list of numbers from current to given
+   * or map a result of calls of the callback on those numbers
+   *
+   * @param {Number} end number
+   * @param {Function} optional callback
+   * @param {Object} optional callback scope
+   * @return {Array} the result list
+   */
+  to: function(number, callback, scope) {
+    var start = this + 0, end = number, result = [], i=start;
+
+    callback = callback || function(i) { return i; };
+
+    if (end > start) {
+      for (; i <= end; i++) {
+        result.push(callback.call(scope, i));
+      }
+    } else {
+      for (; i >= end; i--) {
+        result.push(callback.call(scope, i));
+      }
+    }
+
+    return result;
   },
 
   abs: function() {

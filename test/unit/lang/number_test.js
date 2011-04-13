@@ -1,7 +1,7 @@
 /**
  * The Number class extentions unit-test
  *
- * Copyright (C) 2008 Nikolay V. Nemshilov aka St. <nemshilov#gma-il>
+ * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
 var NumberTest = TestCase.create({
   name: 'NumberTest',
@@ -24,12 +24,6 @@ var NumberTest = TestCase.create({
   },
 
   testUpto: function() {
-    this.list = (2).upto(8);
-
-    this.assertEqual([2,3,4,5,6,7,8], this.list);
-  },
-
-  testUptoWithCallback: function() {
     this.list = [];
 
     (2).upto(8, function(i) {
@@ -40,12 +34,6 @@ var NumberTest = TestCase.create({
   },
 
   testDownto: function() {
-    this.list = (8).downto(4);
-
-    this.assertEqual([8,7,6,5,4], this.list);
-  },
-
-  testDowntoWithCallback: function() {
     this.list = [];
 
     (8).downto(4, function(i) {
@@ -53,6 +41,13 @@ var NumberTest = TestCase.create({
     }, this);
 
     this.assertEqual([4,3.5,3,2.5,2], this.list);
+  },
+
+  testTo: function() {
+    this.assertEqual([1,2,3,4], 1..to(4));
+    this.assertEqual([4,3,2,1], 4..to(1));
+
+    this.assertEqual([2,4,6,8], 1..to(4, function(i) { return i * 2; }));
   },
 
   testAbs: function() {
