@@ -205,7 +205,7 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
 
   // prepares user sending params
   prepareParams: function(params) {
-    if (params && params instanceof Form) {
+    if (('Form' in window) && params && params instanceof Form) {
       this.form = params;
       params = params.values();
     }
