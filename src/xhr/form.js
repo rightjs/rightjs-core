@@ -82,3 +82,19 @@ function Form_remote_send(event, options) {
   event.stop();
   this.send(options);
 }
+
+/**
+ * Adds Xhr params handling if a Form element is passed to Xhr#send
+ * 
+ * @param Object params - could be Hash or Form element
+ * @return Object
+ */
+Xhr.include({
+  prepareParams: function(params) {
+    if (params && params instanceof Form) {
+      this.form = params;
+      params = params.values();
+    }
+    return params;
+  }
+});
