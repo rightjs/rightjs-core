@@ -72,6 +72,19 @@ var ObjectTest = TestCase.create({
       "checking that all the keys were delinked"
     );
   },
+  
+  testThreeWayDeepMerge: function() {
+    var o1 = {a: {a1: 1}};
+    var o2 = {b: {b1: 2}};
+    var o3 = {a: {a1: 2, a2: 3}};
+    
+    var o = Object.merge(o1, o2, o3);
+    
+    this.assertEqual(
+      {a: {a1: 2, a2: 3}, b: {b1: 2}}, o,
+      "should do a deep merge with overriding"
+    );
+  },
 
   testClone: function() {
     var o1 = {1:1};

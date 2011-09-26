@@ -134,7 +134,7 @@ $ext(Object, {
    * @return Object merged object
    */
   merge: function() {
-    var object = {}, i=0, args=arguments, key;
+    var object = {}, i=0, l=0, args=arguments, key;
     for (l = args.length; i < l; i++) {
       if (isHash(args[i])) {
         for (key in args[i]) {
