@@ -134,8 +134,8 @@ $ext(Object, {
    * @return Object merged object
    */
   merge: function() {
-    var object = {}, i=0, args=arguments, key;
-    for (l = args.length; i < l; i++) {
+    var object = {}, i=0, args=arguments, l=args.length, key;
+    for (; i < l; i++) {
       if (isHash(args[i])) {
         for (key in args[i]) {
           object[key] = isHash(args[i][key]) && !(args[i][key] instanceof Class) ?
