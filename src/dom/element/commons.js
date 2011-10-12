@@ -18,14 +18,14 @@ Element.include({
   set: function(hash, value) {
     if (typeof(hash) === 'string') { var val = {}; val[hash] = value; hash = val; }
 
-    var key, element = this._;
+    var key, element = this._, dummyElement = document.createElement('a');
 
     for (key in hash) {
       if (key === 'style') {
         this.setStyle(hash[key]);
       } else {
         // some attributes are not available as properties
-        if (!(key in element)) {
+        if (!(key in dummyElement)) {
           element.setAttribute(key, ''+hash[key]);
         }
         element[key] = hash[key];

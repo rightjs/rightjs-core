@@ -143,5 +143,24 @@ var ElementCommonsTest = TestCase.create({
     this.assertVisible(div3._, 'div3');
     this.assertHidden(div2._);
     this.assertHidden(div1._);
+  },
+  
+  testMatchCustomProperty: function() {
+    var el = new Element('div', { 'data-boo': 'boo' });
+    this.assert(el.match('div[data-boo=boo]'));
+    
+    el.set('data-boo', 'foo');
+    this.assert(el.match('div[data-boo=foo]'));
+  },
+  
+  testSearchByUpdatedCustomProperty: function() {
+    var parent = new Element('div');
+    var child = new Element('div', { 'data-boo': 'boo' });
+    parent.append(child);
+    
+    this.assertSame(child, parent.first('[data-boo=boo]'));
+    
+    child.set('data-boo', 'foo');
+    this.assertSame(child, parent.first('[data-boo=foo]'));
   }
 })
