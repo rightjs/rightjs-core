@@ -64,6 +64,7 @@ Element.include({
    */
   erase: function(name) {
     this._.removeAttribute(name);
+    delete this._[name];
     return this;
   },
 

@@ -62,6 +62,14 @@ var ElementCommonsTest = TestCase.create({
     this.assertSame(this.el, this.el.erase('id'));
     this.assertFalse(this.el.has('id'));
   },
+  
+  testEraseCustom: function() {
+    this.el.set('data-boo', 'boo');
+    this.el.erase('data-boo');
+    
+    this.assertEqual(null, this.el.get('data-boo'));
+    this.assertEqual(undefined, this.el._['data-boo']);
+  },
 
   testHidden: function() {
     this.assertFalse(this.el.hidden());
