@@ -19,13 +19,13 @@ Element.include({
     if (typeof(hash) === 'string') { var val = {}; val[hash] = value; hash = val; }
 
     var key, element = this._;
-
+    
     for (key in hash) {
       if (key === 'style') {
         this.setStyle(hash[key]);
       } else {
         // some attributes are not available as properties
-        if (!(key in element)) {
+        if (!(key in tmp_cont)) {
           element.setAttribute(key, ''+hash[key]);
         }
         element[key] = hash[key];
@@ -64,6 +64,7 @@ Element.include({
    */
   erase: function(name) {
     this._.removeAttribute(name);
+    delete this._[name];
     return this;
   },
 
