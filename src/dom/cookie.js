@@ -16,12 +16,12 @@ var Cookie = RightJS.Cookie = new Class({
       return new this(name, options).set(value);
     },
     // gets the cookie
-    get: function(name) {
-      return new this(name).get();
+    get: function(name, options) {
+      return new this(name, options).get();
     },
     // deletes the cookie
-    remove: function(name) {
-      return new this(name).remove();
+    remove: function(name, options) {
+      return new this(name, options).remove();
     },
 
     // checks if the cookies are enabled
