@@ -3,7 +3,9 @@
  *
  * Credits:
  *   The basic principles, structures and naming system are inspired by
- *     - MooTools  (http://mootools.net)      Copyright (C) Valerio Proietti
+ *     - MooTools  (http://mootools.net) Copyright (C) Valerio Proietti
+ *   The cubic bezier emulation is backported from
+ *     - Lovely.IO (http://lovely.io) Copytirhgt (C) Nikolay Nemshilov
  *
  * Copyright (C) 2008-2011 Nikolay V. Nemshilov
  */
@@ -22,31 +24,9 @@ var Fx = RightJS.Fx = new Class(Observer, {
     Options: {
       fps:        IE8_OR_LESS ? 40 : 60,
       duration:   'normal',
-      transition: 'Sin',
-      queue:      true
-    },
-
-    // list of basic transitions
-    Transitions: {
-      Sin: function(i)  {
-        return -(Math.cos(Math.PI * i) - 1) / 2;
-      },
-
-      Cos: function(i) {
-        return Math.asin((i-0.5) * 2)/Math.PI + 0.5;
-      },
-
-      Exp: function(i) {
-        return Math.pow(2, 8 * (i - 1));
-      },
-
-      Log: function(i) {
-        return 1 - Math.pow(2, - 8 * i);
-      },
-
-      Lin: function(i) {
-        return i;
-      }
+      transition: 'default',
+      queue:      true,
+      engine:     'css'
     }
   },
 
@@ -69,17 +49,11 @@ var Fx = RightJS.Fx = new Class(Observer, {
   start: function() {
     if (fx_add_to_queue(this, arguments)) { return this; }
 
-    var options    = this.options,
-        duration   = Fx.Durations[options.duration] || options.duration,
-        transition = Fx.Transitions[options.transition] || options.transition,
-        steps      = (duration / 1000 * this.options.fps).ceil(),
-        interval   = (1000 / this.options.fps).round();
-
     fx_mark_current(this);
 
     this.prepare.apply(this, arguments);
 
-    fx_start_timer(this, transition, interval, steps);
+    fx_start_timer(this);
 
     return this.fire('start', this);
   },
@@ -213,19 +187,22 @@ function fx_cancel_all(element) {
  * Initializes the fx rendering timer
  *
  * @param Fx fx
- * @param Function transition stops calculator
- * @param Float interval
- * @param Integer number of steps
  * @return void
  */
-function fx_start_timer(fx, transition, interval, steps) {
-  var number = 1;
+function fx_start_timer(fx) {
+  var options    = fx.options,
+      duration   = Fx.Durations[options.duration] || options.duration,
+      steps      = Math.ceil(duration / 1000 * options.fps),
+      transition = Bezier_sequence(options.transition, steps),
+      interval   = Math.round(1000 / options.fps),
+      number     = 0;
+
   fx._timer = setInterval(function() {
-    if (number > steps) {
+    if (number === steps) {
       fx.finish();
     } else {
-      fx.render(transition(number/steps));
-      number ++;
+      fx.render(transition[number]);
+      number++;
     }
   }, interval);
 }
@@ -240,4 +217,81 @@ function fx_stop_timer(fx) {
   if (fx._timer) {
     clearInterval(fx._timer);
   }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// CSS3 Cubic Bezier sequentions emulator
+// Backport from Lovely.IO (http://lovely.io)
+// See also:
+// http://st-on-it.blogspot.com/2011/05/calculating-cubic-bezier-function.html
+///////////////////////////////////////////////////////////////////////////////
+
+// CSS3 cubic-bezier presets
+var Bezier_presets = {
+  'default':     '(.25,.1,.25,1)',
+  'linear':      '(0,0,1,1)',
+  'ease-in':     '(.42,0,1,1)',
+  'ease-out':    '(0,0,.58,1)',
+  'ease-in-out': '(.42,0,.58,1)',
+  'ease-out-in': '(0,.42,1,.58)'
+},
+
+// Bezier loockup tables cache
+Bezier_cache = {};
+
+// builds a loockup table of parametric values with a given size
+function Bezier_sequence(params, size) {
+  params = Bezier_presets[params] || native_fx_functions[params] || params;
+  params = params.match(/([\d\.]+)[\s,]+([\d\.]+)[\s,]+([\d\.]+)[\s,]+([\d\.]+)/);
+  params = [0, params[1]-0, params[2]-0, params[3]-0, params[4]-0]; // cleaning up
+
+  var name = params.join(',') + ',' + size, Cx, Bx, Ax, Cy, By, Ay, sequence, step, x;
+
+  function bezier_x(t) { return t * (Cx + t * (Bx + t * Ax)); }
+  function bezier_y(t) { return t * (Cy + t * (By + t * Ay)); }
+
+  // a quick search for a more or less close parametric
+  // value using several iterations by Newton's method
+
+  function bezier_x_der(t) { // bezier_x derivative
+    return Cx + t * (2*Bx + t * 3*Ax) + 1e-3;
+  }
+  function find_parametric(t) {
+    var x=t, i=0, z;
+
+    while (i < 5) {
+      z = bezier_x(x) - t;
+
+      if (Math.abs(z) < 1e-3) { break; }
+
+      x = x - z/bezier_x_der(x);
+      i++;
+    }
+
+    return x;
+  }
+
+  if (!(name in Bezier_cache)) {
+    // defining bezier functions in a polynomial form (coz it's faster)
+    Cx = 3 * params[1];
+    Bx = 3 * (params[3] - params[1]) - Cx;
+    Ax = 1 - Cx - Bx;
+
+    Cy = 3 * params[2];
+    By = 3 * (params[4] - params[2]) - Cy;
+    Ay = 1 - Cy - By;
+
+
+    // building the actual lookup table
+    Bezier_cache[name] = sequence = [];
+    x=0; step=1/size;
+
+    while (x < 1.0001) { // should include 1.0
+      sequence.push(bezier_y(find_parametric(x)));
+      x += step;
+    }
+  }
+
+  return Bezier_cache[name];
 }
