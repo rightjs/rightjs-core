@@ -265,11 +265,12 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
   initCallbacks: function() {
     // connecting basic callbacks
     this.on({
-      success:  'tryScripts',
       create:   'showSpinner',
       complete: 'hideSpinner',
       cancel:   'hideSpinner'
     });
+
+    this.on('complete', 'tryScripts');
 
     // wiring the global xhr callbacks
     Xhr.EVENTS.each(function(name) {
