@@ -172,6 +172,7 @@ var UtilTest = TestCase.create({
     this.assertFalse(isNumber(null));
     this.assertFalse(isNumber(false));
     this.assertFalse(isNumber(function() {}));
+    this.assertFalse(isNumber(NaN));
   },
 
   test_isElement: function() {

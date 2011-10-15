@@ -130,7 +130,7 @@ isString = RightJS.isString = function(value) {
  * @return boolean check result
  */
 isNumber = RightJS.isNumber = function(value) {
-  return typeof(value) === 'number';
+  return typeof(value) === 'number' && !isNaN(value);
 },
 
 /**
