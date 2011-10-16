@@ -72,14 +72,14 @@ var ObjectTest = TestCase.create({
       "checking that all the keys were delinked"
     );
   },
-  
+
   testThreeWayDeepMerge: function() {
     var o1 = {a: {a1: 1}};
     var o2 = {b: {b1: 2}};
     var o3 = {a: {a1: 2, a2: 3}};
-    
+
     var o = Object.merge(o1, o2, o3);
-    
+
     this.assertEqual(
       {a: {a1: 2, a2: 3}, b: {b1: 2}}, o,
       "should do a deep merge with overriding"
@@ -97,5 +97,6 @@ var ObjectTest = TestCase.create({
   testToQueryString: function() {
     this.assertEqual('a=a&b=b&c=%25%23%3F', Object.toQueryString({a:'a', b:'b', c:'%#?'}));
     this.assertEqual('a%5B%5D=1&a%5B%5D=2&a%5B%5D=3', Object.toQueryString({'a[]': [1,2,3]}));
+    this.assertEqual('a%5Bb%5D%5Bc%5D=1&a%5Bd%5D=2', Object.toQueryString({a: {b: {c: 1}, d: 2}}));
   }
 });

@@ -153,13 +153,52 @@ $ext(Object, {
    * @return String query
    */
   toQueryString: function(object) {
-    var tokens = [], key, value, encode = encodeURIComponent;
-    for (key in object) {
-      value = ensure_array(object[key]);
-      for (var i=0, l = value.length; i < l; i++) {
-        tokens.push(encode(key) +'='+ encode(value[i]));
-      }
+    var entries = to_query_string_map(object), i=0, result = [];
+
+    for (; i < entries.length; i++) {
+      result.push(encodeURIComponent(entries[i][0]) + "=" + encodeURIComponent(''+entries[i][1]));
     }
-    return tokens.join('&');
+
+    return result.join('&');
   }
 }, true);
+
+// private
+
+/**
+ * pre-converts nested objects into a flat key-value structure
+ *
+ * @param {Object} data-hash
+ * @param {String} key-prefix
+ * @return {Array} key-value pairs
+ */
+function to_query_string_map(hash, prefix) {
+  var result = [], key, value, i;
+
+  for (key in hash) {
+    value = hash[key];
+    if (prefix) {
+      key = prefix + "["+ key + "]";
+    }
+
+    if (typeof(value) === 'object') {
+      if (isArray(value)) {
+        if (key.substr(-2) !== '[]') {
+          key += "[]";
+        }
+        for (i=0; i < value.length; i++) {
+          result.push([key, value[i]]);
+        }
+      } else if (value) { // assuming it's an object
+        value = to_query_string_map(value, key);
+        for (i=0; i < value.length; i++) {
+          result.push(value[i]);
+        }
+      }
+    } else {
+      result.push([key, value]);
+    }
+  }
+
+  return result;
+}
