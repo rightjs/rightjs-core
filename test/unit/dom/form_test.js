@@ -165,6 +165,32 @@ var FormTest = TestCase.create({
     this.assertEqual(result, form.values());
   },
 
+  testValuesNestedHash: function() {
+    if (!document.querySelector) return; // fuck you IE 8
+
+    var form = new Form().html(
+      '<input name="token" value="some token" />                     ' +
+      '<input name="person[email]" value="bobby@mountain.com" />     ' +
+      '<input name="person[name][first]"  value="Bobby" />           ' +
+      '<input name="person[name][second]" value="Mountain" />        ' +
+      '<input name="person[guns][]" value="Shotgun" checked="true" />' +
+      '<input name="person[guns][]" value="M16"     checked="true" />' +
+      '<input name="person[guns][]" value="Glock"   checked="true" />'
+    );
+
+    this.assertEqual({
+      token: 'some token',
+      person: {
+        email: 'bobby@mountain.com',
+        name: {
+          first:  'Bobby',
+          second: 'Mountain'
+        },
+        guns: [ 'Shotgun', 'M16', 'Glock' ]
+      }
+    }, form.values());
+  },
+
   testSerialize: function() {
     if (Browser.Konqueror) return;
     var form = this.setForm();
@@ -183,7 +209,7 @@ var FormTest = TestCase.create({
         '<input type="hidden" name="test[]" value="3" />'
     });
 
-    this.assertEqual({'test[]': ['1', '2', '3']}, form.values());
+    this.assertEqual({'test': ['1', '2', '3']}, form.values());
   },
 
   testFormInput: function() {

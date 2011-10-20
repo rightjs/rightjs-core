@@ -117,20 +117,36 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
    * @return Object values
    */
   values: function() {
-    var values = {}, value, name, element, input;
+    var values = {};
 
-    this.inputs().each(function(element) {
-      input = element._;
-      name  = input.name;
-      if (!input.disabled && name && (
-        !['checkbox', 'radio'].include(input.type) || input.checked
-      )) {
-        value = element.getValue();
-        if (name.endsWith('[]')) {
-          value = (values[name] || []).concat([value]);
+    this.inputs().each(function (element) {
+      var input = element._,
+          hash  = values, key,
+          keys  = input.name.match(/[^\[]+/g);
+
+      if (!input.disabled && input.name && (!(input.type === 'checkbox' || input.type === 'radio') || input.checked)) {
+        // getting throught the smth[smth][smth][] in the name
+        while (keys.length > 1) {
+          key  = keys.shift();
+          if (key[key.length-1] === ']') {
+            key  = key.substr(0, key.length-1);
+          }
+          if (!hash[key]) {
+            hash[key] = keys[0] === ']' ? [] : {};
+          }
+          hash = hash[key];
         }
 
-        values[name] = value;
+        key  = keys.shift();
+        if (key[key.length-1] === ']') {
+          key = key.substr(0, key.length-1);
+        }
+
+        if (key === '') { // an array
+          hash.push(element.value());
+        } else {
+          hash[key] = element.value();
+        }
       }
     });
 
