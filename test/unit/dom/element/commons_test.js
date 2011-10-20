@@ -28,7 +28,7 @@ var ElementCommonsTest = TestCase.create({
 
   testSetCustom: function() {
     this.el.set('data-boo', 'boo');
-    this.assertEqual('boo', this.el._['data-boo']);
+    this.assertNull(this.el._['data-boo']);
     this.assertEqual('boo', this.el._.getAttribute('data-boo'));
   },
 
@@ -62,11 +62,11 @@ var ElementCommonsTest = TestCase.create({
     this.assertSame(this.el, this.el.erase('id'));
     this.assertFalse(this.el.has('id'));
   },
-  
+
   testEraseCustom: function() {
     this.el.set('data-boo', 'boo');
     this.el.erase('data-boo');
-    
+
     this.assertEqual(null, this.el.get('data-boo'));
     this.assertEqual(undefined, this.el._['data-boo']);
   },
@@ -144,22 +144,22 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(div2._);
     this.assertHidden(div1._);
   },
-  
+
   testMatchCustomProperty: function() {
     var el = new Element('div', { 'data-boo': 'boo' });
     this.assert(el.match('div[data-boo=boo]'));
-    
+
     el.set('data-boo', 'foo');
     this.assert(el.match('div[data-boo=foo]'));
   },
-  
+
   testSearchByUpdatedCustomProperty: function() {
     var parent = new Element('div');
     var child = new Element('div', { 'data-boo': 'boo' });
     parent.append(child);
-    
+
     this.assertSame(child, parent.first('[data-boo=boo]'));
-    
+
     child.set('data-boo', 'foo');
     this.assertSame(child, parent.first('[data-boo=foo]'));
   }
