@@ -5,7 +5,7 @@
  */
 
 var // the build settings
-RIGHTJS_VERSION = '2.2.3',
+RIGHTJS_VERSION = '2.3.0',
 BUILD_DIRECTORY = 'build',
 BUILD_FILENAME  = 'right';
 
@@ -85,7 +85,7 @@ task('pack', 'Pack the source code into a single file', function() {
       files = files.concat(js_sources[module]);
     }
   }
-  
+
   // If form is not included but xhr is then don't include xhr/form
   if (options.include('no-form') && !options.include('no-xhr')) {
     files.splice(files.indexOf('xhr/form'), 1);
