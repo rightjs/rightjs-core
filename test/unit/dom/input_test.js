@@ -232,5 +232,13 @@ var InputTest = TestCase.create({
     this.assertSame(input, input.checked(false));
     this.assertFalse(input.checked());
     this.assertFalse(input._.checked);
+  },
+
+  testButton: function() {
+    var button = new Element('button', {type: 'submit'});
+
+    this.assert(button instanceof Input);
+    this.assertEqual('BUTTON', button._.tagName);
+    this.assertEqual('submit', button._.type);
   }
 });

@@ -44,11 +44,14 @@ make_element = function (tag, options) {
 //
 if (IE8_OR_LESS) {
   make_element = function(tag, options) {
-    if (tag === 'input' && options !== undefined) {
-      tag = '<input name="'+ options.name +
-        '" type='+ options.type +
-        (options.checked ? ' checked' : '') +
-      '/>';
+    if (options !== undefined && (tag === 'input' || tag === 'button')) {
+      tag = '<'+ tag +' name="'+ options.name +
+        '" type="'+ options.type +'"'+
+        (options.checked ? ' checked' : '') + ' />';
+
+      delete(options.name);
+      delete(options.type);
+      delete(options.checked);
     }
 
     return document.createElement(tag);
