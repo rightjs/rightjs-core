@@ -51,7 +51,6 @@ if (IE8_OR_LESS) {
 
       delete(options.name);
       delete(options.type);
-      delete(options.checked);
     }
 
     return document.createElement(tag);
