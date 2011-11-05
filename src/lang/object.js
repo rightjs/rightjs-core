@@ -183,7 +183,7 @@ function to_query_string_map(hash, prefix) {
 
     if (typeof(value) === 'object') {
       if (isArray(value)) {
-        if (key.substr(-2) !== '[]') {
+        if (!key.endsWith('[]')) {
           key += "[]";
         }
         for (i=0; i < value.length; i++) {

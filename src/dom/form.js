@@ -128,7 +128,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
         // getting throught the smth[smth][smth][] in the name
         while (keys.length > 1) {
           key  = keys.shift();
-          if (key[key.length-1] === ']') {
+          if (key.endsWith(']')) {
             key  = key.substr(0, key.length-1);
           }
           if (!hash[key]) {
@@ -138,7 +138,7 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
         }
 
         key  = keys.shift();
-        if (key[key.length-1] === ']') {
+        if (key.endsWith(']')) {
           key = key.substr(0, key.length-1);
         }
 
