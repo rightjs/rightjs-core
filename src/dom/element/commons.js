@@ -162,14 +162,16 @@ Element.include({
    * @return mixed Element self or extracted data
    */
   data: function(key, value) {
+    var name, result, match, attrs, attr, i;
+
     if (isHash(key)) {
-      for (var name in key) {
+      for (name in key) {
         value = this.data(name, key[name]);
       }
     } else if (value === undefined) {
       key = 'data-'+ (''+key).dasherize();
 
-      for (var result = {}, match = false, attrs = this._.attributes, i=0; i < attrs.length; i++) {
+      for (result = {}, match = false, attrs = this._.attributes, i=0; i < attrs.length; i++) {
         value = attrs[i].value;
         try { value = JSON.parse(value); } catch (e) {}
 
@@ -189,8 +191,8 @@ Element.include({
 
       if (!isHash(value)) { value = {'': value}; }
 
-      for (var name in value) {
-        var attr = name.blank() ? key : key+'-'+name.dasherize();
+      for (name in value) {
+        attr = name.blank() ? key : key+'-'+name.dasherize();
 
         if (value[name] === null) {
           this._.removeAttribute(attr);
