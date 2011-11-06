@@ -1,3 +1,21 @@
+2011-11-06 Nikolay Nemshilov
+  o Version 2.3.0 Release
+    * JSON plugin was merged into the core
+    * Element#data method was added
+    * Element#set doesn't put 'data-' attributes in the instance
+    * Form#values returns parsed data structure
+    * BUTTON elements support fix for old IE browsers
+    * Number#to method was added
+    * String#dasherized method was added
+    * Fx module full cubic-bezier functions support
+    * Cookie transparent JSON data import/export
+    * Xhr X-JSON headers support
+    * Xhr extracts JSON data on 'complete' instead of 'success'
+    * Object#toQueryString handles nested objects
+    * isNumber(NaN) now returns false
+    * Smooth window scrolling fix
+
+
 2011-04-02 Nikolay Nemshilov
   o Version 2.2.3 Release
     * IE9 opacity effects bugfix
