@@ -55,7 +55,10 @@ var Cookie = RightJS.Cookie = new Class({
    * @return Cookie this
    */
   set: function(data) {
+    if (!isString(data)) { data = JSON.stringify(data); }
+
     var value = encodeURIComponent(data), options = this.options;
+
     if (options.domain) { value += '; domain=' + options.domain; }
     if (options.path)   { value += '; path=' + options.path; }
     if (options.duration) {
@@ -77,7 +80,12 @@ var Cookie = RightJS.Cookie = new Class({
     var value = this.options.document.cookie.match(
       '(?:^|;)\\s*' + RegExp.escape(this.name) + '=([^;]*)'
     );
-    return value ? decodeURIComponent(value[1]) : null;
+    if (value) {
+      value = decodeURIComponent(value[1]);
+      try { value = JSON.parse(value); }
+      catch (e) {}
+    }
+    return value || null;
   },
 
   /**

@@ -99,6 +99,11 @@ if (TestCaseUtil.Cookie.enabled()) {
 
     testEnabled: function() {
       this.assert(Cookie.enabled());
+    },
+
+    testSavingObjects: function() {
+      Cookie.set('test', {something: [1,2,3]});
+      this.assertEqual({something: [1,2,3]}, Cookie.get('test'));
     }
   });
 }
