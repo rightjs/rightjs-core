@@ -166,7 +166,7 @@ Element.include({
 
     if (value === undefined) {
       if ((value = this._.getAttribute(key))) {
-        value = JSON.parse(value);
+        try { value = JSON.parse(value); } catch (e) {}
       } else {
         value = null;
       }

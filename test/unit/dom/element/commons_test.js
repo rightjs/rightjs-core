@@ -166,7 +166,8 @@ var ElementCommonsTest = TestCase.create({
       'data-number': '1.23',
       'data-string': '"string"',
       'data-array':  '[1,2,3]',
-      'data-object': '{"boo":"hoo"}'
+      'data-object': '{"boo":"hoo"}',
+      'data-plain':  'plain text'
     });
 
     this.assertEqual(false,        element.data('false'));
@@ -175,6 +176,8 @@ var ElementCommonsTest = TestCase.create({
     this.assertEqual('string',     element.data('string'));
     this.assertEqual([1,2,3],      element.data('array'));
     this.assertEqual({boo: "hoo"}, element.data('object'));
+
+    this.assertEqual('plain text', element.data('plain'));
 
     this.assertNull(element.data('non-existing'));
   },
