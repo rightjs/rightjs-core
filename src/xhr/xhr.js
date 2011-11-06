@@ -236,29 +236,19 @@ var Xhr = RightJS.Xhr = new Class(Observer, {
   // called on success
   tryScripts: function(response) {
     var content_type = this.getHeader('Content-type');
+    var x_json_data  = this.getHeader('X-JSON');
+
+    if (x_json_data) {
+      this.json = this.responseJSON = this.headerJSON = JSON.parse(x_json_data);
+    }
 
     if (this.evalResponse || (this.evalJS && /(ecma|java)script/i.test(content_type))) {
       $eval(this.text);
     } else if (/json/.test(content_type) && this.evalJSON) {
-      this.json = this.responseJSON = this.sanitizedJSON();
+      this.json = this.responseJSON = JSON.parse(this.text);
     } else if (this.evalScripts) {
       this.text.evalScripts();
     }
-  },
-
-  // sanitizes the json-response texts
-  sanitizedJSON: function() {
-    if (!(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(
-      this.text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, '')
-    )) {
-      if (this.secureJSON) {
-        throw "JSON error: "+this.text;
-      }
-      return null;
-    }
-
-    return 'JSON' in window ? JSON.parse(this.text) :
-      (new Function("return "+this.text))();
   },
 
   // initializes the request callbacks

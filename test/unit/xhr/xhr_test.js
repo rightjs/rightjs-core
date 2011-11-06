@@ -388,20 +388,22 @@ var XhrTest = TestCase.create({
     });
   },
 
-  testJSONResponseSilentValidation: function() {
+  testXJSONData: function() {
     this.mockAjax({
-      text: 'NOT JSON',
+      text: 'some text',
       headers: {
-        'Content-type': 'text/x-json'
+        'Content-type': 'text/plain',
+        'X-JSON': '{"some":"data"}'
       }
     });
 
-    var xhr;
-    this.assertNothingThrown(function() {
-      xhr = Xhr.load('/some.json', {secureJSON: false});
-    });
+    var xhr = new Xhr('/some.url').send();
 
-    this.assertNull(xhr.responseJSON);
+    this.assertEqual('some text', xhr.text);
+    this.assertEqual('some text', xhr.responseText);
+    this.assertEqual({some: 'data'}, xhr.json);
+    this.assertEqual({some: 'data'}, xhr.responseJSON);
+    this.assertEqual({some: 'data'}, xhr.headerJSON);
   },
 
   testLoadShortcut: function() {
