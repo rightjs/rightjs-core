@@ -20,7 +20,7 @@ native_fx_function   = native_fx_transition + 'TimingFunction',
 native_fx_functions  = {
   Sin: 'cubic-bezier(.3,0,.6,1)',
   Cos: 'cubic-bezier(0,.3,.6,0)',
-  Log: 'cubic-bezier(0.6,.3,.8)',
+  Log: 'cubic-bezier(0,.6,.3,.8)',
   Exp: 'cubic-bezier(.6,0,.8,.3)',
   Lin: 'cubic-bezier(0,0,1,1)'
 };
