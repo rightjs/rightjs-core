@@ -151,5 +151,34 @@ Element.include({
   radio: function(effect, options) {
     this.siblings().each('hide', effect, options);
     return this.show();
+  },
+
+  /**
+   * Sets/gets the `data-smth` data attribute and
+   * automatically converts everything in/out JSON
+   *
+   * @param String key name
+   * @param mixed data or `undefined` to erase
+   * @return mixed Element self or extracted data
+   */
+  data: function(key, value) {
+    key = 'data-'+ key;
+
+    if (value === undefined) {
+      if ((value = this._.getAttribute(key))) {
+        value = JSON.parse(value);
+      } else {
+        value = null;
+      }
+    } else {
+      if (value === null) {
+        this._.removeAttribute(key);
+      } else {
+        this._.setAttribute(key, JSON.stringify(value));
+      }
+      value = this;
+    }
+
+    return value;
   }
 });

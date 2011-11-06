@@ -145,22 +145,44 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(div1._);
   },
 
-  testMatchCustomProperty: function() {
-    var el = new Element('div', { 'data-boo': 'boo' });
-    this.assert(el.match('div[data-boo=boo]'));
+  testDataSet: function() {
+    var element = new Element('div');
 
-    el.set('data-boo', 'foo');
-    this.assert(el.match('div[data-boo=foo]'));
+    this.assertSame(element, element.data('string', 'string'));
+    this.assertEqual('"string"', element._.getAttribute('data-string'));
+    this.assertNull(element['data-string']);
+
+    this.assertEqual('false',         element.data('false', false)._.getAttribute('data-false'));
+    this.assertEqual('true',          element.data('true', true)._.getAttribute('data-true'));
+    this.assertEqual('1.23',          element.data('number', 1.23)._.getAttribute('data-number'));
+    this.assertEqual('[1,2,3]',       element.data('array', [1,2,3])._.getAttribute('data-array'));
+    this.assertEqual('{"boo":"hoo"}', element.data('object', {boo: "hoo"})._.getAttribute('data-object'));
   },
 
-  testSearchByUpdatedCustomProperty: function() {
-    var parent = new Element('div');
-    var child = new Element('div', { 'data-boo': 'boo' });
-    parent.append(child);
+  testDataGet: function() {
+    var element = new Element('div', {
+      'data-false':  'false',
+      'data-true':   'true',
+      'data-number': '1.23',
+      'data-string': '"string"',
+      'data-array':  '[1,2,3]',
+      'data-object': '{"boo":"hoo"}'
+    });
 
-    this.assertSame(child, parent.first('[data-boo=boo]'));
+    this.assertEqual(false,        element.data('false'));
+    this.assertEqual(true,         element.data('true'));
+    this.assertEqual(1.23,         element.data('number'));
+    this.assertEqual('string',     element.data('string'));
+    this.assertEqual([1,2,3],      element.data('array'));
+    this.assertEqual({boo: "hoo"}, element.data('object'));
 
-    child.set('data-boo', 'foo');
-    this.assertSame(child, parent.first('[data-boo=foo]'));
+    this.assertNull(element.data('non-existing'));
+  },
+
+  testDataRemove: function() {
+    var element = new Element('div', {'data-something': 'something'});
+
+    this.assertEqual(element, element.data('something', null));
+    this.assertFalse(element.has('data-something'));
   }
-})
+});
