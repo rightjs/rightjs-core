@@ -120,6 +120,15 @@ String.include({
   },
 
   /**
+   * Makes a dashed version of the string
+   *
+   * @return String dashed version
+   */
+  dasherize: function() {
+    return this.underscored().replace(/_/g, '-');
+  },
+
+  /**
    * checks if the string contains the given substring
    *
    * @param String string

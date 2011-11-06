@@ -79,6 +79,11 @@ var StringTest = TestCase.create({
     this.assertEqual('Мама-мыла раму', 'мама-мыла раму'.capitalize());
   },
 
+  testDasherize: function() {
+    this.assertEqual('asdf-asdf', 'asdfAsdf'.dasherize());
+    this.assertEqual('asdf-asdf', 'asdf_asdf'.dasherize());
+  },
+
   testIncludes: function() {
     this.assert('asdf sdfg dfg'.includes('sdf'));
     this.assertFalse('asdf sdfg df'.includes('qwer'));
