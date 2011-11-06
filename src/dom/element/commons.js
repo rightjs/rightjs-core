@@ -162,20 +162,43 @@ Element.include({
    * @return mixed Element self or extracted data
    */
   data: function(key, value) {
-    key = 'data-'+ key;
+    if (isHash(key)) {
+      for (var name in key) {
+        value = this.data(name, key[name]);
+      }
+    } else if (value === undefined) {
+      key = 'data-'+ (''+key).dasherize();
 
-    if (value === undefined) {
-      if ((value = this._.getAttribute(key))) {
+      for (var result = {}, match = false, attrs = this._.attributes, i=0; i < attrs.length; i++) {
+        value = attrs[i].value;
         try { value = JSON.parse(value); } catch (e) {}
-      } else {
-        value = null;
+
+        if (attrs[i].name === key) {
+          result = value;
+          match  = true;
+          break;
+        } else if (attrs[i].name.indexOf(key) === 0) {
+          result[attrs[i].name.substring(key.length+1).camelize()] = value;
+          match = true;
+        }
       }
+
+      value = match ? result : null;
     } else {
-      if (value === null) {
-        this._.removeAttribute(key);
-      } else {
-        this._.setAttribute(key, JSON.stringify(value));
+      key = 'data-'+ (''+key).dasherize();
+
+      if (!isHash(value)) { value = {'': value}; }
+
+      for (var name in value) {
+        var attr = name.blank() ? key : key+'-'+name.dasherize();
+
+        if (value[name] === null) {
+          this._.removeAttribute(attr);
+        } else {
+          this._.setAttribute(attr, isString(value[name]) ? value[name] : JSON.stringify(value[name]));
+        }
       }
+
       value = this;
     }
 

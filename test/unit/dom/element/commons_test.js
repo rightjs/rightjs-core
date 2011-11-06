@@ -145,20 +145,6 @@ var ElementCommonsTest = TestCase.create({
     this.assertHidden(div1._);
   },
 
-  testDataSet: function() {
-    var element = new Element('div');
-
-    this.assertSame(element, element.data('string', 'string'));
-    this.assertEqual('"string"', element._.getAttribute('data-string'));
-    this.assertNull(element['data-string']);
-
-    this.assertEqual('false',         element.data('false', false)._.getAttribute('data-false'));
-    this.assertEqual('true',          element.data('true', true)._.getAttribute('data-true'));
-    this.assertEqual('1.23',          element.data('number', 1.23)._.getAttribute('data-number'));
-    this.assertEqual('[1,2,3]',       element.data('array', [1,2,3])._.getAttribute('data-array'));
-    this.assertEqual('{"boo":"hoo"}', element.data('object', {boo: "hoo"})._.getAttribute('data-object'));
-  },
-
   testDataGet: function() {
     var element = new Element('div', {
       'data-false':  'false',
@@ -180,6 +166,56 @@ var ElementCommonsTest = TestCase.create({
     this.assertEqual('plain text', element.data('plain'));
 
     this.assertNull(element.data('non-existing'));
+  },
+
+  testDataGetNested: function() {
+    var element = new Element('div', {
+      'data-thing-one': '1',
+      'data-thing-two': '2',
+      'data-thing-three-one': '3.1'
+    });
+
+    this.assertEqual({
+      one: 1, two: 2, threeOne: 3.1
+    }, element.data('thing'));
+  },
+
+  testDataSet: function() {
+    var element = new Element('div');
+
+    this.assertSame(element, element.data('string', 'string'));
+    this.assertEqual('string', element._.getAttribute('data-string'));
+    this.assertNull(element['data-string']);
+
+    this.assertEqual('false',         element.data('false', false)._.getAttribute('data-false'));
+    this.assertEqual('true',          element.data('true', true)._.getAttribute('data-true'));
+    this.assertEqual('1.23',          element.data('number', 1.23)._.getAttribute('data-number'));
+    this.assertEqual('[1,2,3]',       element.data('array', [1,2,3])._.getAttribute('data-array'));
+  },
+
+  testDataSetObject: function() {
+    var element = new Element('div');
+
+    this.assertSame(element, element.data('test', {
+      'one': 1, two: 2, 'three-one': 3.1, 'threeTwo': 3.2
+    }));
+
+    this.assertEqual('1',   element._.getAttribute('data-test-one'));
+    this.assertEqual('2',   element._.getAttribute('data-test-two'));
+    this.assertEqual('3.1', element._.getAttribute('data-test-three-one'));
+    this.assertEqual('3.2', element._.getAttribute('data-test-three-two'));
+  },
+
+  testDataSetHash: function() {
+    var element = new Element('div');
+
+    this.assertSame(element, element.data({
+      one: 1, two: 2, three: 3
+    }));
+
+    this.assertEqual('1', element._.getAttribute('data-one'));
+    this.assertEqual('2', element._.getAttribute('data-two'));
+    this.assertEqual('3', element._.getAttribute('data-three'));
   },
 
   testDataRemove: function() {
