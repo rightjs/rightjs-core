@@ -11,6 +11,7 @@ run_tests({
   FunctionTest:          'unit/lang/function',
   NumberTest:            'unit/lang/number',
   RegexpTest:            'unit/lang/regexp',
+  JsonTest:              'unit/lang/json',
 
   ClassTest:             'unit/core/class',
   OptionsTest:           'unit/core/options',
@@ -31,7 +32,6 @@ run_tests({
   ElementStructsTest:    'unit/dom/element/structs',
   ElementDimensionsTest: 'unit/dom/element/dimensions',
   ElementEventsTest:     'unit/dom/element/events',
-  ElementDataTest:       'unit/dom/element/data',
 
   SelectorTest:          'unit/dom/selector',
 

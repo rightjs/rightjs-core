@@ -17,6 +17,7 @@ include_sources_by_modules({
     'lang/function',
     'lang/number',
     'lang/regexp',
+    'lang/json',
 
     'core/class',
     'core/options',
@@ -38,7 +39,6 @@ include_sources_by_modules({
     'dom/element/commons',
     'dom/element/dimensions',
     'dom/element/events',
-    'dom/element/data',
 
     'dom/selector',
     'dom/ready'
