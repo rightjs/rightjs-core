@@ -180,7 +180,8 @@ namespace('build', function() {
       source = "'" + source
         .replace(/\\/mg, "\\\\")
         .replace(/\n/mg, " '+\n'")
-        .replace(/'/mg,  "\\'") +
+        .replace(/'/mg,  "\\'")
+        .replace('new ActiveXObject', 'new parent.ActiveXObject') +
       ";'";
 
       source = layout[0] + source + layout[1];
