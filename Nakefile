@@ -1,7 +1,7 @@
 /**
  * All sorts of Nake tasks to run with NodeJS
  *
- * Copyright (C) 2011 Nikolay Nemshilov
+ * Copyright (C) 2011-2012 Nikolay Nemshilov
  */
 
 var // the build settings
@@ -10,7 +10,7 @@ BUILD_DIRECTORY = 'build',
 BUILD_FILENAME  = 'right';
 
 var // importint the Nake tools
-on_npm          = process.ARGV[1].match(/nake$/),
+on_npm          = process.argv[1].match(/nake$/),
 Nake            = require(on_npm ? 'nake' : './util/nake'),
 task            = Nake.task,
 namespace       = Nake.namespace;
@@ -27,7 +27,7 @@ build           = null; // global build reference
 // Parsing the options
 ////////////////////////////////////////////////////////////////
 var fs   = require('fs');
-var argv = process.ARGV;
+var argv = process.argv;
 var options = argv[argv.length - 1];
 
 if (options.startsWith('OPTIONS=')) {
