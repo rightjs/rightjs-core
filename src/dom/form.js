@@ -63,7 +63,15 @@ var Form = RightJS.Form = Element_wrappers.FORM = new Class(Element, {
    * @return Input field
    */
   input: function(name) {
-    return wrap(this._[name]);
+    var input = this._[name];
+
+    if ('tagName' in input) {
+      input = wrap(input);
+    } else { // a list of radio-buttons (coz they have all the same name)
+      input = $A(input).map(wrap);
+    }
+
+    return input;
   },
 
   /**

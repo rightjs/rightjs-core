@@ -221,6 +221,16 @@ var FormTest = TestCase.create({
     this.assertSame(name._, form._.name, "it should be the correct field");
   },
 
+  testFormInput_withRadioButton: function() {
+    var form = this.setForm();
+    var buttons = form.input('who');
+
+    this.assert(buttons instanceof Array);
+    this.assertEqual(2, buttons.length);
+    this.assert(buttons[0] instanceof Input);
+    this.assert(buttons[1] instanceof Input);
+  },
+
   testSubmit: function() {
     var called = false;
     var form   = new Form();
