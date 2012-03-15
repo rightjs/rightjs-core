@@ -176,8 +176,9 @@ Element.include({
    * @return String text content or Element this
    */
   text: function(text) {
-    return text === undefined ? (this._.textContent || this._.innerText) :
-      this.update(this.doc()._.createTextNode(text));
+    return text === undefined ? (
+      this._.textContent === undefined ? this._.innerText : this._.textContent
+    ) : this.update(this.doc()._.createTextNode(text));
   },
 
   /**

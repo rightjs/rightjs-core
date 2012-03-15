@@ -515,6 +515,11 @@ var ElementStructsTest = TestCase.create({
     this.assertEqual('Beevis & Butthead', this.el.text());
   },
 
+  testText_getter_emptyCase: function() {
+    this.el._.innerHTML = "";
+    this.assertEqual('', this.el.text());
+  },
+
   testText_setter: function() {
     this.assertSame(this.el, this.el.text('<li>boo hoo!</li>'));
     this.assertEqual('&lt;li&gt;boo hoo!&lt;/li&gt;', this.el._.innerHTML);
