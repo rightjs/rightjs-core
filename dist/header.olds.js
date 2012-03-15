@@ -4,5 +4,5 @@
  * Released under the terms of the MIT license
  * Visit http://rightjs.org for more details
  *
- * Copyright (C) 2008-2011 Nikolay V. Nemshilov
+ * Copyright (C) 2008-2012 Nikolay Nemshilov
  */
