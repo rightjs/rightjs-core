@@ -1,3 +1,8 @@
+2012-03-15 Nikolay Nemshilov
+  o Version 2.3.1 Release
+    * Element#text() fix for Firefox in case of an empty element
+    * Form#input(name) now returns a list of inputs in case of radio buttons
+
 2011-11-06 Nikolay Nemshilov
   o Version 2.3.0 Release
     * JSON plugin was merged into the core
