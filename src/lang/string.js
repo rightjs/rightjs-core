@@ -159,10 +159,10 @@ String.include({
    * @return boolean check result
    */
   endsWith: function(string, ignorecase) {
-    return this.length - (
-      ignorecase !== true ? this.lastIndexOf(string) :
-        this.toLowerCase().lastIndexOf(string.toLowerCase())
-    ) === string.length;
+    var index = ignorecase !== true ?
+      this.lastIndexOf(string) :
+      this.toLowerCase().lastIndexOf(string.toLowerCase());
+    return index > -1 && this.length - index === string.length;
   },
 
   /**
