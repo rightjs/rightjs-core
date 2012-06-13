@@ -53,6 +53,12 @@ function fx_slide_prepare_styles(element_style, size, direction, how) {
   if (how === 'out') {
     style[vertical ? 'height' : 'width'] = '0px';
 
+    if (vertical) {
+      element_style.height = size.y + 'px';
+    } else {
+      element_style.width = size.y + 'px';
+    }
+
     if (to_right) {
       style.marginLeft = margin_left + size.x+'px';
     } else if (to_bottom) {
