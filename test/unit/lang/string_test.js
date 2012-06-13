@@ -99,6 +99,7 @@ var StringTest = TestCase.create({
   testEndsWith: function() {
     this.assert('asdf qwer'.endsWith('qwer'));
     this.assertFalse('asdf qwer'.endsWith('Qwer'));
+    this.assertFalse('asdf'.endsWith('qwert'));
 
     this.assert('asdf qwer'.endsWith('Qwer', true), 'test checking with ignore case');
   },
